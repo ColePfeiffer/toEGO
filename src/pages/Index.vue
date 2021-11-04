@@ -3,7 +3,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {
+    console.log(this.$q.dark.isActive); // true, false
+    this.$q.dark.set(true);
+    console.log(this.$q.dark.isActive); // true, false
+  },
+};
 </script>
 
 <style>
