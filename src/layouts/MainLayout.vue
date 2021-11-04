@@ -1,107 +1,103 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+<template >
+  <q-layout view="hHh lpR fFf" class="shadow-2 rounded-borders">
+    <q-drawer v-model="drawer" :width="200" :breakpoint="500">
+      <q-scroll-area class="fit test">
+        <q-list padding class="menu-list">
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="inbox" />
+            </q-item-section>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+            <q-item-section>Inbox</q-item-section>
+          </q-item>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+          <q-item active clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="star" />
+            </q-item-section>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+            <q-item-section>Star</q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="send" />
+            </q-item-section>
+
+            <q-item-section>Send</q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="drafts" />
+            </q-item-section>
+
+            <q-item-section>Drafts</q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page class="pageView">
+        <router-view />
+      </q-page>
     </q-page-container>
+
+    <q-footer elevated class="primary">
+      <q-toolbar>
+        <q-btn
+          flat
+          @click="drawer = !drawer"
+          round
+          dense
+          icon="keyboard_arrow_left"
+        />
+        <!-- Buttons for the toolbar -->
+        <q-btn-toggle
+          v-model="model"
+          flat
+          stretch
+          toggle-color="secondary"
+          :options="[
+            { label: '', value: 'one', icon: 'book' },
+            { label: '', value: 'two', icon: 'view_comfy' },
+            { label: '', value: 'three', icon: 'settings' },
+          ]"
+        />
+
+        <q-space />
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
-
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
-
 export default {
-  name: 'MainLayout',
-  components: { EssentialLink },
-  data () {
+  data() {
     return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData
-    }
-  }
-}
+      drawer: false,
+      model: "one",
+    };
+  },
+};
 </script>
+
+<style lang="sass" scoped>
+.menu-list .q-item
+  border-radius: 0 32px 32px 0
+  background: none
+
+.pageView
+  margin: auto
+  font-family: 'PressStart'
+  background: url(/images/clouds.png) repeat-x
+  height: 100%
+  padding: auto
+
+.inner_div
+  margin: auto
+  position: relative
+  width: 30%
+  height: 100%
+</style>
