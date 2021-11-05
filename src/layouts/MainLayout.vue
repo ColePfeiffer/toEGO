@@ -1,5 +1,5 @@
 <template >
-  <q-layout view="hHh lpR fFf" class="shadow-2 rounded-borders">
+  <q-layout view="hHh lpR fFf">
     <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test">
         <q-list padding class="menu-list">
@@ -32,12 +32,11 @@
       <q-toolbar>
         <q-btn
           flat
-          @click="drawer = !drawer"
-          round
           dense
           icon="keyboard_arrow_left"
+          @click="drawer = !drawer"
         />
-        <!-- Buttons for the toolbar -->
+        <q-space />
         <q-btn-toggle
           v-model="model"
           flat
@@ -49,8 +48,8 @@
             { label: '', value: 'three', icon: 'settings' },
           ]"
         />
-
         <q-space />
+        <q-btn color="accent" flat dense icon="add" />
       </q-toolbar>
     </q-footer>
   </q-layout>
