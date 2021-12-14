@@ -1,25 +1,39 @@
 <template>
-  <q-dialog :value="showDialog" class="dialogBox" full-width full-height persistent>
-    <q-card class="column full-height dialogBox" style="width: 300px">
-      <q-card-section>
-        <div class="text-overline">LOGGING EVENT</div>
-        <div class="moodPicker fit row no-wrap items-center">
-          <div class="col-12">How do you feel?</div>
+  <q-dialog
+    :value="showDialog"
+    class="dialogBox"
+    full-width
+    full-height
+    persistent
+  >
+    <div class="dialogBox column full-height content-center q-pa-sm">
+      <!-- TopBar -->
+      <div class="topBarContainer full-width">
+        <div class="topBar row justify-between">
+          <div class="text-overline col-4 text-left">{{ dialogName }}</div>
+          <div class="text-overline col-4 text-right">[-] [x]</div>
         </div>
-        <div class="moodPicker fit row no-wrap items-center">
-          <q-separator class="col" color="primary" />
-        </div>
+        <q-separator class="row" />
+      </div>
+      <!-- Content -->
+      <div
+        class="contentContainer full-width"
+        style="background-color: blue; height: 300px; opacity: 0.5"
+      >
+        <!-- ehhh vielleicht mit diesem template / blaupausen dings, wo dann content reingeladen wird... -->
+        <!-- Make the following scrollable: -->
+        <div>BlablaBlablaBlabla</div>
+      </div>
 
-        <div class="moodPicker fit row no-wrap items-center content-start">
-          <div class="col">:) :I :(</div>
-        </div>
-      </q-card-section>
-
-      <q-card-actions align="right">
+      <!-- Buttons -->
+      <div
+        class="buttonsContainer full-width text-right"
+        style="background-color: purple"
+      >
         <q-btn flat label="Close" @click="closeDialog" />
         <q-btn flat label="Save" @click="closeDialog" />
-      </q-card-actions>
-    </q-card>
+      </div>
+    </div>
   </q-dialog>
 </template>
 
@@ -28,25 +42,27 @@ export default {
   name: "baseDialog",
   emits: ["toggle-Dialog"],
   props: {
-    showDialog: Boolean
+    showDialog: Boolean,
     //view: String, // CASH, NEW, CASH_UP_EXISTING
     //categories: Array,
     //existingArticle: Object // for cashing up existing items
   },
   data() {
     return {
+      dialogName: "ADD EVENT",
       newEvent: {
         title: " ",
         mood: "",
         text: "",
         tags: "",
         createdOn: "",
-        createdBy: "" // ref or id
-      }
+        createdBy: "", // ref or id
+      },
     };
   },
   methods: {
     closeDialog() {
+      console.log("meehhh");
       this.$emit("toggle-Dialog", false);
 
       // reset everything
@@ -56,10 +72,10 @@ export default {
         text: "",
         tags: "",
         createdOn: "",
-        createdBy: "" // ref or id
+        createdBy: "", // ref or id
       };
-    }
-  }
+    },
+  },
 };
 </script>
 
