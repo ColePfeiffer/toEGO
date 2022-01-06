@@ -1,7 +1,11 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <!-- Dialog -->
-    <baseDialog :showDialog="dialogIsOpen" @toggle-Dialog="toggleDialog"></baseDialog>
+    <!-- Dialog 
+    <baseDialog :showDialog="dialogIsOpen" @toggle-Dialog="toggleDialog"></baseDialog>-->
+    <baseDialog2
+      :showDialog="dialogIsOpen"
+      @toggle-Dialog="toggleDialog"
+    ></baseDialog2>
     <!-- Menü -->
     <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test">
@@ -33,7 +37,12 @@
     <!-- Bottom Navigation bar -->
     <q-footer elevated class="primary" v-if="dialogIsOpen == false">
       <q-toolbar>
-        <q-btn flat dense icon="keyboard_arrow_left" @click="toggleDialog(true)" />
+        <q-btn
+          flat
+          dense
+          icon="keyboard_arrow_left"
+          @click="toggleDialog(true)"
+        />
         <q-space />
         <q-btn-toggle
           v-model="model"
@@ -47,14 +56,21 @@
           ]"
         />
         <q-space />
-        <q-btn color="accent" flat dense icon="add" @click="dialogIsOpen = true" />
+        <q-btn
+          color="accent"
+          flat
+          dense
+          icon="add"
+          @click="dialogIsOpen = true"
+        />
       </q-toolbar>
     </q-footer>
   </q-layout>
 </template>
 
 <script>
-import baseDialog from "../components/baseDialog.vue";
+//import baseDialog from "../components/baseDialog.vue";
+import baseDialog2 from "../components/baseDialog2.vue";
 
 export default {
   data() {
@@ -62,11 +78,12 @@ export default {
       drawer: false,
       model: "one",
       dialogIsOpen: false,
-      debug: true
+      debug: true,
     };
   },
   components: {
-    baseDialog
+    //baseDialog,
+    baseDialog2,
   },
   methods: {
     setDarkMode() {
@@ -76,8 +93,8 @@ export default {
       if (this.debug) console.log("old state: " + this.dialogIsOpen);
       this.dialogIsOpen = newState;
       if (this.debug) console.log("new state: " + this.dialogIsOpen);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -98,6 +115,4 @@ export default {
   position: relative
   width: 30%
   height: 100%
-
-
 </style>

@@ -6,32 +6,38 @@
     full-height
     persistent
   >
-    <div class="dialogBox column full-height content-center q-pa-sm">
+    <div class="dialogBox full-height content-center q-pa-sm">
       <!-- TopBar -->
-      <div class="topBarContainer full-width">
-        <div class="topBar row justify-between">
-          <div class="text-overline col-4 text-left">{{ dialogName }}</div>
-          <div class="text-overline col-4 text-right">[-] [x]</div>
+
+      <div class="topBar col justify-between">
+        <div class="row">
+          <div class="text-overline col text-left">{{ dialogName }}</div>
+          <div class="text-overline col text-right">[-] [x]</div>
         </div>
-        <q-separator class="row" />
       </div>
+      <q-separator class="column" />
       <!-- Content -->
       <div
-        class="contentContainer full-width"
+        class="contentContainer column"
         style="background-color: blue; height: 300px; opacity: 0.5"
       >
         <!-- ehhh vielleicht mit diesem template / blaupausen dings, wo dann content reingeladen wird... -->
         <!-- Make the following scrollable: -->
         <div>BlablaBlablaBlabla</div>
+        <div>BlablaBlablaBlabla</div>
+        <div>BlablaBlablaBlabla</div>
+        <div>BlablaBlablaBlabla</div>
       </div>
 
       <!-- Buttons -->
       <div
-        class="buttonsContainer full-width text-right"
+        class="buttonsContainer col=4 fixed-bottom"
         style="background-color: purple"
       >
-        <q-btn flat label="Close" @click="closeDialog" />
-        <q-btn flat label="Save" @click="closeDialog" />
+        <div class="col text-right">
+          <q-btn flat label="Close" @click="closeDialog" />
+          <q-btn flat label="Save" @click="closeDialog" />
+        </div>
       </div>
     </div>
   </q-dialog>
