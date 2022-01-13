@@ -2,10 +2,7 @@
   <q-layout view="hHh lpR fFf">
     <!-- Dialog 
     <baseDialog :showDialog="dialogIsOpen" @toggle-Dialog="toggleDialog"></baseDialog>-->
-    <baseDialog2
-      :showDialog="dialogIsOpen"
-      @toggle-Dialog="toggleDialog"
-    ></baseDialog2>
+    <DialogNewEvent></DialogNewEvent>
     <!-- Menü -->
     <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test">
@@ -31,17 +28,21 @@
     <!-- Router-view -->
     <q-page-container>
       <q-page class="pageView">
-        <router-view v-if="dialogIsOpen == false" />
+        <router-view v-if="$store.state.data.newEventDialogIsOpen == false" />
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
-    <q-footer elevated class="primary" v-if="dialogIsOpen == false">
+    <q-footer
+      v-if="$store.state.data.newEventDialogIsOpen == false"
+      elevated
+      class="primary"
+    >
       <q-toolbar>
         <q-btn
           flat
           dense
           icon="keyboard_arrow_left"
-          @click="toggleDialog(true)"
+          @click="toggleLeftDialog(true)"
         />
         <q-space />
         <q-btn-toggle
@@ -61,7 +62,7 @@
           flat
           dense
           icon="add"
-          @click="dialogIsOpen = true"
+          @click="toggleDialogNewEvent"
         />
       </q-toolbar>
     </q-footer>
@@ -69,30 +70,35 @@
 </template>
 
 <script>
-//import baseDialog from "../components/baseDialog.vue";
-import baseDialog2 from "../components/baseDialog2.vue";
+import DialogNewEvent from "../pages/dialogNewEvent/DialogNewEvent.vue";
 
 export default {
   data() {
     return {
       drawer: false,
       model: "one",
-      dialogIsOpen: false,
-      debug: true,
     };
   },
   components: {
-    //baseDialog,
-    baseDialog2,
+    DialogNewEvent,
   },
   methods: {
     setDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
     },
-    toggleDialog(newState) {
-      if (this.debug) console.log("old state: " + this.dialogIsOpen);
-      this.dialogIsOpen = newState;
-      if (this.debug) console.log("new state: " + this.dialogIsOpen);
+    toggleLeftDialog() {
+      this.drawer = !this.drawer;
+    },
+    toggleDialogNewEvent() {
+      console.log(
+        "BEFORE TOGGLING: ",
+        this.$store.state.data.newEventDialogIsOpen
+      );
+      this.$store.commit("data/setDialogVisibility");
+      console.log(
+        "AFTER TOGGLING: ",
+        this.$store.state.data.newEventDialogIsOpen
+      );
     },
   },
 };

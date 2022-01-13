@@ -5,28 +5,24 @@
       <q-separator color="primary" />
       <eventBubbles></eventBubbles>
       <!-- Player Character -->
-
     </div>
   </q-page>
 </template>
 
 <script>
-import infoHeader from "../components/infoHeader.vue";
-import eventBubbles from "../components/eventBubbles.vue";
+import infoHeader from "../../components/landing/infoHeader.vue";
+import eventBubbles from "../../components/landing/eventBubbles.vue";
 
 export default {
   data() {
-    return {
-    }
+    return {};
   },
-      components: {
+  components: {
     infoHeader,
-    eventBubbles
+    eventBubbles,
   },
-  };
+};
 </script>
 
 <style>
-
-
 </style>
