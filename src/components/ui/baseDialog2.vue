@@ -17,16 +17,22 @@
               <slot name="dialogTitle"></slot>
             </div>
           </div>
-          <!-- <div class="col text-overline text-right">[-] [x]</div> -->
         </div>
       </div>
 
       <slot name="content"></slot>
 
-      <div class="col=1 text-right">
-        <q-btn class="button" flat label="Close" @click="closeDialog" />
-        <q-btn class="button" flat label="Save" @click="saveChanges" />
-      </div>
+      <!-- The footer slot is used for modals without buttons -->
+      <slot name="footer">
+        <div class="col=1 text-right">
+          <q-btn class="button" flat @click="closeDialog">
+            <slot name="close-button"> Close </slot>
+          </q-btn>
+          <q-btn class="button" @click="saveChanges">
+            <slot name="confirm-button"> Save </slot>
+          </q-btn>
+        </div>
+      </slot>
     </div>
   </q-dialog>
 </template>
@@ -34,18 +40,18 @@
 <script>
 export default {
   name: "baseDialog",
-  emits: ["close-Dialog, save-Changes"],
+  emits: ["close, save"],
   props: {
     isVisible: Boolean,
   },
   methods: {
     closeDialog() {
       console.log("Closing!");
-      this.$emit("close-Dialog");
+      this.$emit("close");
     },
     saveChanges() {
       console.log("Saving!");
-      this.$emit("save-Changes");
+      this.$emit("save");
     },
   },
 };

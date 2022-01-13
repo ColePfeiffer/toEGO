@@ -1,8 +1,8 @@
 <template>
   <baseDialog2
     :isVisible="$store.state.data.newEventDialogIsOpen"
-    @close-Dialog="closeDialog"
-    @save-Changes="saveChanges"
+    @close="closeDialog"
+    @save="saveChanges"
   >
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
