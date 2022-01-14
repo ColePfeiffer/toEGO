@@ -6,7 +6,7 @@
   >
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
-      New Event
+      Event-Tracker
     </template>
     <template v-slot:content>
       <addEvent></addEvent>

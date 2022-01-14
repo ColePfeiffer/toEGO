@@ -7,15 +7,24 @@
     persistent
   >
     <div
-      class="dialogBox column full-height q-pa-sm"
+      class="window dialogBox column full-height"
       style="border: 1px solid white"
     >
       <div class="col-1">
+        <div class="title-bar" style="background: #ee2e31">
+          <div class="title-bar-text">
+            <slot name="dialogTitle"></slot>
+          </div>
+          <div class="title-bar-controls">
+            <button aria-label="Help"></button>
+            <button aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
         <div class="topContainer row">
           <div class="col text-overline text-left">
-            <div class="iconTitleContainer q-pa-xs">
-              <slot name="dialogTitle"></slot>
-            </div>
+            <div class="iconTitleContainer q-pa-xs"></div>
           </div>
         </div>
       </div>
@@ -24,7 +33,7 @@
 
       <!-- The footer slot is used for modals without buttons -->
       <slot name="footer">
-        <div class="col=1 text-right">
+        <div class="col=1 text-right q-pa-sm mx-auto">
           <q-btn class="button" flat @click="closeDialog">
             <slot name="close-button"> Close </slot>
           </q-btn>
@@ -50,20 +59,18 @@ export default {
       this.$emit("close");
     },
     saveChanges() {
-      console.log("Saving!");
+      console.log("Saving!!");
       this.$emit("save");
     },
   },
 };
 </script>
 
-<style>
+<style scoped src="98.css">
 .dialogBox {
   background-color: #000;
   opacity: 0.65;
   color: #fff;
-}
-.button {
 }
 
 .iconTitleContainer {
