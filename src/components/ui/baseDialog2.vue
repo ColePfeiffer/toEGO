@@ -21,13 +21,6 @@
           </div>
         </div>
       </div>
-      <div class="col-1">
-        <div class="topContainer row">
-          <div class="col text-overline text-left">
-            <div class="iconTitleContainer q-pa-xs"></div>
-          </div>
-        </div>
-      </div>
 
       <slot name="content"></slot>
 
