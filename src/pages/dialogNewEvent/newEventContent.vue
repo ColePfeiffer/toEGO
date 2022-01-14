@@ -85,6 +85,8 @@ export default {
 </script>
 
 <style scoped>
+.container {
+}
 .container >>> .promptTitle {
   font-weight: bolder;
   font-size: 1.2em;

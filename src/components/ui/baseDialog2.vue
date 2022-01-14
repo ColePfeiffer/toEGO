@@ -1,15 +1,12 @@
 <template>
   <q-dialog
     :value="isVisible"
-    class="dialogBox"
+    class="baseDialog"
     full-width
     full-height
     persistent
   >
-    <div
-      class="window dialogBox column full-height"
-      style="border: 1px solid white"
-    >
+    <div class="window dialogBox column full-height" style="opacity: 0.8">
       <div class="col-1">
         <div class="title-bar" style="background: #ee2e31">
           <div class="title-bar-text">
@@ -40,6 +37,14 @@
 </template>
 
 <script>
+/*
+
+for main container
+
+color: white; background-color: black
+
+
+*/
 export default {
   name: "baseDialog",
   emits: ["close, save"],
@@ -60,9 +65,8 @@ export default {
 </script>
 
 <style scoped src="98.css">
-.dialogBox {
+.baseDialog >>> .window {
   background-color: #000;
-  opacity: 0.65;
   color: #fff;
 }
 

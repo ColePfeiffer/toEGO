@@ -5,9 +5,26 @@
 </template>
 
 <script>
+/*
+
+within button
+    :style="[
+      darkModeActive
+        ? { 'background-color': 'black' }
+        : { 'background-color': 'gray' },
+    ]"
+
+*/
 export default {
   name: "baseDialog",
   emits: ["close, save"],
+  data() {
+    return {
+      darkModeActive: false,
+      styleA: "background-color: black",
+      styleB: "background-color: red",
+    };
+  },
   props: {
     text: String,
   },
