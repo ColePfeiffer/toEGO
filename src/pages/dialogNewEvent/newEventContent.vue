@@ -2,12 +2,13 @@
   <div class="container col">
     <q-scroll-area style="height: 95%">
       <!-- SCROLLABLE CONTENT -->
-      <!-- SPÄTER AUSLAGERN -->
+
       <div class="column justify-between content-center">
         <div class="promptContainer q-ma-md">
           <div class="promptTitle underlined col">
             How do you feel right now?
           </div>
+
           <div class="emojiSelection col q-ma-md">
             <q-icon name="theater_comedy" size="25px" />
             <q-icon name="theater_comedy" size="25px" />
@@ -16,19 +17,22 @@
             <q-icon name="theater_comedy" size="25px" />
           </div>
         </div>
+
         <div class="promptContainer q-ma-md">
           <div class="promptTitle underlined col">What happened?</div>
           <div class="col">Lorem ipsum ....</div>
         </div>
+
         <div class="promptContainer q-ma-md">
           <fieldset>
             <legend>
-              <baseButton :text="'sos'" @click="openTab('s0s')"></baseButton>
               <baseButton
+                class="col"
                 :text="'worries'"
                 @click="openTab('worries')"
               ></baseButton>
               <baseButton
+                class="col"
                 :text="'templates'"
                 @click="openTab('templates')"
               ></baseButton>
@@ -97,9 +101,7 @@ export default {
 }
 
 .container >>> .baseButton {
-  color: darkgoldenrod !important;
   max-width: 0.3em;
-  border-color: black;
 }
 
 .container >>> .buttonContainer {

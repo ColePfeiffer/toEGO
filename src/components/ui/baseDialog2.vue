@@ -8,6 +8,7 @@
   >
     <div class="window dialogBox column full-height" style="opacity: 0.8">
       <div class="col-1">
+        <!-- als Abstandshalter -->
         <div class="title-bar" style="background: #ee2e31">
           <div class="title-bar-text">
             <slot name="dialogTitle"></slot>
