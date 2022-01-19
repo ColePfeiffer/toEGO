@@ -2,8 +2,8 @@
   <q-dialog
     :value="isVisible"
     class="baseDialog"
-    full-width
     full-height
+    full-width
     persistent
   >
     <div class="window dialogBox column full-height" style="opacity: 0.8">
@@ -52,6 +52,14 @@ export default {
   props: {
     isVisible: Boolean,
   },
+  data() {
+    return {
+      mobileModeActive: true,
+      // inline css style with variables
+      classSmall: { "full-width": true },
+      classBig: { "max-width": "80%", width: "70%" },
+    };
+  },
   methods: {
     closeDialog() {
       console.log("Closing!");
@@ -60,6 +68,24 @@ export default {
     saveChanges() {
       console.log("Saving!!");
       this.$emit("save");
+    },
+  },
+  computed: {
+    // a computed getter
+    setStyle() {
+      var style = {};
+      console.log("display mode changed");
+
+      if (this.mobileModeActive) {
+        console.log("mobile");
+        // `this` points to the vm instance
+        style = this.styleA;
+      } else {
+        console.log("desktop view");
+        style = this.styleB;
+      }
+
+      return style;
     },
   },
 };

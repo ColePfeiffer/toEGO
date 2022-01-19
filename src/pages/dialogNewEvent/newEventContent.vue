@@ -4,7 +4,7 @@
       <!-- SCROLLABLE CONTENT -->
 
       <div class="column justify-between content-center">
-        <div class="promptContainer q-ma-md">
+        <div class="promptContainer q-ma-md col=4">
           <div class="promptTitle underlined col">
             How do you feel right now?
           </div>
@@ -18,12 +18,12 @@
           </div>
         </div>
 
-        <div class="promptContainer q-ma-md">
+        <div class="promptContainer q-ma-md col=4">
           <div class="promptTitle underlined col">What happened?</div>
           <div class="col">Lorem ipsum ....</div>
         </div>
 
-        <div class="promptContainer q-ma-md">
+        <div class="promptContainer q-ma-md col=4">
           <fieldset>
             <legend>
               <baseButton
@@ -98,6 +98,7 @@ export default {
 
 .container >>> .promptContainer {
   text-align: center;
+  max-width: 60%;
 }
 
 .container >>> .baseButton {
