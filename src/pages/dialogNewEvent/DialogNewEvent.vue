@@ -16,7 +16,8 @@
 
 <script>
 import baseDialog2 from "../../components/ui/baseDialog2.vue";
-import addEvent from "./newEventContent.vue";
+//import addEvent from "./newEventContent.vue";
+import addEvent from "./content.vue";
 
 export default {
   name: "DialogNewEvent",

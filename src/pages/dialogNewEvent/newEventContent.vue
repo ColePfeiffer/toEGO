@@ -4,7 +4,7 @@
       <!-- SCROLLABLE CONTENT -->
 
       <div class="column justify-between content-center">
-        <div class="promptContainer q-ma-md col=4">
+        <div class="promptContainer q-ma-md col-md">
           <div class="promptTitle underlined col">
             How do you feel right now?
           </div>
@@ -18,24 +18,27 @@
           </div>
         </div>
 
-        <div class="promptContainer q-ma-md col=4">
+        <div class="promptContainer q-ma-md col-md">
           <div class="promptTitle underlined col">What happened?</div>
           <div class="col">Lorem ipsum ....</div>
         </div>
 
-        <div class="promptContainer q-ma-md col=4">
+        <div class="promptContainer q-ma-md col-md">
           <fieldset>
             <legend>
-              <baseButton
-                class="col"
-                :text="'worries'"
-                @click="openTab('worries')"
-              ></baseButton>
-              <baseButton
-                class="col"
-                :text="'templates'"
-                @click="openTab('templates')"
-              ></baseButton>
+              <div class="row justify-between">
+                <baseButton
+                  class="col-md-auto"
+                  :text="'worries'"
+                  @click="openTab('worries')"
+                ></baseButton>
+
+                <baseButton
+                  class="col-md-auto"
+                  :text="'templates'"
+                  @click="openTab('templates')"
+                ></baseButton>
+              </div>
             </legend>
             <div class="col">* * * * * *</div>
           </fieldset>
