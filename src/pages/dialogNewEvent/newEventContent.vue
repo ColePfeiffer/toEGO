@@ -7,10 +7,22 @@
         <!-- HowAreYou Section | Emoji-Selection -->
         <div class="promptContainer col q-mx-md">
           <div class="column">
-            <div class="promptTitle underlined col">
-              How do you feel right now?
+            <div class="promptTitle col">
+              <div class="row justify-center items-center">
+                <div class="col-9 underlined">How do you feel right now?</div>
+              </div>
             </div>
-
+            <!-- WIP https://quasar.dev/vue-components/button-toggle -->
+            <q-btn-toggle
+              v-model="model"
+              toggle-color="primary"
+              flat
+              :options="[
+                { label: 'One', value: 'one' },
+                { label: 'Two', value: 'two' },
+                { label: 'Three', value: 'three' },
+              ]"
+            />
             <div class="emojiSelection col q-mx-md q-mt-md">
               <div class="row justify-center items-center">
                 <q-btn
@@ -33,7 +45,12 @@
         </div>
 
         <div class="promptContainer q-pa-md q-ma-md">
-          <div class="promptTitle underlined col">What happened?</div>
+          <div class="promptTitle col">
+            <div class="row justify-center items-center">
+              <div class="col-10 underlined">What happened?</div>
+            </div>
+          </div>
+
           <div class="col">Lorem ipsum ....</div>
         </div>
 
@@ -72,6 +89,7 @@ export default {
   },
   data() {
     return {
+      model: ref("one"),
       dialogName: "ADD EVENT",
       newEvent: {
         title: " ",
@@ -124,9 +142,8 @@ export default {
 .emojiSelection {
 }
 .container >>> .underlined {
-  border-bottom: 1px solid rgb(8, 0, 2);
-  width: 100%;
-  display: block;
+  border-bottom: 1px solid black;
+  padding: 0 0 4px;
 }
 
 .promptTitle .promptTitle.under .p .div {
