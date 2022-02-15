@@ -1,5 +1,5 @@
 <template>
-  <baseDialog2
+  <baseDialog
     :isVisible="$store.state.data.newEventDialogIsOpen"
     @close="closeDialog"
     @save="saveChanges"
@@ -11,19 +11,19 @@
     <template v-slot:content>
       <addEvent></addEvent>
     </template>
-  </baseDialog2>
+  </baseDialog>
 </template>
 
 <script>
-import baseDialog2 from "../../components/ui/baseDialog2.vue";
-//import addEvent from "./newEventContent.vue";
-import addEvent from "./content.vue";
+import baseDialog from "../../components/ui/baseDialog.vue";
+import addEvent from "./newEventContent.vue";
+//import addEvent from "./content.vue";
 
 export default {
   name: "DialogNewEvent",
   components: {
     addEvent,
-    baseDialog2,
+    baseDialog,
   },
   data() {
     return {};

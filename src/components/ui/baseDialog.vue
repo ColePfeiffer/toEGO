@@ -1,94 +1,119 @@
 <template>
   <q-dialog
-    :value="showDialog"
-    class="dialogBox"
-    full-width
+    :value="isVisible"
+    class="baseDialog"
     full-height
+    full-width
     persistent
   >
-    <div class="dialogBox full-height content-center q-pa-sm">
-      <!-- TopBar -->
-
-      <div class="topBar col justify-between">
-        <div class="row">
-          <div class="text-overline col text-left">{{ dialogName }}</div>
-          <div class="text-overline col text-right">[-] [x]</div>
+    <div class="window dialogBox column full-height" :style="styleB">
+      <!-- Title Bar -->
+      <div class="col-1">
+        <div class="title-bar row" style="background: #dfd4f5">
+          <div class="title-bar-text">
+            <slot name="dialogTitle"></slot>
+          </div>
+          <div class="title-bar-controls">
+            <button aria-label="Help"></button>
+            <button aria-label="Close"></button>
+          </div>
         </div>
       </div>
-      <q-separator class="column" />
-      <!-- Content -->
-      <div
-        class="contentContainer column"
-        style="background-color: blue; height: 300px; opacity: 0.5"
-      >
-        <!-- ehhh vielleicht mit diesem template / blaupausen dings, wo dann content reingeladen wird... -->
-        <!-- Make the following scrollable: -->
-        <div>BlablaBlablaBlabla</div>
-        <div>BlablaBlablaBlabla</div>
-        <div>BlablaBlablaBlabla</div>
-        <div>BlablaBlablaBlabla</div>
-      </div>
 
-      <!-- Buttons -->
-      <div
-        class="buttonsContainer col=4 fixed-bottom"
-        style="background-color: purple"
-      >
-        <div class="col text-right">
-          <q-btn flat label="Close" @click="closeDialog" />
-          <q-btn flat label="Save" @click="closeDialog" />
+      <!-- Content Slot -->
+      <slot name="content"></slot>
+
+      <!-- Footer Slot | Option to hide buttons -->
+      <slot name="footer">
+        <div class="col-1 q-pa-sm">
+          <div class="row">
+            <q-btn
+              class="button col-3 col-md-1 offset-5 offset-md-9 q-mx-xs"
+              flat
+              @click="closeDialog"
+            >
+              <slot name="close-button"> Close </slot>
+            </q-btn>
+
+            <q-btn class="button col-3 col-md-1 q-mx-xs" @click="saveChanges">
+              <slot name="confirm-button"> Save </slot>
+            </q-btn>
+          </div>
         </div>
-      </div>
+      </slot>
     </div>
   </q-dialog>
 </template>
 
 <script>
+/*
+
+for main container
+
+color: white; background-color: black
+
+
+*/
 export default {
   name: "baseDialog",
-  emits: ["toggle-Dialog"],
+  emits: ["close, save"],
   props: {
-    showDialog: Boolean,
-    //view: String, // CASH, NEW, CASH_UP_EXISTING
-    //categories: Array,
-    //existingArticle: Object // for cashing up existing items
+    isVisible: Boolean,
   },
   data() {
     return {
-      dialogName: "ADD EVENT",
-      newEvent: {
-        title: " ",
-        mood: "",
-        text: "",
-        tags: "",
-        createdOn: "",
-        createdBy: "", // ref or id
+      styleA: {
+        "background-color": "#121212 ",
+        color: "white",
+        opacity: "0.8",
       },
+      styleB: {
+        "background-color": "#989898 ",
+        color: "black",
+      },
+      mobileModeActive: true,
+      // inline css style with variables
+      classSmall: { "full-width": true },
+      classBig: { "max-width": "80%", width: "70%" },
     };
   },
   methods: {
     closeDialog() {
-      console.log("meehhh");
-      this.$emit("toggle-Dialog", false);
+      console.log("Closing!");
+      this.$emit("close");
+    },
+    saveChanges() {
+      console.log("Saving!!");
+      this.$emit("save");
+    },
+  },
+  computed: {
+    // a computed getter
+    setStyle() {
+      var style = {};
+      console.log("display mode changed");
 
-      // reset everything
-      this.newEvent = {
-        title: " ",
-        mood: "",
-        text: "",
-        tags: "",
-        createdOn: "",
-        createdBy: "", // ref or id
-      };
+      if (this.mobileModeActive) {
+        console.log("mobile");
+        // `this` points to the vm instance
+        style = this.styleA;
+      } else {
+        console.log("desktop view");
+        style = this.styleB;
+      }
+
+      return style;
     },
   },
 };
 </script>
 
-<style>
-.dialogBox {
-  background-color: #000;
-  opacity: 0.65;
+<style scoped src="98.css">
+.baseDialog >>> .window {
   color: #fff;
+}
+
+.iconTitleContainer {
+  border-bottom: 1px solid white;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <!-- Dialog 
-    <baseDialog :showDialog="dialogIsOpen" @toggle-Dialog="toggleDialog"></baseDialog>-->
+    <!-- Dialog -->
     <DialogNewEvent></DialogNewEvent>
     <!-- Menü -->
     <q-drawer v-model="drawer" :width="200" :breakpoint="500">

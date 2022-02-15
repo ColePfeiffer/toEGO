@@ -1,29 +1,43 @@
 <template>
   <div class="container col">
+    <!-- Scroll Area for scrollable content -->
     <q-scroll-area style="height: 95%">
-      <!-- SCROLLABLE CONTENT -->
-
+      <!-- Column -->
       <div class="column justify-between content-center">
-        <div class="promptContainer q-ma-md col-md">
-          <div class="promptTitle underlined col">
-            How do you feel right now?
-          </div>
+        <!-- HowAreYou Section | Emoji-Selection -->
+        <div class="promptContainer col q-mx-md">
+          <div class="column">
+            <div class="promptTitle underlined col">
+              How do you feel right now?
+            </div>
 
-          <div class="emojiSelection col q-ma-md">
-            <q-icon name="theater_comedy" size="25px" />
-            <q-icon name="theater_comedy" size="25px" />
-            <q-icon name="theater_comedy" size="25px" />
-            <q-icon name="theater_comedy" size="25px" />
-            <q-icon name="theater_comedy" size="25px" />
+            <div class="emojiSelection col q-mx-md q-mt-md">
+              <div class="row justify-center items-center">
+                <q-btn
+                  flat
+                  class="col offset-2"
+                  icon="las la-angry"
+                  size="md"
+                />
+                <q-btn flat class="col" icon="las la-sad-tear" />
+
+                <q-btn flat class="col" icon="las la-frown" size="md" />
+
+                <q-btn flat class="col" icon="las la-smile" />
+                <q-btn flat class="col" icon="las  la-grin" />
+
+                <div class="col-2"></div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="promptContainer q-ma-md col-md">
+        <div class="promptContainer q-pa-md q-ma-md">
           <div class="promptTitle underlined col">What happened?</div>
           <div class="col">Lorem ipsum ....</div>
         </div>
 
-        <div class="promptContainer q-ma-md col-md">
+        <div class="promptContainer q-ma-md">
           <fieldset>
             <legend>
               <div class="row justify-between">
@@ -92,8 +106,6 @@ export default {
 </script>
 
 <style scoped>
-.container {
-}
 .container >>> .promptTitle {
   font-weight: bolder;
   font-size: 1.2em;
@@ -101,11 +113,9 @@ export default {
 
 .container >>> .promptContainer {
   text-align: center;
-  max-width: 60%;
 }
 
 .container >>> .baseButton {
-  max-width: 0.3em;
 }
 
 .container >>> .buttonContainer {
@@ -121,6 +131,5 @@ export default {
 
 .promptTitle .promptTitle.under .p .div {
   color: red !important;
-  text-decoration: underline !important;
 }
 </style>
