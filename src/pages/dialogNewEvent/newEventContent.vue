@@ -67,7 +67,7 @@
                 v-model="text"
                 filled
                 autogrow
-                input-style="max-height: 200px"
+                input-style="max-height: 200px; min-height: 100px;"
               />
             </div>
           </div>
@@ -75,8 +75,9 @@
         <!-- Methods-Section -->
         <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
           <!-- Button Toggle -->
+
           <div class="row justify-center items-center">
-            <div class="col-12">
+            <div class="col-12 ButtonWrapper" :style="hideBorder">
               <q-btn-toggle
                 v-model="panel"
                 toggle-color="accent"
@@ -88,9 +89,10 @@
               >
                 <template v-slot:worries>
                   <baseButton
-                    :text="'worries'"
+                    :text="'methods'"
                     :changeColor="false"
                     :setStyleTo="'styleA'"
+                    class="FloatingButton"
                     @onClick="setPanel('worries')"
                   ></baseButton>
                 </template>
@@ -100,29 +102,58 @@
                     :text="'templates'"
                     :changeColor="false"
                     :setStyleTo="'styleB'"
+                    class="FloatingButton"
                     @onClick="setPanel('templates')"
                   ></baseButton>
                 </template>
               </q-btn-toggle>
 
               <!-- Panels -->
+              <div v-if="showPanels === true">
+                <q-tab-panels
+                  v-model="panel"
+                  animated
+                  class="noBackground row justify-center q-mt-none items-center"
+                  style="margin-top: -15px"
+                >
+                  <q-tab-panel name="worries">
+                    <div class="text-h6">Methods</div>
+                    <div class="underlined promptTitle"></div>
+                    <div class="row">
+                      <div class="col-12">
+                        <q-expansion-item
+                          switch-toggle-side
+                          expand-separator
+                          icon="perm_identity"
+                          label="1-to-5 Methode"
+                        >
+                          <q-card
+                            style="max-width: inherit"
+                            class="noBackground"
+                          >
+                            <q-card-section>
+                              Lorem ipsum dolor sit amet, consectetur
+                              adipisicing elit. Quidem, eius reprehenderit eos
+                              corrupti commodi magni quaerat ex numquam, dolorum
+                              officiis modi facere maiores architecto suscipit
+                              iste eveniet doloribus ullam aliquid.
+                            </q-card-section>
+                          </q-card>
+                        </q-expansion-item>
+                      </div>
+                    </div>
 
-              <q-tab-panels
-                v-model="panel"
-                animated
-                class="panelStyling row justify-center q-mt-none items-center"
-              >
-                <q-tab-panel name="worries" class="col-12">
-                  <div class="underlined promptTitle">Worries</div>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </q-tab-panel>
 
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </q-tab-panel>
+                  <q-tab-panel name="templates">
+                    <div class="text-h6">Templates</div>
+                    <div class="underlined promptTitle"></div>
 
-                <q-tab-panel name="templates" class="col-12">
-                  <div class="text-h6">Templates</div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </q-tab-panel>
-              </q-tab-panels>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </q-tab-panel>
+                </q-tab-panels>
+              </div>
             </div>
           </div>
         </div>
@@ -142,6 +173,7 @@ export default {
   data() {
     return {
       panel: "",
+      showPanels: false,
       methodsTab: "",
       text: "",
       model: "angry",
@@ -156,16 +188,38 @@ export default {
       },
     };
   },
+  computed: {
+    hideBorder() {
+      var style = {};
+
+      if (this.showPanels) {
+        console.log("Computed: Show panels");
+
+        style = { border: "1px solid black" };
+      } else {
+        console.log("Computed:  Hide panels");
+        style = { border: "none" };
+      }
+
+      return style;
+    },
+  },
   methods: {
     setPanel(name) {
-      if (this.panel != name) {
+      console.log("Panel: " + this.panel);
+      if (this.panel === name && this.showPanels === false) {
+        this.showPanels = true;
         this.panel = name;
-        console.log("changed panel to " + this.panel);
+      } else if (this.panel != name) {
+        console.log("Changing!");
+        this.panel = name;
+        this.showPanels = true;
       } else {
-        this.panel = "";
-        console.log("deleted");
-        console.log("changed panel to " + this.panel);
+        console.log("Setting to hidden!");
+        this.showPanels = false;
+        this.panel = "hidden";
       }
+      console.log("Panel: " + this.panel);
     },
     openTab(name) {
       console.log("opening ", name);
@@ -189,9 +243,8 @@ export default {
 </script>
 
 <style scoped>
-.container >>> .panelStyling {
+.container >>> .noBackground {
   background: none;
-  border: 1px solid black;
 }
 .container >>> ::-webkit-scrollbar {
   display: none;
@@ -226,7 +279,7 @@ fieldset {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+
   margin-left: 5%;
   margin-right: 5%;
   box-sizing: border-box;
@@ -239,6 +292,6 @@ fieldset {
   border: none;
 
   position: relative;
-  bottom: 1em;
+  bottom: 1.5em;
 }
 </style>

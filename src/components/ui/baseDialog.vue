@@ -7,7 +7,7 @@
     persistent
   >
     <div class="test row justify-center" :style="boxShadowStyle">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-7">
         <div class="window dialogBox column full-height" :style="styleB">
           <!-- Title Bar -->
           <div class="col-1">
