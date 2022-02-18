@@ -14,7 +14,7 @@
           </div>
           <!-- Emoji Selection via Button Toggle -->
           <div class="emojiSelection q-mt-md row justify-center items-center">
-            <div class="col-10">
+            <div class="col-12">
               <div class="align-center">
                 <q-btn-toggle
                   v-model="model"
@@ -60,7 +60,7 @@
             <div class="col-12 underlined promptTitle">What happened?</div>
           </div>
           <!-- Text Input -->
-          <div class="row justify-center items-center">
+          <div class="row justify-center q-mt-xs items-center">
             <div class="col-12">
               <q-input
                 v-model="text"
@@ -73,20 +73,43 @@
         </div>
         <!-- Methods-Section -->
         <div class="promptContainer col q-mx-md q-mt-md">
-          <!-- Buttons -->
-          <div class="row justify-center items-center">
-            <div class="col-12">
+          <div>
+            <div class="ThankYouReview">
               <baseButton
-                class="col-3 col-md-auto q-ma-xs"
                 :text="'worries'"
+                class="ActionButton"
                 @click="openTab('worries')"
               ></baseButton>
-              <baseButton
-                class="col-3 col-md-auto q-ma-xs"
-                :text="'templates'"
-                @click="openTab('templates')"
-              ></baseButton>
             </div>
+          </div>
+          <!-- Buttons -->
+          <div class="col-12">
+            <div class="align-center">
+              <q-btn-toggle
+                v-model="methodsTab"
+                toggle-color="accent"
+                flat
+                :options="[
+                  { value: 'worries', slot: 'worries' },
+                  { value: 'templates', slot: 'templates' },
+                ]"
+              >
+                <template v-slot:worries>
+                  <baseButton
+                    :text="'worries'"
+                    @click="openTab('worries')"
+                  ></baseButton>
+                </template>
+
+                <template v-slot:templates>
+                  <baseButton
+                    :text="'templates'"
+                    @click="openTab('templates')"
+                  ></baseButton>
+                </template>
+              </q-btn-toggle>
+            </div>
+            <!-- old wip -->
           </div>
           <!-- Text Input -->
           <div class="row justify-center items-center">
@@ -108,6 +131,7 @@ export default {
   },
   data() {
     return {
+      methodsTab: "",
       text: "Bla",
       model: "angry",
       dialogName: "ADD EVENT",
@@ -168,5 +192,25 @@ export default {
 
 fieldset {
   position: relative;
+}
+
+.ThankYouReview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  box-sizing: border-box;
+  margin-bottom: 5%;
+  margin-top: 5%;
+  border: 1px solid black;
+}
+
+.ActionButton {
+  border: none;
+
+  position: relative;
+  bottom: 1em;
 }
 </style>
