@@ -3,76 +3,95 @@
     <!-- Scroll Area for scrollable content -->
     <q-scroll-area style="height: 95%">
       <!-- Column -->
-      <div class="column justify-between content-center">
-        <!-- HowAreYou Section | Emoji-Selection -->
+      <div class="column content-center">
+        <!-- How Are You-Section | Emoji-Selection -->
         <div class="promptContainer col q-mx-md">
-          <div class="column">
-            <div class="promptTitle col">
-              <div class="row justify-center items-center">
-                <div class="col-9 underlined">How do you feel right now?</div>
-              </div>
+          <!-- Title -->
+          <div class="row justify-center items-center">
+            <div class="col-12 underlined promptTitle">
+              How do you feel right now?
             </div>
-            <!-- WIP https://quasar.dev/vue-components/button-toggle -->
-            <q-btn-toggle
-              v-model="model"
-              toggle-color="primary"
-              flat
-              :options="[
-                { label: 'One', value: 'one' },
-                { label: 'Two', value: 'two' },
-                { label: 'Three', value: 'three' },
-              ]"
-            />
-            <div class="emojiSelection col q-mx-md q-mt-md">
-              <div class="row justify-center items-center">
-                <q-btn
+          </div>
+          <!-- Emoji Selection via Button Toggle -->
+          <div class="emojiSelection q-mt-md row justify-center items-center">
+            <div class="col-10">
+              <div class="align-center">
+                <q-btn-toggle
+                  v-model="model"
+                  toggle-color="accent"
+                  padding="none"
                   flat
-                  class="col offset-2"
-                  icon="las la-angry"
-                  size="md"
-                />
-                <q-btn flat class="col" icon="las la-sad-tear" />
+                  :options="[
+                    { value: 'angry', slot: 'angry' },
+                    { value: 'sad', slot: 'sad' },
+                    { value: 'unhappy', slot: 'unhappy' },
+                    { value: 'content', slot: 'content' },
+                    { value: 'happy', slot: 'happy' },
+                  ]"
+                >
+                  <template v-slot:angry>
+                    <q-btn padding="xs" flat icon="las la-angry" />
+                  </template>
 
-                <q-btn flat class="col" icon="las la-frown" size="md" />
+                  <template v-slot:sad>
+                    <q-btn padding="xs" flat icon="las la-sad-tear" />
+                  </template>
 
-                <q-btn flat class="col" icon="las la-smile" />
-                <q-btn flat class="col" icon="las  la-grin" />
+                  <template v-slot:unhappy>
+                    <q-btn padding="xs" flat icon="las la-frown" />
+                  </template>
 
-                <div class="col-2"></div>
+                  <template v-slot:content>
+                    <q-btn padding="xs" flat icon="las la-smile" />
+                  </template>
+
+                  <template v-slot:happy>
+                    <q-btn padding="xs" flat icon="las  la-grin" />
+                  </template>
+                </q-btn-toggle>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="promptContainer q-pa-md q-ma-md">
-          <div class="promptTitle col">
-            <div class="row justify-center items-center">
-              <div class="col-10 underlined">What happened?</div>
+        <!-- What Happened-Section -->
+        <div class="promptContainer col-auto q-mx-md q-mt-md">
+          <!-- Title -->
+          <div class="row justify-center items-center">
+            <div class="col-12 underlined promptTitle">What happened?</div>
+          </div>
+          <!-- Text Input -->
+          <div class="row justify-center items-center">
+            <div class="col-12">
+              <q-input
+                v-model="text"
+                filled
+                autogrow
+                input-style="max-height: 200px"
+              />
             </div>
           </div>
-
-          <div class="col">Lorem ipsum ....</div>
         </div>
-
-        <div class="promptContainer q-ma-md">
-          <fieldset>
-            <legend>
-              <div class="row justify-between">
-                <baseButton
-                  class="col-md-auto"
-                  :text="'worries'"
-                  @click="openTab('worries')"
-                ></baseButton>
-
-                <baseButton
-                  class="col-md-auto"
-                  :text="'templates'"
-                  @click="openTab('templates')"
-                ></baseButton>
-              </div>
-            </legend>
-            <div class="col">* * * * * *</div>
-          </fieldset>
+        <!-- Methods-Section -->
+        <div class="promptContainer col q-mx-md q-mt-md">
+          <!-- Buttons -->
+          <div class="row justify-center items-center">
+            <div class="col-12">
+              <baseButton
+                class="col-3 col-md-auto q-ma-xs"
+                :text="'worries'"
+                @click="openTab('worries')"
+              ></baseButton>
+              <baseButton
+                class="col-3 col-md-auto q-ma-xs"
+                :text="'templates'"
+                @click="openTab('templates')"
+              ></baseButton>
+            </div>
+          </div>
+          <!-- Text Input -->
+          <div class="row justify-center items-center">
+            <div class="col-12">ddddddd</div>
+          </div>
         </div>
       </div>
     </q-scroll-area>
@@ -89,7 +108,8 @@ export default {
   },
   data() {
     return {
-      model: ref("one"),
+      text: "Bla",
+      model: "angry",
       dialogName: "ADD EVENT",
       newEvent: {
         title: " ",
@@ -133,20 +153,20 @@ export default {
   text-align: center;
 }
 
-.container >>> .baseButton {
-}
-
 .container >>> .buttonContainer {
   border: 1px solid black;
 }
-.emojiSelection {
-}
+
 .container >>> .underlined {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
 }
+/* Adjusting the top padding for the input field */
+.container >>> .q-textarea .q-field__native {
+  padding-top: 10px;
+}
 
-.promptTitle .promptTitle.under .p .div {
-  color: red !important;
+fieldset {
+  position: relative;
 }
 </style>
