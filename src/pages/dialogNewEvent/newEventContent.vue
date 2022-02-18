@@ -5,7 +5,7 @@
       <!-- Column -->
       <div class="column content-center">
         <!-- How Are You-Section | Emoji-Selection -->
-        <div class="promptContainer col q-mx-md">
+        <div class="promptContainer col q-mx-md q-pa-md">
           <!-- Title -->
           <div class="row justify-center items-center">
             <div class="col-12 underlined promptTitle">
@@ -54,7 +54,7 @@
           </div>
         </div>
         <!-- What Happened-Section -->
-        <div class="promptContainer col-auto q-mx-md q-mt-md">
+        <div class="promptContainer col q-mx-md q-mt-md q-pa-md">
           <!-- Title -->
           <div class="row justify-center items-center">
             <div class="col-12 underlined promptTitle">What happened?</div>
@@ -63,6 +63,7 @@
           <div class="row justify-center q-mt-xs items-center">
             <div class="col-12">
               <q-input
+                class="input"
                 v-model="text"
                 filled
                 autogrow
@@ -72,21 +73,12 @@
           </div>
         </div>
         <!-- Methods-Section -->
-        <div class="promptContainer col q-mx-md q-mt-md">
-          <div>
-            <div class="ThankYouReview">
-              <baseButton
-                :text="'worries'"
-                class="ActionButton"
-                @click="openTab('worries')"
-              ></baseButton>
-            </div>
-          </div>
-          <!-- Buttons -->
-          <div class="col-12">
-            <div class="align-center">
+        <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
+          <!-- Button Toggle -->
+          <div class="row justify-center items-center">
+            <div class="col-12">
               <q-btn-toggle
-                v-model="methodsTab"
+                v-model="panel"
                 toggle-color="accent"
                 flat
                 :options="[
@@ -97,23 +89,41 @@
                 <template v-slot:worries>
                   <baseButton
                     :text="'worries'"
-                    @click="openTab('worries')"
+                    :changeColor="false"
+                    :setStyleTo="'styleA'"
+                    @onClick="setPanel('worries')"
                   ></baseButton>
                 </template>
 
                 <template v-slot:templates>
                   <baseButton
                     :text="'templates'"
-                    @click="openTab('templates')"
+                    :changeColor="false"
+                    :setStyleTo="'styleB'"
+                    @onClick="setPanel('templates')"
                   ></baseButton>
                 </template>
               </q-btn-toggle>
+
+              <!-- Panels -->
+
+              <q-tab-panels
+                v-model="panel"
+                animated
+                class="panelStyling row justify-center q-mt-none items-center"
+              >
+                <q-tab-panel name="worries" class="col-12">
+                  <div class="underlined promptTitle">Worries</div>
+
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </q-tab-panel>
+
+                <q-tab-panel name="templates" class="col-12">
+                  <div class="text-h6">Templates</div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                </q-tab-panel>
+              </q-tab-panels>
             </div>
-            <!-- old wip -->
-          </div>
-          <!-- Text Input -->
-          <div class="row justify-center items-center">
-            <div class="col-12">ddddddd</div>
           </div>
         </div>
       </div>
@@ -131,8 +141,9 @@ export default {
   },
   data() {
     return {
+      panel: "",
       methodsTab: "",
-      text: "Bla",
+      text: "",
       model: "angry",
       dialogName: "ADD EVENT",
       newEvent: {
@@ -146,6 +157,16 @@ export default {
     };
   },
   methods: {
+    setPanel(name) {
+      if (this.panel != name) {
+        this.panel = name;
+        console.log("changed panel to " + this.panel);
+      } else {
+        this.panel = "";
+        console.log("deleted");
+        console.log("changed panel to " + this.panel);
+      }
+    },
     openTab(name) {
       console.log("opening ", name);
     },
@@ -168,6 +189,13 @@ export default {
 </script>
 
 <style scoped>
+.container >>> .panelStyling {
+  background: none;
+  border: 1px solid black;
+}
+.container >>> ::-webkit-scrollbar {
+  display: none;
+}
 .container >>> .promptTitle {
   font-weight: bolder;
   font-size: 1.2em;
@@ -194,7 +222,7 @@ fieldset {
   position: relative;
 }
 
-.ThankYouReview {
+.ButtonWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -207,7 +235,7 @@ fieldset {
   border: 1px solid black;
 }
 
-.ActionButton {
+.FloatingButton {
   border: none;
 
   position: relative;

@@ -1,5 +1,6 @@
 <template>
-  <q-btn class="baseButton" @click="onClick" v-bind:style="buttonStyling">
+  <!-- add v-bind:style="buttonStyling" -->
+  <q-btn class="baseButton" @click="onClick" :style="setStyleTo">
     <slot name="confirm-button"> {{ text }} </slot>
   </q-btn>
 </template>
@@ -18,23 +19,37 @@ v-bind:style="darkModeActive ? styleA : styleB"
 */
 export default {
   name: "baseDialog",
-  emits: ["close, save"],
+  emits: ["onClick"],
   data() {
     return {
       darkModeActive: true,
       // inline css style with variables
       styleA: { "background-color": "black", color: "red" },
       styleB: { "background-color": "yellow", color: "blue" },
+      styleBasic: {
+        "background-color": "#c0c0c0 ",
+        color: "black",
+      },
     };
   },
   props: {
     text: String,
+    changeColor: Boolean,
+    setStyleTo: String,
   },
   methods: {
     onClick() {
+      if (this.changeColor == true) {
+        console.log("Changing colors.");
+        this.darkModeActive = !this.darkModeActive;
+      }
+
+      this.$emit("onClick");
+      /*
       console.log("button clicked!");
       this.darkModeActive = !this.darkModeActive;
       this.$emit("clicked");
+      */
     },
   },
   computed: {
