@@ -119,29 +119,47 @@
                   <q-tab-panel name="worries">
                     <div class="text-h6">Methods</div>
                     <div class="underlined promptTitle"></div>
-                    <div class="row">
-                      <div class="col-12">
-                        <q-expansion-item
-                          switch-toggle-side
-                          expand-separator
-                          icon="perm_identity"
-                          label="1-to-5 Methode"
-                        >
-                          <q-card
-                            style="max-width: inherit"
-                            class="noBackground"
-                          >
-                            <q-card-section>
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit. Quidem, eius reprehenderit eos
-                              corrupti commodi magni quaerat ex numquam, dolorum
-                              officiis modi facere maiores architecto suscipit
-                              iste eveniet doloribus ullam aliquid.
-                            </q-card-section>
-                          </q-card>
-                        </q-expansion-item>
-                      </div>
-                    </div>
+
+                    <q-expansion-item
+                      switch-toggle-side
+                      expand-separator
+                      dense
+                      :style="maxWidthOfExpansionItems"
+                      icon="perm_identity"
+                      label="1-to-5 Methode"
+                      @show="expandItem('oneToFiveMethode')"
+                    >
+                      <q-card style="max-width: inherit" class="noBackground">
+                        <q-card-section ref="oneToFiveMethode">
+                          Lorem ipsum dolor sit amet, consectetur adipisicing
+                          elit. Quidem, eius reprehenderit eos corrupti commodi
+                          magni quaerat ex numquam, dolorum officiis modi facere
+                          maiores architecto suscipit iste eveniet doloribus
+                          ullam aliquid.
+                        </q-card-section>
+                      </q-card>
+                    </q-expansion-item>
+                    <q-expansion-item
+                      switch-toggle-side
+                      expand-separator
+                      dense
+                      icon="perm_identity"
+                      label="Handling Emotions"
+                      @show="expandItem('handlingEmotions')"
+                    >
+                      <q-card
+                        :style="maxWidthOfExpansionItems"
+                        class="noBackground"
+                      >
+                        <q-card-section ref="handlingEmotions">
+                          Lorem ipsum dolor sit amet, consectetur adipisicing
+                          elit. Quidem, eius reprehenderit eos corrupti commodi
+                          magni quaerat ex numquam, dolorum officiis modi facere
+                          maiores architecto suscipit iste eveniet doloribus
+                          ullam aliquid.
+                        </q-card-section>
+                      </q-card>
+                    </q-expansion-item>
 
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   </q-tab-panel>
@@ -172,6 +190,7 @@ export default {
   },
   data() {
     return {
+      maxWidthOfExpansionItems: { "max-width": "250px" },
       panel: "",
       showPanels: false,
       methodsTab: "",
@@ -205,6 +224,25 @@ export default {
     },
   },
   methods: {
+    expandItem(refName) {
+      console.log("EXPAND ITEM!");
+      //const ele = document.getElementById("oneToFiveMethode");
+
+      this.$nextTick(() => this.$refs[refName].$el.scrollIntoView());
+      window.scroll({
+        top: -80,
+        left: 0,
+        behavior: "smooth",
+      });
+      /**
+      this.$nextTick(() =>
+        this.$refs[refName].$el.scrollIntoView({
+          block: "center",
+          inline: "end",
+        })
+      ); */
+    },
+
     setPanel(name) {
       console.log("Panel: " + this.panel);
       if (this.panel === name && this.showPanels === false) {
@@ -243,6 +281,13 @@ export default {
 </script>
 
 <style scoped>
+html {
+  height: 100%;
+  overflow: auto;
+}
+body {
+  height: 100%;
+}
 .container >>> .noBackground {
   background: none;
 }
