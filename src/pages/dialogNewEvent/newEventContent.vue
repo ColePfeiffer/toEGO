@@ -1,7 +1,7 @@
 <template>
   <div class="container col">
     <!-- Scroll Area for scrollable content -->
-    <q-scroll-area style="height: 95%">
+    <q-scroll-area style="height: 95%" ref="scrollArea">
       <!-- Column -->
       <div class="column content-center">
         <!-- How Are You-Section | Emoji-Selection -->
@@ -53,11 +53,30 @@
             </div>
           </div>
         </div>
+
         <!-- What Happened-Section -->
-        <div class="promptContainer col q-mx-md q-mt-md q-pa-md">
+        <div class="promptContainer col q-mx-md q-mt-xs q-px-md">
           <!-- Title -->
           <div class="row justify-center items-center">
-            <div class="col-12 underlined promptTitle">What happened?</div>
+            <div class="col-12 underlined promptTitle">
+              What's on your mind?
+            </div>
+          </div>
+          <!-- Text Input -->
+          <div class="row justify-center q-mt-xs items-center">
+            <div class="col-12">
+              <q-input
+                class="input"
+                v-model="title"
+                filled
+                label="Title"
+                input-style="max-height: 50px; min-height: 25px;"
+                :rules="[
+                  (val) =>
+                    val.length <= 30 || 'Please use maximum 30 characters',
+                ]"
+              />
+            </div>
           </div>
           <!-- Text Input -->
           <div class="row justify-center q-mt-xs items-center">
@@ -65,6 +84,7 @@
               <q-input
                 class="input"
                 v-model="text"
+                label="What happened?"
                 filled
                 autogrow
                 input-style="max-height: 200px; min-height: 100px;"
@@ -83,17 +103,17 @@
                 toggle-color="accent"
                 flat
                 :options="[
-                  { value: 'worries', slot: 'worries' },
+                  { value: 'methods', slot: 'methods' },
                   { value: 'templates', slot: 'templates' },
                 ]"
               >
-                <template v-slot:worries>
+                <template v-slot:methods>
                   <baseButton
                     :text="'methods'"
                     :changeColor="false"
                     :setStyleTo="'styleA'"
                     class="FloatingButton"
-                    @onClick="setPanel('worries')"
+                    @onClick="setPanel('methods')"
                   ></baseButton>
                 </template>
 
@@ -116,7 +136,7 @@
                   class="noBackground row justify-center q-mt-none items-center"
                   style="margin-top: -15px"
                 >
-                  <q-tab-panel name="worries">
+                  <q-tab-panel name="methods" ref="methods">
                     <div class="text-h6">Methods</div>
                     <div class="underlined promptTitle"></div>
 
@@ -124,18 +144,42 @@
                       switch-toggle-side
                       expand-separator
                       dense
-                      :style="maxWidthOfExpansionItems"
-                      icon="perm_identity"
+                      icon="task_alt"
                       label="1-to-5 Methode"
                       @show="expandItem('oneToFiveMethode')"
                     >
-                      <q-card style="max-width: inherit" class="noBackground">
-                        <q-card-section ref="oneToFiveMethode">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Quidem, eius reprehenderit eos corrupti commodi
-                          magni quaerat ex numquam, dolorum officiis modi facere
-                          maiores architecto suscipit iste eveniet doloribus
-                          ullam aliquid.
+                      <q-card
+                        :style="maxWidthOfExpansionItems"
+                        class="noBackground"
+                      >
+                        <q-card-section ref="oneToFiveMethode" class="q-pa-xs">
+                          <ul style="text-align: left">
+                            <li>
+                              Name
+                              <strong style="color: purple">five</strong> things
+                              you can see.
+                            </li>
+                            <li>
+                              Name
+                              <strong style="color: purple">four</strong> things
+                              you can touch.
+                            </li>
+                            <li>
+                              Name
+                              <strong style="color: purple">three</strong>
+                              things you can hear.
+                            </li>
+                            <li>
+                              Name
+                              <strong style="color: purple">two</strong> things
+                              you can smell.
+                            </li>
+                            <li>
+                              Name
+                              <strong style="color: purple">one</strong> thing
+                              you can taste.
+                            </li>
+                          </ul>
                         </q-card-section>
                       </q-card>
                     </q-expansion-item>
@@ -143,7 +187,7 @@
                       switch-toggle-side
                       expand-separator
                       dense
-                      icon="perm_identity"
+                      icon="spa"
                       label="Handling Emotions"
                       @show="expandItem('handlingEmotions')"
                     >
@@ -151,12 +195,73 @@
                         :style="maxWidthOfExpansionItems"
                         class="noBackground"
                       >
-                        <q-card-section ref="handlingEmotions">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Quidem, eius reprehenderit eos corrupti commodi
-                          magni quaerat ex numquam, dolorum officiis modi facere
-                          maiores architecto suscipit iste eveniet doloribus
-                          ullam aliquid.
+                        <q-card-section class="q-pa-xs" ref="handlingEmotions">
+                          <ol style="text-align: left">
+                            <li>
+                              Accept that the problem is there and surrender
+                              fighting it.
+                            </li>
+                            <li>
+                              Pay attention to your body. Is there any tension?
+                              <strong style="color: white"
+                                >Breathe in, breathe out.</strong
+                              >
+                            </li>
+
+                            <li>
+                              Imagine a friend is struggling with this problem.
+                              They ask for your advice.
+
+                              <q-input
+                                class="input"
+                                v-model="friendAdvice"
+                                autogrow
+                                filled
+                                label="What would you tell
+                              them?"
+                                input-style="max-height: 150px; min-height: 20px;"
+                                :rules="[
+                                  (val) =>
+                                    val.length <= 500 ||
+                                    'Please use maximum 500 characters',
+                                ]"
+                              />
+                            </li>
+                            <li>
+                              Is there something you can do about your problem?
+                              <ul>
+                                <li>
+                                  If <strong style="color: green">yes</strong>:
+                                  What are you going to do and when can you
+                                  start?
+                                  <q-input
+                                    class="input"
+                                    v-model="friendAdvice"
+                                    autogrow
+                                    filled
+                                    label="
+                                   What and when?"
+                                    input-style="max-height: 150px; min-height: 20px;"
+                                    :rules="[
+                                      (val) =>
+                                        val.length <= 500 ||
+                                        'Please use maximum 500 characters',
+                                    ]"
+                                  />
+                                </li>
+                                <li>
+                                  If <strong style="color: green">no</strong>:
+                                  Even if you can't control a situation, you can
+                                  control your response to it. Recognize that
+                                  you are feeling anxiety. Remind yourself that
+                                  worrying about something outside your control
+                                  won't change the outcome. Challenge your
+                                  self-talk. Focus your attention on the things
+                                  which are in your power.
+                                </li>
+                              </ul>
+                            </li>
+                          </ol>
                         </q-card-section>
                       </q-card>
                     </q-expansion-item>
@@ -164,7 +269,7 @@
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   </q-tab-panel>
 
-                  <q-tab-panel name="templates">
+                  <q-tab-panel name="templates" ref="templates">
                     <div class="text-h6">Templates</div>
                     <div class="underlined promptTitle"></div>
 
@@ -190,8 +295,11 @@ export default {
   },
   data() {
     return {
-      maxWidthOfExpansionItems: { "max-width": "250px" },
+      //250px for not much of a change, extends on bigger devices only
+      maxWidthOfExpansionItems: { "max-width": "350px" },
+      friendAdvice: "",
       panel: "",
+      title: "",
       showPanels: false,
       methodsTab: "",
       text: "",
@@ -228,30 +336,50 @@ export default {
       console.log("EXPAND ITEM!");
       //const ele = document.getElementById("oneToFiveMethode");
 
-      this.$nextTick(() => this.$refs[refName].$el.scrollIntoView());
-      window.scroll({
-        top: -80,
-        left: 0,
-        behavior: "smooth",
-      });
-      /**
+      //this.$nextTick(() => this.$refs[refName].$el.scrollIntoView());
+      this.scroll(+200);
+      /*
       this.$nextTick(() =>
         this.$refs[refName].$el.scrollIntoView({
           block: "center",
           inline: "end",
         })
-      ); */
+      );*/
+    },
+
+    scroll(offset) {
+      // + offset: scrolls less
+      // - offset: scrolls more
+      const scrollArea = this.$refs.scrollArea;
+      const scrollTarget = scrollArea.getScrollTarget();
+
+      console.log(scrollTarget);
+      console.log(scrollTarget.scrollHeight);
+      console.log(scrollTarget.scrollHeight - offset);
+      const duration = 300; // ms - use 0 to instant scroll
+      scrollArea.setScrollPosition(
+        scrollTarget.scrollHeight - offset,
+        duration
+      );
     },
 
     setPanel(name) {
       console.log("Panel: " + this.panel);
+      // Show Panel again by double-clicking on a tab
       if (this.panel === name && this.showPanels === false) {
         this.showPanels = true;
         this.panel = name;
+
+        this.expandItem(name);
+        // Showing Panel or switching to a different panel
       } else if (this.panel != name) {
         console.log("Changing!");
         this.panel = name;
         this.showPanels = true;
+
+        this.expandItem(name);
+
+        // Hide Panel
       } else {
         console.log("Setting to hidden!");
         this.showPanels = false;
