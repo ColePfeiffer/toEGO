@@ -1,8 +1,8 @@
 <template>
   <basePanelWithButtons :options="options">
     <template v-slot:methodsTab>
-      <fiveToOneMethod @onShow="onShow"></fiveToOneMethod>
-      <handlingEmotions @onShow="onShow"></handlingEmotions>
+      <fiveToOneMethod @onShow="onShow()"></fiveToOneMethod>
+      <handlingEmotions @onShow="onShow()"></handlingEmotions>
     </template>
     <template v-slot:templatesTab> Yayayadadada. </template>
   </basePanelWithButtons>

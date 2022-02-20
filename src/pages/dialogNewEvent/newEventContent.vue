@@ -93,11 +93,7 @@
           </div>
         </div>
         <!-- Methods-Section -->
-        <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
-          <!-- Button Toggle -->
-
-          <methodsPanel @onShow="scrollDown"> </methodsPanel>
-        </div>
+        <methodsPanel @onShow="scrollDown"> </methodsPanel>
       </div>
     </q-scroll-area>
   </div>

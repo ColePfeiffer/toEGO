@@ -1,46 +1,48 @@
 <template>
-  <div class="row justify-center items-center">
-    <div class="col-12 ButtonWrapper" :style="hideBorder">
-      <q-btn-toggle
-        v-model="panel"
-        toggle-color="accent"
-        flat
-        :options="options"
-      >
-        <div v-for="option in options" :key="option.value">
-          <template :slot="option.slot">
-            <baseButton
-              :text="option.value"
-              :changeColor="false"
-              :setStyleTo="'styleA'"
-              class="FloatingButton"
-              @onClick="onClick(option.value)"
-            ></baseButton>
-          </template>
-        </div>
-      </q-btn-toggle>
-
-      <!-- Panels -->
-      <div v-if="showPanels === true">
-        <q-tab-panels
+  <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
+    <div class="row justify-center items-center">
+      <div class="col-12 ButtonWrapper" :style="hideBorder">
+        <q-btn-toggle
           v-model="panel"
-          animated
-          class="noBackground row justify-center q-mt-none items-center"
-          style="margin-top: -15px"
+          toggle-color="accent"
+          flat
+          :options="options"
         >
-          <q-tab-panel
-            name="option.name"
-            ref="option.name"
-            v-for="option in options"
-            :key="option.value"
-          >
-            <div class="text-h6">{{ option.value }}</div>
-            <div class="underlined promptTitle"></div>
-            <template :slot="option.slot + 'Tab'"> </template>
+          <div v-for="option in options" :key="option.value">
+            <slot :name="[option.slot]">
+              <baseButton
+                :text="option.value"
+                :changeColor="false"
+                :setStyleTo="'styleA'"
+                class="FloatingButton"
+                @onClick="onClick"
+              ></baseButton>
+            </slot>
+          </div>
+        </q-btn-toggle>
 
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-        </q-tab-panels>
+        <!-- Panels -->
+        <div v-if="showPanels === true">
+          <q-tab-panels
+            v-model="panel"
+            animated
+            class="noBackground row justify-center q-mt-none items-center"
+            style="margin-top: -15px"
+          >
+            <q-tab-panel
+              name="option.name"
+              ref="option.name"
+              v-for="option in options"
+              :key="option.value"
+            >
+              <div class="text-h6">{{ option.value }}</div>
+              <div class="underlined promptTitle"></div>
+              <slot :name="[option.slot + 'Tab']"> </slot>
+
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </q-tab-panel>
+          </q-tab-panels>
+        </div>
       </div>
     </div>
   </div>
@@ -56,7 +58,7 @@ export default {
   data() {
     return {
       panel: "",
-      showPanels: true,
+      showPanels: false,
     };
   },
   components: {
