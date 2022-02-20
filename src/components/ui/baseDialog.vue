@@ -90,11 +90,9 @@ export default {
   },
   methods: {
     closeDialog() {
-      console.log("Closing!");
       this.$emit("close");
     },
     saveChanges() {
-      console.log("Saving!!");
       this.$emit("save");
     },
   },

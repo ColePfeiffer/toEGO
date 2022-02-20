@@ -96,11 +96,7 @@
         <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
           <!-- Button Toggle -->
 
-          <div class="row justify-center items-center">
-            
-             
-            </div>
-          </div>
+          <methodsPanel @onShow="scrollDown"> </methodsPanel>
         </div>
       </div>
     </q-scroll-area>
@@ -108,28 +104,16 @@
 </template>
 
 <script>
-import baseButton from "../../components/ui/baseButton.vue";
-import handlingEmotions from "./methods/handlingEmotions.vue";
-import fiveToOneMethod from "./methods/FiveToOneMethod.vue";
 import shared from "./../../shared.js";
+import methodsPanel from "./methodsPanel.vue";
 
 export default {
   name: "addEvent",
-  components: {
-    baseButton,
-    handlingEmotions,
-    fiveToOneMethod,
-  },
+  components: { methodsPanel },
   data() {
     return {
-      //250px for not much of a change, extends on bigger devices only
-
-      maxWidthOfExpansionItems: { "max-width": "350px" },
-
-      panel: "",
       title: "",
-      showPanels: false,
-      methodsTab: "",
+
       text: "",
       model: "angry",
       dialogName: "ADD EVENT",
@@ -149,52 +133,8 @@ export default {
     // or just use shared.scroll();
   },
   methods: {
-    scrollDown(refName) {
+    scrollDown() {
       this.scroll(200);
-      console.log(refName);
-    },
-    expandItem() {
-      console.log("EXPAND ITEM!");
-      //const ele = document.getElementById("oneToFiveMethode");
-
-      //this.$nextTick(() => this.$refs[refName].$el.scrollIntoView());
-      //this.scroll(+200);
-      this.scroll(+200);
-      /*
-      this.$nextTick(() =>
-        this.$refs[refName].$el.scrollIntoView({
-          block: "center",
-          inline: "end",
-        })
-      );*/
-    },
-
-    setPanel(name) {
-      console.log("Panel: " + this.panel);
-      // Show Panel again by double-clicking on a tab
-      if (this.panel === name && this.showPanels === false) {
-        this.showPanels = true;
-        this.panel = name;
-
-        this.expandItem(name);
-        // Showing Panel or switching to a different panel
-      } else if (this.panel != name) {
-        console.log("Changing!");
-        this.panel = name;
-        this.showPanels = true;
-
-        this.expandItem(name);
-
-        // Hide Panel
-      } else {
-        console.log("Setting to hidden!");
-        this.showPanels = false;
-        this.panel = "hidden";
-      }
-      console.log("Panel: " + this.panel);
-    },
-    openTab(name) {
-      console.log("opening ", name);
     },
     reset() {
       this.newEvent = {
@@ -222,9 +162,6 @@ html {
 body {
   height: 100%;
 }
-.container >>> .noBackground {
-  background: none;
-}
 .container >>> ::-webkit-scrollbar {
   display: none;
 }
@@ -244,16 +181,5 @@ body {
 /* Adjusting the top padding for the input field */
 .container >>> .q-textarea .q-field__native {
   padding-top: 10px;
-}
-
-fieldset {
-  position: relative;
-}
-
-.FloatingButton {
-  border: none;
-
-  position: relative;
-  bottom: 1.5em;
 }
 </style>
