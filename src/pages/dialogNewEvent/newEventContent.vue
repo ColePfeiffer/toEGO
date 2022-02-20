@@ -93,7 +93,7 @@
           </div>
         </div>
         <!-- Methods-Section -->
-        <methodsPanel @onShow="scrollDown"> </methodsPanel>
+        <methodsPanel @scroll="scrollDown"> </methodsPanel>
       </div>
     </q-scroll-area>
   </div>
@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     scrollDown() {
-      this.scroll(200);
+      this.scroll(+200);
     },
     reset() {
       this.newEvent = {

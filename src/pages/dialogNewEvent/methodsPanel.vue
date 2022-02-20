@@ -1,10 +1,10 @@
 <template>
-  <basePanelWithButtons :options="options">
-    <template v-slot:methodsTab>
+  <basePanelWithButtons :options="options" :names="names" @scroll="scroll()">
+    <template slot="Methods">
       <fiveToOneMethod @onShow="onShow()"></fiveToOneMethod>
       <handlingEmotions @onShow="onShow()"></handlingEmotions>
     </template>
-    <template v-slot:templatesTab> Yayayadadada. </template>
+    <template slot="Templates"> Yayayadadada. </template>
   </basePanelWithButtons>
 </template>
 
@@ -24,16 +24,16 @@ export default {
   data() {
     return {
       options: [
-        { value: "Methods", slot: "methods" },
-        { value: "Templates", slot: "templates" },
+        { value: "Methods", slot: "methodsBtnSlot" },
+        { value: "Templates", slot: "templatesBtnSlot" },
       ],
       names: ["Methods", "Templates"],
     };
   },
 
   methods: {
-    onShow() {
-      this.$emit("onShow");
+    scroll(offset) {
+      this.$emit("scroll", offset);
     },
   },
 };

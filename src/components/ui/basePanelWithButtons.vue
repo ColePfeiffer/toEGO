@@ -6,19 +6,30 @@
           v-model="panel"
           toggle-color="accent"
           flat
-          :options="options"
+          :options="[
+            { value: 'button1', slot: 'button1' },
+            { value: 'button2', slot: 'button2' },
+          ]"
         >
-          <div v-for="option in options" :key="option.value">
-            <slot :name="[option.slot]">
-              <baseButton
-                :text="option.value"
-                :changeColor="false"
-                :setStyleTo="'styleA'"
-                class="FloatingButton"
-                @onClick="onClick"
-              ></baseButton>
-            </slot>
-          </div>
+          <template v-slot:button1>
+            <baseButton
+              :text="names[0]"
+              :changeColor="false"
+              :setStyleTo="'styleA'"
+              class="FloatingButton"
+              @onClick="setPanel(names[0])"
+            ></baseButton>
+          </template>
+
+          <template v-slot:button2>
+            <baseButton
+              :text="names[1]"
+              :changeColor="false"
+              :setStyleTo="'styleB'"
+              class="FloatingButton"
+              @onClick="setPanel(names[1])"
+            ></baseButton>
+          </template>
         </q-btn-toggle>
 
         <!-- Panels -->
@@ -37,7 +48,8 @@
             >
               <div class="text-h6">{{ option.value }}</div>
               <div class="underlined promptTitle"></div>
-              <slot :name="[option.slot + 'Tab']"> </slot>
+
+              <slot :name="[option.value]"> </slot>
 
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
             </q-tab-panel>
@@ -54,6 +66,7 @@ import baseButton from "./baseButton.vue";
 export default {
   props: {
     options: [],
+    names: [],
   },
   data() {
     return {
@@ -83,14 +96,30 @@ export default {
       return style;
     },
   },
-
+  emits: ["scroll"],
   methods: {
-    onShow() {
-      this.$emit("onShow", this.refName);
+    scroll() {
+      this.$emit("scroll");
     },
     onClick() {
       this.$emit("onClick", this.refName);
     },
+    expandItem() {
+      console.log("EXPAND ITEM!");
+      //const ele = document.getElementById("oneToFiveMethode");
+
+      //this.$nextTick(() => this.$refs[refName].$el.scrollIntoView());
+      //this.scroll(+200);
+      this.scroll();
+      /*
+      this.$nextTick(() =>
+        this.$refs[refName].$el.scrollIntoView({
+          block: "center",
+          inline: "end",
+        })
+      );*/
+    },
+
     setPanel(name) {
       console.log("Panel: " + this.panel);
       // Show Panel again by double-clicking on a tab
