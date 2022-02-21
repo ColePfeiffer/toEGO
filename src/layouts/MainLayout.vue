@@ -89,15 +89,7 @@ export default {
       this.drawer = !this.drawer;
     },
     toggleDialogNewEvent() {
-      console.log(
-        "BEFORE TOGGLING: ",
-        this.$store.state.data.newEventDialogIsOpen
-      );
       this.$store.commit("data/setDialogVisibility");
-      console.log(
-        "AFTER TOGGLING: ",
-        this.$store.state.data.newEventDialogIsOpen
-      );
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <baseMethod
+  <baseExpansionItem
     :icon="icon"
     :name="name"
     :refName="refName"
@@ -31,16 +31,16 @@
         </li>
       </ul>
       <q-btn>yesss</q-btn>
-    </template></baseMethod
+    </template></baseExpansionItem
   >
 </template>
 
 
 <script>
-import baseMethod from "./baseMethod.vue";
+import baseExpansionItem from "../../../components/ui/baseExpansionItem.vue";
 
 export default {
-  components: { baseMethod },
+  components: { baseExpansionItem },
   data() {
     return {
       id: 0,

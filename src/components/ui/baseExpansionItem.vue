@@ -6,6 +6,7 @@
     :icon="icon"
     :label="name"
     @show="onShow()"
+    class="methodContainer"
   >
     <q-card :style="maxWidthOfExpansionItems" class="noBackground">
       <q-card-section :ref="refName" class="q-pa-xs">
@@ -17,7 +18,7 @@
 
 <script>
 export default {
-  name: "baseMethod",
+  name: "baseExpansionItem",
   emits: ["show"],
   data() {
     return {};
@@ -35,4 +36,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.methodContainer >>> .noBackground {
+  background: none;
+}
+</style>
 

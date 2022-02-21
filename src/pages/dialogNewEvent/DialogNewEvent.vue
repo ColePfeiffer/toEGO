@@ -31,12 +31,10 @@ export default {
   methods: {
     closeDialog() {
       // reset everything
-      console.log("triggering Reset!");
       //this.$refs.content.reset();
       this.$store.commit("data/setDialogVisibility");
     },
     saveChanges() {
-      console.log("wooooow, saved.");
       this.closeDialog();
     },
   },

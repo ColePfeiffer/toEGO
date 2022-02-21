@@ -1,17 +1,17 @@
 <template>
   <basePanelWithButtons :options="options" :names="names" @scroll="scroll()">
-    <template slot="Methods">
-      <fiveToOneMethod @onShow="onShow()"></fiveToOneMethod>
-      <handlingEmotions @onShow="onShow()"></handlingEmotions>
+    <template slot="panelLeftSlot">
+      <fiveToOneMethod @onShow="scroll"></fiveToOneMethod>
+      <handlingEmotions @onShow="scroll"></handlingEmotions>
     </template>
-    <template slot="Templates"> Yayayadadada. </template>
+    <template slot="panelRightSlot"> Yayayadadada. </template>
   </basePanelWithButtons>
 </template>
 
 <script>
-import basePanelWithButtons from "../../components/ui/basePanelWithButtons.vue";
-import fiveToOneMethod from "./methods/FiveToOneMethod.vue";
-import handlingEmotions from "./methods/handlingEmotions.vue";
+import basePanelWithButtons from "../../../components/ui/basePanelWithButtons.vue";
+import fiveToOneMethod from "./FiveToOneMethod.vue";
+import handlingEmotions from "./handlingEmotions.vue";
 
 export default {
   name: "methodsPanel",
@@ -20,7 +20,7 @@ export default {
     fiveToOneMethod,
     handlingEmotions,
   },
-  emits: ["onShow"],
+  emits: ["scroll"],
   data() {
     return {
       options: [
@@ -38,6 +38,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <baseMethod
+  <baseExpansionItem
     :icon="icon"
     :name="name"
     :refName="refName"
@@ -78,15 +78,15 @@
           which are in your power.
           <q-separator />
         </div></div></template
-  ></baseMethod>
+  ></baseExpansionItem>
 </template>
 
 
 <script>
-import baseMethod from "./baseMethod.vue";
+import baseExpansionItem from "../../../components/ui/baseExpansionItem.vue";
 
 export default {
-  components: { baseMethod },
+  components: { baseExpansionItem },
   data() {
     return {
       id: 1,

@@ -17,7 +17,7 @@
             <div class="col-12">
               <div class="align-center">
                 <q-btn-toggle
-                  v-model="model"
+                  v-model="newEvent.mood"
                   toggle-color="accent"
                   padding="none"
                   flat
@@ -67,7 +67,7 @@
             <div class="col-12">
               <q-input
                 class="input"
-                v-model="title"
+                v-model="newEvent.title"
                 filled
                 label="Title"
                 input-style="max-height: 50px; min-height: 25px;"
@@ -83,7 +83,7 @@
             <div class="col-12">
               <q-input
                 class="input"
-                v-model="text"
+                v-model="newEvent.text"
                 label="What happened?"
                 filled
                 autogrow
@@ -93,7 +93,9 @@
           </div>
         </div>
         <!-- Methods-Section -->
-        <methodsPanel @scroll="scrollDown"> </methodsPanel>
+        <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
+          <methodsPanel @scroll="scrollDown"> </methodsPanel>
+        </div>
       </div>
     </q-scroll-area>
   </div>
@@ -101,21 +103,16 @@
 
 <script>
 import shared from "./../../shared.js";
-import methodsPanel from "./methodsPanel.vue";
+import methodsPanel from "./methods/methodsPanel.vue";
 
 export default {
   name: "addEvent",
   components: { methodsPanel },
   data() {
     return {
-      title: "",
-
-      text: "",
-      model: "angry",
-      dialogName: "ADD EVENT",
       newEvent: {
-        title: " ",
         mood: "",
+        title: "",
         text: "",
         tags: "",
         createdOn: "",
@@ -123,10 +120,9 @@ export default {
       },
     };
   },
-
   created() {
-    this.scroll = shared.scroll; // now you can call this.foo() (in your functions/template)
-    // or just use shared.scroll();
+    this.scroll = shared.scroll;
+    // now you can call this.foo() (in your functions/template)
   },
   methods: {
     scrollDown() {
@@ -141,10 +137,6 @@ export default {
         createdOn: "",
         createdBy: "", // ref or id
       };
-    },
-    getName() {
-      console.log(this.dialogName);
-      return this.dialogName;
     },
   },
 };
