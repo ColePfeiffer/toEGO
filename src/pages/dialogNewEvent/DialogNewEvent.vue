@@ -9,32 +9,169 @@
       Event-Tracker
     </template>
     <template v-slot:content>
-      <addEvent></addEvent>
+      <div class="container col">
+        <!-- Scroll Area for scrollable content -->
+        <q-scroll-area style="height: 95%" ref="scrollArea">
+          <!-- Column -->
+          <div class="column content-center">
+            <!-- How Are You-Section | Emoji-Selection -->
+            <div class="promptContainer col q-mx-md q-pa-md">
+              <!-- Title -->
+              <div class="row justify-center items-center">
+                <div class="col-12 underlined promptTitle">
+                  How do you feel right now?
+                </div>
+              </div>
+              <!-- Emoji Selection via Button Toggle -->
+              <div
+                class="emojiSelection q-mt-md row justify-center items-center"
+              >
+                <div class="col-12">
+                  <div class="align-center">
+                    <q-btn-toggle
+                      v-model="newEvent.mood"
+                      toggle-color="accent"
+                      padding="none"
+                      flat
+                      :options="[
+                        { value: 'las la-angry', slot: 'angry' },
+                        { value: 'las la-sad-tear', slot: 'sad' },
+                        { value: 'las la-frown', slot: 'unhappy' },
+                        { value: 'las la-smile', slot: 'content' },
+                        { value: 'las la-grin', slot: 'happy' },
+                      ]"
+                    >
+                      <template v-slot:angry>
+                        <q-btn padding="xs" flat icon="las la-angry" />
+                      </template>
+
+                      <template v-slot:sad>
+                        <q-btn padding="xs" flat icon="las la-sad-tear" />
+                      </template>
+
+                      <template v-slot:unhappy>
+                        <q-btn padding="xs" flat icon="las la-frown" />
+                      </template>
+
+                      <template v-slot:content>
+                        <q-btn padding="xs" flat icon="las la-smile" />
+                      </template>
+
+                      <template v-slot:happy>
+                        <q-btn padding="xs" flat icon="las la-grin" />
+                      </template>
+                    </q-btn-toggle>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- What Happened-Section -->
+            <div class="promptContainer col q-mx-md q-mt-xs q-px-md">
+              <!-- Title -->
+              <div class="row justify-center items-center">
+                <div class="col-12 underlined promptTitle">
+                  What's on your mind?
+                </div>
+              </div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-12">
+                  <q-input
+                    class="input"
+                    v-model="newEvent.title"
+                    filled
+                    label="Title"
+                    input-style="max-height: 50px; min-height: 25px;"
+                    :rules="[
+                      (val) =>
+                        val.length <= 30 || 'Please use maximum 30 characters',
+                    ]"
+                  />
+                </div>
+              </div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-12">
+                  <q-input
+                    class="input"
+                    v-model="newEvent.text"
+                    label="What happened?"
+                    filled
+                    autogrow
+                    input-style="max-height: 200px; min-height: 100px;"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Methods-Section -->
+            <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
+              <methodsPanel @scroll="scrollDown"> </methodsPanel>
+            </div>
+          </div>
+        </q-scroll-area>
+      </div>
     </template>
   </baseDialog>
 </template>
 
 <script>
 import baseDialog from "../../components/ui/baseDialog.vue";
-import addEvent from "./newEventContent.vue";
-//import addEvent from "./content.vue";
+import shared from "./../../shared.js";
+import methodsPanel from "./methods/methodsPanel.vue";
+import { uid } from "quasar";
 
 export default {
   name: "DialogNewEvent",
   components: {
-    addEvent,
+    methodsPanel,
     baseDialog,
   },
+  created() {
+    this.scroll = shared.scroll;
+    // now you can call this.foo() (in your functions/template)
+  },
   data() {
-    return {};
+    return {
+      newEvent: {
+        id: "",
+        mood: "",
+        title: "",
+        text: "",
+        tags: "",
+        createdOn: "",
+        createdBy: "me", // ref or id
+      },
+    };
   },
   methods: {
+    scrollDown() {
+      this.scroll(+200);
+    },
+    reset() {
+      this.newEvent = {
+        id: "",
+        title: " ",
+        mood: "",
+        text: "",
+        tags: "",
+        createdOn: "",
+        createdBy: "me", // ref or id
+      };
+    },
+    addEventToStore() {
+      this.newEvent.createdOn = new Date().toISOString().substr(0, 10);
+      this.newEvent.id = uid();
+      console.log(this.newEvent);
+      this.$store.commit("data/addEvent", this.newEvent);
+      console.log(this.$store.state.data.events);
+    },
     closeDialog() {
-      // reset everything
-      //this.$refs.content.reset();
+      this.reset();
       this.$store.commit("data/setDialogVisibility");
     },
     saveChanges() {
+      this.addEventToStore();
       this.closeDialog();
     },
   },
@@ -42,4 +179,31 @@ export default {
 </script>
 
 <style scoped>
+html {
+  height: 100%;
+  overflow: auto;
+}
+body {
+  height: 100%;
+}
+.container >>> ::-webkit-scrollbar {
+  display: none;
+}
+.container >>> .promptTitle {
+  font-weight: bolder;
+  font-size: 1.2em;
+}
+
+.container >>> .promptContainer {
+  text-align: center;
+}
+
+.container >>> .underlined {
+  border-bottom: 1px solid black;
+  padding: 0 0 4px;
+}
+/* Adjusting the top padding for the input field */
+.container >>> .q-textarea .q-field__native {
+  padding-top: 10px;
+}
 </style>

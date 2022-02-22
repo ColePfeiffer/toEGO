@@ -1,34 +1,41 @@
 <template>
   <div class="todaysEvents q-pa-md">
-    <div class="eventBubble fit row no-wrap justify-end items-center content-start">
+    <div
+      class="eventBubble fit row no-wrap justify-end items-center content-start"
+      v-for="event in events.reverse()"
+      :key="event.id"
+    >
       <q-chat-message
         class="col=5"
-        name="me"
-        :text="['I feel pretty productive, yet exhausted. I think...']"
+        :name="event.createdBy"
+        :text="[event.text]"
+        :title="event.title"
         sent
-        stamp="7 minutes ago"
+        :stamp="event.createdOn"
         bg-color="primary"
         text-color="secondary"
       />
-      <q-avatar class="col=1 q-pa-md" text-color="secondary" icon="fas fa-smile" />
-    </div>
-
-    <div class="eventBubble fit row no-wrap justify-end">
-      <q-chat-message
-        class="col=4"
-        bg-color="primary"
+      <q-avatar
+        class="col=1 q-pa-md"
         text-color="secondary"
-        name="me"
-        :text="['Still feeling down about last night. Now that I am writing...']"
-        sent
-        stamp="3 hours ago"
+        :icon="event.mood"
       />
-      <q-avatar class="col=2 q-pa-md" text-color="secondary" icon="fas fa-frown" />
     </div>
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "eventBubbles",
+  computed: {
+    events() {
+      // Javascript-Funktion zum Filtern von Arrays
+
+      return this.$store.state.data.events.slice();
+    },
+  },
+};
+</script>
 
 <style>
 .statusElementIcon {

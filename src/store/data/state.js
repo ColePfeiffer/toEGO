@@ -4,15 +4,8 @@ export default function () {
     phone: false,
     newEventDialogIsOpen: false,
     banana: true,
-    events: [
-      {
-        id: 1,
-        title: "",
-        mood: "",
-        text: "",
-        tags: [],
-        // ids
-        methodsDone: [1],
+    events: [],
+    /*
         methodsUserInput: [
           {
             idOfMethod: 2,
@@ -25,9 +18,7 @@ export default function () {
               { id: 3, text: "I can start right now!" },
             ],
           },
-        ],
-      },
-    ],
+        ],*/
     // all methods are in here
     methods: [
       {
