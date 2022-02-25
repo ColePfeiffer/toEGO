@@ -35,7 +35,7 @@
       </div>
       <q-separator class="seperator" color="primary" />
       <div class="fit row reverse no-wrap">
-        <span class="col=10">- {{text}}</span>
+        <span class="col=10">- {{ text }}</span>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       //text: "Going outside and doing some cool stuff",
-      text: "get work done!"
+      text: "get work done!",
     };
   },
   methods: {
@@ -68,8 +68,8 @@ export default {
 
     toggleDialogCashUp() {
       this.$emit("toggle-dialogCashUp", true);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -95,5 +95,20 @@ export default {
 
 .balance-minus {
   color: red;
+}
+
+.statusElementIcon {
+  width: 35px;
+  height: 35px;
+  padding: 2px;
+}
+
+.statusElementText {
+  width: 35px;
+  height: 35px;
+  padding: 10px;
+
+  font-weight: bold;
+  font-size: 85%;
 }
 </style>
