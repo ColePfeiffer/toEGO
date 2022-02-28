@@ -30,7 +30,6 @@
           <strong style="color: purple">one</strong> thing you can taste.
         </li>
       </ul>
-      <q-btn>yesss</q-btn>
     </template></baseExpansionItem
   >
 </template>
@@ -43,6 +42,7 @@ export default {
   components: { baseExpansionItem },
   data() {
     return {
+      methodIsDone: false,
       id: 0,
       icon: "task_alt",
       name: "5-to-1 Methode",

@@ -15,18 +15,25 @@
         <div class="col=5 q-mb-md">
           <div class="row items-center justify-end">
             <div class="titleContainer">
-              {{ event.title }}
+              {{ event.text == "" ? " " : event.title }}
             </div>
           </div>
 
           <q-chat-message
             class="textContainer"
             sent
-            :stamp="event.createdOn"
             bg-color="primary"
             text-color="secondary"
           >
             {{ mergeText(event) }}
+            <template v-slot:stamp>
+              <time-ago
+                :datetime="event.createdOn"
+                locale="en"
+                :refresh="60"
+                long
+              ></time-ago>
+            </template>
           </q-chat-message>
         </div>
 
@@ -41,8 +48,13 @@
 </template>
 
 <script>
+import { TimeAgo } from "vue2-timeago";
+
 export default {
   name: "eventBubbles",
+  components: {
+    TimeAgo,
+  },
   props: {
     event: Object,
   },
@@ -51,8 +63,12 @@ export default {
   },
   methods: {
     mergeText(event) {
-      console.log("triggered by: " + event);
-      return [event.text][0];
+      let output = event.text;
+      // check if text is empty; if so show title
+      if (event.text == "") {
+        output = event.title;
+      }
+      return [output][0];
     },
   },
 };

@@ -31,7 +31,7 @@
     <div class="intentionOfTheWeek col=6">
       <div class="fit row no-wrap">
         <q-btn class="col=1" flat icon="fas fa-eye" color="primary"></q-btn>
-        <span class="col=10" style="font-weight: bold">CURRENT INTENTION</span>
+        <span class="col=11" style="font-weight: bold">CURRENT INTENTION</span>
       </div>
       <q-separator class="seperator" color="primary" />
       <div class="fit row reverse no-wrap">

@@ -30,7 +30,6 @@ export default {
       names: ["Methods", "Templates"],
     };
   },
-
   methods: {
     scroll(offset) {
       this.$emit("scroll", offset);

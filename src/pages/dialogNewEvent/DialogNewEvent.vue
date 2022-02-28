@@ -160,7 +160,7 @@ export default {
       };
     },
     addEventToStore() {
-      this.newEvent.createdOn = new Date().toISOString().substr(0, 10);
+      this.newEvent.createdOn = new Date();
       this.newEvent.id = uid();
       console.log(this.newEvent);
       this.$store.commit("data/addEvent", this.newEvent);
