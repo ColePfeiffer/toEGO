@@ -9,13 +9,18 @@
     <template v-slot:content>
       <div class="column">
         <div class="col">
-          Accept that the problem is there and surrender fighting it. Pay
-          attention to your body. Is there any tension?
-          <strong style="color: white">Breathe in, breathe out.</strong>
-          <div class="col">
-            <strong style="font-style: bold">
-              Is there something you can do about your problem?</strong
-            >
+          <div class="quote">
+            <blockquote>
+              <p>
+                Accept that the problem is there and surrender fighting it. Pay
+                attention to your body. Is there any tension? Breathe in,
+                breathe out.
+              </p>
+            </blockquote>
+          </div>
+
+          <div class="col underlined">
+            Is there something you can do about your problem?
           </div>
           <div class="col">
             <q-radio
@@ -34,21 +39,24 @@
             />
           </div>
           <div v-if="radioButtonIsBeyondControl === 'yes'">
-            What are you going to do and when can you start?
-
-            <q-input
-              class="input"
-              v-model="textWhatICanDo"
-              autogrow
-              filled
-              label="
+            <div class="col underlined">
+              What are you going to do and when can you start?
+            </div>
+            <div class="col">
+              <q-input
+                class="input"
+                v-model="textWhatICanDo"
+                autogrow
+                filled
+                label="
                                    What and when?"
-              input-style="max-height: 150px; min-height: 20px;"
-              :rules="[
-                (val) =>
-                  val.length <= 500 || 'Please use maximum 500 characters',
-              ]"
-            />
+                input-style="max-height: 150px; min-height: 20px;"
+                :rules="[
+                  (val) =>
+                    val.length <= 500 || 'Please use maximum 500 characters',
+                ]"
+              />
+            </div>
           </div>
           <div v-else>
             <q-separator />
@@ -93,6 +101,7 @@ export default {
   components: { baseExpansionItem },
   data() {
     return {
+      refToMethodDataFromEvent: "",
       id: 1,
       icon: "spa",
       name: "Handling Emotions",
@@ -102,20 +111,42 @@ export default {
       // user input gets loaded from here
       UserInputs: [{ id: 1, value: "false" }],
 
-      textWhatICanDo: "",
-      radioButtonIsBeyondControl: "yes",
       //toggleBoxShowFriendAdvicePrompt: "false",
-      textFriendAdvice: "",
     };
   },
-
+  created() {
+    this.refToMethodDataFromEvent = this.$store.getters["data/getMethodById2"](
+      this.id
+    );
+  },
   methods: {
-    onCreationMaybe() {
-      //methods: [{id: 1, textFriendAdvice: "", buttonPressed: "", btnPressed: False}],
-      let methodDataFromEvent = methods.find((method) => method.id === "1");
-    },
     onShow() {
+      console.log("bep", this.refToMethodDataFromEvent);
       this.$emit("onShow", this.refName);
+    },
+  },
+  computed: {
+    radioButtonIsBeyondControl: {
+      get() {
+        return this.refToMethodDataFromEvent.radioButtonIsBeyondControl;
+      },
+      set(value) {
+        let id = this.id;
+        console.log("radioBtnToggled: ");
+        this.$store.commit("data/updateRadioButtonIsBeyondControl", {
+          value,
+          id,
+        });
+      },
+    },
+    textWhatICanDo: {
+      get() {
+        return this.refToMethodDataFromEvent.textWhatICanDo;
+      },
+      set(value) {
+        let id = this.id;
+        this.$store.commit("data/updateTextWhatICanDo", { value, id });
+      },
     },
   },
 };

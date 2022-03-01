@@ -29,7 +29,7 @@
                 <div class="col-12">
                   <div class="align-center">
                     <q-btn-toggle
-                      v-model="newEvent.mood"
+                      v-model="mood"
                       toggle-color="accent"
                       padding="none"
                       flat
@@ -79,7 +79,7 @@
                 <div class="col-12">
                   <q-input
                     class="input"
-                    v-model="newEvent.title"
+                    v-model="title"
                     filled
                     label="Title"
                     input-style="max-height: 50px; min-height: 25px;"
@@ -95,7 +95,7 @@
                 <div class="col-12">
                   <q-input
                     class="input"
-                    v-model="newEvent.text"
+                    v-model="text"
                     label="What happened?"
                     filled
                     autogrow
@@ -119,7 +119,6 @@
 import baseDialog from "../../components/ui/baseDialog.vue";
 import shared from "./../../shared.js";
 import methodsPanel from "./methods/methodsPanel.vue";
-import { uid } from "quasar";
 
 export default {
   name: "DialogNewEvent",
@@ -132,47 +131,46 @@ export default {
     // now you can call this.foo() (in your functions/template)
   },
   data() {
-    return {
-      newEvent: {
-        id: "",
-        mood: "",
-        title: "",
-        text: "",
-        tags: "",
-        createdOn: "",
-        createdBy: "me", // ref or id
-      },
-    };
+    return {};
   },
+
   methods: {
     scrollDown() {
       this.scroll(+200);
     },
-    reset() {
-      this.newEvent = {
-        id: "",
-        title: " ",
-        mood: "",
-        text: "",
-        tags: "",
-        createdOn: "",
-        createdBy: "me", // ref or id
-      };
-    },
-    addEventToStore() {
-      this.newEvent.createdOn = new Date();
-      this.newEvent.id = uid();
-      console.log(this.newEvent);
-      this.$store.commit("data/addEvent", this.newEvent);
-      console.log(this.$store.state.data.events);
-    },
     closeDialog() {
-      this.reset();
+      this.$store.commit("data/resetEventData");
       this.$store.commit("data/setDialogVisibility");
     },
     saveChanges() {
-      this.addEventToStore();
+      this.$store.commit("data/addEventToEvents");
       this.closeDialog();
+    },
+  },
+  computed: {
+    title: {
+      get() {
+        return this.$store.state.data.eventData.title;
+      },
+      set(value) {
+        this.$store.commit("data/updateTitle", value);
+      },
+    },
+    mood: {
+      get() {
+        return this.$store.state.data.eventData.mood;
+      },
+      set(value) {
+        this.$store.commit("data/updateMood", value);
+      },
+    },
+    text: {
+      get() {
+        return this.$store.state.data.eventData.text;
+      },
+      set(value) {
+        this.$store.commit("data/updateText", value);
+      },
     },
   },
 };

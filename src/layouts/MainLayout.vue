@@ -90,6 +90,7 @@ export default {
     },
     toggleDialogNewEvent() {
       this.$store.commit("data/setDialogVisibility");
+      //this.$store.commit("data/resetData()");
     },
   },
 };

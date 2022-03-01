@@ -1,8 +1,27 @@
 export default function () {
   return {
+    eventData: {
+      id: "",
+      mood: "",
+      title: "",
+      text: "",
+      tags: "",
+      createdOn: "",
+      createdBy: "me", // ref or id
+      methods: [
+        {
+          id: 1,
+          radioButtonIsBeyondControl: "yes",
+          textFriendAdvice: "",
+          textWhatICanDo: "",
+        },
+        {},
+      ],
+    },
     debug: true,
     phone: false,
     newEventDialogIsOpen: false,
+
     banana: true,
     events: [],
     /*
