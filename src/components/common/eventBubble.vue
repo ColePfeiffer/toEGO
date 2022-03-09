@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { TimeAgo } from "vue3-timeago";
+ import TimeAgo from "vue3-timeago";
 
 export default {
   name: "eventBubbles",

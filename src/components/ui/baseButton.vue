@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style scoped src="98.css">
-.baseButton >>> .span {
+.baseButton :deep(.span) {
   color: #fff;
 }
 </style>

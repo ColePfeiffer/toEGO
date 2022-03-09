@@ -184,24 +184,24 @@ html {
 body {
   height: 100%;
 }
-.container >>> ::-webkit-scrollbar {
+.container :deep(::-webkit-scrollbar)  {
   display: none;
 }
-.container >>> .promptTitle {
+.container :deep(.promptTitle)  {
   font-weight: bolder;
   font-size: 1.2em;
 }
 
-.container >>> .promptContainer {
+.container :deep(.promptContainer)  {
   text-align: center;
 }
 
-.container >>> .underlined {
+.container :deep(.underlined)  {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
 }
 /* Adjusting the top padding for the input field */
-.container >>> .q-textarea .q-field__native {
+.container :deep(.q-textarea .q-field__native)  {
   padding-top: 10px;
 }
 </style>

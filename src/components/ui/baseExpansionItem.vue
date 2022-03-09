@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style scoped>
-.methodContainer >>> .noBackground {
+.methodContainer :deep(.noBackground) {
   background: none;
 }
 </style>

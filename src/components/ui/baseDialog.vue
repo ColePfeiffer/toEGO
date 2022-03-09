@@ -118,7 +118,7 @@ export default {
 </script>
 
 <style scoped src="98.css">
-.baseDialog >>> .window {
+.baseDialog :deep(.window)  {
   color: #fff;
 }
 
@@ -126,7 +126,7 @@ export default {
   border-bottom: 1px solid white;
 }
 
-.baseDialog >>> .q-dialog__inner > div {
+.baseDialog :deep(.q-dialog__inner > div) {
   box-shadow: none;
 }
 </style>
