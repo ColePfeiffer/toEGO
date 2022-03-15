@@ -21,6 +21,10 @@ export default {
     //console.log(scrollTarget.scrollHeight);
     //console.log(scrollTarget.scrollHeight - offset);
     const duration = 300; // ms - use 0 to instant scroll
-    scrollArea.setScrollPosition(scrollTarget.scrollHeight - offset, duration);
+    scrollArea.setScrollPosition(
+      vertical,
+      scrollTarget.scrollHeight - offset,
+      duration
+    );
   },
 };

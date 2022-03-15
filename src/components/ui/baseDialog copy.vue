@@ -1,10 +1,12 @@
 <template>
   <q-dialog
+    :value="isVisible"
     class="baseDialog"
     full-height
     full-width
     persistent
   >
+  <q-layout view="Lhh lpR fff" container class="bg-white">
     <div class="test row justify-center" :style="boxShadowStyle">
       <div class="col-12 col-md-7">
         <div class="window dialogBox column full-height" :style="styleB">
@@ -48,22 +50,27 @@
         </div>
       </div>
     </div>
+    </q-layout>
   </q-dialog>
 </template>
 
 <script>
 /*
-for main container
-color: white; background-color: black
-*/
 
+for main container
+
+color: white; background-color: black
+
+
+*/
 export default {
   name: "baseDialog",
   emits: ["close, save"],
-
+  props: {
+    isVisible: Boolean,
+  },
   data() {
     return {
-      test: true,
       boxShadowStyle: {
         "box-shadow": "none",
       },
@@ -91,7 +98,6 @@ export default {
       this.$emit("save");
     },
   },
-
   created() {
     console.log("BD created");
   },

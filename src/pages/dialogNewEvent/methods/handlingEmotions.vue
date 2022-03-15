@@ -99,6 +99,7 @@ import baseExpansionItem from "../../../components/ui/baseExpansionItem.vue";
 
 export default {
   components: { baseExpansionItem },
+  emits: ["onShow"],
   data() {
     return {
       refToMethodDataFromEvent: "",

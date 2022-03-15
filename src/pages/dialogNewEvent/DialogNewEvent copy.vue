@@ -1,6 +1,6 @@
 <template>
   <baseDialog
-    v-model="showDialog"
+    :isVisible="$store.state.data.newEventDialogIsOpen"
     @close="closeDialog"
     @save="saveChanges"
   >
@@ -119,7 +119,6 @@
 import baseDialog from "../../components/ui/baseDialog.vue";
 import shared from "./../../shared.js";
 import methodsPanel from "./methods/methodsPanel.vue";
-import { mapState } from 'vuex'
 
 export default {
   name: "DialogNewEvent",
@@ -129,13 +128,10 @@ export default {
   },
   created() {
     this.scroll = shared.scroll;
-    console.log("lololol", this.$store.state.data.newEventDialogIsOpen)
     // now you can call this.foo() (in your functions/template)
   },
   data() {
-    return {
-      icon: true,
-    };
+    return {};
   },
 
   methods: {
@@ -144,7 +140,7 @@ export default {
     },
     closeDialog() {
       this.$store.commit("data/resetEventData");
-      this.$store.commit("data/setDialogVisibility", false);
+      this.$store.commit("data/setDialogVisibility");
     },
     saveChanges() {
       this.$store.commit("data/addEventToEvents");
@@ -152,14 +148,6 @@ export default {
     },
   },
   computed: {
-    showDialog: {
-      get(){
-        return this.$store.state.data.newEventDialogIsOpen;
-      },
-      set(value){
-        this.$store.commit("data/setDialogVisibility", value);
-      }
-    },
     title: {
       get() {
         return this.$store.state.data.eventData.title;

@@ -48,7 +48,6 @@ export default {
       /*
       console.log("button clicked!");
       this.darkModeActive = !this.darkModeActive;
-      this.$emit("clicked");
       */
     },
   },

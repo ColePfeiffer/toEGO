@@ -61,7 +61,7 @@
           flat
           dense
           icon="add"
-          @click="toggleDialogNewEvent"
+          @click="showDialogForNewEvent"
         />
       </q-toolbar>
     </q-footer>
@@ -70,7 +70,7 @@
 
 <script>
 import DialogNewEvent from "../pages/dialogNewEvent/DialogNewEvent.vue";
-
+import { mapMutations } from 'vuex'
 export default {
   data() {
     return {
@@ -82,15 +82,18 @@ export default {
     DialogNewEvent,
   },
   methods: {
+     ...mapMutations([
+      './store/data/showModal',
+      'store/data/showModal'
+     ]),
     setDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
     },
     toggleLeftDialog() {
       this.drawer = !this.drawer;
     },
-    toggleDialogNewEvent() {
-      this.$store.commit("data/setDialogVisibility");
-      //this.$store.commit("data/resetData()");
+    showDialogForNewEvent() {
+      this.$store.commit("data/setDialogVisibility", true);
     },
   },
 };

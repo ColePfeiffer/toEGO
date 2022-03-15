@@ -51,8 +51,20 @@ export const addEventToEvents = (state) => {
   console.log("Showing Events: ", state.events);
 };
 
-export const setDialogVisibility = (state) => {
-  state.newEventDialogIsOpen = !state.newEventDialogIsOpen;
+export const setDialogVisibility = (state, isVisible) => {
+  state.newEventDialogIsOpen = isVisible;
+  console.log(
+    "@Mutations: SetDialogVisibility() to: ",
+    state.newEventDialogIsOpen
+  );
+};
+
+export const showModal = (state, componentName) => {
+  state.modalVisible = true;
+  state.modalComponent = componentName;
+};
+export const hideModal = (state) => {
+  state.modalVisible = false;
 };
 
 // METHODS
