@@ -59,7 +59,7 @@ color: white; background-color: black
 
 export default {
   name: "baseDialog",
-  emits: ["close, save"],
+  emits: ['closeDialog', 'save'],
 
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.$emit("close");
+      this.$emit("closeDialog");
     },
     saveChanges() {
       this.$emit("save");

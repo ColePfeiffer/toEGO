@@ -1,10 +1,12 @@
 <template>
   <basePanelWithButtons :options="options" :names="names" @scroll="scroll()">
-    <template slot="panelLeftSlot">
+  
+   <template v-slot:panelLeftSlot>
       <fiveToOneMethod @onShow="scroll"></fiveToOneMethod>
       <handlingEmotions @onShow="scroll"></handlingEmotions>
     </template>
-    <template slot="panelRightSlot"> Yayayadadada. </template>
+    
+    <template v-slot:panelRightSlot> Yayayadadada. </template>
   </basePanelWithButtons>
 </template>
 

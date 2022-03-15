@@ -30,7 +30,6 @@
           ></baseButton>
         </template>
       </q-btn-toggle>
-
       <!-- Panels -->
       <div v-if="panelsSetToVisible === true">
         <q-tab-panels
@@ -39,13 +38,13 @@
           class="noBackground row justify-center q-mt-none items-center"
           style="margin-top: -15px"
         >
-          <q-tab-panel name="panelLeft" ref="panelLeft">
+          <q-tab-panel name='panelLeft' ref='panelLeft'>
             <div class="text-h6">{{ names[0] }}</div>
             <div class="underlined promptTitle"></div>
             <slot name="panelLeftSlot"> </slot>
           </q-tab-panel>
 
-          <q-tab-panel name="panelRight" ref="panelRight">
+          <q-tab-panel name='panelRight' ref='panelRight'>
             <div class="text-h6">{{ names[1] }}</div>
             <div class="underlined promptTitle"></div>
             <slot name="panelRightSlot"> </slot>
@@ -64,8 +63,12 @@ export default {
     baseButton,
   },
   props: {
-    options: [],
-    names: [],
+     options: {
+        type: Array
+    },
+     names: {
+        type: Array
+    },
   },
   emits: ["scroll"],
   data() {

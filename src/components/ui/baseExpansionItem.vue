@@ -5,7 +5,7 @@
     dense
     :icon="icon"
     :label="name"
-    @show="onShow()"
+    @show="onShow"
     class="methodContainer"
   >
     <q-card :style="maxWidthOfExpansionItems" class="noBackground">
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "baseExpansionItem",
-  emits: ["show"],
+  emits: ["onShow"],
   data() {
     return {};
   },

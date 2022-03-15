@@ -1,7 +1,7 @@
 <template>
   <baseDialog
     v-model="showDialog"
-    @close="closeDialog"
+    @closeDialog="closeDialog"
     @save="saveChanges"
   >
     <template v-slot:dialogTitle>

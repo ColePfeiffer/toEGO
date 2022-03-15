@@ -105,7 +105,7 @@ export default {
       refToMethodDataFromEvent: "",
       id: 1,
       icon: "spa",
-      name: "Handling Emotions",
+      name: "Problem Solving",
       refName: "handlingEmotions",
       maxWidthOfExpansionItems: { "max-width": "350px" },
 
