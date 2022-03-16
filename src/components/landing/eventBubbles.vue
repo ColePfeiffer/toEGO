@@ -2,7 +2,7 @@
   <div class="todaysEvents q-pa-md">
     <div v-for="event in events" :key="event.id">
       <EventBubble
-        :event="event"
+        :eventData="event"
         class="
           eventBubble
           fit

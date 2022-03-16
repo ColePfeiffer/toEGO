@@ -15,32 +15,38 @@
         <div class="col=5 q-mb-md">
           <div class="row items-center justify-end">
             <div class="titleContainer">
-              {{ event.text == "" ? " " : event.title }}
+              {{ eventData.text == "" ? " " : eventData.title }}
             </div>
           </div>
-
           <q-chat-message
             class="textContainer"
             sent
             bg-color="primary"
             text-color="secondary"
+           
           >
-            {{ mergeText(event) }}
-            <template v-slot:stamp>
-              <time-ago
-                :datetime="event.createdOn"
-                locale="en"
-                :refresh="60"
-                long
-              ></time-ago>
-            </template>
+           
+          <!--  <template v-slot:stamp> -->
+           <!--   <time-ago -->
+           <!--     :datetime="eventData.createdOn" -->
+            <!--    locale="en" -->
+            <!--    :refresh="60" -->
+            <!--    long -->
+            <!--  ></time-ago> -->
+           <!-- </template> -->
+          <div>
+          
+            {{ mergeText(eventData) }}
+            
+        </div>
+      
           </q-chat-message>
         </div>
 
         <q-avatar
           class="col=1 q-pa-md"
           text-color="secondary"
-          :icon="event.mood"
+          :icon="eventData.mood"
         />
       </div>
     </div>
@@ -56,18 +62,20 @@ export default {
     TimeAgo,
   },
   props: {
-    event: Object,
+    eventData: Object,
   },
   data() {
     return {};
   },
   methods: {
-    mergeText(event) {
-      let output = event.text;
+    mergeText(eventData) {
+      console.log("blubbb")
+      let output = eventData.text;
       // check if text is empty; if so show title
-      if (event.text == "") {
-        output = event.title;
+      if (eventData.text == "") {
+        output = eventData.title;
       }
+      console.log([output][0]);
       return [output][0];
     },
   },
