@@ -23,23 +23,18 @@
             sent
             bg-color="primary"
             text-color="secondary"
-           
           >
-           
-          <!--  <template v-slot:stamp> -->
-           <!--   <time-ago -->
-           <!--     :datetime="eventData.createdOn" -->
+            <!--  <template v-slot:stamp> -->
+            <!--   <time-ago -->
+            <!--     :datetime="eventData.createdOn" -->
             <!--    locale="en" -->
             <!--    :refresh="60" -->
             <!--    long -->
             <!--  ></time-ago> -->
-           <!-- </template> -->
-          <div>
-          
-            {{ mergeText(eventData) }}
-            
-        </div>
-      
+            <!-- </template> -->
+            <div>
+              {{ mergeText(eventData) }}
+            </div>
           </q-chat-message>
         </div>
 
@@ -54,12 +49,12 @@
 </template>
 
 <script>
- import TimeAgo from "vue3-timeago";
+//import TimeAgo from "vue3-timeago";
 
 export default {
   name: "eventBubbles",
   components: {
-    TimeAgo,
+    //TimeAgo,
   },
   props: {
     eventData: Object,
@@ -69,7 +64,7 @@ export default {
   },
   methods: {
     mergeText(eventData) {
-      console.log("blubbb")
+      console.log("blubbb");
       let output = eventData.text;
       // check if text is empty; if so show title
       if (eventData.text == "") {

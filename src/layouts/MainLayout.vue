@@ -3,27 +3,7 @@
     <!-- Dialog -->
     <DialogNewEvent></DialogNewEvent>
     <!-- Menü -->
-    <q-drawer v-model="drawer" :width="200" :breakpoint="500">
-      <q-scroll-area class="fit test">
-        <q-list padding class="menu-list">
-          <q-item clickable v-ripple @click="setDarkMode()">
-            <q-item-section avatar>
-              <q-icon name="fas fa-moon" />
-            </q-item-section>
-
-            <q-item-section>Dark-Mode</q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="drafts" />
-            </q-item-section>
-
-            <q-item-section>Drafts</q-item-section>
-          </q-item>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
+    <!-- qDrawer goes in here-->
     <!-- Router-view -->
     <q-page-container>
       <q-page class="pageView">
@@ -37,22 +17,19 @@
       class="primary"
     >
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          icon="keyboard_arrow_left"
-          @click="toggleLeftDialog(true)"
-        />
         <q-space />
         <q-btn-toggle
           v-model="model"
           flat
           stretch
+          padding="ml"
           toggle-color="secondary"
+          @update:model-value="goToPage"
           :options="[
-            { label: '', value: 'one', icon: 'book' },
-            { label: '', value: 'two', icon: 'view_comfy' },
-            { label: '', value: 'three', icon: 'settings' },
+            { label: '', value: 'home', icon: 'visibility' },
+            { label: '', value: 'diary', icon: 'book' },
+            { label: '', value: 'items', icon: 'view_comfy' },
+            { label: '', value: 'settings', icon: 'settings' },
           ]"
         />
         <q-space />
@@ -70,7 +47,20 @@
 
 <script>
 import DialogNewEvent from "../pages/dialogNewEvent/DialogNewEvent.vue";
-import { mapMutations } from 'vuex'
+
+/*
+<q-drawer v-model="drawer" :width="200" :breakpoint="500">
+      <q-scroll-area class="fit test"> </q-scroll-area>
+    </q-drawer>
+
+in Footer
+     <q-btn
+          flat
+          dense
+          icon="keyboard_arrow_left"
+          @click="toggleLeftDialog(true)"
+        />
+*/
 export default {
   data() {
     return {
@@ -82,18 +72,15 @@ export default {
     DialogNewEvent,
   },
   methods: {
-     ...mapMutations([
-      './store/data/showModal',
-      'store/data/showModal'
-     ]),
-    setDarkMode() {
-      this.$q.dark.set(!this.$q.dark.isActive);
-    },
     toggleLeftDialog() {
       this.drawer = !this.drawer;
     },
     showDialogForNewEvent() {
       this.$store.commit("data/setDialogVisibility", true);
+    },
+    goToPage() {
+      console.log(this.model);
+      this.$router.push(this.model);
     },
   },
 };
