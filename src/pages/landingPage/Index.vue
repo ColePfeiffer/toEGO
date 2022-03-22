@@ -1,9 +1,13 @@
 <template>
   <q-page class="q-pa-md">
-    <div>
+    <div class="column">
       <infoHeader></infoHeader>
       <q-separator color="primary" />
-      <eventBubbles></eventBubbles>
+      <div class="col row">
+        <div class="col-1"></div>
+        <eventBubbles class="col"></eventBubbles>
+      </div>
+
       <!-- Player Character -->
     </div>
   </q-page>

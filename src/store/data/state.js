@@ -4,7 +4,7 @@ export default function () {
     modalComponent: "",
     eventData: {
       id: "",
-      mood: "",
+      mood: "las la-meh-blank",
       title: "",
       text: "",
       tags: "",

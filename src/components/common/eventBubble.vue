@@ -1,50 +1,39 @@
 <template>
-  <div>
-    <div style="width: 100%; max-width: 550px">
-      <div
-        class="
-          eventBubble
-          fit
-          row
-          no-wrap
-          justify-end
-          items-center
-          content-start
-        "
-      >
-        <div class="col=5 q-mb-md">
-          <div class="row items-center justify-end">
-            <div class="titleContainer">
-              {{ eventData.text == "" ? " " : eventData.title }}
-            </div>
-          </div>
-          <q-chat-message
-            class="textContainer"
-            sent
-            bg-color="primary"
-            text-color="secondary"
-          >
-            <!--  <template v-slot:stamp> -->
-            <!--   <time-ago -->
-            <!--     :datetime="eventData.createdOn" -->
-            <!--    locale="en" -->
-            <!--    :refresh="60" -->
-            <!--    long -->
-            <!--  ></time-ago> -->
-            <!-- </template> -->
-            <div>
-              {{ mergeText(eventData) }}
-            </div>
-          </q-chat-message>
+  <div class="eventBubble row no-wrap justify-end items-center">
+    <!-- EVENT BUBBLE -->
+    <div class="col-9 q-mb-md">
+      <div class="row items-center justify-end">
+        <!-- EVENT TITLE -->
+        <div class="titleContainer">
+          {{ eventData.text == "" ? " " : eventData.title }}
         </div>
-
-        <q-avatar
-          class="col=1 q-pa-md"
-          text-color="secondary"
-          :icon="eventData.mood"
-        />
       </div>
+      <!-- EVENT MESSAGE -->
+      <q-chat-message
+        class="textContainer"
+        sent
+        bg-color="primary"
+        text-color="secondary"
+      >
+        <!--  <template v-slot:stamp> -->
+        <!--   <time-ago -->
+        <!--     :datetime="eventData.createdOn" -->
+        <!--    locale="en" -->
+        <!--    :refresh="60" -->
+        <!--    long -->
+        <!--  ></time-ago> -->
+        <!-- </template> -->
+        <div>
+          {{ mergeText(eventData) }}
+        </div>
+      </q-chat-message>
     </div>
+    <!-- MOOD EMOJI -->
+    <q-avatar
+      class="col q-pa-md"
+      text-color="secondary"
+      :icon="eventData.mood"
+    />
   </div>
 </template>
 
