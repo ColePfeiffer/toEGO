@@ -1,4 +1,24 @@
 export default {
+  // Button Styles
+  simplifiedStyle: {
+    "background-color": "yellow",
+    color: "black",
+    height: "33px",
+    "border-style": "unset",
+    border: "1px solid black",
+    "box-shadow": "none",
+  },
+  win98Style: {
+    "background-color": "#c0c0c0",
+    color: "black",
+    height: "33px",
+  },
+  win98StyleDark: {
+    "background-color": "black",
+    color: "white",
+    height: "33px",
+  },
+
   scroll(offset) {
     /*
       this.$nextTick(() =>

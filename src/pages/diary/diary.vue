@@ -37,12 +37,7 @@
       </div>
       <div class="col q-pa-md">
         <!-- DIARY SELECTION -->
-        <basePanelWithButtons
-          :options="options"
-          :names="names"
-          :hideBordersOnInit="hideBordersOnInit"
-          class="q-pa-sm"
-        ></basePanelWithButtons>
+        <diaryPanel class="q-pa-sm"></diaryPanel>
       </div>
     </div>
     <!-- 2 -->
@@ -52,25 +47,19 @@
 
 <script>
 import eventBubbles from "../../components/landing/eventBubbles.vue";
-import basePanelWithButtons from "../../components/ui/basePanelWithButtons.vue";
+import diaryPanel from "../../components/diary/diaryPanel.vue";
 
 export default {
   name: "diary",
   data() {
     return {
-      options: [
-        { value: "Diary", slot: "diaryBtnSlot" },
-        { value: "Status", slot: "statusBtnSlot" },
-      ],
-      names: ["Diary", "Status"],
-      hideBordersOnInit: false,
       day: "TODAY",
       date: "13/02/2021",
       eventCounter: "< 1/2 >",
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      styleA: {
+      styleABC: {
         "background-color": "#121212 ",
         color: "white",
         opacity: "0.8",
@@ -80,7 +69,7 @@ export default {
   },
   components: {
     eventBubbles,
-    basePanelWithButtons,
+    diaryPanel,
   },
   methods: {},
 };

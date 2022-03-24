@@ -1,6 +1,5 @@
 <template>
-  <!-- add v-bind:style="buttonStyling" -->
-  <q-btn class="baseButton" @click="onClick" :style="setStyleTo">
+  <q-btn class="baseButton" @click="onClick" :style="buttonStyling">
     <slot name="confirm-button"> {{ text }} </slot>
   </q-btn>
 </template>
@@ -22,57 +21,43 @@ export default {
   emits: ["onClick"],
   data() {
     return {
-      darkModeActive: true,
-      // inline css style with variables
-      styleA: { "background-color": "black", color: "red" },
-      styleB: { "background-color": "yellow", color: "blue" },
-      styleBasic: {
-        "background-color": "#c0c0c0 ",
-        color: "black",
+      btnClicked: false,
+      btnClickedStyle: {
+        "background-color": "var(--q-primary)",
+        color: "white",
+        height: "33px",
+        "border-style": "unset",
+        border: "1px solid black",
+        "box-shadow": "none",
       },
     };
   },
   props: {
     text: String,
     changeColor: Boolean,
-    setStyleTo: String,
+    setStyleTo: Object,
   },
   methods: {
     onClick() {
-      if (this.changeColor == true) {
-        console.log("Changing colors.");
-        this.darkModeActive = !this.darkModeActive;
-      }
-
+      this.btnClicked = !this.btnClicked;
       this.$emit("onClick");
-      /*
-      console.log("button clicked!");
-      this.darkModeActive = !this.darkModeActive;
-      */
+      // this.$store.state.data.newEventDialogIsOpen
+      // this.$store.commit("data/buttonClicked(buttonID)");
     },
   },
+  mounted() {},
   computed: {
     // a computed getter
     buttonStyling() {
-      var style = {};
-
-      if (this.darkModeActive) {
-        console.log("Dark mode yess");
-        // `this` points to the vm instance
-        style = this.styleA;
+      if (this.btnClicked) {
+        return this.btnClickedStyle;
       } else {
-        console.log("not very dark in here");
-        style = this.styleB;
+        return this.setStyleTo;
       }
-
-      return style;
     },
   },
 };
 </script>
 
 <style scoped src="98.css">
-.baseButton :deep(.span) {
-  color: #fff;
-}
 </style>

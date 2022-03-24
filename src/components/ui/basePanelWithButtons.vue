@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center items-center">
-    <div class="col-12 ButtonWrapper" :style="hideBorder">
+    <div class="col ButtonWrapper" :style="hideBorder">
       <q-btn-toggle
         v-model="panel"
         toggle-color="accent"
@@ -14,7 +14,7 @@
           <baseButton
             :text="names[0]"
             :changeColor="false"
-            :setStyleTo="'styleA'"
+            :setStyleTo="buttonLeftStyle"
             class="FloatingButton"
             @onClick="togglePanelVisibility('panelLeft')"
           ></baseButton>
@@ -24,29 +24,37 @@
           <baseButton
             :text="names[1]"
             :changeColor="false"
-            :setStyleTo="'styleB'"
+            :setStyleTo="buttonRightStyle"
             class="FloatingButton"
             @onClick="togglePanelVisibility('panelRight')"
           ></baseButton>
         </template>
       </q-btn-toggle>
       <!-- Panels -->
-      <div v-if="panelsSetToVisible">
+      <div
+        v-if="panelsSetToVisible"
+        class="col fit justify-center items-center"
+      >
         <q-tab-panels
           v-model="panel"
           animated
-          class="noBackground row justify-center q-mt-none items-center"
+          class="noBackground"
           style="margin-top: -15px"
         >
           <q-tab-panel name="panelLeft" ref="panelLeft">
-            <div class="text-h6">{{ names[0] }}</div>
-            <div class="underlined promptTitle"></div>
+            <div v-if="showNames">
+              <div class="text-h6">{{ names[0] }}</div>
+              <div class="underlined promptTitle"></div>
+            </div>
             <slot name="panelLeftSlot"> </slot>
           </q-tab-panel>
 
-          <q-tab-panel name="panelRight" ref="panelRight">
-            <div class="text-h6">{{ names[1] }}</div>
-            <div class="underlined promptTitle"></div>
+          <q-tab-panel name="panelRight" ref="panelRight" class="col">
+            <div v-if="showNames">
+              <div class="text-h6">{{ names[1] }}</div>
+              <div class="underlined promptTitle"></div>
+            </div>
+
             <slot name="panelRightSlot"> </slot>
           </q-tab-panel>
         </q-tab-panels>
@@ -70,12 +78,29 @@ export default {
       type: Array,
     },
     hideBordersOnInit: Boolean,
+    showNames: Boolean,
+    buttonLeftStyle: {
+      type: Object,
+    },
+    buttonRightStyle: {
+      type: Object,
+    },
   },
   emits: ["scroll"],
   data() {
     return {
       panel: "",
       panelsSetToVisible: false,
+      win98Style: {
+        "background-color": "#c0c0c0",
+        color: "black",
+        height: "33px",
+      },
+      win98StyleDark: {
+        "background-color": "black",
+        color: "white",
+        height: "33px",
+      },
     };
   },
   computed: {
@@ -123,7 +148,7 @@ export default {
         this.scroll();
 
         // Hide Panel
-      } else {
+      } else if (this.hideBordersOnInit) {
         this.panelsSetToVisible = false;
         this.panel = "hidden";
       }
@@ -134,6 +159,12 @@ export default {
 
 <style scoped>
 .FloatingButton {
+  border: none;
+  position: relative;
+  bottom: 1.5em;
+}
+
+.FloatingButton1 {
   border: none;
   position: relative;
   bottom: 1.5em;

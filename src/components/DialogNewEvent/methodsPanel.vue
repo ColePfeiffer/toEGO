@@ -3,6 +3,7 @@
     :options="options"
     :names="names"
     :hideBordersOnInit="hideBordersOnInit"
+    :showNames="showNames"
     @scroll="scroll()"
   >
     <template v-slot:panelLeftSlot>
@@ -35,6 +36,7 @@ export default {
       ],
       names: ["Methods", "Templates"],
       hideBordersOnInit: true,
+      showNames: true,
     };
   },
   methods: {
