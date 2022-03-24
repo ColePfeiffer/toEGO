@@ -1,17 +1,9 @@
 <template>
-  <div class="todaysEvents q-pa-md">
+  <div class="todaysEvents">
     <div v-for="event in events" :key="event.id">
       <EventBubble
         :eventData="event"
-        class="
-          eventBubble
-          fit
-          row
-          no-wrap
-          justify-end
-          items-center
-          content-start
-        "
+        class="eventBubble row no-wrap justify-end items-center content-start"
       />
     </div>
   </div>

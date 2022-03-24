@@ -1,5 +1,5 @@
 <template>
-  <div class="eventBubble row no-wrap justify-end items-center">
+  <div class="eventBubble row no-wrap">
     <!-- EVENT BUBBLE -->
     <div class="col-9 q-mb-md">
       <div class="row items-center justify-end">
@@ -30,7 +30,7 @@
     </div>
     <!-- MOOD EMOJI -->
     <q-avatar
-      class="col q-pa-md"
+      class="col-auto q-pa-md"
       text-color="secondary"
       :icon="eventData.mood"
     />
@@ -67,6 +67,10 @@ export default {
 </script>
 
 <style scoped>
+.eventBubble {
+  background-color: #4d46bb;
+  background-color: rgba(157, 157, 213, 0.6);
+}
 .titleContainer {
   color: black;
   text-shadow: 0 0 3px #4d46bb;

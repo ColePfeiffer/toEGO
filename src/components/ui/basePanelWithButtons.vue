@@ -31,20 +31,20 @@
         </template>
       </q-btn-toggle>
       <!-- Panels -->
-      <div v-if="panelsSetToVisible === true">
+      <div v-if="panelsSetToVisible">
         <q-tab-panels
           v-model="panel"
           animated
           class="noBackground row justify-center q-mt-none items-center"
           style="margin-top: -15px"
         >
-          <q-tab-panel name='panelLeft' ref='panelLeft'>
+          <q-tab-panel name="panelLeft" ref="panelLeft">
             <div class="text-h6">{{ names[0] }}</div>
             <div class="underlined promptTitle"></div>
             <slot name="panelLeftSlot"> </slot>
           </q-tab-panel>
 
-          <q-tab-panel name='panelRight' ref='panelRight'>
+          <q-tab-panel name="panelRight" ref="panelRight">
             <div class="text-h6">{{ names[1] }}</div>
             <div class="underlined promptTitle"></div>
             <slot name="panelRightSlot"> </slot>
@@ -63,12 +63,13 @@ export default {
     baseButton,
   },
   props: {
-     options: {
-        type: Array
+    options: {
+      type: Array,
     },
-     names: {
-        type: Array
+    names: {
+      type: Array,
     },
+    hideBordersOnInit: Boolean,
   },
   emits: ["scroll"],
   data() {
@@ -80,15 +81,28 @@ export default {
   computed: {
     hideBorder() {
       var style = {};
-
-      if (this.panelsSetToVisible) {
-        style = { border: "1px solid black" };
+      if (this.hideBordersOnInit) {
+        if (this.panelsSetToVisible) {
+          style = { border: "1px solid black" };
+        } else {
+          style = { border: "none" };
+        }
       } else {
-        style = { border: "none" };
+        style = { border: "1px solid black" };
       }
-
       return style;
     },
+    showPanel() {
+      return this.panelsSetToVisible;
+    },
+  },
+  mounted() {
+    if (this.hideBordersOnInit) {
+      this.panelsSetToVisible = false;
+    } else {
+      this.panelsSetToVisible = true;
+      this.panel = "panelLeft";
+    }
   },
   methods: {
     scroll() {

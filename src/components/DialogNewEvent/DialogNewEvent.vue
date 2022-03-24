@@ -116,10 +116,10 @@
 </template>
 
 <script>
-import baseDialog from "../../components/ui/baseDialog.vue";
-import shared from "./../../shared.js";
-import methodsPanel from "./methods/methodsPanel.vue";
-import { mapState } from 'vuex'
+import baseDialog from "../ui/baseDialog.vue";
+import shared from "../../shared.js";
+import methodsPanel from "./methodsPanel.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "DialogNewEvent",
@@ -129,7 +129,7 @@ export default {
   },
   created() {
     this.scroll = shared.scroll;
-    console.log("lololol", this.$store.state.data.newEventDialogIsOpen)
+    console.log("lololol", this.$store.state.data.newEventDialogIsOpen);
     // now you can call this.foo() (in your functions/template)
   },
   data() {
@@ -153,12 +153,12 @@ export default {
   },
   computed: {
     showDialog: {
-      get(){
+      get() {
         return this.$store.state.data.newEventDialogIsOpen;
       },
-      set(value){
+      set(value) {
         this.$store.commit("data/setDialogVisibility", value);
-      }
+      },
     },
     title: {
       get() {
@@ -196,24 +196,24 @@ html {
 body {
   height: 100%;
 }
-.container :deep(::-webkit-scrollbar)  {
+.container :deep(::-webkit-scrollbar) {
   display: none;
 }
-.container :deep(.promptTitle)  {
+.container :deep(.promptTitle) {
   font-weight: bolder;
   font-size: 1.2em;
 }
 
-.container :deep(.promptContainer)  {
+.container :deep(.promptContainer) {
   text-align: center;
 }
 
-.container :deep(.underlined)  {
+.container :deep(.underlined) {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
 }
 /* Adjusting the top padding for the input field */
-.container :deep(.q-textarea .q-field__native)  {
+.container :deep(.q-textarea .q-field__native) {
   padding-top: 10px;
 }
 </style>

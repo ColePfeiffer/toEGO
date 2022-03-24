@@ -1,8 +1,8 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-sm">
     <div class="column">
       <infoHeader></infoHeader>
-      <q-separator color="primary" />
+      <q-separator color="primary" class="q-mb-sm" />
       <div class="col row">
         <div class="col-1"></div>
         <eventBubbles class="col"></eventBubbles>

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import DialogNewEvent from "../pages/dialogNewEvent/DialogNewEvent.vue";
+import DialogNewEvent from "../components/DialogNewEvent/DialogNewEvent.vue";
 
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
