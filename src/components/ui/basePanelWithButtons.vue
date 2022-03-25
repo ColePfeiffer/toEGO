@@ -15,6 +15,7 @@
             :text="names[0]"
             :changeColor="false"
             :setStyleTo="buttonLeftStyle"
+            ref="button1"
             class="FloatingButton"
             @onClick="togglePanelVisibility('panelLeft')"
           ></baseButton>
@@ -126,6 +127,10 @@ export default {
       this.panelsSetToVisible = false;
     } else {
       this.panelsSetToVisible = true;
+      this.$store.commit(
+        "data/changeButtonColorOnClick",
+        this.$refs.button1.buttonID
+      );
       this.panel = "panelLeft";
     }
   },
