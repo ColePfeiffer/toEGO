@@ -2,6 +2,8 @@ export default function () {
   return {
     modalVisible: false,
     modalComponent: "",
+    buttonClicked: 0,
+    lastButtonClicked: "",
     eventData: {
       id: "",
       mood: "las la-meh-blank",

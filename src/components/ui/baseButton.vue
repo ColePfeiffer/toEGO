@@ -16,11 +16,14 @@ v-bind:style="darkModeActive ? styleA : styleB"
     ]"
 
 */
+import { uid } from "quasar";
+
 export default {
   name: "baseDialog",
   emits: ["onClick"],
   data() {
     return {
+      buttonID: 0,
       btnClicked: false,
       btnClickedStyle: {
         "background-color": "var(--q-primary)",
@@ -39,17 +42,17 @@ export default {
   },
   methods: {
     onClick() {
-      this.btnClicked = !this.btnClicked;
+      this.$store.commit("data/changeButtonColorOnClick", this.buttonID);
       this.$emit("onClick");
-      // this.$store.state.data.newEventDialogIsOpen
-      // this.$store.commit("data/buttonClicked(buttonID)");
     },
   },
-  mounted() {},
+  mounted() {
+    this.buttonID = uid();
+  },
   computed: {
     // a computed getter
     buttonStyling() {
-      if (this.btnClicked) {
+      if (this.$store.state.data.lastButtonClicked === this.buttonID) {
         return this.btnClickedStyle;
       } else {
         return this.setStyleTo;

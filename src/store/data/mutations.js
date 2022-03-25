@@ -51,10 +51,12 @@ export const addEventToEvents = (state) => {
   console.log("Showing Events: ", state.events);
 };
 
-export const buttonClicked = (state, buttonID) => {
-  if (state.buttonClicked === 0) {
-  } else if (state.buttonClicked === 1) {
-  } else state.buttonClicked + increaseBy;
+export const changeButtonColorOnClick = (state, buttonID) => {
+  if (state.lastButtonClicked === buttonID) {
+    state.lastButtonClicked = buttonID;
+  } else {
+    state.lastButtonClicked = buttonID;
+  }
 };
 
 export const setDialogVisibility = (state, isVisible) => {
