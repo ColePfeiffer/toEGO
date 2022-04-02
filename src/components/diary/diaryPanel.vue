@@ -8,8 +8,25 @@
     :buttonRightStyle="simplifiedStyle"
   >
     <template v-slot:panelLeftSlot>
+      <div class="row justify-end">
+        <q-btn
+          class="col=1"
+          flat
+          icon="fas fa-folder-open"
+          color="secondary"
+        ></q-btn>
+        <q-select
+          dense
+          borderless
+          v-model="statusTemplateModel"
+          :options="statusTemplateOptions"
+          label="templates"
+        >
+        </q-select>
+      </div>
+
       <div class="column items-center">
-        <div class="col text-center">What did go well today?</div>
+        <div class="col text-center q-pt-md">What did go well today?</div>
         <div class="col">_________________</div>
         <div class="col text-center">What can I do differently tomorrow?</div>
         <div class="col">_________________</div>
