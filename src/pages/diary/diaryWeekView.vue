@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <div class="bookmark"></div>
     <div class="column">
       <!-- DAY SELECTION -->
       <div class="col q-py-md">
@@ -104,25 +103,5 @@ export default {
 .underlined {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-}
-.bookmark {
-  position: absolute;
-  right: 10px;
-  height: 90px;
-  width: 20px;
-  padding: 0px;
-  -webkit-transform: rotate(0deg) skew(0deg);
-  transform: rotate(0deg) skew(0deg);
-  border-left: 16px solid var(--q-accent);
-  border-right: 16px solid var(--q-accent);
-  border-bottom: 16px solid transparent;
 }
 </style>

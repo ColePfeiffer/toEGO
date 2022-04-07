@@ -1,12 +1,7 @@
 <template>
-  <q-dialog
-    class="baseDialog"
-    full-height
-    full-width
-    persistent
-  >
+  <q-dialog class="baseDialog" full-height full-width persistent>
     <div class="test row justify-center" :style="boxShadowStyle">
-      <div class="col-12 col-md-7">
+      <div class="col-12 col-sm-8 col-md-3 col-xl-3">
         <div class="window dialogBox column full-height" :style="styleB">
           <!-- Title Bar -->
           <div class="col-1">
@@ -59,7 +54,7 @@ color: white; background-color: black
 
 export default {
   name: "baseDialog",
-  emits: ['closeDialog', 'save'],
+  emits: ["closeDialog", "save"],
 
   data() {
     return {
@@ -95,7 +90,7 @@ export default {
   created() {
     console.log("BD created");
   },
-  mounted(){
+  mounted() {
     console.log("BD mounted");
   },
   computed: {
@@ -120,7 +115,7 @@ export default {
 </script>
 
 <style scoped src="98.css">
-.baseDialog :deep(.window)  {
+.baseDialog :deep(.window) {
   color: #fff;
 }
 

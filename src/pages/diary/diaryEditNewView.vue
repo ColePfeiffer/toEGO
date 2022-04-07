@@ -116,13 +116,13 @@ export default {
 .bookmark {
   position: absolute;
   right: 10px;
-  height: 90px;
+  height: 95px;
   width: 20px;
   padding: 0px;
   -webkit-transform: rotate(0deg) skew(0deg);
   transform: rotate(0deg) skew(0deg);
-  border-left: 16px solid var(--q-accent);
-  border-right: 16px solid var(--q-accent);
+  border-left: 16px solid red;
+  border-right: 16px solid red;
   border-bottom: 16px solid transparent;
 }
 </style>

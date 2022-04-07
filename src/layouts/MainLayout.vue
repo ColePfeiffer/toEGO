@@ -94,7 +94,8 @@ export default {
 .pageView
   margin: auto
   font-family: 'PressStart'
-  background: url(/images/4.jpg) repeat-x
+  background: url(/images/6.png) no-repeat center center fixed
+  background-size: cover
   height: 100%
   padding: auto
 
