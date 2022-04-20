@@ -1,9 +1,11 @@
 <template>
-  <div class="column">
-    <div class="row" v-for="event in events" :key="event.id">
-      <div class="col-12">
-        <EventBubble :eventData="event" />
-      </div>
+  <div>
+    <div
+      class="row items-center justify-center"
+      v-for="event in events"
+      :key="event.id"
+    >
+      <EventBubble :eventData="event" class="col-12" />
     </div>
   </div>
 </template>
