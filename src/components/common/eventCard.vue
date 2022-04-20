@@ -1,11 +1,19 @@
 <template>
-  <div class="row justify-center q-pa-md">
-    <q-card class="my-card col-12" flat bordered>
+  <div class="q-pa-md">
+    <q-card class="my-card" flat bordered>
+      <!-- Mood, Title, Expand Button -->
       <q-item>
+        <!-- mood emoji -->
         <q-item-section avatar>
-          <q-avatar text-color="secondary" :icon="eventData.mood"></q-avatar>
+          <q-icon
+            size="22.5px"
+            :name="eventData.mood"
+            text-color="secondary"
+            color="secondary"
+          ></q-icon>
         </q-item-section>
 
+        <!-- event title, expand button -->
         <q-item-section>
           <div class="row justify-center items-center">
             <div class="col-6 text-left">
@@ -24,8 +32,9 @@
           </div>
         </q-item-section>
       </q-item>
-      <q-separator class="card-separator" />
 
+      <q-separator class="card-separator" />
+      <!-- Text, Extras -->
       <div class="q-pa-sm">
         <!-- view when not expanded + shortened text -->
         <q-card-section
@@ -49,7 +58,7 @@
           <q-card-section class="card-text">
             {{ eventData.text }}
           </q-card-section>
-          <q-card-section class="q-py-xs">
+          <q-card-section class="q-py-xs card-time">
             <div class="row justify-between items-center">
               <div class="col-3">
                 {{ timeAgo }}
@@ -61,7 +70,7 @@
                     v-if="eventData.expanded === true"
                     flat
                     icon="fas fa-eye"
-                    color="accent"
+                    color="secondary"
                     @click="editEvent"
                   ></q-btn>
                   <q-btn
@@ -69,7 +78,7 @@
                     v-if="eventData.expanded === true"
                     flat
                     icon="edit"
-                    color="accent"
+                    color="secondary"
                     @click="editEvent"
                   ></q-btn>
                 </div>
@@ -139,10 +148,14 @@ export default {
 .my-card {
 }
 
-.card-text {
+.card-text,
+.card-time {
   font-size: 12.5px;
 }
 
+.card-time {
+  color: var(--q-secondary);
+}
 .card-title {
   color: var(--q-secondary);
 }
