@@ -1,13 +1,17 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <!-- Dialog -->
+    <!-- Dialogs -->
     <DialogNewEvent></DialogNewEvent>
-    <!-- Menü -->
-    <!-- qDrawer goes in here-->
     <!-- Router-view -->
     <q-page-container>
       <q-page class="pageView">
-        <router-view v-if="$store.state.data.newEventDialogIsOpen == false" />
+        <div class="row justify-center" :style="boxShadowStyle">
+          <div class="col-12 col-sm-10 col-md-8 col-xl-3">
+            <router-view
+              v-if="$store.state.data.newEventDialogIsOpen == false"
+            />
+          </div>
+        </div>
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
@@ -66,6 +70,9 @@ export default {
     return {
       drawer: false,
       model: "one",
+      boxShadowStyle: {
+        "box-shadow": "none",
+      },
     };
   },
   components: {
@@ -92,11 +99,10 @@ export default {
   background: none
 
 .pageView
-  margin: auto
   font-family: 'PressStart'
-  background: url(/images/6.png) no-repeat center center fixed
+  background: url(/images/background_wide2.jpg) no-repeat center center fixed
   background-size: cover
-  height: 100%
+  margin: auto
   padding: auto
 
 .inner_div

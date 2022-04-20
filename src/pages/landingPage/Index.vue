@@ -1,16 +1,9 @@
 <template>
   <q-page class="q-pa-sm">
-    <div class="test row justify-center" :style="boxShadowStyle">
-      <div class="col-12 col-sm-10 col-md-8 col-xl-3">
-        <div class="column">
-          <infoHeader></infoHeader>
-          <q-separator color="primary" class="q-mb-sm" />
-          <eventBubbles class="col"></eventBubbles>
-
-          <!-- Player Character -->
-        </div>
-      </div>
-    </div>
+    <infoHeader></infoHeader>
+    <q-separator color="primary" class="q-mb-sm" />
+    <eventBubbles class="col"></eventBubbles>
+    <!-- Player Character -->
   </q-page>
 </template>
 

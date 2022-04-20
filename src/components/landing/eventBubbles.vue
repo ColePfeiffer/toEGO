@@ -1,16 +1,15 @@
 <template>
-  <div class="todaysEvents">
-    <div v-for="event in events" :key="event.id">
-      <EventBubble
-        :eventData="event"
-        class="eventBubble row no-wrap justify-end items-center content-start"
-      />
+  <div class="column">
+    <div class="row" v-for="event in events" :key="event.id">
+      <div class="col-12">
+        <EventBubble :eventData="event" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import EventBubble from "../common/eventBubble.vue";
+import EventBubble from "../common/eventCard.vue";
 
 export default {
   name: "eventBubbles",

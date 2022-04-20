@@ -1,39 +1,37 @@
 <template>
-  <div class="eventBubble row no-wrap">
-    <!-- EVENT BUBBLE -->
-    <div class="col-9 q-mb-md">
-      <div class="row items-center justify-end">
-        <!-- EVENT TITLE -->
-        <div class="titleContainer">
-          {{ eventData.text == "" ? " " : eventData.title }}
-        </div>
-      </div>
-      <!-- EVENT MESSAGE -->
-      <q-chat-message
-        class="textContainer"
-        sent
-        bg-color="primary"
-        text-color="secondary"
-      >
-        <!--  <template v-slot:stamp> -->
-        <!--   <time-ago -->
-        <!--     :datetime="eventData.createdOn" -->
-        <!--    locale="en" -->
-        <!--    :refresh="60" -->
-        <!--    long -->
-        <!--  ></time-ago> -->
-        <!-- </template> -->
-        <div>
-          {{ mergeText(eventData) }}
-        </div>
-      </q-chat-message>
+  <div class="column items-center">
+    <!-- Title -->
+    <div class="titleContainer col q-pb-xs self-start">
+      {{ eventData.text == "" ? " " : eventData.title }}
     </div>
-    <!-- MOOD EMOJI -->
-    <q-avatar
-      class="col-auto q-pa-md"
-      text-color="secondary"
-      :icon="eventData.mood"
-    />
+    <!-- Text-Bubble, Emoji -->
+    <div class="eventBubble row no-wrap">
+      <div class="col-9">
+        <q-chat-message sent bg-color="primary" text-color="secondary">
+          <!--  <template v-slot:stamp> -->
+          <!--   <time-ago -->
+          <!--     :datetime="eventData.createdOn" -->
+          <!--    locale="en" -->
+          <!--    :refresh="60" -->
+          <!--    long -->
+          <!--  ></time-ago> -->
+          <!-- </template> -->
+          <div class="textContainer">
+            {{ mergeText(eventData) }}
+          </div>
+        </q-chat-message>
+      </div>
+      <div class="col-1">
+        <!-- MOOD EMOJI -->
+        <q-avatar
+          class="avatarContainer q-pa-md"
+          text-color="secondary"
+          :icon="eventData.mood"
+        />
+      </div>
+
+      <!-- EVENT BUBBLE -->
+    </div>
   </div>
 </template>
 
@@ -67,14 +65,21 @@ export default {
 </script>
 
 <style scoped>
+.avatarContainer {
+}
+.titleContainer {
+}
+.eventBubble :deep(.q-message-text) {
+}
+
 .eventBubble {
-  background-color: #4d46bb;
   background-color: rgba(157, 157, 213, 0.6);
 }
 .titleContainer {
   color: black;
   text-shadow: 0 0 3px #4d46bb;
-  position: relative;
-  top: -2px;
+}
+
+.textContainer {
 }
 </style>
