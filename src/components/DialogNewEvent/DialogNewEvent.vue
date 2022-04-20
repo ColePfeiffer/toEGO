@@ -128,9 +128,7 @@ export default {
     baseDialog,
   },
   created() {
-    this.scroll = shared.scroll;
-    console.log("lololol", this.$store.state.data.newEventDialogIsOpen);
-    // now you can call this.foo() (in your functions/template)
+    this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
   data() {
     return {

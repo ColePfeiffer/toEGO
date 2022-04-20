@@ -12,6 +12,7 @@ export default function () {
       tags: "",
       createdOn: "",
       createdBy: "me", // ref or id
+      expanded: false,
       methods: [
         {
           id: 1,

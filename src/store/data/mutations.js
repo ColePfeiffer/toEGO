@@ -17,6 +17,7 @@ export const resetEventData = (state) => {
     tags: "",
     createdOn: "",
     createdBy: "me", // ref or id
+    expanded: false,
     methods: [
       {
         id: 1,
@@ -26,6 +27,12 @@ export const resetEventData = (state) => {
       {},
     ],
   };
+};
+export const setExpandedStatusOfEvents = (state, bool) => {
+  console.log("in mutations: setExpandedStatusOfEvents");
+  state.events.forEach((event) => {
+    event.expanded = bool;
+  });
 };
 
 export const updateTitle = (state, value) => {
@@ -38,6 +45,12 @@ export const updateText = (state, value) => {
 
 export const updateMood = (state, value) => {
   state.eventData.mood = value;
+};
+
+export const updateExpandedByEventID = (state, eventID) => {
+  let event = state.events.find((event) => event.id === eventID);
+  let newExpandedStatus = !event.expanded;
+  event.expanded = newExpandedStatus;
 };
 
 export const addEventToEvents = (state) => {

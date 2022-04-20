@@ -13,14 +13,13 @@
                 eventData.title
               }}</q-item-label>
             </div>
-
             <div class="col-6 text-right">
-              <q-btn
-                flat
-                icon="expand_more"
+              <base-expandable-button
+                :eventData="eventData"
                 color="secondary"
-                @click="expanded = !expanded"
-              ></q-btn>
+                @expandMore="expand"
+                @expandLess="expand"
+              ></base-expandable-button>
             </div>
           </div>
         </q-item-section>
@@ -28,14 +27,51 @@
 
       <q-separator class="card-separator" />
       <q-item>
-        <q-card-section class="card-text" v-if="expanded === false">
-          {{
-            mergeText(eventData).substring(0, this.maxLengthOfCardText) + "..."
-          }}
+        <q-card-section
+          class="card-text"
+          v-if="
+            eventData.expanded === false &&
+            eventData.text.length >= maxLengthOfCardText
+          "
+        >
+          {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
         </q-card-section>
-        <q-card-section class="card-text" v-else>
-          {{ mergeText(eventData) }}
+        <q-card-section
+          class="card-text"
+          v-else-if="eventData.expanded === false"
+        >
+          {{ eventData.text }}
         </q-card-section>
+        <div v-else>
+          <q-card-section class="card-text">
+            {{ eventData.text }}
+          </q-card-section>
+          <div class="row justify-center items-center q-px-md">
+            <div class="col-10">
+              {{ timeAgo }}
+            </div>
+            <div class="col text-right">
+              <div class="row no-wrap">
+                <q-btn
+                  class="col"
+                  v-if="eventData.expanded === true"
+                  flat
+                  icon="fas fa-eye"
+                  color="accent"
+                  @click="editEvent"
+                ></q-btn>
+                <q-btn
+                  class="col"
+                  v-if="eventData.expanded === true"
+                  flat
+                  icon="edit"
+                  color="accent"
+                  @click="editEvent"
+                ></q-btn>
+              </div>
+            </div>
+          </div>
+        </div>
       </q-item>
     </q-card>
   </div>
@@ -43,11 +79,13 @@
       
     
    <script>
+import BaseExpandableButton from "../ui/baseExpandableButton.vue";
 //import TimeAgo from "vue3-timeago";
 
 export default {
   name: "eventCard",
   components: {
+    BaseExpandableButton,
     //TimeAgo,
   },
   props: {
@@ -55,27 +93,39 @@ export default {
   },
   data() {
     return {
-      expanded: false,
-      maxLengthOfCardText: 120,
+      maxLengthOfCardText: 90,
+      timeAgo: "4:20 pm",
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
   },
+  /*
+  computed: {
+    expanded: {
+      get() {
+        return this.$store.state.data.eventData.expanded;
+      },
+      set(value) {
+        this.$store.commit("data/updateExpanded", value);
+      },
+    },
+  }, */
+
   methods: {
+    expand() {
+      this.$store.commit("data/updateExpandedByEventID", this.eventData.id);
+    },
     mergeText(eventData) {
       let output = eventData.text;
       // check if text is empty; if so show title
       if (eventData.text == "") {
         output = eventData.title;
         // später löschen, nur zum testen
-        output = this.lorem;
+        //output = this.lorem;
       }
-      console.log([output][0]);
+      //console.log([output][0]);
       return [output][0];
     },
-  },
-  setExpanded() {
-    // to set the expanded status from parent
   },
 };
 </script>

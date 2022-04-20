@@ -28,13 +28,11 @@
         <div class="row justify-center items-center">
           <div class="col-6 eventTitle text-left text-secondary">EVENTS</div>
           <div class="col-6 eventchangeViewButton text-right">
-            <q-btn
-              class="col eventchangeViewButton"
-              flat
-              :icon="eventViewerIcon"
-              color="accent"
-              @click="changeViewForEventBubbles"
-            ></q-btn>
+            <base-expandable-button
+              class="col"
+              @expandMore="expandMore"
+              @expandLess="expandLess"
+            ></base-expandable-button>
           </div>
         </div>
         <!-- EVENT BUBBLES VIEWER -->
@@ -57,6 +55,7 @@
 <script>
 import eventBubbles from "../../components/landing/eventBubbles.vue";
 import diaryPanel from "../../components/diary/diaryPanel.vue";
+import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
 
 export default {
   name: "diary",
@@ -81,17 +80,19 @@ export default {
   components: {
     eventBubbles,
     diaryPanel,
+    BaseExpandableButton,
   },
   methods: {
-    changeViewForEventBubbles() {
-      if (this.eventViewerIcon === "expand_more") {
-        console.log("expanding now!");
-        this.heightForScrollArea = "height: 700px";
-        this.eventViewerIcon = "expand_less";
-      } else {
-        this.heightForScrollArea = "height: 175px";
-        this.eventViewerIcon = "expand_more";
-      }
+    expandMore() {
+      this.toggleExpansedStatusOfAllEvents(true);
+      this.heightForScrollArea = "height: 700px";
+    },
+    expandLess() {
+      this.heightForScrollArea = "height: 175px";
+      this.toggleExpansedStatusOfAllEvents(false);
+    },
+    toggleExpansedStatusOfAllEvents(expansedStatus) {
+      this.$store.commit("data/setExpandedStatusOfEvents", expansedStatus);
     },
   },
 };

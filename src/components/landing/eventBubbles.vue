@@ -24,7 +24,7 @@ export default {
   computed: {
     events() {
       // Javascript-Funktion zum Filtern von Arrays
-      console.log("bup: ", this.$store.state.data.events.slice());
+      console.log("[Events in store] ", this.$store.state.data.events.slice());
       return this.$store.state.data.events.slice().reverse();
     },
   },

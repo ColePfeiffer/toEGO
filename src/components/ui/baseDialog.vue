@@ -86,13 +86,6 @@ export default {
       this.$emit("save");
     },
   },
-
-  created() {
-    console.log("BD created");
-  },
-  mounted() {
-    console.log("BD mounted");
-  },
   computed: {
     // a computed getter
     setStyle() {
