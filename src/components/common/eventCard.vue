@@ -24,9 +24,10 @@
           </div>
         </q-item-section>
       </q-item>
-
       <q-separator class="card-separator" />
-      <q-item>
+
+      <div class="q-pa-sm">
+        <!-- view when not expanded + shortened text -->
         <q-card-section
           class="card-text"
           v-if="
@@ -36,43 +37,47 @@
         >
           {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
         </q-card-section>
+        <!-- view when not expanded -->
         <q-card-section
           class="card-text"
           v-else-if="eventData.expanded === false"
         >
           {{ eventData.text }}
         </q-card-section>
+        <!-- view when expanded -->
         <div v-else>
           <q-card-section class="card-text">
             {{ eventData.text }}
           </q-card-section>
-          <div class="row justify-center items-center q-px-md">
-            <div class="col-10">
-              {{ timeAgo }}
-            </div>
-            <div class="col text-right">
-              <div class="row no-wrap">
-                <q-btn
-                  class="col"
-                  v-if="eventData.expanded === true"
-                  flat
-                  icon="fas fa-eye"
-                  color="accent"
-                  @click="editEvent"
-                ></q-btn>
-                <q-btn
-                  class="col"
-                  v-if="eventData.expanded === true"
-                  flat
-                  icon="edit"
-                  color="accent"
-                  @click="editEvent"
-                ></q-btn>
+          <q-card-section class="q-py-xs">
+            <div class="row justify-between items-center">
+              <div class="col-3">
+                {{ timeAgo }}
+              </div>
+              <div class="col-3">
+                <div class="row no-wrap">
+                  <q-btn
+                    class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="fas fa-eye"
+                    color="accent"
+                    @click="editEvent"
+                  ></q-btn>
+                  <q-btn
+                    class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="edit"
+                    color="accent"
+                    @click="editEvent"
+                  ></q-btn>
+                </div>
               </div>
             </div>
-          </div>
+          </q-card-section>
         </div>
-      </q-item>
+      </div>
     </q-card>
   </div>
 </template>
