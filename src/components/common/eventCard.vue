@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-card class="my-card" flat bordered>
+    <q-card class="my-card shadow-3">
       <!-- Mood, Title, Expand Button -->
       <q-item>
         <!-- mood emoji -->

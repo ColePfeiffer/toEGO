@@ -40,11 +40,11 @@
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
           <eventBubbles></eventBubbles>
         </q-scroll-area>
-        <q-separator color="secondary" class="q-my-xs" />
+        <q-separator color="secondary" class="q-my-md" />
       </div>
       <div class="col q-pa-md">
         <!-- DIARY SELECTION -->
-        <diaryPanel class="q-pt-xs"></diaryPanel>
+        <diaryPanel class="q-pt-xs secondary"></diaryPanel>
       </div>
     </div>
     <!-- 2 -->

@@ -109,12 +109,12 @@ export default {
       var style = {};
       if (this.hideBordersOnInit) {
         if (this.panelsSetToVisible) {
-          style = { border: "1px solid black" };
+          style = { border: "1px solid  var(--q-primary)" };
         } else {
           style = { border: "none" };
         }
       } else {
-        style = { border: "1px solid black" };
+        style = { border: "1px solid var(--q-accent)" };
       }
       return style;
     },

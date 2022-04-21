@@ -1,5 +1,6 @@
 <template>
   <basePanelWithButtons
+    class="secondary"
     :options="options"
     :names="names"
     :hideBordersOnInit="hideBordersOnInit"
@@ -26,12 +27,35 @@
       </div>
 
       <div class="column items-center">
-        <div class="col text-center q-pt-md">What did go well today?</div>
-        <div class="col">_________________</div>
-        <div class="col text-center">What can I do differently tomorrow?</div>
-        <div class="col">_________________</div>
-        <div class="col text-center">I am grateful for...</div>
-        <div class="col">_________________</div>
+        <div class="q-mt-sm full-width">
+          <q-input
+            v-model="text"
+            filled
+            autogrow
+            label="What did go well today?"
+            stack-label
+          />
+        </div>
+
+        <div class="q-mt-sm full-width">
+          <q-input
+            v-model="text"
+            filled
+            autogrow
+            label="What can I do differently tomorrow?"
+            stack-label
+          />
+        </div>
+
+        <div class="q-mt-sm full-width">
+          <q-input
+            v-model="text"
+            filled
+            autogrow
+            label="I am grateful for.."
+            stack-label
+          />
+        </div>
       </div>
     </template>
     <template v-slot:panelRightSlot>
@@ -101,4 +125,3 @@ export default {
   },
 };
 </script>
-
