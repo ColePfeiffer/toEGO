@@ -9,72 +9,12 @@
     :buttonRightStyle="simplifiedStyle"
   >
     <template v-slot:panelLeftSlot>
-      <div class="row justify-end">
-        <q-btn
-          class="col=1"
-          flat
-          icon="fas fa-folder-open"
-          color="secondary"
-        ></q-btn>
-        <q-select
-          dense
-          borderless
-          v-model="statusTemplateModel"
-          :options="statusTemplateOptions"
-          label="templates"
-        >
-        </q-select>
-      </div>
-
-      <div class="column items-center">
-        <div class="q-mt-sm full-width">
-          <q-input
-            v-model="text"
-            filled
-            autogrow
-            label="What did go well today?"
-            stack-label
-          />
-        </div>
-
-        <div class="q-mt-sm full-width">
-          <q-input
-            v-model="text"
-            filled
-            autogrow
-            label="What can I do differently tomorrow?"
-            stack-label
-          />
-        </div>
-
-        <div class="q-mt-sm full-width">
-          <q-input
-            v-model="text"
-            filled
-            autogrow
-            label="I am grateful for.."
-            stack-label
-          />
-        </div>
-      </div>
+      <q-card class="editorCard shadow-0 text-justify">
+        <q-card-section v-html="editor" />
+      </q-card>
     </template>
+    <!-- right slot -->
     <template v-slot:panelRightSlot>
-      <div class="row justify-end">
-        <q-btn
-          class="col=1"
-          flat
-          icon="fas fa-folder-open"
-          color="secondary"
-        ></q-btn>
-        <q-select
-          dense
-          borderless
-          v-model="statusTemplateModel"
-          :options="statusTemplateOptions"
-          label="templates"
-        >
-        </q-select>
-      </div>
       <div class="column">
         <div class="col text-left">Overall Mood</div>
         <div class="col text-center">O O O O O</div>
@@ -91,13 +31,15 @@
 import basePanelWithButtons from "../ui/basePanelWithButtons.vue";
 
 export default {
-  name: "diaryPanel",
+  name: "diaryPanelView",
   components: {
     basePanelWithButtons,
   },
   emits: ["scroll"],
   data() {
     return {
+      editor:
+        "<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
       statusTemplateOptions: ["default", "gratitude"],
       options: [
@@ -125,3 +67,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.test {
+  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.editorCard {
+  font-size: 12.5px;
+  background-color: rgba(255, 255, 255, 0);
+}
+</style>

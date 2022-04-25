@@ -56,7 +56,7 @@
 
 <script>
 import eventBubbles from "../../components/landing/eventBubbles.vue";
-import diaryPanel from "../../components/diary/diaryPanel.vue";
+import diaryPanel from "../../components/diary/diaryPanelEdit.vue";
 
 export default {
   name: "diary",

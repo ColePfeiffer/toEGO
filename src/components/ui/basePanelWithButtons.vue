@@ -65,6 +65,17 @@
 </template>
 
 <script>
+/*
+Two Panels, selectable via buttons. Buttons change color, depending on isClicked-Status. 
+
+this is gonna take care of border settings. right now its true, false. either always visible, or hideable. 
+borderStatus      = "alwaysBorders" 
+                  = "dontShowOnInitHideable"
+                  = "noBorders"
+if true, borders won't be shown until a button is clicked
+
+
+*/
 import baseButton from "./baseButton.vue";
 
 export default {
@@ -114,7 +125,16 @@ export default {
           style = { border: "none" };
         }
       } else {
-        style = { border: "1px solid var(--q-accent)" };
+        //style = { border: "1px solid var(--q-secondary)" };
+        style = {
+          "border-top": "1px solid var(--q-secondary)",
+          //"border-top": "hidden",
+          "border-left": "hidden",
+          "border-right": "hidden",
+          "border-bottom": "hidden",
+          "border-bottom": "1px solid var(--q-secondary)",
+          //border: "1px solid var(--q-secondary)",
+        };
       }
       return style;
     },

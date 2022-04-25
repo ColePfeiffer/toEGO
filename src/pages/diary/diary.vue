@@ -1,15 +1,16 @@
 <template>
   <q-page>
-    <div class="bookmark"></div>
+    <div class="bookmark" v-if="viewingMode === 'view'"></div>
     <div class="column">
       <!-- DAY SELECTION -->
-      <div class="col q-py-md">
+      <div class="col q-py-md q-pt-lg">
         <div class="row justify-center text-center">
           <q-btn
             class="col-3"
             flat
             icon="keyboard_arrow_left"
             color="secondary"
+            @click="changeViewMode('view')"
           ></q-btn>
           <div class="column" style="margin-top: 5.5px">
             <div class="col text-secondary">{{ day }}</div>
@@ -20,13 +21,17 @@
             flat
             icon="keyboard_arrow_right"
             color="secondary"
+            @click="changeViewMode('edit')"
           ></q-btn>
         </div>
       </div>
       <!-- EVENT SELECTION -->
-      <div class="col q-px-md q-ma-md">
+      <div class="col q-px-md q-pt-lg">
+        <!-- Title, Button Row -->
         <div class="row justify-center items-center">
+          <!-- Title -->
           <div class="col-6 eventTitle text-left text-secondary">EVENTS</div>
+          <!-- Button -->
           <div class="col-6 eventchangeViewButton text-right">
             <base-expandable-button
               class="col"
@@ -35,16 +40,19 @@
             ></base-expandable-button>
           </div>
         </div>
-        <!-- EVENT BUBBLES VIEWER -->
-        <q-separator color="secondary" class="q-my-xs" />
+        <q-separator color="secondary" />
+        <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <eventBubbles></eventBubbles>
+          <eventBubbles class="test"></eventBubbles>
         </q-scroll-area>
-        <q-separator color="secondary" class="q-my-md" />
       </div>
-      <div class="col q-pa-md">
+      <div>
         <!-- DIARY SELECTION -->
-        <diaryPanel class="q-pt-xs secondary"></diaryPanel>
+        <diaryPanelEdit
+          v-if="viewingMode === 'edit'"
+          class="q-pt-xs secondary"
+        ></diaryPanelEdit>
+        <diaryPanelView v-else></diaryPanelView>
       </div>
     </div>
     <!-- 2 -->
@@ -54,13 +62,15 @@
 
 <script>
 import eventBubbles from "../../components/landing/eventBubbles.vue";
-import diaryPanel from "../../components/diary/diaryPanel.vue";
+import diaryPanelEdit from "../../components/diary/diaryPanelEdit.vue";
+import diaryPanelView from "../../components/diary/diaryPanelView.vue";
 import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
 
 export default {
   name: "diary",
   data() {
     return {
+      viewingMode: "edit",
       day: "TODAY",
       date: "13/02/2021",
       eventCounter: "< 1/2 >",
@@ -79,10 +89,16 @@ export default {
   },
   components: {
     eventBubbles,
-    diaryPanel,
+    diaryPanelEdit,
+    diaryPanelView,
     BaseExpandableButton,
   },
   methods: {
+    changeViewMode(mode) {
+      console.log("lol");
+      console.log(mode);
+      this.viewingMode = mode;
+    },
     expandMore() {
       this.toggleExpansedStatusOfAllEvents(true);
       this.heightForScrollArea = "height: 700px";
@@ -99,6 +115,8 @@ export default {
 </script>
 
 <style scoped>
+.test :deep(.q-card) {
+}
 .alignHeight {
   vertical-align: middle;
 }

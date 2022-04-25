@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-card class="my-card shadow-3">
+    <q-card class="my-card shadow-3 text-justify">
       <!-- Mood, Title, Expand Button -->
       <q-item>
         <!-- mood emoji -->
@@ -35,7 +35,7 @@
 
       <q-separator class="card-separator" />
       <!-- Text, Extras -->
-      <div class="q-pa-sm">
+      <div class="q-pa-sm" style="min-height: 80px">
         <!-- view when not expanded + shortened text -->
         <q-card-section
           class="card-text"
@@ -46,6 +46,7 @@
         >
           {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
         </q-card-section>
+
         <!-- view when not expanded -->
         <q-card-section
           class="card-text"
