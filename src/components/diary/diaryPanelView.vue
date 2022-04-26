@@ -9,9 +9,20 @@
     :buttonRightStyle="simplifiedStyle"
   >
     <template v-slot:panelLeftSlot>
-      <q-card class="editorCard shadow-0 text-justify">
-        <q-card-section v-html="editor" />
-      </q-card>
+      <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+        <q-card class="editorCard shadow-0 text-justify">
+          <q-card-section v-html="editor" />
+        </q-card>
+      </q-scroll-area>
+      <div class="row justify-end">
+        <q-btn
+          class="col=1"
+          flat
+          icon="fas fa-edit"
+          color="secondary"
+          @click="changeView('edit')"
+        ></q-btn>
+      </div>
     </template>
     <!-- right slot -->
     <template v-slot:panelRightSlot>
@@ -35,9 +46,10 @@ export default {
   components: {
     basePanelWithButtons,
   },
-  emits: ["scroll"],
+  emits: ["scroll", "changeView"],
   data() {
     return {
+      heightForScrollArea: "height: 350px",
       editor:
         "<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
@@ -63,6 +75,9 @@ export default {
   methods: {
     scroll(offset) {
       this.$emit("scroll", offset);
+    },
+    changeView(viewMode) {
+      this.$emit("change-view", viewMode);
     },
   },
 };

@@ -10,7 +10,6 @@
             flat
             icon="keyboard_arrow_left"
             color="secondary"
-            @click="changeViewMode('view')"
           ></q-btn>
           <div class="column" style="margin-top: 5.5px">
             <div class="col text-secondary">{{ day }}</div>
@@ -21,7 +20,6 @@
             flat
             icon="keyboard_arrow_right"
             color="secondary"
-            @click="changeViewMode('edit')"
           ></q-btn>
         </div>
       </div>
@@ -51,8 +49,9 @@
         <diaryPanelEdit
           v-if="viewingMode === 'edit'"
           class="q-pt-xs secondary"
+          @change-view="changeViewMode"
         ></diaryPanelEdit>
-        <diaryPanelView v-else></diaryPanelView>
+        <diaryPanelView @change-view="changeViewMode" v-else></diaryPanelView>
       </div>
     </div>
     <!-- 2 -->

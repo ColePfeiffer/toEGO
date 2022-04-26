@@ -9,12 +9,22 @@
     :buttonRightStyle="simplifiedStyle"
   >
     <template v-slot:panelLeftSlot>
-      <div>
+      <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
         <q-editor
           class="editor shadow-3 text-justify"
           v-model="editor"
-          min-height="5rem"
+          min-height="17rem"
         />
+      </q-scroll-area>
+      <div class="row justify-end">
+        <q-btn
+          class="col=1"
+          flat
+          icon="fas fa-angle-left"
+          color="secondary"
+          @click="changeView('view')"
+        ></q-btn>
+        <q-btn class="col=1" flat icon="fas fa-save" color="secondary"></q-btn>
       </div>
     </template>
     <!-- right slot -->
@@ -55,9 +65,10 @@ export default {
   components: {
     basePanelWithButtons,
   },
-  emits: ["scroll"],
+  emits: ["scroll", "change-view", "save-changes"],
   data() {
     return {
+      heightForScrollArea: "height: 350px",
       editor:
         "<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
@@ -83,6 +94,12 @@ export default {
   methods: {
     scroll(offset) {
       this.$emit("scroll", offset);
+    },
+    changeView(viewMode) {
+      this.$emit("change-view", viewMode);
+    },
+    saveChanges() {
+      //...
     },
   },
 };
