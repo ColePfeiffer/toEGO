@@ -2,6 +2,7 @@
   <q-page>
     <div class="bookmark" v-if="viewingMode === 'view'"></div>
     <div class="column">
+      viwp: <timeago :since="new Date('1995-12-17T03:24:00')"></timeago>
       <!-- DAY SELECTION -->
       <div class="col q-py-md q-pt-lg">
         <div class="row justify-center text-center">
@@ -10,16 +11,18 @@
             flat
             icon="keyboard_arrow_left"
             color="secondary"
+            @click="subtractFromDate"
           ></q-btn>
           <div class="column" style="margin-top: 5.5px">
-            <div class="col text-secondary">{{ day }}</div>
-            <div class="col text-accent">{{ date }}</div>
+            <div class="col text-secondary">{{ getDay }}</div>
+            <div class="col text-accent">{{ getDate }}</div>
           </div>
           <q-btn
             class="col-3"
             flat
             icon="keyboard_arrow_right"
             color="secondary"
+            @click="addToDate"
           ></q-btn>
         </div>
       </div>
@@ -64,6 +67,7 @@ import eventBubbles from "../../components/landing/eventBubbles.vue";
 import diaryPanelEdit from "../../components/diary/diaryPanelEdit.vue";
 import diaryPanelView from "../../components/diary/diaryPanelView.vue";
 import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
+import { date } from "quasar";
 
 export default {
   name: "diary",
@@ -92,7 +96,80 @@ export default {
     diaryPanelView,
     BaseExpandableButton,
   },
+  computed: {
+    getCurrentEvent() {
+      return 0;
+    },
+
+    getDate() {
+      let timeStamp = Date.now();
+      return timeStamp;
+    },
+
+    getDay() {
+      // is current date in between dateFrom and dateTo?
+      const dateFrom = new Date();
+      const dateTo = new Date();
+
+      //const date1 = new Date(2017, 2, 5);
+      let today = Date.now();
+      let yesterday = date.subtractFromDate(Date.now(), { days: 1 });
+      let fewDaysAgo = date.subtractFromDate(Date.now(), { days: 3 });
+      let lastWeek = date.subtractFromDate(Date.now(), { days: 7 });
+      let lastMonth = date.subtractFromDate(Date.now(), { months: 1 });
+      let someTimeAgo = date.subtractFromDate(Date.now(), {
+        months: 1,
+        days: 25,
+      });
+
+      let unit = "day";
+
+      // today
+      if (date.isSameDate(this.getDate, today, unit)) {
+        // true when date1 and date2's are on the same day
+        console.log("same day!");
+        return "today";
+        // yesterday
+      } else if (date.isSameDate(this.getDate, yesterday, unit)) {
+        console.log("yesterday");
+        return "yesterday";
+      } else {
+        return "meh";
+      }
+
+      //let newDate = new Date(2017, 2, 7);
+      // today
+      // if getDate is today =>
+      // Date.now();
+      // yesterday
+      //dateFrom = Date.now().subtractFromDate(newDate, { days: 7, months: 1 });
+      //dateTo = Date.now().addToDate(newDate, { days: 7, months: 1 });
+      // few days ago
+      // last week
+      // last month
+      // some time ago
+
+      /*
+            // if you only care about comparing dates (year/month/day, regardless of time)
+      // then you could tip isBetweenDates() about it so it can perform best:
+      
+if (
+        date.isBetweenDates(dateTarget, dateFrom, dateTo, { onlyDate: true })
+      ) {
+        // Do something with dateTarget
+      }
+      */
+    },
+  },
   methods: {
+    subtractFromDate() {},
+
+    addToDate() {},
+    formatDate(date) {
+      let formattedString = date.formatDate(timeStamp, "Do MMMM YYYY");
+      return formattedString;
+    },
+
     changeViewMode(mode) {
       console.log("lol");
       console.log(mode);

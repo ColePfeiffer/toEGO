@@ -32,7 +32,7 @@
           :options="[
             { label: '', value: 'home', icon: 'visibility' },
             { label: '', value: 'diary', icon: 'book' },
-            { label: '', value: 'items', icon: 'view_comfy' },
+            { label: '', value: 'items', icon: 'fas fa-calendar-alt' },
             { label: '', value: 'settings', icon: 'settings' },
           ]"
         />
