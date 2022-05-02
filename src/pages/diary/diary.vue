@@ -2,7 +2,6 @@
   <q-page>
     <div class="bookmark" v-if="viewingMode === 'view'"></div>
     <div class="column">
-      viwp: <timeago :since="new Date('1995-12-17T03:24:00')"></timeago>
       <!-- DAY SELECTION -->
       <div class="col q-py-md q-pt-lg">
         <div class="row justify-center text-center">
@@ -16,6 +15,10 @@
           <div class="column" style="margin-top: 5.5px">
             <div class="col text-secondary">{{ getDay }}</div>
             <div class="col text-accent">{{ getDate }}</div>
+            sfdfds
+            <timeago :since="new Date('1995-12-17T03:24:00')"></timeago>
+
+            sddffd
           </div>
           <q-btn
             class="col-3"

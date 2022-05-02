@@ -7,6 +7,7 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 const ESLintPlugin = require("eslint-webpack-plugin");
+const { default: timeAgoBoot } = require("src/boot/timeAgoBoot");
 
 module.exports = function (/* ctx */) {
   return {
@@ -19,7 +20,7 @@ module.exports = function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: [],
+    boot: [timeAgoBoot],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
