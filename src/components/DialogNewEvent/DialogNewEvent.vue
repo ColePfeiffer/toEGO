@@ -150,7 +150,7 @@ export default {
         this.mood = "las la-meh-blank";
       }
       console.log("mood: ", this.mood);
-      this.$store.commit("data/addEventToEvents");
+      this.$store.commit("data/addEventToEvents", new Date());
       this.closeDialog();
     },
   },

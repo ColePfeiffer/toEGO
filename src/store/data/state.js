@@ -11,6 +11,7 @@ export default function () {
       editor: "No entry here yet.",
       events: [],
     },
+    diaryEntryForCurrentDay: "",
     eventData: {
       id: "",
       mood: "las la-meh-blank",

@@ -78,6 +78,10 @@ export default {
   components: {
     DialogNewEvent,
   },
+  created(){
+    console.log("created bitch");
+    this.$store.commit("data/initiateDay");
+  },
   methods: {
     toggleLeftDialog() {
       this.drawer = !this.drawer;

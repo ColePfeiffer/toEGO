@@ -2,6 +2,7 @@ import { Dialog } from "quasar";
 import { uid } from "quasar";
 import state from "./state";
 import shared from "../../shared.js";
+import { date } from "quasar";
 
 export const updateDrawerState = (state, opened) => {
   state.drawerState = opened;
@@ -35,6 +36,25 @@ export const setExpandedStatusOfEvents = (state, bool) => {
   });
 };
 
+export const initiateDay = (state) => {
+  let currentDate = new Date();
+  state.diaryEntries.forEach((diaryEntry) => {
+    // check if there is an entry for this day
+    if (date.isSameDate(diaryEntry.date, currentDate, "day")) {
+      state.diaryEntryForCurrentDay = diaryEntry;
+      // no entry exists yet, so a temp one is created
+    } else {
+      state.diaryEntryForCurrentDay = {
+        id: "temp",
+        date: new Date(),
+        editor: "Nothing here yet!",
+        events: [],
+      };
+    }
+  });
+  console.log(state.diaryEntryForCurrentDay);
+};
+
 export const updateTitle = (state, value) => {
   state.eventData.title = value;
 };
@@ -63,14 +83,41 @@ export const addEntryToDiaryEntries = (state, entry) => {
   console.log("saved entry");
 };
 
-export const addEventToEvents = (state) => {
-  console.log("Adding Date and ID to event.");
-  state.eventData.createdOn = new Date();
-  state.eventData.id = uid();
-  console.log("Adding Event to Events-List.");
+export const addEventToEvents = (state, createdOn) => {
+  let newEntry = "";
 
-  // später in die DB!
-  state.events.push(state.eventData);
+  // setting date and ID for the new event
+  state.eventData.createdOn = createdOn;
+  state.eventData.id = uid();
+
+  /*
+  let diaryEntryInStore = state.diaryEntries.find((diaryEntry) =>
+    date.isSameDate(diaryEntry.date, createdOn, "day")
+  );
+  console.log("1) diaryEntryInStore: ", diaryEntryInStore);
+*/
+  let entryFound = false;
+  for (let i = 0; i < state.diaryEntries.length; i++) {
+    let diaryEntry = state.diaryEntries[i];
+    console.log("current diaryEntry in loop: ", diaryEntry);
+    if (date.isSameDate(diaryEntry.date, createdOn, "day")) {
+      console.log("diaryEntry found for this day. Adding event.....");
+      diaryEntry.events.push(state.eventData);
+      entryFound = true;
+      break;
+    }
+  }
+  if (entryFound === false) {
+    newEntry = {
+      id: uid(),
+      date: createdOn,
+      editor: "biepo",
+      events: [],
+    };
+    newEntry.events.push(state.eventData);
+    state.diaryEntries.push(newEntry);
+    console.log("new entry created and added.");
+  }
   console.log("Showing Events: ", state.events);
 };
 
