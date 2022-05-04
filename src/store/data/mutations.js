@@ -39,6 +39,10 @@ export const updateTitle = (state, value) => {
   state.eventData.title = value;
 };
 
+export const updateDiaryEntry = (state, updatedDiaryEntry) => {
+  state.currentDiaryEntry = updatedDiaryEntry;
+};
+
 export const updateText = (state, value) => {
   state.eventData.text = value;
 };
@@ -51,6 +55,12 @@ export const updateExpandedByEventID = (state, eventID) => {
   let event = state.events.find((event) => event.id === eventID);
   let newExpandedStatus = !event.expanded;
   event.expanded = newExpandedStatus;
+};
+
+export const addEntryToDiaryEntries = (state, entry) => {
+  //state.eventData.id = uid();
+  state.diaryEntries.push(entry);
+  console.log("saved entry");
 };
 
 export const addEventToEvents = (state) => {

@@ -6,7 +6,7 @@
     <q-page-container>
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
-          <div class="col-12 col-sm-10 col-md-8 col-xl-3">
+          <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
             <router-view
               v-if="$store.state.data.newEventDialogIsOpen == false"
             />

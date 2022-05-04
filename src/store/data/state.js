@@ -1,9 +1,16 @@
+import { date } from "quasar";
 export default function () {
   return {
     modalVisible: false,
     modalComponent: "",
     buttonClicked: 0,
     lastButtonClicked: "",
+    currentDiaryEntry: {
+      id: "",
+      date: "",
+      editor: "No entry here yet.",
+      events: [],
+    },
     eventData: {
       id: "",
       mood: "las la-meh-blank",
@@ -26,7 +33,32 @@ export default function () {
     debug: true,
     phone: false,
     newEventDialogIsOpen: false,
-
+    diaryEntries: [
+      {
+        id: "1",
+        date: date.subtractFromDate(new Date(), { days: 2 }),
+        editor: "I went to the store.",
+        events: [
+          {
+            createdBy: "me",
+            createdOn: date.subtractFromDate(new Date(), { days: 2 }),
+            expanded: false,
+            id: "10314a46-915b-4217-8891-a17497727f7f",
+            methods: [],
+            mood: "las la-grin",
+            tags: "",
+            text: "bop",
+            title: "biep",
+          },
+        ],
+      },
+      {
+        id: "2",
+        date: date.subtractFromDate(new Date(), { days: 1 }),
+        editor: "Love working.",
+        events: "",
+      },
+    ], // diary entries go in here
     banana: true,
     events: [],
     /*

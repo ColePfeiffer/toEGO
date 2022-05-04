@@ -3,29 +3,30 @@
     <div class="bookmark" v-if="viewingMode === 'view'"></div>
     <div class="column">
       <!-- DAY SELECTION -->
-      <div class="col q-py-md q-pt-lg">
-        <div class="row justify-center text-center">
+      <div class="col q-py-md q-pt-lg maxHeight">
+        <div class="row justify-center text-center ">
           <q-btn
+          v-if="viewingMode === 'view'"
             class="col-3"
             flat
             icon="keyboard_arrow_left"
             color="secondary"
-            @click="subtractFromDate"
+            @click="subtractFromDate(1)"
           ></q-btn>
-          <div class="column" style="margin-top: 5.5px">
-            <div class="col text-secondary">{{ getDay }}</div>
-            <div class="col text-accent">{{ getDate }}</div>
-            sfdfds
-            <timeago :since="new Date('1995-12-17T03:24:00')"></timeago>
-
-            sddffd
+          <div class="col">
+<div class="column" style="margin-top: 5.5px">
+            <div class="col text-accent ">{{ formatDate(getDate) }}</div>
+            <div class="col text-secondary smallText">{{  getDay }}</div>
+          </div>
+          
           </div>
           <q-btn
+           v-if="viewingMode === 'view'"
             class="col-3"
             flat
             icon="keyboard_arrow_right"
             color="secondary"
-            @click="addToDate"
+            @click="addToDate(1)"
           ></q-btn>
         </div>
       </div>
@@ -47,7 +48,7 @@
         <q-separator color="secondary" />
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <eventBubbles class="test"></eventBubbles>
+          <eventBubbles class="test" :diaryEntry="getDiaryEntry"></eventBubbles>
         </q-scroll-area>
       </div>
       <div>
@@ -55,9 +56,10 @@
         <diaryPanelEdit
           v-if="viewingMode === 'edit'"
           class="q-pt-xs secondary"
+          :diaryEntry="getDiaryEntry" 
           @change-view="changeViewMode"
         ></diaryPanelEdit>
-        <diaryPanelView @change-view="changeViewMode" v-else></diaryPanelView>
+        <diaryPanelView @change-view="changeViewMode" @save-changes="saveChangesToEntry" :diaryEntry="getDiaryEntry" v-else></diaryPanelView>
       </div>
     </div>
     <!-- 2 -->
@@ -76,6 +78,7 @@ export default {
   name: "diary",
   data() {
     return {
+      getDate: new Date(),
       viewingMode: "edit",
       day: "TODAY",
       date: "13/02/2021",
@@ -103,78 +106,64 @@ export default {
     getCurrentEvent() {
       return 0;
     },
-
-    getDate() {
-      let timeStamp = Date.now();
-      return timeStamp;
+    getDiaryEntry() {
+      let baseEntry = { id: "NONE", editor: "No Entry yet."}
+      this.$store.state.data.diaryEntries.forEach(diaryEntry => {
+        console.log("date of diary entry: ", diaryEntry.date, "current date: ", this.getDate)
+        if (date.isSameDate(diaryEntry.date, this.getDate, "day")){
+          console.log("found entry");
+          baseEntry = diaryEntry;
+        }else{
+          console.log("no entry found");
+          console.log("entry: ", diaryEntry.editor)
+        }
+      });
+      return baseEntry;
     },
-
     getDay() {
-      // is current date in between dateFrom and dateTo?
-      const dateFrom = new Date();
-      const dateTo = new Date();
-
       //const date1 = new Date(2017, 2, 5);
       let today = Date.now();
       let yesterday = date.subtractFromDate(Date.now(), { days: 1 });
-      let fewDaysAgo = date.subtractFromDate(Date.now(), { days: 3 });
-      let lastWeek = date.subtractFromDate(Date.now(), { days: 7 });
-      let lastMonth = date.subtractFromDate(Date.now(), { months: 1 });
-      let someTimeAgo = date.subtractFromDate(Date.now(), {
-        months: 1,
-        days: 25,
-      });
-
       let unit = "day";
 
+      let diff = date.getDateDiff(this.getDate, Date.now(), unit);
+      console.log("diff: ", diff);
+      diff = diff * (-1);
       // today
       if (date.isSameDate(this.getDate, today, unit)) {
         // true when date1 and date2's are on the same day
         console.log("same day!");
         return "today";
-        // yesterday
       } else if (date.isSameDate(this.getDate, yesterday, unit)) {
         console.log("yesterday");
         return "yesterday";
-      } else {
-        return "meh";
+}        else {
+        return diff + " days ago";
       }
 
-      //let newDate = new Date(2017, 2, 7);
-      // today
-      // if getDate is today =>
-      // Date.now();
-      // yesterday
-      //dateFrom = Date.now().subtractFromDate(newDate, { days: 7, months: 1 });
-      //dateTo = Date.now().addToDate(newDate, { days: 7, months: 1 });
-      // few days ago
-      // last week
-      // last month
-      // some time ago
-
-      /*
-            // if you only care about comparing dates (year/month/day, regardless of time)
-      // then you could tip isBetweenDates() about it so it can perform best:
-      
-if (
-        date.isBetweenDates(dateTarget, dateFrom, dateTo, { onlyDate: true })
-      ) {
-        // Do something with dateTarget
-      }
-      */
     },
   },
   methods: {
-    subtractFromDate() {},
+    saveChangesToEntry(changeData){
+      this.$store.commit("data/updateDiaryEntry", changeData);
+      // if new entry
+      // if entry already exists
+      this.$store.commit("data/addEntryToDiaryEntries", entry);
+    },
+    subtractFromDate(days) {
+      this.getDate = date.subtractFromDate(this.getDate, { days: days });
+    },
 
-    addToDate() {},
-    formatDate(date) {
-      let formattedString = date.formatDate(timeStamp, "Do MMMM YYYY");
+    addToDate(days) {
+      this.getDate = date.addToDate(this.getDate, { days: days });
+    },
+
+    formatDate(rawDate) {
+      let formattedString = date.formatDate(rawDate, "MMMM  Do, YYYY");
       return formattedString;
     },
 
     changeViewMode(mode) {
-      console.log("lol");
       console.log(mode);
       this.viewingMode = mode;
     },
@@ -189,11 +178,17 @@ if (
     toggleExpansedStatusOfAllEvents(expansedStatus) {
       this.$store.commit("data/setExpandedStatusOfEvents", expansedStatus);
     },
-  },
+}
 };
 </script>
 
 <style scoped>
+.maxHeight {
+  max-height: 80px;
+}
+.smallText{
+  font-size: 12.5px;
+}
 .test :deep(.q-card) {
 }
 .alignHeight {
