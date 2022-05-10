@@ -3,6 +3,7 @@ import { uid } from "quasar";
 import state from "./state";
 import shared from "../../shared.js";
 import { date } from "quasar";
+import getters from "./getters";
 
 export const updateDrawerState = (state, opened) => {
   state.drawerState = opened;
@@ -36,8 +37,11 @@ export const setExpandedStatusOfEvents = (state, bool) => {
   });
 };
 
+// if there is no
+// if there is an entry existing already, it gets set to that
 export const initiateDay = (state) => {
   let currentDate = new Date();
+
   state.diaryEntries.forEach((diaryEntry) => {
     // check if there is an entry for this day
     if (date.isSameDate(diaryEntry.date, currentDate, "day")) {
@@ -90,12 +94,6 @@ export const addEventToEvents = (state, createdOn) => {
   state.eventData.createdOn = createdOn;
   state.eventData.id = uid();
 
-  /*
-  let diaryEntryInStore = state.diaryEntries.find((diaryEntry) =>
-    date.isSameDate(diaryEntry.date, createdOn, "day")
-  );
-  console.log("1) diaryEntryInStore: ", diaryEntryInStore);
-*/
   let entryFound = false;
   for (let i = 0; i < state.diaryEntries.length; i++) {
     let diaryEntry = state.diaryEntries[i];

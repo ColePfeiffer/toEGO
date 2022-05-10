@@ -51,7 +51,7 @@
 
 <script>
 import DialogNewEvent from "../components/DialogNewEvent/DialogNewEvent.vue";
-
+import { date } from "quasar";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>
@@ -78,9 +78,11 @@ export default {
   components: {
     DialogNewEvent,
   },
-  created(){
+  created() {
     console.log("created bitch");
     this.$store.commit("data/initiateDay");
+    let selectedDate = new Date();
+    let test = this.$store.getters["data/getCurrentDiaryEntry"](selectedDate);
   },
   methods: {
     toggleLeftDialog() {
