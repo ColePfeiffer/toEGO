@@ -1,11 +1,7 @@
 import { date } from "quasar";
 
-export const getMethodById = (state, id) => {
-  console.log("trying my best");
-  return state.eventData.methods.find((method) => method.id === id);
-};
-
-export const getCurrentDiaryEntry = (state) => {
+// takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
+export const getDiaryEntryByDate = (state) => {
   return (selectedDate) => {
     let refToDiaryInStore = state.diaryEntries.find((diaryEntry) =>
       date.isSameDate(diaryEntry.date, selectedDate, "day")
@@ -19,6 +15,7 @@ export const getCurrentDiaryEntry = (state) => {
   };
 };
 
+// takes the method's ID as an argument and returns the matching method
 export const getMethodById2 = (state) => {
   return (id) => {
     console.log("trying my best", id);
@@ -27,8 +24,3 @@ export const getMethodById2 = (state) => {
     return state.eventData.methods.find((method) => method.id === id);
   };
 };
-
-/*
-export function someGetter (state) {
-}
-*/

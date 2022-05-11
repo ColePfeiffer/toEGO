@@ -79,10 +79,10 @@ export default {
     DialogNewEvent,
   },
   created() {
-    console.log("created bitch");
     this.$store.commit("data/initiateDay");
     let selectedDate = new Date();
-    let test = this.$store.getters["data/getCurrentDiaryEntry"](selectedDate);
+    let test = this.$store.getters["data/getDiaryEntryByDate"](selectedDate);
+    console.log("returned entry: ", test);
   },
   methods: {
     toggleLeftDialog() {

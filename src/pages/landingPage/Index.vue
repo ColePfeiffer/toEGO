@@ -2,7 +2,7 @@
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
     <q-separator color="primary" class="q-mb-sm" />
-    <eventBubbles class="col"></eventBubbles>
+    <eventBubbles :dateOfDiaryEntry="new Date()" class="col"></eventBubbles>
     <!-- Player Character -->
   </q-page>
 </template>
