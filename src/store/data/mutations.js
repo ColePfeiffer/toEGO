@@ -109,7 +109,7 @@ export const addEventToEvents = (state, createdOn) => {
     newEntry = {
       id: uid(),
       date: createdOn,
-      editor: "biepo",
+      editor: "just created this via an event",
       events: [],
     };
     newEntry.events.push(state.eventData);

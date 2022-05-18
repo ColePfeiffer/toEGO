@@ -2,7 +2,7 @@
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
     <q-separator color="primary" class="q-mb-sm" />
-    <eventBubbles :dateOfDiaryEntry="new Date()" class="col"></eventBubbles>
+    <eventBubbles :diaryEntry="getDiaryEntry" class="col"></eventBubbles>
     <!-- Player Character -->
   </q-page>
 </template>
@@ -19,8 +19,16 @@ export default {
     infoHeader,
     eventBubbles,
   },
+  computed: {
+    // get diary entry for today
+    getDiaryEntry() {
+      let diaryEntryRefForDate = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](new Date());
+      return diaryEntryRefForDate;
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

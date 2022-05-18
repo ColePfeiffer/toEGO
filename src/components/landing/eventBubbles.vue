@@ -1,6 +1,12 @@
 <template>
   <div>
+    <!-- no diary entry for this date doesn't exist yet -->
+    <div v-if="this.diaryEntry === undefined">No entry created yet.</div>
+    <!-- entry exists, but no events have been created -->
+    <div v-else-if="this.diaryEntry.events.length < 1">Nothing here yet!</div>
+    <!-- showing events for diary entry -->
     <div
+      v-else
       class="row items-center justify-center"
       v-for="event in events"
       :key="event.id"
@@ -16,52 +22,20 @@ import EventBubble from "../common/eventCard.vue";
 export default {
   name: "eventBubbles",
   props: {
-    dateOfDiaryEntry: Date,
+    diaryEntry: Object,
   },
   data() {
     return {};
   },
   created() {
-    console.log("eventbubbles: ", this.dateOfDiaryEntry);
+    console.log("eventbubbles: ", this.diaryEntry);
   },
   components: {
     EventBubble,
   },
   computed: {
-    events2() {
-      let entryForSelectedDate = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](this.dateOfDiaryEntry);
-      if (entryForSelectedDate != undefined) {
-      } else {
-        let = [
-          {
-            id: "",
-            mood: "las la-meh-blank",
-            title: "",
-            text: "",
-            tags: "",
-            createdOn: "",
-            createdBy: "me", // ref or id
-            expanded: false,
-            methods: [
-              {
-                id: 1,
-                radioButtonIsBeyondControl: "yes",
-                textFriendAdvice: "",
-                textWhatICanDo: "",
-              },
-              {},
-            ],
-          },
-        ];
-        return "undefined";
-      }
-    },
     events() {
-      // Javascript-Funktion zum Filtern von Arrays
-      console.log("[Events in store] ", this.$store.state.data.events.slice());
-      return this.$store.state.data.events.slice().reverse();
+      return this.diaryEntry.events.slice().reverse();
     },
   },
 };

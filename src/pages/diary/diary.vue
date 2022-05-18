@@ -4,9 +4,9 @@
     <div class="column">
       <!-- DAY SELECTION -->
       <div class="col q-py-md q-pt-lg maxHeight">
-        <div class="row justify-center text-center ">
+        <div class="row justify-center text-center">
           <q-btn
-          v-if="viewingMode === 'view'"
+            v-if="viewingMode === 'view'"
             class="col-3"
             flat
             icon="keyboard_arrow_left"
@@ -14,14 +14,13 @@
             @click="subtractFromDate(1)"
           ></q-btn>
           <div class="col">
-<div class="column" style="margin-top: 5.5px">
-            <div class="col text-accent ">{{ formatDate(getDate) }}</div>
-            <div class="col text-secondary smallText">{{  getDay }}</div>
-          </div>
-          
+            <div class="column" style="margin-top: 5.5px">
+              <div class="col text-accent">{{ formatDate(getDate) }}</div>
+              <div class="col text-secondary smallText">{{ getDay }}</div>
+            </div>
           </div>
           <q-btn
-           v-if="viewingMode === 'view'"
+            v-if="viewingMode === 'view'"
             class="col-3"
             flat
             icon="keyboard_arrow_right"
@@ -53,13 +52,13 @@
       </div>
       <div>
         <!-- DIARY SELECTION -->
-        <diaryPanelEdit
-          v-if="viewingMode === 'edit'"
+        <diaryPanels
           class="q-pt-xs secondary"
-          :diaryEntry="getDiaryEntry" 
+          :diaryEntry="getDiaryEntry"
+          :viewingMode="viewingMode"
           @change-view="changeViewMode"
-        ></diaryPanelEdit>
-        <diaryPanelView @change-view="changeViewMode" @save-changes="saveChangesToEntry" :diaryEntry="getDiaryEntry" v-else></diaryPanelView>
+          @save-changes="saveChangesToEntry"
+        ></diaryPanels>
       </div>
     </div>
     <!-- 2 -->
@@ -69,8 +68,7 @@
 
 <script>
 import eventBubbles from "../../components/landing/eventBubbles.vue";
-import diaryPanelEdit from "../../components/diary/diaryPanelEdit.vue";
-import diaryPanelView from "../../components/diary/diaryPanelView.vue";
+import diaryPanels from "../../components/diary/diaryPanels.vue";
 import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
 import { date } from "quasar";
 
@@ -79,7 +77,7 @@ export default {
   data() {
     return {
       getDate: new Date(),
-      viewingMode: "edit",
+      viewingMode: "view",
       day: "TODAY",
       date: "13/02/2021",
       eventCounter: "< 1/2 >",
@@ -98,8 +96,7 @@ export default {
   },
   components: {
     eventBubbles,
-    diaryPanelEdit,
-    diaryPanelView,
+    diaryPanels,
     BaseExpandableButton,
   },
   computed: {
@@ -107,18 +104,10 @@ export default {
       return 0;
     },
     getDiaryEntry() {
-      let baseEntry = { id: "NONE", editor: "No Entry yet."}
-      this.$store.state.data.diaryEntries.forEach(diaryEntry => {
-        console.log("date of diary entry: ", diaryEntry.date, "current date: ", this.getDate)
-        if (date.isSameDate(diaryEntry.date, this.getDate, "day")){
-          console.log("found entry");
-          baseEntry = diaryEntry;
-        }else{
-          console.log("no entry found");
-          console.log("entry: ", diaryEntry.editor)
-        }
-      });
-      return baseEntry;
+      let diaryEntryRefForDate = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](this.getDate);
+      return diaryEntryRefForDate;
     },
     getDay() {
       //const date1 = new Date(2017, 2, 5);
@@ -128,7 +117,7 @@ export default {
 
       let diff = date.getDateDiff(this.getDate, Date.now(), unit);
       console.log("diff: ", diff);
-      diff = diff * (-1);
+      diff = diff * -1;
       // today
       if (date.isSameDate(this.getDate, today, unit)) {
         // true when date1 and date2's are on the same day
@@ -137,14 +126,13 @@ export default {
       } else if (date.isSameDate(this.getDate, yesterday, unit)) {
         console.log("yesterday");
         return "yesterday";
-}        else {
+      } else {
         return diff + " days ago";
       }
-
     },
   },
   methods: {
-    saveChangesToEntry(changeData){
+    saveChangesToEntry(changeData) {
       this.$store.commit("data/updateDiaryEntry", changeData);
       // if new entry
       // if entry already exists
@@ -178,7 +166,7 @@ export default {
     toggleExpansedStatusOfAllEvents(expansedStatus) {
       this.$store.commit("data/setExpandedStatusOfEvents", expansedStatus);
     },
-}
+  },
 };
 </script>
 
@@ -186,7 +174,7 @@ export default {
 .maxHeight {
   max-height: 80px;
 }
-.smallText{
+.smallText {
   font-size: 12.5px;
 }
 .test :deep(.q-card) {
