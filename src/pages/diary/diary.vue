@@ -14,9 +14,39 @@
             @click="subtractFromDate(1)"
           ></q-btn>
           <div class="col">
-            <div class="column" style="margin-top: 5.5px">
-              <div class="col text-accent">{{ formatDate(getDate) }}</div>
-              <div class="col text-secondary smallText">{{ getDay }}</div>
+            <div class="row justify-center items-center">
+              <div class="col">
+                <div class="column" style="margin-top: 5.5px">
+                  <div class="col text-accent">
+                    <q-btn
+                      class="datePickerButton"
+                      no-wrap
+                      no-caps
+                      flat
+                      icon-right="event"
+                      :label="formatDate(getDate)"
+                    >
+                      <q-popup-proxy
+                        cover
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="date">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-btn>
+                  </div>
+                  <div class="col text-secondary smallText">{{ getDay }}</div>
+                </div>
+              </div>
             </div>
           </div>
           <q-btn
@@ -79,7 +109,6 @@ export default {
       getDate: new Date(),
       viewingMode: "view",
       day: "TODAY",
-      date: "13/02/2021",
       eventCounter: "< 1/2 >",
       eventViewerIcon: "expand_more",
       heightForScrollArea: "height: 175px",
@@ -100,6 +129,14 @@ export default {
     BaseExpandableButton,
   },
   computed: {
+    date: {
+      get() {
+        return date.formatDate(this.getDate, "YYYY/MM/DD");
+      },
+      set(value) {
+        this.getDate = value;
+      },
+    },
     getCurrentEvent() {
       return 0;
     },
@@ -171,6 +208,9 @@ export default {
 </script>
 
 <style scoped>
+.datePickerButton {
+  .text-transform: lowercase;
+}
 .maxHeight {
   max-height: 80px;
 }
@@ -178,6 +218,10 @@ export default {
   font-size: 12.5px;
 }
 .test :deep(.q-card) {
+}
+
+.q-btn :deep(.q-icon) {
+  font-size: 1.2em;
 }
 .alignHeight {
   vertical-align: middle;

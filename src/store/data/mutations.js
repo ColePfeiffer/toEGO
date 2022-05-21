@@ -75,6 +75,24 @@ export const updateMood = (state, value) => {
   state.eventData.mood = value;
 };
 
+export const updateExpandedByEventID2 = (state, payload) => {
+  console.log(
+    "diaryEntryRef: ",
+    payload.diaryEntryRef,
+    "eventID: ",
+    payload.eventID
+  );
+
+  console.log("events: ", payload.diaryEntryRef.events);
+  let event = payload.diaryEntryRef.events.find(
+    (event) => event.id === payload.eventID
+  );
+
+  console.log("EVENT: ", event);
+  let newExpandedStatus = !event.expanded;
+  event.expanded = newExpandedStatus;
+};
+
 export const updateExpandedByEventID = (state, eventID) => {
   let event = state.events.find((event) => event.id === eventID);
   let newExpandedStatus = !event.expanded;
@@ -93,6 +111,7 @@ export const addEventToEvents = (state, createdOn) => {
   // setting date and ID for the new event
   state.eventData.createdOn = createdOn;
   state.eventData.id = uid();
+  state.eventData.expanded = false;
 
   let entryFound = false;
   for (let i = 0; i < state.diaryEntries.length; i++) {

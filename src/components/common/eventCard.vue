@@ -91,9 +91,8 @@
     </q-card>
   </div>
 </template>
-      
-    
-   <script>
+
+<script>
 import BaseExpandableButton from "../ui/baseExpandableButton.vue";
 //import TimeAgo from "vue3-timeago";
 
@@ -106,6 +105,7 @@ export default {
   props: {
     eventData: Object,
   },
+  emits: ["changeEventData"],
   data() {
     return {
       maxLengthOfCardText: 90,
@@ -128,7 +128,7 @@ export default {
 
   methods: {
     expand() {
-      this.$store.commit("data/updateExpandedByEventID", this.eventData.id);
+      this.$emit("changeEventData", this.eventData);
     },
     mergeText(eventData) {
       let output = eventData.text;
@@ -144,7 +144,7 @@ export default {
   },
 };
 </script>
-    
+
 <style scoped>
 .my-card {
 }
@@ -165,4 +165,3 @@ export default {
   background-color: rgba(157, 157, 213, 0.6);
 }
 </style>
-    
