@@ -80,7 +80,7 @@
           <eventBubbles class="test" :diaryEntry="getDiaryEntry"></eventBubbles>
         </q-scroll-area>
       </div>
-      <div>
+      <div v-if="isDiarySectionVisible">
         <!-- DIARY SELECTION -->
         <diaryPanels
           class="q-pt-xs secondary"
@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       getDate: new Date(),
+      isDiarySectionVisible: true,
       viewingMode: "view",
       day: "TODAY",
       eventCounter: "< 1/2 >",
@@ -150,30 +151,38 @@ export default {
       //const date1 = new Date(2017, 2, 5);
       let today = Date.now();
       let yesterday = date.subtractFromDate(Date.now(), { days: 1 });
+      let tomorrow = date.addToDate(Date.now(), { days: 1 });
       let unit = "day";
 
       let diff = date.getDateDiff(this.getDate, Date.now(), unit);
-      console.log("diff: ", diff);
       diff = diff * -1;
-      // today
+      // date.isSameDate returns true when date1 and date2 are on the same day
       if (date.isSameDate(this.getDate, today, unit)) {
-        // true when date1 and date2's are on the same day
-        console.log("same day!");
         return "today";
       } else if (date.isSameDate(this.getDate, yesterday, unit)) {
-        console.log("yesterday");
         return "yesterday";
+      } else if (date.isSameDate(this.getDate, tomorrow, unit)) {
+        return "tomorrow";
       } else {
+        if (diff < -1) {
+          return Math.abs(diff) + " days from now";
+        }
         return diff + " days ago";
       }
     },
   },
   methods: {
     saveChangesToEntry(changeData) {
-      this.$store.commit("data/updateDiaryEntry", changeData);
-      // if new entry
-      // if entry already exists
-      this.$store.commit("data/addEntryToDiaryEntries", entry);
+      console.log(changeData);
+      if (this.getDiaryEntry === undefined) {
+        this.$store.commit("data/addEntryToDiaryEntries", changeData);
+      } else {
+        let payload = {
+          diaryEntryRef: this.getDiaryEntry,
+          newData: changeData,
+        };
+        this.$store.commit("data/updateDiaryEntry", payload);
+      }
     },
     subtractFromDate(days) {
       this.getDate = date.subtractFromDate(this.getDate, { days: days });
@@ -189,19 +198,26 @@ export default {
     },
 
     changeViewMode(mode) {
-      console.log(mode);
       this.viewingMode = mode;
     },
     expandMore() {
       this.toggleExpansedStatusOfAllEvents(true);
-      this.heightForScrollArea = "height: 700px";
+      this.isDiarySectionVisible = false;
+      this.heightForScrollArea = "height: 650px";
     },
     expandLess() {
       this.heightForScrollArea = "height: 175px";
+
       this.toggleExpansedStatusOfAllEvents(false);
+      this.isDiarySectionVisible = true;
     },
-    toggleExpansedStatusOfAllEvents(expansedStatus) {
-      this.$store.commit("data/setExpandedStatusOfEvents", expansedStatus);
+    toggleExpansedStatusOfAllEvents(expansedState) {
+      let payload = {
+        diaryEntryRef: this.getDiaryEntry,
+        expansedState: expansedState,
+      };
+      console.log(payload);
+      this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
     },
   },
 };

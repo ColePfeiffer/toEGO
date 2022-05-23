@@ -5,7 +5,7 @@
       <div class="q-pa-md">
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
-            There is nothing here.
+            There is nothing here yet.
           </q-card-section>
         </q-card>
       </div>
@@ -47,20 +47,13 @@ export default {
   data() {
     return {};
   },
-  created() {
-    console.log("eventbubbles: ", this.diaryEntry);
-  },
   components: {
     EventBubble,
   },
   methods: {
     changeEventData(eventData) {
-      let diaryData = this.diaryEntry;
-      console.log("eventData: ", eventData);
-      console.log("diaryData: ", diaryData, "OUT");
       let payload = { diaryEntryRef: this.diaryEntry, eventID: eventData.id };
-      console.log(payload);
-      this.$store.commit("data/updateExpandedByEventID2", payload);
+      this.$store.commit("data/updateExpandedStatusOfEventViaEventID", payload);
     },
   },
   computed: {

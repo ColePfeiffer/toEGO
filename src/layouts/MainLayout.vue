@@ -81,8 +81,6 @@ export default {
   created() {
     this.$store.commit("data/initiateDay");
     let selectedDate = new Date();
-    let test = this.$store.getters["data/getDiaryEntryByDate"](selectedDate);
-    console.log("returned entry: ", test);
   },
   methods: {
     toggleLeftDialog() {

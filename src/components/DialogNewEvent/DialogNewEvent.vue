@@ -145,11 +145,9 @@ export default {
       this.$store.commit("data/setDialogVisibility", false);
     },
     saveChanges() {
-      console.log("mood: ", this.mood);
       if (this.mood === "") {
         this.mood = "las la-meh-blank";
       }
-      console.log("mood: ", this.mood);
       this.$store.commit("data/addEventToEvents", new Date());
       this.closeDialog();
     },

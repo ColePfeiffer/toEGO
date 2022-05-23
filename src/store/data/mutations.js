@@ -30,16 +30,43 @@ export const resetEventData = (state) => {
     ],
   };
 };
-export const setExpandedStatusOfEvents = (state, bool) => {
-  console.log("in mutations: setExpandedStatusOfEvents");
-  state.events.forEach((event) => {
-    event.expanded = bool;
-  });
+
+/*
+export const updateExpandedStatusOfEventViaEventID = (state, eventID) => {
+  let event = state.events.find((event) => event.id === eventID);
+  let newExpandedStatus = !event.expanded;
+  event.expanded = newExpandedStatus;
+};
+*/
+
+export const updateExpandedStatusOfEventViaEventID = (state, payload) => {
+  let event = payload.diaryEntryRef.events.find(
+    (event) => event.id === payload.eventID
+  );
+
+  let newExpandedStatus = !event.expanded;
+  event.expanded = newExpandedStatus;
+};
+
+export const setExpandedStatusOfAllEvents = (state, payload) => {
+  /*  payload uses the following keys:
+      diaryEntryRef: current diaryEntry
+      expansedState: true / false 
+  */
+  if (payload.diaryEntryRef != undefined) {
+    console.log("in mutations: setExpandedStatusOfEvents");
+    console.log(payload.diaryEntryRef);
+    console.log(payload);
+    payload.diaryEntryRef.events.forEach((event) => {
+      event.expanded = payload.expansedState;
+    });
+  }
 };
 
 // if there is no
 // if there is an entry existing already, it gets set to that
 export const initiateDay = (state) => {
+  console.log("initiating day");
   let currentDate = new Date();
 
   state.diaryEntries.forEach((diaryEntry) => {
@@ -56,15 +83,10 @@ export const initiateDay = (state) => {
       };
     }
   });
-  console.log(state.diaryEntryForCurrentDay);
 };
 
 export const updateTitle = (state, value) => {
   state.eventData.title = value;
-};
-
-export const updateDiaryEntry = (state, updatedDiaryEntry) => {
-  state.currentDiaryEntry = updatedDiaryEntry;
 };
 
 export const updateText = (state, value) => {
@@ -75,28 +97,8 @@ export const updateMood = (state, value) => {
   state.eventData.mood = value;
 };
 
-export const updateExpandedByEventID2 = (state, payload) => {
-  console.log(
-    "diaryEntryRef: ",
-    payload.diaryEntryRef,
-    "eventID: ",
-    payload.eventID
-  );
-
-  console.log("events: ", payload.diaryEntryRef.events);
-  let event = payload.diaryEntryRef.events.find(
-    (event) => event.id === payload.eventID
-  );
-
-  console.log("EVENT: ", event);
-  let newExpandedStatus = !event.expanded;
-  event.expanded = newExpandedStatus;
-};
-
-export const updateExpandedByEventID = (state, eventID) => {
-  let event = state.events.find((event) => event.id === eventID);
-  let newExpandedStatus = !event.expanded;
-  event.expanded = newExpandedStatus;
+export const updateDiaryEntry = (state, payload) => {
+  payload.diaryEntryRef.editor = payload.newData.editor;
 };
 
 export const addEntryToDiaryEntries = (state, entry) => {

@@ -72,7 +72,7 @@
                     flat
                     icon="fas fa-eye"
                     color="secondary"
-                    @click="editEvent"
+                    @click="viewEvent"
                   ></q-btn>
                   <q-btn
                     class="col"
@@ -127,6 +127,12 @@ export default {
   }, */
 
   methods: {
+    viewEvent() {
+      console.log("view event, WIP");
+    },
+    editEvent() {
+      console.log("edit event, WIP");
+    },
     expand() {
       this.$emit("changeEventData", this.eventData);
     },

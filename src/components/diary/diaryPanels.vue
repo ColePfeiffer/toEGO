@@ -3,32 +3,35 @@
     <!--shown when in viewing mode -->
     <div v-if="viewingMode === 'view'" class="row justify-end">
       <q-btn
-        class="col=1"
+        class="col-5 smallText"
         flat
         icon="fas fa-edit"
         color="secondary"
-        @click="changeView('edit')"
+        :label="editBtnText"
+        @click="editCreate"
       ></q-btn>
     </div>
     <!-- shown when in editing mode -->
     <div v-else class="row justify-end">
       <q-btn
-        class="col=1"
-        flat
-        icon="fas fa-angle-left"
-        color="secondary"
-        @click="changeView('view')"
-      ></q-btn>
-      <q-btn
-        class="col=1"
+        class="col-4 smallText"
         flat
         icon="fas fa-save"
+        label="save"
         color="secondary"
         @click="saveChanges"
       ></q-btn>
+      <q-btn
+        class="col-4 smallText"
+        flat
+        icon="fas fa-angle-left"
+        color="secondary"
+        label="back"
+        @click="changeView('view')"
+      ></q-btn>
     </div>
     <!-- entry exists -->
-    <div v-if="diaryEntry != undefined">
+    <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
       <basePanelWithButtons
         class="secondary"
         :options="options"
@@ -50,7 +53,7 @@
             <div v-else>
               <q-editor
                 class="editor shadow-3 text-justify"
-                v-model="diaryEntryChangeData.editor"
+                v-model="changeData.editor"
                 min-height="17rem"
                 :toolbar="[
                   [
@@ -187,6 +190,8 @@ export default {
   emits: ["scroll", "change-view", "save-changes"],
   data() {
     return {
+      isCreatingNewDiaryEntry: false,
+      changeData: {},
       heightForScrollArea: "height: 350px",
       //"<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
@@ -213,46 +218,82 @@ export default {
     diaryEntry: Object,
     viewingMode: String,
   },
-  created() {
-    console.log(this.viewingMode);
-  },
   computed: {
+    editBtnText() {
+      if (this.diaryEntry === undefined) {
+        return "create";
+      } else {
+        return "edit";
+      }
+    },
     editor() {
       if (this.diaryEntry === undefined) {
-        return false;
+        return undefined;
       } else {
         return this.diaryEntry.editor;
       }
     },
+
     diaryEntryChangeData() {
-      let changeData;
-      if (this.diaryEntry === undefined) {
-        changeData = {
-          id: "",
-          date: "",
-          editor: "Nothing here yet",
-          events: [],
-        };
-      } else {
+      let changeData = undefined;
+      if (this.diaryEntry != undefined) {
         changeData = {
           id: this.diaryEntry.id,
           date: this.diaryEntry.date,
           editor: this.diaryEntry.editor,
           events: this.diaryEntry.events,
         };
+      } else {
+        changeData = {
+          id: "",
+          date: "",
+          editor: "",
+          events: [],
+        };
       }
-      return "meh";
+      return changeData;
     },
   },
   methods: {
+    isShowingPanels() {
+      if (diaryEntry != undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     scroll(offset) {
       this.$emit("scroll", offset);
     },
     changeView(viewMode) {
+      this.isCreatingNewDiaryEntry = false;
       this.$emit("change-view", viewMode);
     },
+    editCreate() {
+      this.changeView("edit");
+      // creating: create a new changeData
+      if (this.editBtnText === "create") {
+        console.log("create entry via changedata?");
+        this.isCreatingNewDiaryEntry = true;
+        this.changeData = {
+          id: "",
+          date: "",
+          editor: "biepo",
+          events: [],
+        };
+        // editing: paste data from entry to changeData
+      } else {
+        this.changeData = {
+          id: this.diaryEntry.id,
+          date: this.diaryEntry.date,
+          editor: this.diaryEntry.editor,
+          events: this.diaryEntry.events,
+        };
+      }
+    },
     saveChanges() {
-      this.$emit("save-changes", this.diaryEntryChangeData);
+      this.isCreatingNewDiaryEntry = false;
+      this.$emit("save-changes", this.changeData);
       this.$emit("change-view", "view");
     },
   },
@@ -262,6 +303,10 @@ export default {
 <style scoped>
 .test {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+.smallText {
+  font-size: 12.5px;
 }
 
 .editor {
