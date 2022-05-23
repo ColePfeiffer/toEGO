@@ -86,6 +86,7 @@
           class="q-pt-xs secondary"
           :diaryEntry="getDiaryEntry"
           :viewingMode="viewingMode"
+          :scroll="scroll"
           @change-view="changeViewMode"
           @save-changes="saveChangesToEntry"
         ></diaryPanels>
@@ -101,6 +102,7 @@ import eventBubbles from "../../components/landing/eventBubbles.vue";
 import diaryPanels from "../../components/diary/diaryPanels.vue";
 import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
 import { date } from "quasar";
+import shared from "../../shared.js";
 
 export default {
   name: "diary",
@@ -171,13 +173,24 @@ export default {
       }
     },
   },
+  created() {
+    this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
+  },
   methods: {
+    scroll(offset) {
+      this.scroll(+offset);
+    },
     saveChangesToEntry(changeData) {
       console.log(changeData);
+      let payload;
       if (this.getDiaryEntry === undefined) {
-        this.$store.commit("data/addEntryToDiaryEntries", changeData);
+        let newEntry = changeData;
+        console.log("new Entry: ", newEntry);
+        newEntry.date = this.getDate;
+        console.log(this.getDate);
+        this.$store.commit("data/addEntryToDiaryEntries", newEntry);
       } else {
-        let payload = {
+        payload = {
           diaryEntryRef: this.getDiaryEntry,
           newData: changeData,
         };

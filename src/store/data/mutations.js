@@ -97,16 +97,20 @@ export const updateMood = (state, value) => {
   state.eventData.mood = value;
 };
 
+// updates the editor property of an entry
 export const updateDiaryEntry = (state, payload) => {
   payload.diaryEntryRef.editor = payload.newData.editor;
 };
 
+// adds a new entry to the list
 export const addEntryToDiaryEntries = (state, entry) => {
-  //state.eventData.id = uid();
+  entry.id = uid();
   state.diaryEntries.push(entry);
-  console.log("saved entry");
 };
 
+// adds a new event
+// if there is an existing diary entry, it will be added to it's events property.
+// if there is no existing diary entry, one will be created, so the event can be added.
 export const addEventToEvents = (state, createdOn) => {
   let newEntry = "";
 

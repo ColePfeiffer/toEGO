@@ -271,6 +271,7 @@ export default {
     },
     editCreate() {
       this.changeView("edit");
+      this.scroll(1);
       // creating: create a new changeData
       if (this.editBtnText === "create") {
         console.log("create entry via changedata?");
@@ -278,7 +279,7 @@ export default {
         this.changeData = {
           id: "",
           date: "",
-          editor: "biepo",
+          editor: "",
           events: [],
         };
         // editing: paste data from entry to changeData
