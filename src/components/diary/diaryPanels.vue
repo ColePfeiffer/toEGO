@@ -51,86 +51,9 @@
             </div>
             <!-- EDIT MODE -->
             <div v-else>
-              <q-editor
-                class="editor shadow-3 text-justify"
-                v-model="changeData.editor"
-                min-height="17rem"
-                :toolbar="[
-                  [
-                    {
-                      label: $q.lang.editor.align,
-                      icon: $q.iconSet.editor.align,
-                      fixedLabel: true,
-                      options: ['left', 'center', 'right', 'justify'],
-                    },
-                    'bold',
-                    'italic',
-                    'strike',
-                    'underline',
-                  ],
-                  ['token', 'hr', 'link', 'custom_btn'],
-
-                  [
-                    {
-                      label: $q.lang.editor.formatting,
-                      icon: $q.iconSet.editor.formatting,
-                      list: 'no-icons',
-                      options: [
-                        'p',
-                        'h1',
-                        'h2',
-                        'h3',
-                        'h4',
-                        'h5',
-                        'h6',
-                        'code',
-                      ],
-                    },
-                    {
-                      label: $q.lang.editor.fontSize,
-                      icon: $q.iconSet.editor.fontSize,
-                      fixedLabel: true,
-                      fixedIcon: true,
-                      list: 'no-icons',
-                      options: [
-                        'size-1',
-                        'size-2',
-                        'size-3',
-                        'size-4',
-                        'size-5',
-                        'size-6',
-                        'size-7',
-                      ],
-                    },
-                    {
-                      label: $q.lang.editor.defaultFont,
-                      icon: $q.iconSet.editor.font,
-                      fixedIcon: true,
-                      list: 'no-icons',
-                      options: [
-                        'default_font',
-                        'arial',
-                        'courier_new',
-                        'lucida_grande',
-                        'verdana',
-                      ],
-                    },
-                    'removeFormat',
-                  ],
-                  ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
-
-                  ['undo', 'redo', 'viewsource', 'fullscreen'],
-                ]"
-                :fonts="{
-                  arial: 'Arial',
-                  arial_black: 'Arial Black',
-                  comic_sans: 'Comic Sans MS',
-                  courier_new: 'Courier New',
-                  impact: 'Impact',
-                  lucida_grande: 'Lucida Grande',
-                  times_new_roman: 'Times New Roman',
-                  verdana: 'Verdana',
-                }"
+              <baseEditor
+                :changeData="changeData"
+                @update-change-data="updateChangeData"
               />
             </div>
           </q-scroll-area>
@@ -181,11 +104,13 @@
 
 <script>
 import basePanelWithButtons from "../ui/basePanelWithButtons.vue";
+import baseEditor from "../ui/baseEditor.vue";
 
 export default {
   name: "diaryPanels",
   components: {
     basePanelWithButtons,
+    baseEditor,
   },
   emits: ["scroll", "change-view", "save-changes"],
   data() {
@@ -233,28 +158,12 @@ export default {
         return this.diaryEntry.editor;
       }
     },
-
-    diaryEntryChangeData() {
-      let changeData = undefined;
-      if (this.diaryEntry != undefined) {
-        changeData = {
-          id: this.diaryEntry.id,
-          date: this.diaryEntry.date,
-          editor: this.diaryEntry.editor,
-          events: this.diaryEntry.events,
-        };
-      } else {
-        changeData = {
-          id: "",
-          date: "",
-          editor: "",
-          events: [],
-        };
-      }
-      return changeData;
-    },
   },
   methods: {
+    updateChangeData(editor) {
+      this.changeData.editor = editor;
+      console.log("triggered!");
+    },
     isShowingPanels() {
       if (diaryEntry != undefined) {
         return true;
@@ -274,7 +183,6 @@ export default {
       this.scroll(1);
       // creating: create a new changeData
       if (this.editBtnText === "create") {
-        console.log("create entry via changedata?");
         this.isCreatingNewDiaryEntry = true;
         this.changeData = {
           id: "",
