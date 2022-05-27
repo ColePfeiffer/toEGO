@@ -51,10 +51,7 @@
             </div>
             <!-- EDIT MODE -->
             <div v-else>
-              <baseEditor
-                :changeData="changeData"
-                @update-change-data="updateChangeData"
-              />
+              <baseEditor v-model="changeData.editor" />
             </div>
           </q-scroll-area>
         </template>

@@ -1,8 +1,6 @@
 <template>
   <q-editor
-    @update:model-value="updateChangeData"
     class="editor shadow-3 text-justify"
-    v-model="editor"
     min-height="17rem"
     :toolbar="[
       [
@@ -78,20 +76,10 @@
 export default {
   name: "baseEditor",
   emits: ["update-change-data"],
-  props: { changeData: Object },
   data() {
-    return {
-      editor: this.changeData.editor,
-    };
+    return {};
   },
-  mounted() {
-    console.log("cD: ", this.changeData, "editor: ", this.editor);
-  },
-  methods: {
-    updateChangeData() {
-      this.$emit("update-change-data", this.editor);
-    },
-  },
+  methods: {},
   computed: {},
 };
 </script>
