@@ -85,6 +85,11 @@ export const initiateDay = (state) => {
   });
 };
 
+export const deleteEvent = (state, payload) => {
+  let indexOfEvent = payload.diaryEntryRef.events.indexOf(payload.eventData);
+  payload.diaryEntryRef.events.splice(indexOfEvent, 1);
+};
+
 export const updateTitle = (state, value) => {
   state.eventData.title = value;
 };
@@ -95,6 +100,19 @@ export const updateText = (state, value) => {
 
 export const updateMood = (state, value) => {
   state.eventData.mood = value;
+};
+
+export const updateCreatedOn = (state, value) => {
+  state.eventData.createdOn = value;
+};
+
+export const updateID = (state, value) => {
+  state.eventData.id = value;
+};
+
+export const updateEventData = (state, payload) => {
+  state.eventData = payload.eventData;
+  state.diaryEntryRef = payload.diaryEntryRef;
 };
 
 // updates the editor property of an entry
@@ -144,6 +162,17 @@ export const addEventToEvents = (state, createdOn) => {
   console.log("Showing Events: ", state.events);
 };
 
+// saves the changes of an edited event
+export const saveChangesToEditedEvent = (state) => {
+  let id = state.eventData.id;
+
+  let index = state.diaryEntryRef.events.findIndex((event) => {
+    return event.id === id;
+  });
+
+  state.diaryEntryRef.events[index] = state.eventData;
+};
+
 export const changeButtonColorOnClick = (state, buttonID) => {
   if (state.lastButtonClicked === buttonID) {
     state.lastButtonClicked = buttonID;
@@ -152,12 +181,12 @@ export const changeButtonColorOnClick = (state, buttonID) => {
   }
 };
 
-export const setDialogVisibility = (state, isVisible) => {
-  state.newEventDialogIsOpen = isVisible;
-  console.log(
-    "@Mutations: SetDialogVisibility() to: ",
-    state.newEventDialogIsOpen
-  );
+export const setDialogVisibility = (state, payload) => {
+  //state.newEventDialogIsOpen = payload.isVisible;
+  console.log(state.eventDialogSettings.isOpen);
+  state.eventDialogSettings.isOpen = payload.isVisible;
+  state.eventDialogSettings.editMode = payload.editMode;
+  console.log(state.eventDialogSettings.isOpen);
 };
 
 export const showModal = (state, componentName) => {

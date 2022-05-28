@@ -70,9 +70,9 @@
                     class="col"
                     v-if="eventData.expanded === true"
                     flat
-                    icon="fas fa-eye"
+                    icon="delete"
                     color="secondary"
-                    @click="viewEvent"
+                    @click="deleteEvent"
                   ></q-btn>
                   <q-btn
                     class="col"
@@ -94,6 +94,7 @@
 
 <script>
 import BaseExpandableButton from "../ui/baseExpandableButton.vue";
+import { date } from "quasar";
 //import TimeAgo from "vue3-timeago";
 
 export default {
@@ -105,11 +106,12 @@ export default {
   props: {
     eventData: Object,
   },
-  emits: ["changeEventData"],
+  emits: ["changeEventData", "deleteEvent", "editEvent"],
   data() {
     return {
       maxLengthOfCardText: 90,
-      timeAgo: "4:20 pm",
+      timeAgoGER: date.formatDate(this.eventData.createdOn, "HH:mm"),
+      timeAgo: date.formatDate(this.eventData.createdOn, "h:mm A"),
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
@@ -127,11 +129,11 @@ export default {
   }, */
 
   methods: {
-    viewEvent() {
-      console.log("view event, WIP");
+    deleteEvent() {
+      this.$emit("deleteEvent", this.eventData);
     },
     editEvent() {
-      console.log("edit event, WIP");
+      this.$emit("editEvent", this.eventData);
     },
     expand() {
       this.$emit("changeEventData", this.eventData);

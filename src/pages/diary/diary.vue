@@ -67,17 +67,23 @@
           <div class="col-6 eventTitle text-left text-secondary">EVENTS</div>
           <!-- Button -->
           <div class="col-6 eventchangeViewButton text-right">
-            <base-expandable-button
-              class="col"
-              @expandMore="expandMore"
-              @expandLess="expandLess"
-            ></base-expandable-button>
+            <div v-if="hasEvents" class="col">
+              <base-expandable-button
+                @expandMore="expandMore"
+                @expandLess="expandLess"
+              ></base-expandable-button>
+            </div>
           </div>
         </div>
         <q-separator color="secondary" />
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <eventBubbles class="test" :diaryEntry="getDiaryEntry"></eventBubbles>
+          <eventBubbles
+            class="test"
+            :diaryEntry="getDiaryEntry"
+            @showDialogForExistingEvent="showDialogForExistingEvent"
+            @showDialogForNewEvent="showDialogForNewEvent"
+          ></eventBubbles>
         </q-scroll-area>
       </div>
       <div v-if="isDiarySectionVisible">
@@ -132,6 +138,14 @@ export default {
     BaseExpandableButton,
   },
   computed: {
+    hasEvents() {
+      if (this.getDiaryEntry != undefined) {
+        if (this.getDiaryEntry.events.length > 0) {
+          return true;
+        }
+      }
+      return false;
+    },
     date: {
       get() {
         return date.formatDate(this.getDate, "YYYY/MM/DD");
@@ -177,6 +191,35 @@ export default {
     this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
   methods: {
+    showDialogForNewEvent() {
+      console.log("show dialog for new event for date: ", this.getDate);
+
+      this.$store.commit("data/resetEventData");
+
+      let payload = { isVisible: true, editMode: false };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+    showDialogForExistingEvent(eventData) {
+      /*
+      this.$store.commit("data/updateMood", eventData.mood);
+      this.$store.commit("data/updateTitle", eventData.title);
+      this.$store.commit("data/updateText", eventData.text);
+      this.$store.commit("data/updateCreatedOn", eventData.createdOn);
+      this.$store.commit("data/updateID", eventData.id);
+      */
+
+      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](eventData.createdOn);
+      let payload = {
+        eventData: eventData,
+        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
+      };
+      this.$store.commit("data/updateEventData", payload);
+
+      payload = { isVisible: true, editMode: true };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
     scroll(offset) {
       this.scroll(+offset);
     },

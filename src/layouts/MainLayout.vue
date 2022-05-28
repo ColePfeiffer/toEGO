@@ -8,7 +8,7 @@
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
             <router-view
-              v-if="$store.state.data.newEventDialogIsOpen == false"
+              v-if="$store.state.data.eventDialogSettings.isOpen == false"
             />
           </div>
         </div>
@@ -16,7 +16,7 @@
     </q-page-container>
     <!-- Bottom Navigation bar -->
     <q-footer
-      v-if="$store.state.data.newEventDialogIsOpen == false"
+      v-if="$store.state.data.eventDialogSettings.isOpen == false"
       elevated
       class="primary"
     >
@@ -87,7 +87,8 @@ export default {
       this.drawer = !this.drawer;
     },
     showDialogForNewEvent() {
-      this.$store.commit("data/setDialogVisibility", true);
+      let payload = { isVisible: true, editMode: false };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
     goToPage() {
       console.log(this.model);

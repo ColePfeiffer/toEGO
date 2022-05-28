@@ -12,6 +12,7 @@ export default function () {
       events: [],
     },
     diaryEntryForCurrentDay: "",
+    diaryEntryRef: "",
     eventData: {
       id: "",
       mood: "las la-meh-blank",
@@ -33,7 +34,7 @@ export default function () {
     },
     debug: true,
     phone: false,
-    newEventDialogIsOpen: false,
+    eventDialogSettings: { isOpen: false, editMode: false },
     diaryEntries: [
       {
         id: "1",
