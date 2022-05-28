@@ -7,9 +7,11 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
-            <router-view
-              v-if="$store.state.data.eventDialogSettings.isOpen == false"
-            />
+            <keep-alive>
+              <router-view
+                v-if="$store.state.data.eventDialogSettings.isOpen == false"
+              />
+            </keep-alive>
           </div>
         </div>
       </q-page>

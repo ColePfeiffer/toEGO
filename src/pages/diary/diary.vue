@@ -192,33 +192,24 @@ export default {
   },
   methods: {
     showDialogForNewEvent() {
-      console.log("show dialog for new event for date: ", this.getDate);
-
       this.$store.commit("data/resetEventData");
-
-      let payload = { isVisible: true, editMode: false };
-      this.$store.commit("data/setDialogVisibility", payload);
+      this.$store.commit("data/setDialogVisibility", {
+        isVisible: true,
+        editMode: false,
+      });
     },
     showDialogForExistingEvent(eventData) {
-      /*
-      this.$store.commit("data/updateMood", eventData.mood);
-      this.$store.commit("data/updateTitle", eventData.title);
-      this.$store.commit("data/updateText", eventData.text);
-      this.$store.commit("data/updateCreatedOn", eventData.createdOn);
-      this.$store.commit("data/updateID", eventData.id);
-      */
-
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "data/getDiaryEntryByDate"
       ](eventData.createdOn);
-      let payload = {
+      this.$store.commit("data/updateEventData", {
         eventData: eventData,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
-      };
-      this.$store.commit("data/updateEventData", payload);
-
-      payload = { isVisible: true, editMode: true };
-      this.$store.commit("data/setDialogVisibility", payload);
+      });
+      this.$store.commit("data/setDialogVisibility", {
+        isVisible: true,
+        editMode: true,
+      });
     },
     scroll(offset) {
       this.scroll(+offset);
