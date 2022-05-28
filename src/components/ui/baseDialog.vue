@@ -15,10 +15,8 @@
               </div>
             </div>
           </div>
-
           <!-- Content Slot -->
           <slot name="content"></slot>
-
           <!-- Footer Slot | Option to hide buttons -->
           <slot name="footer">
             <div class="col-1 q-pa-sm">
@@ -28,7 +26,7 @@
                   flat
                   @click="closeDialog"
                 >
-                  <slot name="close-button"> Close </slot>
+                  <slot name="close-button"> Cancel </slot>
                 </q-btn>
 
                 <q-btn

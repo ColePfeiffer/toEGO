@@ -1,9 +1,12 @@
 <template>
   <baseDialog
-    v-model="showDialog"
+    v-model="isDialogVisible"
     @closeDialog="closeDialog"
     @save="saveChanges"
   >
+    <template v-slot:confirm-button>
+      {{ confirmButtonText }}
+    </template>
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
       Event-Tracker
@@ -142,23 +145,36 @@ export default {
     },
     closeDialog() {
       this.$store.commit("data/resetEventData");
-      this.$store.commit("data/setDialogVisibility", false);
+      let payload = { isVisible: false, editMode: false };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
     saveChanges() {
       if (this.mood === "") {
         this.mood = "las la-meh-blank";
       }
-      this.$store.commit("data/addEventToEvents", new Date());
+
+      // check wether a new event is created or an existing one is being edited
+      if (this.$store.state.data.eventDialogSettings.editMode === false) {
+        // creating a new event:
+        this.$store.commit("data/addEventToEvents", new Date());
+      } else {
+        // editing an existing event:
+        this.$store.commit("data/saveChangesToEditedEvent");
+      }
       this.closeDialog();
     },
   },
   computed: {
-    showDialog: {
+    isDialogVisible: {
       get() {
-        return this.$store.state.data.newEventDialogIsOpen;
+        return this.$store.state.data.eventDialogSettings.isOpen;
       },
       set(value) {
-        this.$store.commit("data/setDialogVisibility", value);
+        let payload = {
+          isVisible: value,
+          editMode: this.$store.state.data.eventDialogSettings.editMode,
+        };
+        this.$store.commit("data/setDialogVisibility", payload);
       },
     },
     title: {
@@ -184,6 +200,13 @@ export default {
       set(value) {
         this.$store.commit("data/updateText", value);
       },
+    },
+    confirmButtonText() {
+      if (this.$store.state.data.eventDialogSettings.editMode) {
+        return "edit";
+      } else {
+        return "save";
+      }
     },
   },
 };
