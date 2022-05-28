@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div class="q-pa-md q-gutter-sm">
+    <div class="q-pa-sm q-gutter-sm">
       <q-dialog v-model="confirm" persistent>
         <q-card>
           <q-card-section class="row items-center">
-            <q-avatar icon="delete" color="primary" text-color="white" />
-            <span class="q-ml-sm"
-              >Do you really want to delete this event?</span
-            >
+            <div class="col-3">
+              <q-avatar icon="delete" color="primary" text-color="white" />
+            </div>
+            <div class="col">
+              <span class="q-ml-sm"
+                >Do you really want to delete this event?</span
+              >
+            </div>
           </q-card-section>
 
           <q-card-actions align="right">
