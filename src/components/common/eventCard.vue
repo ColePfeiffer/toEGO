@@ -57,7 +57,7 @@
         <!-- view when expanded -->
         <div v-else>
           <q-card-section class="card-text">
-            {{ eventData.text }}
+            <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
           </q-card-section>
           <q-card-section class="q-py-xs card-time">
             <div class="row justify-between items-center">

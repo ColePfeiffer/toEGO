@@ -1,5 +1,6 @@
 <template>
   <q-editor
+    ref="editorRef"
     class="editor shadow-3 text-justify"
     min-height="17rem"
     :toolbar="[
@@ -65,7 +66,7 @@
     <template v-slot:templates>
       <q-btn-dropdown
         no-caps
-        ref="tokenRef"
+        ref="templatesRef"
         no-wrap
         auto-close
         unelevated
@@ -88,12 +89,13 @@
               <q-item-section>Edit Templates</q-item-section>
             </q-item>
             <!-- v-for list of templates -->
-            <div>
-              <q-item tag="label" clickable @click="addTemplate('default')">
+
+            <div v-for="template in templates" :key="template.id">
+              <q-item tag="label" clickable @click="addTemplate(template)">
                 <q-item-section side>
-                  <q-icon name="sun" />
+                  <q-icon :name="template.icon" />
                 </q-item-section>
-                <q-item-section>Default</q-item-section>
+                <q-item-section>{{ template.name }}</q-item-section>
               </q-item>
             </div>
           </div>
@@ -118,11 +120,41 @@ export default {
     editTemplates() {
       console.log("edit templates");
     },
-    addTemplate(id) {
+    addTemplate(template) {
+      console.log(template.text);
       // add template to editor text
+
+      const edit = this.editorRef;
+      console.log("meh? ", edit);
+
+      let blubb = this.$refs.editorRef;
+      console.log("meh! ", blubb);
+      console.log("value: ", blubb.getContentEl());
+      blubb.runCmd("insertHTML", template.text);
+
+      // test
+      blubb.runCmd(
+        "insertHTML",
+        `&nbsp;<div class="editor_token row inline items-center" contenteditable="false">&nbsp;<span>${template.name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`
+      );
+
+      blubb.focus();
+      /* 
+      tokenRef.value.hide();
+      edit.caret.restore();
+      edit.runCmd(
+        "insertHTML",
+        `&nbsp;<div class="editor_token row inline items-center" contenteditable="false">&nbsp;<span>${name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`
+      );
+      edit.focus();
+      */
     },
   },
-  computed: {},
+  computed: {
+    templates() {
+      return this.$store.state.data.diaryTemplates.slice();
+    },
+  },
 };
 </script>
 

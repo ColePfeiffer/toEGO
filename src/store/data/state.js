@@ -102,5 +102,19 @@ export default function () {
     ],
     // all templates for events are in here
     eventTemplates: [],
+    diaryTemplates: [
+      {
+        id: 0,
+        name: "default",
+        text: "<b>Morning</b><br><div>Intention of the day:<br></div><div>What do you need to get done today?<br></div><div><br></div><div><b>Venting</b></div><div>Is there anything you need to get off your chest?<br></div><div>What are the words you need to hear?<br></div><div><br></div><div><b>Reflecting</b></div><div>How are my thoughts lately? Are they serving me or holding me back?<br></div><div>Are all of your obligations today real or are some imagined?<br></div><div><br></div><div><b>Imagining/Planning</b></div><div><div>Imagine you are having a great day. Describe in detail how you feel...</div></div><div>What are you scared of today and&nbsp;</div><div>Why is today an opportunity instead of another day to get through?<br></div><div><br></div><div><b>Evening</b></div><div>What are you grateful for?<br></div><div><div>2. Something I accomplished</div><div>3. lesson I learned</div><div>4. Who did I help or connect with?</div></div><div><br></div></div></div>",
+        icon: "",
+      },
+      {
+        id: 1,
+        name: "morning",
+        text: "HALLO, GUDN MORGEN!!!!",
+        icon: "fas fa-sun",
+      },
+    ],
   };
 }
