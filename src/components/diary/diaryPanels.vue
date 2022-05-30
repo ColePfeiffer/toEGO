@@ -114,7 +114,7 @@ export default {
     return {
       isCreatingNewDiaryEntry: false,
       changeData: {},
-      heightForScrollArea: "height: 350px",
+      heightForScrollArea: "height: 250px",
       //"<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
       statusTemplateOptions: ["default", "gratitude"],
