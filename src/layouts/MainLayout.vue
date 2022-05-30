@@ -7,11 +7,14 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
-            <keep-alive>
-              <router-view
-                v-if="$store.state.data.eventDialogSettings.isOpen == false"
-              />
-            </keep-alive>
+            <router-view
+              v-slot="{ Component }"
+              v-if="$store.state.data.eventDialogSettings.isOpen == false"
+            >
+              <keep-alive>
+                <component :is="Component" />
+              </keep-alive>
+            </router-view>
           </div>
         </div>
       </q-page>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import DialogNewEvent from "../components/DialogNewEvent/DialogNewEvent.vue";
+import DialogNewEvent from "../components/dialogs/dialogNewEvent/DialogNewEvent.vue";
 import { date } from "quasar";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">

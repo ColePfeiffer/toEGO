@@ -1,8 +1,8 @@
 import mainLayout from "layouts/MainLayout.vue";
 import index from "pages/landingPage/Index.vue";
-import diary from "pages/diary/diary.vue";
-import items from "pages/items.vue";
-import settings from "pages/settings.vue";
+import Diary from "pages/diary/Diary.vue";
+import Items from "pages/Items.vue";
+import Settings from "pages/Settings.vue";
 
 const routes = [
   {
@@ -15,19 +15,19 @@ const routes = [
     children: [{ path: "", component: index }],
   },
   {
-    path: "/diary",
+    path: "/Diary",
     component: mainLayout,
-    children: [{ path: "", component: diary }],
+    children: [{ path: "", component: Diary }],
   },
   {
-    path: "/items",
+    path: "/Items",
     component: mainLayout,
-    children: [{ path: "", component: () => items }],
+    children: [{ path: "", component: Items }],
   },
   {
-    path: "/settings",
+    path: "/Settings",
     component: mainLayout,
-    children: [{ path: "", component: settings }],
+    children: [{ path: "", component: Settings }],
   },
 
   // Always leave this as last one,

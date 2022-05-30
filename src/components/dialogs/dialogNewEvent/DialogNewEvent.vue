@@ -119,9 +119,9 @@
 </template>
 
 <script>
-import baseDialog from "../ui/baseDialog.vue";
-import shared from "../../shared.js";
-import methodsPanel from "./methodsPanel.vue";
+import baseDialog from "../../ui/BaseDialog.vue";
+import shared from "../../../shared.js";
+import methodsPanel from "./MethodsPanel.vue";
 import { mapState } from "vuex";
 
 export default {

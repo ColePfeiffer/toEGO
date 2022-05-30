@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "baseExpandableButton",
+  name: "BaseExpandableButton",
   emits: ["expandLess", "expandMore"],
   props: {
     eventData: {

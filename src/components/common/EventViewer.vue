@@ -80,10 +80,10 @@
 </template>
 
 <script>
-import EventCard from "../common/eventCard.vue";
+import EventCard from "./EventCard.vue";
 
 export default {
-  name: "eventBubbles",
+  name: "EventViewer",
   emits: ["showDialogForNewEvent", "showDialogForExistingEvent"],
   props: {
     diaryEntry: Object,

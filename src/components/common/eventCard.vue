@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import BaseExpandableButton from "../ui/baseExpandableButton.vue";
+import BaseExpandableButton from "../ui/BaseExpandableButton.vue";
 import { date } from "quasar";
 //import TimeAgo from "vue3-timeago";
 

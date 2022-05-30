@@ -32,7 +32,7 @@
     </div>
     <!-- entry exists -->
     <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
-      <basePanelWithButtons
+      <BasePanelWithButtons
         class="secondary"
         :options="options"
         :names="names"
@@ -53,7 +53,7 @@
             </div>
             <!-- EDIT MODE -->
             <div v-else>
-              <baseEditor v-model="changeData.editor" />
+              <BaseEditor v-model="changeData.editor" />
             </div>
           </q-scroll-area>
         </template>
@@ -94,7 +94,7 @@
           <div class="col text-left">Tags</div>
           <div class="col text-center">O O O O O</div>
         </template>
-      </basePanelWithButtons>
+      </BasePanelWithButtons>
     </div>
     <!-- diary entry doesn't exist yet. -->
     <div v-else></div>
@@ -102,14 +102,14 @@
 </template>
 
 <script>
-import basePanelWithButtons from "../ui/basePanelWithButtons.vue";
-import baseEditor from "../ui/baseEditor.vue";
+import BasePanelWithButtons from "../ui/BasePanelWithButtons.vue";
+import BaseEditor from "../ui/BaseEditor.vue";
 
 export default {
-  name: "diaryPanels",
+  name: "TheDiaryPanels",
   components: {
-    basePanelWithButtons,
-    baseEditor,
+    BasePanelWithButtons,
+    BaseEditor,
   },
   emits: ["scroll", "change-view", "save-changes"],
   data() {

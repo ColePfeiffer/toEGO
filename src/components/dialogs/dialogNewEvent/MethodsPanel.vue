@@ -1,5 +1,5 @@
 <template>
-  <basePanelWithButtons
+  <BasePanelWithButtons
     :options="options"
     :names="names"
     :hideBordersOnInit="hideBordersOnInit"
@@ -12,18 +12,18 @@
     </template>
 
     <template v-slot:panelRightSlot> Yayayadadada. </template>
-  </basePanelWithButtons>
+  </BasePanelWithButtons>
 </template>
 
 <script>
-import basePanelWithButtons from "../ui/basePanelWithButtons.vue";
+import BasePanelWithButtons from "../../ui/BasePanelWithButtons.vue";
 import fiveToOneMethod from "./methods/FiveToOneMethod.vue";
 import handlingEmotions from "./methods/handlingEmotions.vue";
 
 export default {
   name: "methodsPanel",
   components: {
-    basePanelWithButtons,
+    BasePanelWithButtons,
     fiveToOneMethod,
     handlingEmotions,
   },

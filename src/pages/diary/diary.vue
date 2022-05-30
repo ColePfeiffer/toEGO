@@ -78,12 +78,12 @@
         <q-separator color="secondary" />
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <eventBubbles
+          <EventViewer
             class="test"
             :diaryEntry="getDiaryEntry"
             @showDialogForExistingEvent="showDialogForExistingEvent"
             @showDialogForNewEvent="showDialogForNewEvent"
-          ></eventBubbles>
+          ></EventViewer>
         </q-scroll-area>
       </div>
       <div v-if="isDiarySectionVisible">
@@ -104,9 +104,9 @@
 </template>
 
 <script>
-import eventBubbles from "../../components/landing/eventBubbles.vue";
-import diaryPanels from "../../components/diary/diaryPanels.vue";
-import BaseExpandableButton from "../../components/ui/baseExpandableButton.vue";
+import EventViewer from "../../components/common/EventViewer.vue";
+import diaryPanels from "../../components/diary/TheDiaryPanels.vue";
+import BaseExpandableButton from "../../components/ui/BaseExpandableButton.vue";
 import { date } from "quasar";
 import shared from "../../shared.js";
 
@@ -133,7 +133,7 @@ export default {
     };
   },
   components: {
-    eventBubbles,
+    EventViewer,
     diaryPanels,
     BaseExpandableButton,
   },

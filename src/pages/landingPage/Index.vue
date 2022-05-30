@@ -2,19 +2,19 @@
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
     <q-separator color="primary" class="q-mb-sm" />
-    <eventBubbles
+    <EventViewer
       :diaryEntry="getDiaryEntry"
       class="col"
       @showDialogForExistingEvent="showDialogForExistingEvent"
       @showDialogForNewEvent="showDialogForNewEvent"
-    ></eventBubbles>
+    ></EventViewer>
     <!-- Player Character -->
   </q-page>
 </template>
 
 <script>
-import infoHeader from "../../components/landing/infoHeader.vue";
-import eventBubbles from "../../components/landing/eventBubbles.vue";
+import infoHeader from "../../components/TheHeader.vue";
+import EventViewer from "../../components/common/EventViewer.vue";
 
 export default {
   data() {
@@ -22,7 +22,7 @@ export default {
   },
   components: {
     infoHeader,
-    eventBubbles,
+    EventViewer,
   },
   methods: {
     showDialogForNewEvent() {

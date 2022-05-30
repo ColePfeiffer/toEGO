@@ -36,7 +36,7 @@
 
 
 <script>
-import baseExpansionItem from "../../../components/ui/baseExpansionItem.vue";
+import baseExpansionItem from "../../../../components/ui/BaseExpansionItem.vue";
 
 export default {
   components: { baseExpansionItem },
