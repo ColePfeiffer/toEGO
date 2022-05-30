@@ -46,7 +46,9 @@
             <!-- VIEW MODE -->
             <div v-if="viewingMode === 'view'">
               <q-card class="editorCard shadow-3 text-justify">
-                <q-card-section v-html="editor" />
+                <q-item>
+                  <q-item-section v-html="editor"> </q-item-section>
+                </q-item>
               </q-card>
             </div>
             <!-- EDIT MODE -->
@@ -225,6 +227,5 @@ export default {
 
 .editorCard {
   font-size: 12.5px;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>

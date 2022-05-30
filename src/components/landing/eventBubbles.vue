@@ -133,6 +133,5 @@ export default {
 <style scoped>
 .my-card {
   font-size: 12.5px;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>
