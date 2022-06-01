@@ -231,12 +231,19 @@ export default {
       // creating: create a new changeData
       if (this.editBtnText === "create") {
         this.isCreatingNewDiaryEntry = true;
+
         this.changeData = {
           id: "",
           date: "",
           editor: "",
           events: [],
         };
+
+        let defaultTemplate = this.$store.getters["data/getDefaultTemplate"];
+        if (defaultTemplate != undefined) {
+          console.log("default is set to: ", defaultTemplate);
+          this.changeData.editor = defaultTemplate;
+        }
         // editing: paste data from entry to changeData
       } else {
         this.changeData = {

@@ -127,9 +127,24 @@ export const addEntryToDiaryEntries = (state, entry) => {
 };
 
 export const createTemplateAndAddToList = (state, payload) => {
-  let newTemplate = { id: uid(), name: payload.name, text: payload.text };
+  let newTemplate = {
+    id: uid(),
+    name: payload.name,
+    text: payload.text,
+    isSetToDefault: false,
+  };
   console.log(newTemplate);
   state.diaryTemplates.push(newTemplate);
+};
+
+export const setDefaultStatusOfTemplate = (state, id) => {
+  state.diaryTemplates.forEach((template) => {
+    if (template.id === id) {
+      template.isSetToDefault = !template.isSetToDefault;
+    } else {
+      template.isSetToDefault = false;
+    }
+  });
 };
 
 // adds a new event

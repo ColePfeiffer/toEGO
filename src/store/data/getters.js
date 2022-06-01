@@ -15,6 +15,18 @@ export const getDiaryEntryByDate = (state) => {
   };
 };
 
+export const getDefaultTemplate = (state) => {
+  let defaultTemplate = state.diaryTemplates.find(
+    (template) => template.isSetToDefault === true
+  );
+
+  if (defaultTemplate != undefined) {
+    return defaultTemplate.text;
+  } else {
+    return undefined;
+  }
+};
+
 // takes the method's ID as an argument and returns the matching method
 export const getMethodById2 = (state) => {
   return (id) => {
