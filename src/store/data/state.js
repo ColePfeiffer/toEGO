@@ -34,7 +34,13 @@ export default function () {
     },
     debug: true,
     phone: false,
+    //dialogs
     eventDialogSettings: { isOpen: false, editMode: false },
+    dialogSettings: {
+      nameOfDisplayedDialog: "test",
+      isVisible: false,
+      hideBackground: false,
+    },
     diaryEntries: [
       {
         id: "1",

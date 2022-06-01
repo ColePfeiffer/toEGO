@@ -1,31 +1,8 @@
 <template>
   <div>
+    <DialogDeleteEvent v-model="confirm"></DialogDeleteEvent>
     <div class="q-pa-sm q-gutter-sm">
-      <q-dialog v-model="confirm" persistent>
-        <q-card>
-          <q-card-section class="row items-center">
-            <div class="col-3">
-              <q-avatar icon="delete" color="primary" text-color="white" />
-            </div>
-            <div class="col">
-              <span class="q-ml-sm"
-                >Do you really want to delete this event?</span
-              >
-            </div>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="Cancel" color="secondary" v-close-popup />
-            <q-btn
-              flat
-              label="Delete"
-              color="secondary"
-              v-close-popup
-              @click="deleteEvent"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
+      <q-dialog v-model="confirm" persistent> </q-dialog>
     </div>
     <!-- no diary entry for this date doesn't exist yet -->
     <div v-if="this.diaryEntry === undefined">
@@ -81,6 +58,7 @@
 
 <script>
 import EventCard from "./EventCard.vue";
+import DialogDeleteEvent from "../dialogs/DialogDeleteEvent.vue";
 
 export default {
   name: "EventViewer",
@@ -96,6 +74,7 @@ export default {
   },
   components: {
     EventCard,
+    DialogDeleteEvent,
   },
   methods: {
     changeEventData(eventData) {

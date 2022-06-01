@@ -1,18 +1,18 @@
 <template>
-  <q-dialog class="baseDialog" full-height full-width persistent>
-    <div class="test row justify-center" :style="boxShadowStyle">
-      <div class="col-12 col-sm-7 col-md-3 col-xl-3">
-        <div class="window dialogBox column full-height" :style="styleB">
-          <!-- Title Bar -->
-          <div class="col-1">
-            <div class="title-bar row" style="background: #dfd4f5">
-              <div class="title-bar-text">
-                <slot name="dialogTitle"></slot>
-              </div>
-              <div class="title-bar-controls">
-                <button aria-label="Help"></button>
-                <button aria-label="Close"></button>
-              </div>
+  <!-- whole thing -->
+  <q-dialog class="baseDialog" persistent>
+    <!-- row -->
+    <div class="col-12 col-sm-8 col-md-3 col-xl-3">
+      <div class="window dialogBox column" :style="styleB">
+        <!-- Title Bar -->
+        <div class="col-1">
+          <div class="title-bar row" style="background: #dfd4f5">
+            <div class="title-bar-text">
+              <slot name="dialogTitle"></slot>
+            </div>
+            <div class="title-bar-controls">
+              <button aria-label="Help"></button>
+              <button aria-label="Close"></button>
             </div>
           </div>
           <!-- Content Slot -->
@@ -106,6 +106,10 @@ export default {
 </script>
 
 <style scoped src="98.css">
+.test {
+  width: 300px;
+  height: 400px;
+}
 .baseDialog :deep(.window) {
   color: #fff;
 }

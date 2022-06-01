@@ -3,8 +3,11 @@
     ref="editorRef"
     class="editor shadow-3 text-justify"
     min-height="17rem"
+    toolbar-bg="secondary"
+    toolbar-text-color="primary"
+    toolbar-color="primary"
     :toolbar="[
-      ['templates', 'undo', 'redo', 'viewsource', 'fullscreen'],
+      ['templates', 'undo', 'redo', 'viewsource', 'fullscreen', 'hr', 'link'],
       [
         {
           label: $q.lang.editor.align,
@@ -50,7 +53,6 @@
         },
         'removeFormat',
       ],
-      ['hr', 'link', 'custom_btn'],
     ]"
     :fonts="{
       arial: 'Arial',
@@ -64,6 +66,46 @@
     }"
   >
     <template v-slot:templates>
+      <q-btn-dropdown
+        no-caps
+        ref="templatesRef"
+        no-wrap
+        auto-close
+        unelevated
+        color="primary"
+        text-color="accent"
+        label="Templates"
+        size="sm"
+      >
+        <q-list>
+          <div class="column">
+            <q-item tag="label" clickable @click="saveAsTemplate">
+              <q-item-section side>
+                <q-icon name="save" />
+              </q-item-section>
+              <q-item-section>Save as Template</q-item-section>
+            </q-item>
+            <q-item tag="label" clickable @click="editTemplates">
+              <q-item-section side>
+                <q-icon name="edit" />
+              </q-item-section>
+              <q-item-section>Edit Templates</q-item-section>
+            </q-item>
+            <!-- v-for list of templates -->
+
+            <div v-for="template in templates" :key="template.id">
+              <q-item tag="label" clickable @click="addTemplate(template)">
+                <q-item-section side>
+                  <q-icon :name="template.icon" />
+                </q-item-section>
+                <q-item-section>{{ template.name }}</q-item-section>
+              </q-item>
+            </div>
+          </div>
+        </q-list>
+      </q-btn-dropdown>
+    </template>
+    <template v-slot:test>
       <q-btn-dropdown
         no-caps
         ref="templatesRef"
@@ -158,4 +200,7 @@ export default {
 };
 </script>
 
-<style scoped src="98.css"></style>
+
+
+<style scoped src="98.css">
+</style>

@@ -52,7 +52,7 @@
               </q-card>
             </div>
             <!-- EDIT MODE -->
-            <div v-else>
+            <div class="editorContainer" v-else>
               <BaseEditor v-model="changeData.editor" />
             </div>
           </q-scroll-area>
@@ -218,7 +218,9 @@ export default {
 }
 
 .editor {
-  font-size: 12.5px;
+  border-style: unset;
+  border-radius: 0px;
+  margin: 5px;
 }
 
 .templateSelector {
