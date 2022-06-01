@@ -1,9 +1,9 @@
 <template>
   <div>
-    <DialogDeleteEvent v-model="confirm"></DialogDeleteEvent>
-    <div class="q-pa-sm q-gutter-sm">
-      <q-dialog v-model="confirm" persistent> </q-dialog>
-    </div>
+    <DialogDeleteEvent
+      @deleteEvent="deleteEvent"
+      @closeDialog="closeDialog"
+    ></DialogDeleteEvent>
     <!-- no diary entry for this date doesn't exist yet -->
     <div v-if="this.diaryEntry === undefined">
       <div class="q-pa-md">
@@ -68,8 +68,7 @@ export default {
   },
   data() {
     return {
-      confirm: false,
-      eventDataHolder: "",
+      toBeDeletedEvent: "",
     };
   },
   components: {
@@ -82,15 +81,32 @@ export default {
       this.$store.commit("data/updateExpandedStatusOfEventViaEventID", payload);
     },
     showConfirmDeleteDialog(eventData) {
-      this.confirm = true;
-      this.eventDataHolder = eventData;
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogDeleteEvent",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+      this.toBeDeletedEvent = eventData;
+    },
+    closeDialog() {
+      let payload = {
+        isVisible: false,
+        isBackgroundVisible:
+          this.$store.state.data.dialogSettings.isBackgroundVisible,
+        nameOfCurrentDialog:
+          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
     deleteEvent() {
       let payload = {
         diaryEntryRef: this.diaryEntry,
-        eventData: this.eventDataHolder,
+        eventData: this.toBeDeletedEvent,
       };
       this.$store.commit("data/deleteEvent", payload);
+
+      this.closeDialog();
     },
     // noch nicht richtig! wip
     editEvent(eventData) {

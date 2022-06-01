@@ -37,9 +37,9 @@ export default function () {
     //dialogs
     eventDialogSettings: { isOpen: false, editMode: false },
     dialogSettings: {
-      nameOfDisplayedDialog: "test",
+      nameOfCurrentDialog: "test",
       isVisible: false,
-      hideBackground: false,
+      isBackgroundVisible: false,
     },
     diaryEntries: [
       {

@@ -193,9 +193,11 @@ export default {
   methods: {
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
+
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
-        editMode: false,
+        isBackgroundVisible: false,
+        nameOfCurrentDialog: "dialogNewEvent",
       });
     },
     showDialogForExistingEvent(eventData) {
@@ -206,9 +208,11 @@ export default {
         eventData: eventData,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
+
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
-        editMode: true,
+        isBackgroundVisible: false,
+        nameOfCurrentDialog: "dialogEditEvent",
       });
     },
     scroll(offset) {

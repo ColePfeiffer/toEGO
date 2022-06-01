@@ -84,6 +84,7 @@
                     class="input"
                     v-model="title"
                     filled
+                    square
                     label="Title"
                     input-style="max-height: 50px; min-height: 25px;"
                     :rules="[
@@ -101,6 +102,7 @@
                     v-model="text"
                     label="What happened?"
                     filled
+                    square
                     autogrow
                     input-style="max-height: 200px; min-height: 100px;"
                   />
@@ -145,7 +147,12 @@ export default {
     },
     closeDialog() {
       this.$store.commit("data/resetEventData");
-      let payload = { isVisible: false, editMode: false };
+      let payload = {
+        isVisible: false,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog:
+          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
+      };
       this.$store.commit("data/setDialogVisibility", payload);
     },
     saveChanges() {
@@ -154,7 +161,10 @@ export default {
       }
 
       // check wether a new event is created or an existing one is being edited
-      if (this.$store.state.data.eventDialogSettings.editMode === false) {
+      if (
+        this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+        "dialogNewEvent"
+      ) {
         // creating a new event:
         this.$store.commit("data/addEventToEvents", new Date());
       } else {
@@ -167,12 +177,24 @@ export default {
   computed: {
     isDialogVisible: {
       get() {
-        return this.$store.state.data.eventDialogSettings.isOpen;
+        if (
+          (this.$store.state.data.dialogSettings.isVisible === true) &
+          ((this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+            "dialogNewEvent") |
+            (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+              "dialogEditEvent"))
+        ) {
+          return true;
+        } else {
+          return false;
+        }
       },
       set(value) {
         let payload = {
           isVisible: value,
-          editMode: this.$store.state.data.eventDialogSettings.editMode,
+          isBackgroundVisible: false,
+          nameOfCurrentDialog:
+            this.$store.state.data.dialogSettings.nameOfCurrentDialog,
         };
         this.$store.commit("data/setDialogVisibility", payload);
       },
@@ -202,7 +224,10 @@ export default {
       },
     },
     confirmButtonText() {
-      if (this.$store.state.data.eventDialogSettings.editMode) {
+      if (
+        this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+        "dialogEditEvent"
+      ) {
         return "edit";
       } else {
         return "save";

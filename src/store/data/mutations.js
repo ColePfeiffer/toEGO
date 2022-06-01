@@ -126,6 +126,12 @@ export const addEntryToDiaryEntries = (state, entry) => {
   state.diaryEntries.push(entry);
 };
 
+export const createTemplateAndAddToList = (state, payload) => {
+  let newTemplate = { id: uid(), name: payload.name, text: payload.text };
+  console.log(newTemplate);
+  state.diaryTemplates.push(newTemplate);
+};
+
 // adds a new event
 // if there is an existing diary entry, it will be added to it's events property.
 // if there is no existing diary entry, one will be created, so the event can be added.
@@ -182,11 +188,9 @@ export const changeButtonColorOnClick = (state, buttonID) => {
 };
 
 export const setDialogVisibility = (state, payload) => {
-  //state.newEventDialogIsOpen = payload.isVisible;
-  console.log(state.eventDialogSettings.isOpen);
-  state.eventDialogSettings.isOpen = payload.isVisible;
-  state.eventDialogSettings.editMode = payload.editMode;
-  console.log(state.eventDialogSettings.isOpen);
+  state.dialogSettings.nameOfCurrentDialog = payload.nameOfCurrentDialog;
+  state.dialogSettings.isVisible = payload.isVisible;
+  state.dialogSettings.isBackgroundVisible = payload.isBackgroundVisible;
 };
 
 export const showModal = (state, componentName) => {

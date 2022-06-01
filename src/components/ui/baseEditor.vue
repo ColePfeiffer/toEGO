@@ -79,124 +79,57 @@
       >
         <q-list>
           <div class="column">
-            <q-item tag="label" clickable @click="saveAsTemplate">
+            <q-item tag="label" clickable @click="showTemplateCreator">
               <q-item-section side>
                 <q-icon name="save" />
               </q-item-section>
               <q-item-section>Save as Template</q-item-section>
             </q-item>
-            <q-item tag="label" clickable @click="editTemplates">
+            <q-item tag="label" clickable @click="showTemplateViewer">
               <q-item-section side>
                 <q-icon name="edit" />
               </q-item-section>
-              <q-item-section>Edit Templates</q-item-section>
+              <q-item-section>Open Templates</q-item-section>
             </q-item>
-            <!-- v-for list of templates -->
-
-            <div v-for="template in templates" :key="template.id">
-              <q-item tag="label" clickable @click="addTemplate(template)">
-                <q-item-section side>
-                  <q-icon :name="template.icon" />
-                </q-item-section>
-                <q-item-section>{{ template.name }}</q-item-section>
-              </q-item>
-            </div>
           </div>
         </q-list>
       </q-btn-dropdown>
     </template>
-    <template v-slot:test>
-      <q-btn-dropdown
-        no-caps
-        ref="templatesRef"
-        no-wrap
-        auto-close
-        unelevated
-        color="primary"
-        text-color="accent"
-        label="Templates"
-      >
-        <q-list>
-          <div class="column">
-            <q-item tag="label" clickable @click="saveAsTemplate">
-              <q-item-section side>
-                <q-icon name="save" />
-              </q-item-section>
-              <q-item-section>Save as Template</q-item-section>
-            </q-item>
-            <q-item tag="label" clickable @click="editTemplates">
-              <q-item-section side>
-                <q-icon name="edit" />
-              </q-item-section>
-              <q-item-section>Edit Templates</q-item-section>
-            </q-item>
-            <!-- v-for list of templates -->
 
-            <div v-for="template in templates" :key="template.id">
-              <q-item tag="label" clickable @click="addTemplate(template)">
-                <q-item-section side>
-                  <q-icon :name="template.icon" />
-                </q-item-section>
-                <q-item-section>{{ template.name }}</q-item-section>
-              </q-item>
-            </div>
-          </div>
-        </q-list>
-      </q-btn-dropdown>
-    </template>
+    <dialogCreateTemplate
+      @closeDialog="closeDialog"
+      @createTemplate="createTemplate"
+    ></dialogCreateTemplate>
   </q-editor>
 </template>
 
 <script>
+import dialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
+
 export default {
   name: "baseEditor",
-  emits: ["update-change-data"],
+  emits: ["showTemplateCreator", "showTemplateViewer"],
+  components: { dialogCreateTemplate },
   data() {
-    return {};
+    return {
+      templateHolder: "",
+    };
   },
   methods: {
-    saveAsTemplate() {
-      console.log("save!");
-      // open dialog or something for naming
+    showTemplateCreator() {
+      this.$emit("showTemplateCreator");
     },
-    editTemplates() {
-      console.log("edit templates");
+    showTemplateViewer() {
+      this.$emit("showTemplateViewer");
     },
-    addTemplate(template) {
-      console.log(template.text);
-      // add template to editor text
 
-      const edit = this.editorRef;
-      console.log("meh? ", edit);
-
-      let blubb = this.$refs.editorRef;
-      console.log("meh! ", blubb);
-      console.log("value: ", blubb.getContentEl());
-      blubb.runCmd("insertHTML", template.text);
-
-      // test
-      blubb.runCmd(
-        "insertHTML",
-        `&nbsp;<div class="editor_token row inline items-center" contenteditable="false">&nbsp;<span>${template.name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`
-      );
-
-      blubb.focus();
-      /* 
-      tokenRef.value.hide();
-      edit.caret.restore();
-      edit.runCmd(
-        "insertHTML",
-        `&nbsp;<div class="editor_token row inline items-center" contenteditable="false">&nbsp;<span>${name}</span>&nbsp;<i class="q-icon material-icons cursor-pointer" onclick="this.parentNode.parentNode.removeChild(this.parentNode)">close</i></div>&nbsp;`
-      );
-      edit.focus();
-      */
+    pasteTemplate(template) {
+      let editorRef = this.$refs.editorRef;
+      editorRef.runCmd("insertHTML", template.text);
+      editorRef.focus();
     },
   },
-  computed: {
-    templates() {
-      return this.$store.state.data.diaryTemplates.slice();
-    },
-  },
+  computed: {},
 };
 </script>
 

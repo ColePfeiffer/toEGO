@@ -9,7 +9,11 @@
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
             <router-view
               v-slot="{ Component }"
-              v-if="$store.state.data.eventDialogSettings.isOpen == false"
+              v-if="
+                $store.state.data.dialogSettings.isVisible == false ||
+                ($store.state.data.dialogSettings.isVisible == true &&
+                  $store.state.data.dialogSettings.isBackgroundVisible == true)
+              "
             >
               <keep-alive>
                 <component :is="Component" />
@@ -21,7 +25,11 @@
     </q-page-container>
     <!-- Bottom Navigation bar -->
     <q-footer
-      v-if="$store.state.data.eventDialogSettings.isOpen == false"
+      v-if="
+        ($store.state.data.dialogSettings.isVisible == false) |
+          (($store.state.data.dialogSettings.isVisible == true) &
+            ($store.state.data.dialogSettings.isBackgroundVisible == true))
+      "
       elevated
       class="primary"
     >
@@ -92,7 +100,11 @@ export default {
       this.drawer = !this.drawer;
     },
     showDialogForNewEvent() {
-      let payload = { isVisible: true, editMode: false };
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: false,
+        nameOfCurrentDialog: "dialogNewEvent",
+      };
       this.$store.commit("data/setDialogVisibility", payload);
     },
     goToPage() {

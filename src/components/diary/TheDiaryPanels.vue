@@ -1,5 +1,14 @@
 <template>
   <div>
+    <DialogCreateTemplate
+      @createTemplate="createTemplate"
+      @closeDialog="closeDialog"
+    ></DialogCreateTemplate>
+    <DialogViewTemplates
+      @pasteTemplate="pasteTemplate"
+      @deleteTemplate="deleteTemplate"
+      @closeDialog="closeDialog"
+    ></DialogViewTemplates>
     <!--shown when in viewing mode -->
     <div v-if="viewingMode === 'view'" class="row justify-end">
       <q-btn
@@ -53,7 +62,12 @@
             </div>
             <!-- EDIT MODE -->
             <div class="editorContainer" v-else>
-              <BaseEditor v-model="changeData.editor" />
+              <BaseEditor
+                ref="editorRef1"
+                v-model="changeData.editor"
+                @showTemplateCreator="showTemplateCreator"
+                @showTemplateViewer="showTemplateViewer"
+              />
             </div>
           </q-scroll-area>
         </template>
@@ -104,16 +118,21 @@
 <script>
 import BasePanelWithButtons from "../ui/BasePanelWithButtons.vue";
 import BaseEditor from "../ui/BaseEditor.vue";
+import DialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
+import DialogViewTemplates from "../dialogs/DialogViewTemplates.vue";
 
 export default {
   name: "TheDiaryPanels",
   components: {
     BasePanelWithButtons,
     BaseEditor,
+    DialogCreateTemplate,
+    DialogViewTemplates,
   },
   emits: ["scroll", "change-view", "save-changes"],
   data() {
     return {
+      storedTemplateString: "",
       isCreatingNewDiaryEntry: false,
       changeData: {},
       heightForScrollArea: "height: 250px",
@@ -159,20 +178,49 @@ export default {
     },
   },
   methods: {
-    updateChangeData(editor) {
-      this.changeData.editor = editor;
-      console.log("triggered!");
+    closeDialog() {
+      let payload = {
+        isVisible: false,
+        isBackgroundVisible:
+          this.$store.state.data.dialogSettings.isBackgroundVisible,
+        nameOfCurrentDialog:
+          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
-    isShowingPanels() {
-      if (diaryEntry != undefined) {
-        return true;
-      } else {
-        return false;
-      }
+    // template Viewer
+    showTemplateViewer() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogViewTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
+    pasteTemplate() {},
+    deleteTemplate() {},
+
+    // Template Creator
+    showTemplateCreator() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogCreateTemplate",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+
+    createTemplate(templateName) {
+      let newTemplate = { name: templateName, text: this.changeData.editor };
+      this.$store.commit("data/createTemplateAndAddToList", newTemplate);
+      this.closeDialog();
+    },
+
     scroll(offset) {
       this.$emit("scroll", offset);
     },
+
+    // for diary panels
     changeView(viewMode) {
       this.isCreatingNewDiaryEntry = false;
       this.$emit("change-view", viewMode);

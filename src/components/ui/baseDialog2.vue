@@ -53,7 +53,9 @@ color: white; background-color: black
 export default {
   name: "baseDialog",
   emits: ["closeDialog", "save"],
-
+  props: {
+    widthOfDialog: Number,
+  },
   data() {
     return {
       test: true,
@@ -64,10 +66,12 @@ export default {
         "background-color": "#121212 ",
         color: "white",
         opacity: "0.8",
+        width: "400px",
       },
       styleB: {
         "background-color": "#989898 ",
         color: "black",
+        width: this.widthOfDialog + "px",
       },
 
       mobileModeActive: true,
@@ -106,10 +110,6 @@ export default {
 </script>
 
 <style scoped src="98.css">
-.test {
-  width: 300px;
-  height: 400px;
-}
 .baseDialog :deep(.window) {
   color: #fff;
 }
