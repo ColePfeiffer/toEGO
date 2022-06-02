@@ -3,9 +3,12 @@
     v-model="isDialogVisible"
     @closeDialog="closeDialog"
     @save="pasteTemplate"
+    @showHelp="showHelp"
     :widthOfDialog="315"
+    :hasHelpOption="true"
+    :isSaveButtonDisabled="!isAtLeastOneTemplateCreated"
   >
-    <template v-slot:confirm-button> Paste </template>
+    <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Cancel </template>
     <template v-slot:dialogTitle>
       <q-icon :name="menuIcon" size="22px" />
@@ -13,71 +16,120 @@
     </template>
     <template v-slot:content>
       <!-- v-for list of templates, kommt später weg -->
-      <div class="row items-center justify-center">
+      <div class="row items-center justify-center q-pa-md">
         <div class="column items-center justify-center">
-          <q-btn-dropdown
-            ref="btnDropdown"
-            class="btnDropdown"
-            color="primary"
-            label="Template"
-          >
-            <q-virtual-scroll
-              style="max-height: 300px"
-              :items="templates"
-              separator
-              v-slot="{ item, index }"
+          <div v-if="isAtLeastOneTemplateCreated === true">
+            <q-btn-dropdown
+              ref="btnDropdown"
+              class="btnDropdown"
+              color="primary"
+              label="Template"
             >
-              <q-item :key="index" dense clickable>
-                <q-item-section>
-                  <q-btn flat @click="setTemplate(index)"
-                    >#{{ index }} - {{ item.name }}</q-btn
-                  >
-                </q-item-section>
-              </q-item>
-            </q-virtual-scroll>
-          </q-btn-dropdown>
-
-          <q-card flat bordered class="templateCard bg-grey-1">
-            <q-card-section>
-              <div class="text-h6">{{ currentTemplate.name }}</div>
-            </q-card-section>
-
-            <q-card-section class="templateTextContainer">
-              <div v-if="currentTemplate.text.length >= 350">
-                <div
-                  v-html="currentTemplate.text.substring(0, 350) + ' [...]'"
-                ></div>
-              </div>
-              <div v-else v-html="currentTemplate.text"></div>
-            </q-card-section>
-            <q-separator />
-            <q-card-actions>
-              <q-btn
-                class="cardButton"
-                :icon="defaultTemplateIcon"
-                @click="setDefaultStatus"
-                flat
+              <q-virtual-scroll
+                style="max-height: 300px"
+                :items="templates"
+                separator
+                v-slot="{ item, index }"
               >
-                <q-tooltip
-                  >Make default: Every new entry will start with this
-                  template.</q-tooltip
-                ></q-btn
-              >
-              <q-btn class="cardButton" icon="bi-trash" flat />
-              <q-btn
-                class="cardButton"
-                icon="bi-journal-plus"
-                @click="pasteTemplate(currentTemplate.text)"
-                flat
-              />
-            </q-card-actions>
-          </q-card>
+                <q-item :key="index" dense clickable>
+                  <q-item-section>
+                    <q-btn flat @click="setTemplate(index)"
+                      >#{{ index }} - {{ item.name }}</q-btn
+                    >
+                  </q-item-section>
+                </q-item>
+              </q-virtual-scroll>
+            </q-btn-dropdown>
+
+            <q-card flat bordered class="templateCard bg-grey-1">
+              <q-card-section>
+                <div class="text-h6">{{ currentTemplate.name }}</div>
+              </q-card-section>
+
+              <q-card-section class="templateTextContainer">
+                <div v-if="currentTemplate.text.length >= 350">
+                  <div
+                    v-html="currentTemplate.text.substring(0, 350) + ' [...]'"
+                  ></div>
+                </div>
+                <div v-else v-html="currentTemplate.text"></div>
+              </q-card-section>
+              <q-separator />
+
+              <q-card-actions class="row justify-center items-center">
+                <q-btn
+                  class="cardButton"
+                  :icon="defaultTemplateIcon"
+                  @click="setDefaultStatus"
+                  flat
+                >
+                </q-btn>
+                <q-btn
+                  class="cardButton"
+                  icon="bi-journal-plus"
+                  @click="pasteTemplate(currentTemplate.text)"
+                  flat
+                />
+                <div>
+                  <q-fab flat direction="right" padding="md">
+                    <template v-slot:icon="{ opened }">
+                      <q-icon
+                        :class="{
+                          'example-fab-animate--hover': opened !== true,
+                        }"
+                        name="bi-trash"
+                        size="20px"
+                        style="top: -1px"
+                      />
+                    </template>
+
+                    <q-fab-action
+                      style="left: -30px"
+                      class="fabButton"
+                      flat
+                      color="accent"
+                      @click="deleteTemplate"
+                      icon="bi-check"
+                    />
+                  </q-fab>
+                </div>
+              </q-card-actions>
+            </q-card>
+          </div>
+          <div v-else>
+            <q-card flat bordered class="templateCard bg-grey-1">
+              <q-card-section>
+                <div class="text-h6">There is nothing here.</div>
+              </q-card-section>
+
+              <q-card-section class="templateTextContainer">
+                You have no saved templates yet.
+              </q-card-section>
+              <q-separator />
+            </q-card>
+          </div>
+
           <br />
-          <div class="text q-pl-md">
-            <q-icon name="bi-arrow-90deg-up"></q-icon>
-            <div>
-              You can set a default template here. Every newly created entry
-              will start with this template.
+          <div v-if="isHelpShown" class="text">
+            <div class="q-pa-sm q-ml-md">
+              <q-icon
+                class="q-px-sm"
+                name="bi-bookmark-star"
+                size="15px"
+              ></q-icon>
+              Make default: Every new entry will start with this template.
+            </div>
+            <div class="q-pa-sm q-ml-md">
+              <q-icon
+                class="q-px-sm"
+                name="bi-journal-plus"
+                size="15px"
+              ></q-icon>
+              Paste template.
+            </div>
+            <div class="q-pa-sm q-ml-md">
+              <q-icon class="q-px-sm" name="bi-trash" size="15px"></q-icon>
+              Delete template.
             </div>
           </div>
         </div>
@@ -99,11 +151,14 @@ export default {
     return {
       icon: true,
       menuIcon: "bi-file-earmark-font",
-
+      isHelpShown: false,
       currentTemplate: this.$store.state.data.diaryTemplates[0],
     };
   },
   methods: {
+    showHelp() {
+      this.isHelpShown = !this.isHelpShown;
+    },
     setDefaultStatus() {
       this.$store.commit(
         "data/setDefaultStatusOfTemplate",
@@ -119,13 +174,21 @@ export default {
       this.$emit("closeDialog");
     },
     deleteTemplate() {
-      this.$emit("deleteTemplate");
+      this.$emit("deleteTemplate", this.currentTemplate);
+      this.currentTemplate = this.$store.state.data.diaryTemplates[0];
     },
     pasteTemplate() {
-      this.$emit("pasteTemplate");
+      this.$emit("pasteTemplate", this.currentTemplate);
     },
   },
   computed: {
+    isAtLeastOneTemplateCreated() {
+      if (this.templates.length != 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     defaultTemplateIcon() {
       if (this.currentTemplate.isSetToDefault === true) {
         return "bi-bookmark-star-fill";
@@ -177,6 +240,11 @@ export default {
 }
 
 .cardButton {
+  font-size: 11px;
+}
+
+.fabButton {
   font-size: 10px;
+  font-size: 88px !important;
 }
 </style>

@@ -124,9 +124,11 @@ export default {
     },
 
     pasteTemplate(template) {
-      let editorRef = this.$refs.editorRef;
+      /*
+let editorRef = this.$refs.editorRef;
       editorRef.runCmd("insertHTML", template.text);
       editorRef.focus();
+ */
     },
   },
   computed: {},

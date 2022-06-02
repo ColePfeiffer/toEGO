@@ -197,8 +197,17 @@ export default {
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
-    pasteTemplate() {},
-    deleteTemplate() {},
+    pasteTemplate(template) {
+      if (this.changeData.editor != "") {
+        this.changeData.editor =
+          this.changeData.editor + "<br>" + template.text;
+      } else {
+        this.changeData.editor = template.text;
+      }
+    },
+    deleteTemplate(template) {
+      this.$store.commit("data/deleteTemplate", template);
+    },
 
     // Template Creator
     showTemplateCreator() {

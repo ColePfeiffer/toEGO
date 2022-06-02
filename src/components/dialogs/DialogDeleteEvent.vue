@@ -1,7 +1,8 @@
 <template>
   <baseDialog
     v-model="isDialogVisible"
-    :widthOfDialog="330"
+    :widthOfDialog="315"
+    :hasHelpOption="false"
     @closeDialog="closeDialog"
     @save="deleteEvent"
   >

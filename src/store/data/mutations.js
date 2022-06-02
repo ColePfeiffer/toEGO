@@ -137,6 +137,12 @@ export const createTemplateAndAddToList = (state, payload) => {
   state.diaryTemplates.push(newTemplate);
 };
 
+export const deleteTemplate = (state, template) => {
+  let indexOfTemplate = state.diaryTemplates.indexOf(template);
+  console.log("index OF Template: ", indexOfTemplate);
+  state.diaryTemplates.splice(indexOfTemplate, 1);
+};
+
 export const setDefaultStatusOfTemplate = (state, id) => {
   state.diaryTemplates.forEach((template) => {
     if (template.id === id) {

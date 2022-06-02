@@ -2,6 +2,7 @@
   <baseDialog
     v-model="isDialogVisible"
     :widthOfDialog="315"
+    :isSaveButtonDisabled="!isNameValid"
     @closeDialog="closeDialog"
     @save="createTemplate"
   >
@@ -23,7 +24,16 @@
           </div>
           <div class="col">
             <span class="q-ml-sm">Name your template...</span>
-            <q-input filled square v-model="templateName" />
+            <q-input
+              filled
+              square
+              v-model="templateName"
+              :rules="[
+                (val) => !!val || '* Required',
+                (val) => val.length >= 2 || 'Please use minimum 2 characters',
+                (val) => val.length <= 20 || 'Please use maximum 25 characters',
+              ]"
+            />
           </div>
         </q-card-section>
       </q-card>
@@ -61,6 +71,13 @@ export default {
     },
   },
   computed: {
+    isNameValid() {
+      if (this.templateName.length >= 2 && this.templateName.length <= 25) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     isDialogVisible: {
       get() {
         if (
