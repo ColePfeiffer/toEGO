@@ -106,6 +106,11 @@ export const updateCreatedOn = (state, value) => {
   state.eventData.createdOn = value;
 };
 
+export const updateLastSelectedDate = (state, value) => {
+  console.log("mehhh", value);
+  state.lastSelectedDate = value;
+};
+
 export const updateID = (state, value) => {
   state.eventData.id = value;
 };
@@ -156,20 +161,23 @@ export const setDefaultStatusOfTemplate = (state, id) => {
 // adds a new event
 // if there is an existing diary entry, it will be added to it's events property.
 // if there is no existing diary entry, one will be created, so the event can be added.
-export const addEventToEvents = (state, createdOn) => {
+export const addEventToEvents = (state) => {
   let newEntry = "";
+  // if createdOn wasn't manually set, it means we are creating an event for today.
+  if (state.eventData.createdOn === "") {
+    state.eventData.createdOn = new Date();
+  }
+
+  let dateEventIsCreatedFor = state.eventData.createdOn;
 
   // setting date and ID for the new event
-  state.eventData.createdOn = createdOn;
   state.eventData.id = uid();
   state.eventData.expanded = false;
 
   let entryFound = false;
   for (let i = 0; i < state.diaryEntries.length; i++) {
     let diaryEntry = state.diaryEntries[i];
-    console.log("current diaryEntry in loop: ", diaryEntry);
-    if (date.isSameDate(diaryEntry.date, createdOn, "day")) {
-      console.log("diaryEntry found for this day. Adding event.....");
+    if (date.isSameDate(diaryEntry.date, dateEventIsCreatedFor, "day")) {
       diaryEntry.events.push(state.eventData);
       entryFound = true;
       break;
@@ -178,15 +186,13 @@ export const addEventToEvents = (state, createdOn) => {
   if (entryFound === false) {
     newEntry = {
       id: uid(),
-      date: createdOn,
+      date: dateEventIsCreatedFor,
       editor: "just created this via an event",
       events: [],
     };
     newEntry.events.push(state.eventData);
     state.diaryEntries.push(newEntry);
-    console.log("new entry created and added.");
   }
-  console.log("Showing Events: ", state.events);
 };
 
 // saves the changes of an edited event

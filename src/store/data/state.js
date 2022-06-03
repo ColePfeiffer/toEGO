@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    lastSelectedDate: "",
     modalVisible: false,
     modalComponent: "",
     buttonClicked: 0,

@@ -178,8 +178,22 @@ export default {
         this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
         "dialogNewEvent"
       ) {
-        // creating a new event:
-        this.$store.commit("data/addEventToEvents", new Date());
+        let route = this.$route.path;
+
+        // if we are at home, we want to use new Date
+        if (route === "/home") {
+          console.log("home");
+          // creating a new event:
+          this.$store.commit("data/addEventToEvents", new Date());
+          // if we are at the diary page, we want to use lastSelectedDate
+        } else if (route === "/diary") {
+          console.log("diary");
+          // creating a new event:
+          this.$store.commit(
+            "data/addEventToEvents",
+            this.$store.state.data.lastSelectedDate
+          );
+        }
       } else {
         // editing an existing event:
         this.$store.commit("data/saveChangesToEditedEvent");

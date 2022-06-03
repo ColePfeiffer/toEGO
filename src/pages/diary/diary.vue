@@ -31,7 +31,7 @@
                         transition-show="scale"
                         transition-hide="scale"
                       >
-                        <q-date v-model="date">
+                        <q-date v-model="formattedDate">
                           <div class="row items-center justify-end">
                             <q-btn
                               v-close-popup
@@ -137,6 +137,12 @@ export default {
     diaryPanels,
     BaseExpandableButton,
   },
+  watch: {
+    // whenever getDate gets updated, it updates lastSelectedDate inside the store
+    getDate(newDate) {
+      this.$store.commit("data/updateLastSelectedDate", newDate);
+    },
+  },
   computed: {
     hasEvents() {
       if (this.getDiaryEntry != undefined) {
@@ -146,7 +152,7 @@ export default {
       }
       return false;
     },
-    date: {
+    formattedDate: {
       get() {
         return date.formatDate(this.getDate, "YYYY/MM/DD");
       },
@@ -193,7 +199,7 @@ export default {
   methods: {
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
-
+      this.$store.commit("data/updateCreatedOn", this.getDate);
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
         isBackgroundVisible: false,
@@ -225,7 +231,6 @@ export default {
         let newEntry = changeData;
         console.log("new Entry: ", newEntry);
         newEntry.date = this.getDate;
-        console.log(this.getDate);
         this.$store.commit("data/addEntryToDiaryEntries", newEntry);
       } else {
         payload = {
