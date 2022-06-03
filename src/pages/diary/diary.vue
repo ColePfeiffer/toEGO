@@ -114,7 +114,7 @@ export default {
   name: "diary",
   data() {
     return {
-      getDate: new Date(),
+      getDate: this.$store.state.data.lastSelectedDate,
       isDiarySectionVisible: true,
       viewingMode: "view",
       day: "TODAY",

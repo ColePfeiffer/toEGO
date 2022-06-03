@@ -161,17 +161,12 @@ export const setDefaultStatusOfTemplate = (state, id) => {
 // adds a new event
 // if there is an existing diary entry, it will be added to it's events property.
 // if there is no existing diary entry, one will be created, so the event can be added.
-export const addEventToEvents = (state) => {
+export const addEventToEvents = (state, dateEventIsCreatedFor) => {
   let newEntry = "";
-  // if createdOn wasn't manually set, it means we are creating an event for today.
-  if (state.eventData.createdOn === "") {
-    state.eventData.createdOn = new Date();
-  }
-
-  let dateEventIsCreatedFor = state.eventData.createdOn;
 
   // setting date and ID for the new event
   state.eventData.id = uid();
+  state.eventData.createdOn = dateEventIsCreatedFor;
   state.eventData.expanded = false;
 
   let entryFound = false;
