@@ -107,7 +107,6 @@ export const updateCreatedOn = (state, value) => {
 };
 
 export const updateLastSelectedDate = (state, value) => {
-  console.log("mehhh", value);
   state.lastSelectedDate = value;
 };
 
@@ -182,7 +181,7 @@ export const addEventToEvents = (state, dateEventIsCreatedFor) => {
     newEntry = {
       id: uid(),
       date: dateEventIsCreatedFor,
-      editor: "just created this via an event",
+      editor: "",
       events: [],
     };
     newEntry.events.push(state.eventData);

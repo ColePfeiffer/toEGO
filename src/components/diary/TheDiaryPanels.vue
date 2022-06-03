@@ -14,7 +14,7 @@
       <q-btn
         class="col-5 smallText"
         flat
-        icon="fas fa-edit"
+        :icon="getEditCreateIcon"
         color="secondary"
         :label="editBtnText"
         @click="editCreate"
@@ -54,10 +54,24 @@
           <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
             <!-- VIEW MODE -->
             <div v-if="viewingMode === 'view'">
-              <q-card class="editorCard shadow-3 text-justify">
+              <q-card
+                v-if="editor != ''"
+                class="editorCard shadow-3 text-justify"
+              >
                 <q-item>
                   <q-item-section v-html="editor"> </q-item-section>
                 </q-item>
+              </q-card>
+              <q-card v-else class="editorCard shadow-3 text-justify">
+                <q-card-section class="card-text text-center">
+                  There is no diary entry for this day yet.
+                  <q-btn
+                    class="statusElementIcon col=10 items-center"
+                    flat
+                    icon="bi-file-earmark-plus"
+                    color="secondary"
+                  ></q-btn>
+                </q-card-section>
               </q-card>
             </div>
             <!-- EDIT MODE -->
@@ -162,8 +176,15 @@ export default {
     viewingMode: String,
   },
   computed: {
+    getEditCreateIcon() {
+      if (this.editBtnText === "create") {
+        return "bi-file-earmark-plus-fill";
+      } else {
+        return "bi-file-earmark-text-fill";
+      }
+    },
     editBtnText() {
-      if (this.diaryEntry === undefined) {
+      if ((this.diaryEntry === undefined) | (this.editor === "")) {
         return "create";
       } else {
         return "edit";

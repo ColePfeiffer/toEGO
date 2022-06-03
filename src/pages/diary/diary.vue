@@ -59,6 +59,7 @@
           ></q-btn>
         </div>
       </div>
+
       <!-- EVENT SELECTION -->
       <div class="col q-px-md q-pt-lg">
         <!-- Title, Button Row -->
@@ -67,7 +68,10 @@
           <div class="col-6 eventTitle text-left text-secondary">EVENTS</div>
           <!-- Button -->
           <div class="col-6 eventchangeViewButton text-right">
-            <div v-if="hasEvents" class="col">
+            <div
+              v-if="hasEvents | (isDiarySectionVisible === false)"
+              class="col"
+            >
               <base-expandable-button
                 @expandMore="expandMore"
                 @expandLess="expandLess"
@@ -79,17 +83,18 @@
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
           <EventViewer
-            class="test"
+            class="q-pa-sm"
             :diaryEntry="getDiaryEntry"
             @showDialogForExistingEvent="showDialogForExistingEvent"
             @showDialogForNewEvent="showDialogForNewEvent"
           ></EventViewer>
         </q-scroll-area>
       </div>
+
+      <!-- DIARY SELECTION -->
       <div v-if="isDiarySectionVisible">
-        <!-- DIARY SELECTION -->
         <diaryPanels
-          class="q-pt-xs secondary"
+          class="q-pt-xs q-py-md"
           :diaryEntry="getDiaryEntry"
           :viewingMode="viewingMode"
           :scroll="scroll"
@@ -98,8 +103,6 @@
         ></diaryPanels>
       </div>
     </div>
-    <!-- 2 -->
-    <!-- 3 -->
   </q-page>
 </template>
 
@@ -196,10 +199,12 @@ export default {
   created() {
     this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
+  unmounted() {
+    console.log("mHE???");
+  },
   methods: {
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
-      this.$store.commit("data/updateCreatedOn", this.getDate);
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
         isBackgroundVisible: false,
@@ -288,8 +293,6 @@ export default {
 }
 .smallText {
   font-size: 12.5px;
-}
-.test :deep(.q-card) {
 }
 
 .q-btn :deep(.q-icon) {
