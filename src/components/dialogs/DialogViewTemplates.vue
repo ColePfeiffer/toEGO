@@ -155,10 +155,13 @@ export default {
       currentTemplate: this.$store.state.data.diaryTemplates[0],
     };
   },
-  methods: {
-    showHelp() {
-      this.isHelpShown = !this.isHelpShown;
+  watch: {
+    // whenever the length of templates changes, this will reset the currentTemplate
+    lengthOfTemplates(newLength) {
+      this.currentTemplate = this.$store.state.data.diaryTemplates[0];
     },
+  },
+  methods: {
     setDefaultStatus() {
       this.$store.commit(
         "data/setDefaultStatusOfTemplate",
@@ -166,16 +169,18 @@ export default {
       );
     },
     setTemplate(index) {
-      console.log("biep");
       this.currentTemplate = this.templates[index];
       this.$refs.btnDropdown.hide();
     },
-    closeDialog() {
-      this.$emit("closeDialog");
-    },
     deleteTemplate() {
       this.$emit("deleteTemplate", this.currentTemplate);
-      this.currentTemplate = this.$store.state.data.diaryTemplates[0];
+    },
+    // for baseDialog
+    showHelp() {
+      this.isHelpShown = !this.isHelpShown;
+    },
+    closeDialog() {
+      this.$emit("closeDialog");
     },
     pasteTemplate() {
       this.$emit("pasteTemplate", this.currentTemplate);
@@ -183,7 +188,7 @@ export default {
   },
   computed: {
     isAtLeastOneTemplateCreated() {
-      if (this.templates.length != 0) {
+      if (this.lengthOfTemplates != 0) {
         return true;
       } else {
         return false;
@@ -198,6 +203,9 @@ export default {
     },
     templates() {
       return this.$store.state.data.diaryTemplates.slice();
+    },
+    lengthOfTemplates() {
+      return this.$store.state.data.diaryTemplates.length;
     },
     isDialogVisible: {
       get() {
