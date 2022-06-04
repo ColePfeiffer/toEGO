@@ -6,55 +6,7 @@
     toolbar-bg="secondary"
     toolbar-text-color="primary"
     toolbar-color="primary"
-    :toolbar="[
-      ['testerei'],
-      ['templates', 'undo', 'redo', 'viewsource', 'fullscreen', 'hr', 'link'],
-      [
-        {
-          label: $q.lang.editor.align,
-          icon: $q.iconSet.editor.align,
-          fixedLabel: true,
-          options: ['left', 'center', 'right', 'justify'],
-        },
-        {
-          label: 'Style',
-          icon: $q.iconSet.editor.bold,
-          fixedLabel: true,
-          fixedIcon: true,
-          options: ['bold', 'italic', 'strike', 'underline'],
-        },
-        {
-          label: 'Lists',
-          icon: 'list',
-          fixedLabel: true,
-          options: ['unordered', 'ordered', 'outdent', 'indent'],
-        },
-      ],
-      [
-        {
-          label: $q.lang.editor.fontSize,
-          icon: $q.iconSet.editor.fontSize,
-          fixedLabel: true,
-          fixedIcon: true,
-          list: 'no-icons',
-          options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6'],
-        },
-        {
-          label: $q.lang.editor.defaultFont,
-          icon: $q.iconSet.editor.font,
-          fixedIcon: true,
-          list: 'no-icons',
-          options: [
-            'default_font',
-            'arial',
-            'courier_new',
-            'lucida_grande',
-            'verdana',
-          ],
-        },
-        'removeFormat',
-      ],
-    ]"
+    :toolbar="lessOptions"
     :fonts="{
       arial: 'Arial',
       arial_black: 'Arial Black',
@@ -66,19 +18,17 @@
       verdana: 'Verdana',
     }"
   >
-    <template v-slot:testerei>
-      <q-btn label="MEH" icon="add"> </q-btn>
-    </template>
     <template v-slot:templates>
       <q-btn-dropdown
         no-caps
         ref="templatesRef"
         no-wrap
+        icon="bi-layout-text-sidebar-reverse"
         auto-close
         unelevated
+        :ripple="false"
         color="primary"
         text-color="accent"
-        label="Templates"
         size="sm"
       >
         <q-list>
@@ -99,6 +49,19 @@
         </q-list>
       </q-btn-dropdown>
     </template>
+    <template v-slot:fullscreenButton>
+      <q-btn
+        no-caps
+        no-wrap
+        icon="bi-fullscreen"
+        unelevated
+        :ripple="false"
+        color="primary"
+        text-color="accent"
+        size="sm"
+      >
+      </q-btn>
+    </template>
 
     <dialogCreateTemplate
       @closeDialog="closeDialog"
@@ -117,6 +80,128 @@ export default {
   data() {
     return {
       templateHolder: "",
+      moreOptions: [
+        ["templates", "undo", "redo", "viewsource", "fullscreen", "hr", "link"],
+        [
+          {
+            label: this.$q.lang.editor.align,
+            icon: this.$q.iconSet.editor.align,
+            fixedLabel: true,
+            options: ["left", "center", "right", "justify"],
+          },
+          {
+            label: "Style",
+            icon: this.$q.iconSet.editor.bold,
+            fixedLabel: true,
+            fixedIcon: true,
+            options: ["bold", "italic", "strike", "underline"],
+          },
+          {
+            label: "Lists",
+            icon: "list",
+            fixedLabel: true,
+            options: ["unordered", "ordered", "outdent", "indent"],
+          },
+        ],
+        [
+          {
+            label: this.$q.lang.editor.fontSize,
+            icon: this.$q.iconSet.editor.fontSize,
+            fixedLabel: true,
+            fixedIcon: true,
+            list: "no-icons",
+            options: [
+              "size-1",
+              "size-2",
+              "size-3",
+              "size-4",
+              "size-5",
+              "size-6",
+            ],
+          },
+          {
+            label: this.$q.lang.editor.defaultFont,
+            icon: this.$q.iconSet.editor.font,
+            fixedIcon: true,
+            list: "no-icons",
+            options: [
+              "default_font",
+              "arial",
+              "courier_new",
+              "lucida_grande",
+              "verdana",
+            ],
+          },
+          "removeFormat",
+        ],
+      ],
+      lessOptions: [
+        [
+          "templates",
+          {
+            label: "",
+            icon: "add",
+            fixedLabel: true,
+            options: ["viewsource", "hr", "link"],
+          },
+          "fullscreen",
+        ],
+
+        [
+          "undo",
+          "redo",
+          {
+            label: this.$q.lang.editor.align,
+            icon: this.$q.iconSet.editor.align,
+            fixedLabel: true,
+            options: ["left", "center", "right", "justify"],
+          },
+          {
+            label: "Style",
+            icon: this.$q.iconSet.editor.bold,
+            fixedLabel: true,
+            fixedIcon: true,
+            options: ["bold", "italic", "strike", "underline"],
+          },
+          {
+            label: "Lists",
+            icon: "list",
+            fixedLabel: true,
+            options: ["unordered", "ordered", "outdent", "indent"],
+          },
+        ],
+        [
+          {
+            label: this.$q.lang.editor.fontSize,
+            icon: this.$q.iconSet.editor.fontSize,
+            fixedLabel: true,
+            fixedIcon: true,
+            list: "no-icons",
+            options: [
+              "size-1",
+              "size-2",
+              "size-3",
+              "size-4",
+              "size-5",
+              "size-6",
+            ],
+          },
+          {
+            label: this.$q.lang.editor.defaultFont,
+            icon: this.$q.iconSet.editor.font,
+            fixedIcon: true,
+            list: "no-icons",
+            options: [
+              "default_font",
+              "arial",
+              "courier_new",
+              "lucida_grande",
+              "verdana",
+            ],
+          },
+          "removeFormat",
+        ],
+      ],
     };
   },
   methods: {
