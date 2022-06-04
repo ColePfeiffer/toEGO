@@ -142,6 +142,7 @@
                           <BaseEditor
                             ref="editorRef1"
                             v-model="editor"
+                            :isToolbarSetToLessOptions="true"
                             @showTemplateCreator="showTemplateCreator"
                             @showTemplateViewer="showTemplateViewer"
                           />
@@ -241,6 +242,7 @@ export default {
   },
 
   methods: {
+    showEventText() {},
     showTemplateCreator() {},
     showTemplateViewer() {},
     showEditor() {

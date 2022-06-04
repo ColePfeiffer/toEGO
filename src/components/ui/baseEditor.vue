@@ -6,7 +6,7 @@
     toolbar-bg="secondary"
     toolbar-text-color="primary"
     toolbar-color="primary"
-    :toolbar="lessOptions"
+    :toolbar="getToolbar"
     :fonts="{
       arial: 'Arial',
       arial_black: 'Arial Black',
@@ -63,6 +63,29 @@
       </q-btn>
     </template>
 
+    <template v-slot:changeToolbar>
+      <baseButton
+        :text="''"
+        :changeColor="false"
+        :setStyleTo="simplifiedStyle"
+        :icon="getIconForChangeToolbarButton"
+        ref="button1"
+        class="FloatingButton"
+        @onClick="changeToolbarMode"
+      ></baseButton>
+      <q-btn
+        no-caps
+        no-wrap
+        icon="bi-fullscreen"
+        unelevated
+        :ripple="false"
+        color="primary"
+        text-color="accent"
+        size="sm"
+      >
+      </q-btn>
+    </template>
+
     <dialogCreateTemplate
       @closeDialog="closeDialog"
       @createTemplate="createTemplate"
@@ -72,14 +95,30 @@
 
 <script>
 import dialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
-
+import baseButton from "./baseButton.vue";
 export default {
   name: "baseEditor",
   emits: ["showTemplateCreator", "showTemplateViewer"],
-  components: { dialogCreateTemplate },
+  props: {
+    isToolbarSetToLessOptionsOnInit: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  components: { dialogCreateTemplate, baseButton },
   data() {
     return {
+      isToolbarSetToLessOptions: true,
       templateHolder: "",
+      simplifiedStyle: {
+        "background-color": "var(--q-accent)",
+
+        color: "black",
+        height: "33px",
+        "border-style": "unset",
+        border: "1px solid black",
+        "box-shadow": "none",
+      },
       moreOptions: [
         ["templates", "undo", "redo", "viewsource", "fullscreen", "hr", "link"],
         [
@@ -145,6 +184,7 @@ export default {
             options: ["viewsource", "hr", "link"],
           },
           "fullscreen",
+          "changeToolbar",
         ],
 
         [
@@ -205,6 +245,16 @@ export default {
     };
   },
   methods: {
+    changeToolbarMode() {
+      this.isToolbarSetToLessOptions = !this.isToolbarSetToLessOptions;
+    },
+    getIconForChangeToolbarButton() {
+      if (this.isToolbarSetToLessOptions) {
+        return "bi-plus-lg";
+      } else {
+        return "bi-dash-lg";
+      }
+    },
     showTemplateCreator() {
       this.$emit("showTemplateCreator");
     },
@@ -220,7 +270,18 @@ let editorRef = this.$refs.editorRef;
  */
     },
   },
-  computed: {},
+  computed: {
+    getToolbar() {
+      console.log("meh?", this.isToolbarSetToLessOptions);
+      if (this.isToolbarSetToLessOptions === true) {
+        console.log("less options");
+        return this.lessOptions;
+      } else {
+        console.log("more options");
+        return this.moreOptions;
+      }
+    },
+  },
 };
 </script>
 
