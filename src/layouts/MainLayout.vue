@@ -115,10 +115,9 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
-.menu-list .q-item
-  border-radius: 0 32px 32px 0
-  background: none
+<style lang="sass">
+::-webkit-scrollbar
+    display: none
 
 .pageView
   font-family: 'PressStart'
@@ -126,10 +125,4 @@ export default {
   background-size: cover
   margin: auto
   padding: auto
-
-.inner_div
-  margin: auto
-  position: relative
-  width: 30%
-  height: 100%
 </style>

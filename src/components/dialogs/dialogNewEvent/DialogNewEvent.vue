@@ -14,7 +14,7 @@
       Event-Tracker
     </template>
     <template v-if="!isEditorShown" v-slot:content>
-      <div style="width: 310px">
+      <div style="width: 310px" class="container">
         <q-card class="testD transparent no-shadow">
           <q-card-section class="row items-center">
             <div class="container">
@@ -132,7 +132,11 @@
                     class="row justify-center items-center"
                   >
                     <div class="col">
-                      <q-scroll-area style="height: 250px" ref="scrollArea">
+                      <q-scroll-area
+                        class="scroll overflow-hidden"
+                        style="height: 250px"
+                        ref="scrollArea"
+                      >
                         <!-- EDIT MODE -->
                         <div class="editorContainer">
                           <BaseEditor
@@ -365,9 +369,7 @@ export default {
 .container {
   width: 315px;
 }
-.container :deep(::-webkit-scrollbar) {
-  display: none;
-}
+
 .container :deep(.promptTitle) {
   font-weight: bolder;
   font-size: 1.2em;
