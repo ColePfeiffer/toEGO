@@ -224,8 +224,6 @@ let editorRef = this.$refs.editorRef;
 };
 </script>
 
-
-
 <style scoped src="98.css">
 .editor :deep(.q-editor__toolbars-container) {
   display: none;

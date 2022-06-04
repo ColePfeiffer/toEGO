@@ -4,7 +4,7 @@
     @closeDialog="closeDialog"
     @save="saveChanges"
     :hasHelpOption="false"
-    :widthOfDialog="315"
+    :widthOfDialog="dialogWidth"
   >
     <template v-slot:confirm-button>
       {{ confirmButtonText }}
@@ -13,12 +13,11 @@
       <q-icon name="theater_comedy" size="25px" />
       Event-Tracker
     </template>
-    <template v-slot:content>
-      <div style="width: 300px">
+    <template v-if="!isEditorShown" v-slot:content>
+      <div style="width: 310px">
         <q-card class="testD transparent no-shadow">
           <q-card-section class="row items-center">
             <div class="container">
-              <!-- Scroll Area for scrollable content -->
               <!-- Column -->
               <div class="column content-center">
                 <!-- How Are You-Section | Emoji-Selection -->
@@ -31,13 +30,7 @@
                   </div>
                   <!-- Emoji Selection via Button Toggle -->
                   <div
-                    class="
-                      emojiSelection
-                      q-mt-md
-                      row
-                      justify-center
-                      items-center
-                    "
+                    class="emojiSelection q-mt-md row justify-center items-center"
                   >
                     <div class="col-12">
                       <div class="align-center">
@@ -165,6 +158,39 @@
         </q-card>
       </div>
     </template>
+    <template v-else v-slot:content>
+      <div class="column">
+        <!-- Button for showing event's text -->
+        <div class="row justify-end">
+          <q-btn class="col-2" icon="add" @click="showEventText"></q-btn>
+        </div>
+        <!-- Editor -->
+        <div class="row justify-center">
+          <div class="col-12 q-px-xs q-py-md">
+            <q-scroll-area style="height: 260px" ref="scrollArea">
+              <BaseEditor
+                ref="editorRef1"
+                v-model="editor"
+                @showTemplateCreator="showTemplateCreator"
+                @showTemplateViewer="showTemplateViewer"
+              />
+            </q-scroll-area>
+          </div>
+        </div>
+        <!-- Button to go back to normal view -->
+        <div class="row items-center justify-center q-pa-md">
+          <BaseButton
+            :text="''"
+            :changeColor="false"
+            :setStyleTo="simplifiedStyle"
+            :icon="getIconForEditorButton"
+            ref="button1"
+            class="FloatingButton"
+            @onClick="showEditor"
+          ></BaseButton>
+        </div>
+      </div>
+    </template>
   </baseDialog>
 </template>
 
@@ -190,6 +216,7 @@ export default {
   data() {
     return {
       isEditorShown: false,
+      dialogWidth: 315,
       icon: true,
       editor: "",
       options: [
@@ -264,7 +291,7 @@ export default {
   computed: {
     getIconForEditorButton() {
       if (this.isEditorShown) {
-        return "bi-pencil";
+        return "bi-arrow-left";
       } else {
         return "bi-plus-lg";
       }
