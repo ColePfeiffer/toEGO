@@ -7,6 +7,7 @@
     toolbar-text-color="primary"
     toolbar-color="primary"
     :toolbar="[
+      ['testerei'],
       ['templates', 'undo', 'redo', 'viewsource', 'fullscreen', 'hr', 'link'],
       [
         {
@@ -65,6 +66,9 @@
       verdana: 'Verdana',
     }"
   >
+    <template v-slot:testerei>
+      <q-btn label="MEH" icon="add"> </q-btn>
+    </template>
     <template v-slot:templates>
       <q-btn-dropdown
         no-caps
@@ -138,4 +142,7 @@ let editorRef = this.$refs.editorRef;
 
 
 <style scoped src="98.css">
+.editor :deep(.q-editor__toolbars-container) {
+  display: none;
+}
 </style>
