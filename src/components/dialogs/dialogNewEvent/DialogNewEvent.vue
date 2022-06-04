@@ -121,7 +121,42 @@
                   </div>
                 </div>
                 <!-- Methods-Section -->
-                <div class="promptContainer col q-mx-md q-mt-xs q-pa-md">
+                <div>
+                  <div class="row justify-center q-pa-md">
+                    <BaseButton
+                      :text="''"
+                      :changeColor="false"
+                      :setStyleTo="simplifiedStyle"
+                      :icon="getIconForEditorButton"
+                      ref="button1"
+                      class="FloatingButton"
+                      @onClick="showEditor"
+                    ></BaseButton>
+                  </div>
+
+                  <div
+                    v-if="isEditorShown"
+                    class="row justify-center items-center"
+                  >
+                    <div class="col">
+                      <q-scroll-area style="height: 250px" ref="scrollArea">
+                        <!-- EDIT MODE -->
+                        <div class="editorContainer">
+                          <BaseEditor
+                            ref="editorRef1"
+                            v-model="editor"
+                            @showTemplateCreator="showTemplateCreator"
+                            @showTemplateViewer="showTemplateViewer"
+                          />
+                        </div>
+                      </q-scroll-area>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="false"
+                  class="promptContainer col q-mx-md q-mt-xs q-pa-md"
+                >
                   <methodsPanel @scroll="scrollDown"> </methodsPanel>
                 </div>
               </div>
@@ -134,6 +169,8 @@
 </template>
 
 <script>
+import BaseButton from "../../ui/baseButton.vue";
+import BaseEditor from "../../ui/BaseEditor.vue";
 import baseDialog from "../../ui/baseDialog2.vue";
 import shared from "../../../shared.js";
 import methodsPanel from "./MethodsPanel.vue";
@@ -144,17 +181,40 @@ export default {
   components: {
     methodsPanel,
     baseDialog,
+    BaseButton,
+    BaseEditor,
   },
   created() {
     this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
   data() {
     return {
+      isEditorShown: false,
       icon: true,
+      editor: "",
+      options: [
+        { value: "Diary", slot: "diaryBtnSlot" },
+        { value: "Status", slot: "statusBtnSlot" },
+      ],
+      names: ["Diary", "Status"],
+      simplifiedStyle: {
+        "background-color": "var(--q-accent)",
+
+        color: "black",
+        height: "33px",
+        "border-style": "unset",
+        border: "1px solid black",
+        "box-shadow": "none",
+      },
     };
   },
 
   methods: {
+    showTemplateCreator() {},
+    showTemplateViewer() {},
+    showEditor() {
+      this.isEditorShown = !this.isEditorShown;
+    },
     scrollDown() {
       this.scroll(+200);
     },
@@ -202,6 +262,13 @@ export default {
     },
   },
   computed: {
+    getIconForEditorButton() {
+      if (this.isEditorShown) {
+        return "bi-pencil";
+      } else {
+        return "bi-plus-lg";
+      }
+    },
     isDialogVisible: {
       get() {
         if (

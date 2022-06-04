@@ -109,7 +109,7 @@
           <q-btn
             class="col-4 smallText"
             flat
-            icon="bi-fullscreen"
+            icon="bi-fullscreen-exit"
             label="exit"
             color="secondary"
             @click="exitFullscreen"

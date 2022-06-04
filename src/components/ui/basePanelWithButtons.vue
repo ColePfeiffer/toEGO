@@ -20,8 +20,7 @@
             @onClick="togglePanelVisibility('panelLeft')"
           ></baseButton>
         </template>
-
-        <template v-slot:button2>
+        <template v-slot:button2 v-if="hasTwoButtons">
           <baseButton
             :text="names[1]"
             :changeColor="false"
@@ -83,6 +82,10 @@ export default {
     baseButton,
   },
   props: {
+    hasTwoButtons: {
+      type: Boolean,
+      default: true,
+    },
     options: {
       type: Array,
     },
