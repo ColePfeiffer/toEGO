@@ -61,7 +61,7 @@
       </div>
 
       <!-- EVENT SELECTION -->
-      <div class="col q-px-md q-pt-lg">
+      <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen">
         <!-- Title, Button Row -->
         <div class="row justify-center items-center">
           <!-- Title -->
@@ -83,7 +83,7 @@
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
           <EventViewer
-            class="q-pa-sm"
+            class="q-px-md"
             :diaryEntry="getDiaryEntry"
             @showDialogForExistingEvent="showDialogForExistingEvent"
             @showDialogForNewEvent="showDialogForNewEvent"
@@ -92,15 +92,36 @@
       </div>
 
       <!-- DIARY SELECTION -->
-      <div v-if="isDiarySectionVisible">
+      <div v-if="isDiarySectionVisible && !isDiaryEntryShownInFullscreen">
         <diaryPanels
-          class="q-pt-xs q-py-md"
+          class="q-pt-xl q-mt-md q-py-md q-px-md"
           :diaryEntry="getDiaryEntry"
           :viewingMode="viewingMode"
           :scroll="scroll"
           @change-view="changeViewMode"
           @save-changes="saveChangesToEntry"
+          @openEntryInFullscreen="openEntryInFullscreen"
         ></diaryPanels>
+      </div>
+      <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
+        <div class="row justify-end">
+          <div class="col-4"></div>
+          <q-btn
+            class="col-4 smallText"
+            flat
+            icon="bi-fullscreen"
+            label="exit"
+            color="secondary"
+            @click="exitFullscreen"
+          ></q-btn>
+        </div>
+
+        <q-card class="editorCard shadow-3 text-justify">
+          <q-item>
+            <q-item-section v-html="editorDisplayedInFullscreen">
+            </q-item-section>
+          </q-item>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -117,6 +138,8 @@ export default {
   name: "diary",
   data() {
     return {
+      isDiaryEntryShownInFullscreen: false,
+      editorDisplayedInFullscreen: "",
       getDate: this.$store.state.data.lastSelectedDate,
       isDiarySectionVisible: true,
       viewingMode: "view",
@@ -144,6 +167,21 @@ export default {
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
     getDate(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
+      // if entry exists, show entries text
+      if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor != "") {
+        this.editorDisplayedInFullscreen = this.getDiaryEntry.editor;
+        // if no entry exists, but event(s) do.
+      } else if (
+        this.getDiaryEntry != undefined &&
+        this.getDiaryEntry.editor === ""
+      ) {
+        this.editorDisplayedInFullscreen =
+          "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
+        // if neither exists
+      } else {
+        this.editorDisplayedInFullscreen =
+          "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
+      }
     },
   },
   computed: {
@@ -203,6 +241,14 @@ export default {
     console.log("mHE???");
   },
   methods: {
+    openEntryInFullscreen(editor) {
+      console.log("triggered in diary ", editor);
+      this.isDiaryEntryShownInFullscreen = true;
+      this.editorDisplayedInFullscreen = editor;
+    },
+    exitFullscreen() {
+      this.isDiaryEntryShownInFullscreen = false;
+    },
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
       this.$store.commit("data/setDialogVisibility", {
@@ -285,6 +331,9 @@ export default {
 </script>
 
 <style scoped>
+.editorCard {
+  font-size: 12.5px;
+}
 .datePickerButton {
   .text-transform: lowercase;
 }

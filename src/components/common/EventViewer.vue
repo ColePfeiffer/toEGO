@@ -41,7 +41,7 @@
     <!-- showing events for diary entry -->
     <div
       v-else
-      class="row items-center justify-center"
+      class="row items-center justify-center q-px-sm"
       v-for="event in events"
       :key="event.id"
     >

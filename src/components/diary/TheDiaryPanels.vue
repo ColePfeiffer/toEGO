@@ -12,7 +12,17 @@
     <!--shown when in viewing mode -->
     <div v-if="viewingMode === 'view'" class="row justify-end">
       <q-btn
-        class="col-5 smallText"
+        v-if="(editor != undefined) & (editor != '')"
+        class="col-4 smallText"
+        flat
+        icon="bi-fullscreen"
+        label="view"
+        color="secondary"
+        @click="openEntryInFullscreen"
+      ></q-btn>
+      <div v-else class="col-4"></div>
+      <q-btn
+        class="col-4 smallText"
         flat
         :icon="getEditCreateIcon"
         color="secondary"
@@ -51,39 +61,45 @@
         :buttonRightStyle="simplifiedStyle"
       >
         <template v-slot:panelLeftSlot>
-          <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-            <!-- VIEW MODE -->
-            <div v-if="viewingMode === 'view'">
-              <q-card
-                v-if="editor != ''"
-                class="editorCard shadow-3 text-justify"
-              >
-                <q-item>
-                  <q-item-section v-html="editor"> </q-item-section>
-                </q-item>
-              </q-card>
-              <q-card v-else class="editorCard shadow-3 text-justify">
-                <q-card-section class="card-text text-center">
-                  There is no diary entry for this day yet.
-                  <q-btn
-                    class="statusElementIcon col=10 items-center"
-                    flat
-                    icon="bi-file-earmark-plus"
-                    color="secondary"
-                  ></q-btn>
-                </q-card-section>
-              </q-card>
+          <div class="row justify-center items-center">
+            <div class="col">
+              <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+                <!-- VIEW MODE -->
+                <div v-if="viewingMode === 'view'">
+                  <!-- If there is an entry for that day. -->
+                  <q-card
+                    v-if="editor != ''"
+                    class="editorCard shadow-3 text-justify"
+                  >
+                    <q-item>
+                      <q-item-section v-html="editor"> </q-item-section>
+                    </q-item>
+                  </q-card>
+                  <!-- If there is no entry yet for that day. -->
+                  <q-card v-else class="editorCard shadow-3 text-justify">
+                    <q-card-section class="card-text text-center">
+                      There is no diary entry for this day yet.
+                      <q-btn
+                        class="statusElementIcon col=10 items-center"
+                        flat
+                        icon="bi-file-earmark-plus"
+                        color="secondary"
+                      ></q-btn>
+                    </q-card-section>
+                  </q-card>
+                </div>
+                <!-- EDIT MODE -->
+                <div class="editorContainer" v-else>
+                  <BaseEditor
+                    ref="editorRef1"
+                    v-model="changeData.editor"
+                    @showTemplateCreator="showTemplateCreator"
+                    @showTemplateViewer="showTemplateViewer"
+                  />
+                </div>
+              </q-scroll-area>
             </div>
-            <!-- EDIT MODE -->
-            <div class="editorContainer" v-else>
-              <BaseEditor
-                ref="editorRef1"
-                v-model="changeData.editor"
-                @showTemplateCreator="showTemplateCreator"
-                @showTemplateViewer="showTemplateViewer"
-              />
-            </div>
-          </q-scroll-area>
+          </div>
         </template>
         <!-- right slot -->
         <template v-if="viewingMode === 'view'" v-slot:panelRightSlot>
@@ -143,7 +159,7 @@ export default {
     DialogCreateTemplate,
     DialogViewTemplates,
   },
-  emits: ["scroll", "change-view", "save-changes"],
+  emits: ["scroll", "change-view", "save-changes", "openEntryInFullscreen"],
   data() {
     return {
       storedTemplateString: "",
@@ -245,7 +261,13 @@ export default {
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
-
+    onScroll(info) {
+      console.log("scroll! ", info);
+    },
+    openEntryInFullscreen() {
+      console.log("openEntryInFullscreen");
+      this.$emit("openEntryInFullscreen", this.editor);
+    },
     scroll(offset) {
       this.$emit("scroll", offset);
     },
@@ -305,7 +327,7 @@ export default {
 .editor {
   border-style: unset;
   border-radius: 0px;
-  margin: 5px;
+  margin: 3px;
 }
 
 .templateSelector {
@@ -314,5 +336,8 @@ export default {
 
 .editorCard {
   font-size: 12.5px;
+}
+
+.editorContainer {
 }
 </style>
