@@ -99,12 +99,6 @@ import baseButton from "./baseButton.vue";
 export default {
   name: "baseEditor",
   emits: ["showTemplateCreator", "showTemplateViewer"],
-  props: {
-    isToolbarSetToLessOptionsOnInit: {
-      type: Boolean,
-      default: false,
-    },
-  },
   components: { dialogCreateTemplate, baseButton },
   data() {
     return {
@@ -112,7 +106,6 @@ export default {
       templateHolder: "",
       simplifiedStyle: {
         "background-color": "var(--q-accent)",
-
         color: "black",
         height: "33px",
         "border-style": "unset",
@@ -248,13 +241,7 @@ export default {
     changeToolbarMode() {
       this.isToolbarSetToLessOptions = !this.isToolbarSetToLessOptions;
     },
-    getIconForChangeToolbarButton() {
-      if (this.isToolbarSetToLessOptions) {
-        return "bi-plus-lg";
-      } else {
-        return "bi-dash-lg";
-      }
-    },
+
     showTemplateCreator() {
       this.$emit("showTemplateCreator");
     },
@@ -271,6 +258,13 @@ let editorRef = this.$refs.editorRef;
     },
   },
   computed: {
+    getIconForChangeToolbarButton() {
+      if (this.isToolbarSetToLessOptions) {
+        return "bi-plus-lg";
+      } else {
+        return "bi-dash-lg";
+      }
+    },
     getToolbar() {
       console.log("meh?", this.isToolbarSetToLessOptions);
       if (this.isToolbarSetToLessOptions === true) {

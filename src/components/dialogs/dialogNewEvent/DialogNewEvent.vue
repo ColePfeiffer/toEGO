@@ -142,7 +142,6 @@
                           <BaseEditor
                             ref="editorRef1"
                             v-model="editor"
-                            :isToolbarSetToLessOptions="true"
                             @showTemplateCreator="showTemplateCreator"
                             @showTemplateViewer="showTemplateViewer"
                           />
