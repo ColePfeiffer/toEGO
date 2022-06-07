@@ -3,7 +3,7 @@
     ref="editorRef"
     class="editor shadow-3 text-justify"
     min-height="17rem"
-    toolbar-bg="secondary"
+    :toolbar-bg="toolbarColor"
     toolbar-text-color="primary"
     toolbar-color="primary"
     :toolbar="getToolbar"
@@ -99,6 +99,12 @@ import baseButton from "./baseButton.vue";
 export default {
   name: "baseEditor",
   emits: ["showTemplateCreator", "showTemplateViewer"],
+  props: {
+    toolbarColor: {
+      type: String,
+      default: "secondary",
+    },
+  },
   components: { dialogCreateTemplate, baseButton },
   data() {
     return {
@@ -113,7 +119,15 @@ export default {
         "box-shadow": "none",
       },
       moreOptions: [
-        ["templates", "undo", "redo", "viewsource", "fullscreen", "hr", "link"],
+        [
+          "templates",
+          "changeToolbar",
+          "undo",
+          "redo",
+          "viewsource",
+          "hr",
+          "link",
+        ],
         [
           {
             label: this.$q.lang.editor.align,
@@ -170,70 +184,15 @@ export default {
       lessOptions: [
         [
           "templates",
+          "changeToolbar",
           {
             label: "",
             icon: "add",
             fixedLabel: true,
             options: ["viewsource", "hr", "link"],
           },
-          "fullscreen",
-          "changeToolbar",
         ],
-
-        [
-          "undo",
-          "redo",
-          {
-            label: this.$q.lang.editor.align,
-            icon: this.$q.iconSet.editor.align,
-            fixedLabel: true,
-            options: ["left", "center", "right", "justify"],
-          },
-          {
-            label: "Style",
-            icon: this.$q.iconSet.editor.bold,
-            fixedLabel: true,
-            fixedIcon: true,
-            options: ["bold", "italic", "strike", "underline"],
-          },
-          {
-            label: "Lists",
-            icon: "list",
-            fixedLabel: true,
-            options: ["unordered", "ordered", "outdent", "indent"],
-          },
-        ],
-        [
-          {
-            label: this.$q.lang.editor.fontSize,
-            icon: this.$q.iconSet.editor.fontSize,
-            fixedLabel: true,
-            fixedIcon: true,
-            list: "no-icons",
-            options: [
-              "size-1",
-              "size-2",
-              "size-3",
-              "size-4",
-              "size-5",
-              "size-6",
-            ],
-          },
-          {
-            label: this.$q.lang.editor.defaultFont,
-            icon: this.$q.iconSet.editor.font,
-            fixedIcon: true,
-            list: "no-icons",
-            options: [
-              "default_font",
-              "arial",
-              "courier_new",
-              "lucida_grande",
-              "verdana",
-            ],
-          },
-          "removeFormat",
-        ],
+        ["undo", "redo"],
       ],
     };
   },

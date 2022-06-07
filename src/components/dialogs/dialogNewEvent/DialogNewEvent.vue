@@ -388,4 +388,11 @@ export default {
 .container :deep(.q-textarea .q-field__native) {
   padding-top: 10px;
 }
+
+.text-lightGray {
+  color: #c0c0c0 !important;
+}
+.bg-lightGray {
+  background: #c0c0c0 !important;
+}
 </style>
