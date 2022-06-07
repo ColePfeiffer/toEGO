@@ -34,6 +34,12 @@
                         <q-date v-model="formattedDate">
                           <div class="row items-center justify-end">
                             <q-btn
+                              label="today"
+                              color="primary"
+                              flat
+                              @click="setDateToToday"
+                            />
+                            <q-btn
                               v-close-popup
                               label="Close"
                               color="primary"
@@ -241,6 +247,9 @@ export default {
     console.log("mHE???");
   },
   methods: {
+    setDateToToday() {
+      this.getDate = Date.now();
+    },
     openEntryInFullscreen(editor) {
       console.log("triggered in diary ", editor);
       this.isDiaryEntryShownInFullscreen = true;
