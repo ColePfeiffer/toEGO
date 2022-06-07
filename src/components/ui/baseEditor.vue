@@ -20,6 +20,7 @@
   >
     <template v-slot:templates>
       <q-btn-dropdown
+        class="no-icon"
         no-caps
         ref="templatesRef"
         no-wrap
@@ -73,17 +74,6 @@
         class="FloatingButton"
         @onClick="changeToolbarMode"
       ></baseButton>
-      <q-btn
-        no-caps
-        no-wrap
-        icon="bi-fullscreen"
-        unelevated
-        :ripple="false"
-        color="primary"
-        text-color="accent"
-        size="sm"
-      >
-      </q-btn>
     </template>
 
     <dialogCreateTemplate
@@ -182,9 +172,8 @@ export default {
         ],
       ],
       lessOptions: [
+        ["templates", "changeToolbar", "undo", "redo", "fullscreen"],
         [
-          "templates",
-          "changeToolbar",
           {
             label: "",
             icon: "add",
@@ -192,7 +181,6 @@ export default {
             options: ["viewsource", "hr", "link"],
           },
         ],
-        ["undo", "redo"],
       ],
     };
   },
@@ -240,6 +228,10 @@ let editorRef = this.$refs.editorRef;
 
 <style scoped src="98.css">
 .editor :deep(.q-editor__toolbars-container) {
+  display: none;
+}
+
+.button.no-icon i {
   display: none;
 }
 </style>
