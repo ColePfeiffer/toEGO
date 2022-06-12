@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import baseDialog from "../ui/baseDialog2.vue";
+import baseDialog from "../ui/BaseDialog2.vue";
 
 export default {
   name: "dialogViewTemplates",

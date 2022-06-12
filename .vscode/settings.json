@@ -1,7 +1,23 @@
 {
+  // Common Configuration
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+
+   // ESLint
+   "editor.formatOnSave": true,
+   "editor.codeActionsOnSave": [
+     "source.fixAll.eslint"
+   ],
+   "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+
+     // With Prettier
+     "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
+
+/* what used to be here...
   "vetur.validation.template": false,
   "vetur.format.enable": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
 
   "vetur.experimental.templateInterpolationService": false
-}
+*/

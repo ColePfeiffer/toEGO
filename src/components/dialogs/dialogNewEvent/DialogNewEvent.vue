@@ -30,7 +30,13 @@
                   </div>
                   <!-- Emoji Selection via Button Toggle -->
                   <div
-                    class="emojiSelection q-mt-md row justify-center items-center"
+                    class="
+                      emojiSelection
+                      q-mt-md
+                      row
+                      justify-center
+                      items-center
+                    "
                   >
                     <div class="col-12">
                       <div class="align-center">
@@ -199,9 +205,9 @@
 </template>
 
 <script>
-import BaseButton from "../../ui/baseButton.vue";
+import BaseButton from "../../ui/BaseButton.vue";
 import BaseEditor from "../../ui/BaseEditor.vue";
-import baseDialog from "../../ui/baseDialog2.vue";
+import baseDialog from "../../ui/BaseDialog2.vue";
 import shared from "../../../shared.js";
 import methodsPanel from "./MethodsPanel.vue";
 import { mapState } from "vuex";
@@ -229,7 +235,7 @@ export default {
       ],
       names: ["Diary", "Status"],
       simplifiedStyle: {
-        "background-color": "var(--q-accent)",
+        "background-color": "var(--q-secondary)",
 
         color: "black",
         height: "33px",
@@ -242,8 +248,13 @@ export default {
 
   methods: {
     showEventText() {},
-    showTemplateCreator() {},
-    showTemplateViewer() {},
+    showTemplateCreator() {
+      console.log("showing template creator")
+    },
+    showTemplateViewer() {
+      console.log("showing template viewer")
+
+    },
     showEditor() {
       this.isEditorShown = !this.isEditorShown;
     },
@@ -362,6 +373,8 @@ export default {
   },
 };
 </script>
+
+
 
 <style scoped>
 .testD {

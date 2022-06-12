@@ -18,62 +18,63 @@
       verdana: 'Verdana',
     }"
   >
-    <template v-slot:templates>
-      <q-btn-dropdown
-        class="no-icon"
-        no-caps
-        ref="templatesRef"
-        no-wrap
-        icon="bi-layout-text-sidebar-reverse"
-        auto-close
-        unelevated
-        :ripple="false"
-        color="primary"
-        text-color="accent"
-        size="sm"
-      >
-        <q-list>
-          <div class="column">
-            <q-item tag="label" clickable @click="showTemplateCreator">
-              <q-item-section side>
-                <q-icon name="save" />
-              </q-item-section>
-              <q-item-section>Save as Template</q-item-section>
-            </q-item>
-            <q-item tag="label" clickable @click="showTemplateViewer">
-              <q-item-section side>
-                <q-icon name="edit" />
-              </q-item-section>
-              <q-item-section>Open Templates</q-item-section>
-            </q-item>
-          </div>
-        </q-list>
-      </q-btn-dropdown>
-    </template>
+
     <template v-slot:fullscreenButton>
       <q-btn
-        no-caps
+        flat
         no-wrap
         icon="bi-fullscreen"
-        unelevated
+        :style="ButtonStyleFlatJustIcon"
+        btn
+        btn-square
+        btn-sm
+        btn-ghost-blue
         :ripple="false"
-        color="primary"
-        text-color="accent"
-        size="sm"
+        text-color="primary"
+        size="xs"
+        @click="toggleFullscreen"
       >
       </q-btn>
     </template>
 
-    <template v-slot:changeToolbar>
-      <baseButton
-        :text="''"
-        :changeColor="false"
-        :setStyleTo="simplifiedStyle"
-        :icon="getIconForChangeToolbarButton"
-        ref="button1"
-        class="FloatingButton"
-        @onClick="changeToolbarMode"
-      ></baseButton>
+    <template v-slot:placeholderElementSmall>
+      <div class="placeholderElementContainer">
+        <div class="placeholderElement" style="width: 90px"></div>
+      </div>
+    </template>
+
+    <template v-slot:toggleMoreOptionsButton>
+      <q-btn no-caps @click="changeToolbarMode" :style="ButtonStyleRegularButton" :ripple="false">
+        <div class="row items-center no-wrap">
+          <q-icon size="8px" left :name="getIconForToggleToolbarButton" />
+          <div class="text-center" style="font-size: 12.5px">
+            {{ getLabelForToggleToolbarButton }}
+          </div>
+        </div>
+      </q-btn>
+    </template>
+
+    <template v-slot:templatesMenuButton>
+      <q-btn no-caps :style="ButtonStyleRegularButton" :ripple="false">
+        <div class="row items-center no-wrap">
+          <q-icon size="8px" left name="bi-layout-text-sidebar-reverse" />
+          <div class="text-center" style="font-size: 12.5px">Temps</div>
+        </div>
+        <q-menu>
+          <q-list style="min-width: 100px">
+            <q-item clickable v-close-popup @click="showTemplateViewer">
+              <q-item-section>Show Templates</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="showTemplateCreator">
+              <q-item-section>Save as new template</q-item-section>
+            </q-item>
+            <q-separator />
+            <q-item clickable v-close-popup>
+              <q-item-section>Quick List</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
     </template>
 
     <dialogCreateTemplate
@@ -85,21 +86,34 @@
 
 <script>
 import dialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
-import baseButton from "./baseButton.vue";
 export default {
   name: "baseEditor",
   emits: ["showTemplateCreator", "showTemplateViewer"],
   props: {
     toolbarColor: {
       type: String,
-      default: "secondary",
+      default: "lightGray",
     },
   },
-  components: { dialogCreateTemplate, baseButton },
+  components: { dialogCreateTemplate,  },
   data() {
     return {
-      isToolbarSetToLessOptions: true,
+      isShowingFullToolbar: false,
+      isInFullscreenMode: false,
       templateHolder: "",
+           ButtonStyleRegularButton: {
+        "min-width": "83px",
+        "max-width": "83px",
+        "min-height": "23px",
+      },
+      ButtonStyleFlatJustIcon: {
+        "background-color": "transparent",
+        "border-style": "unset",
+        "box-shadow": "none",
+        "min-width": "20px",
+        "max-width": "20px",
+        "min-height": "20px",
+      },
       simplifiedStyle: {
         "background-color": "var(--q-accent)",
         color: "black",
@@ -109,22 +123,8 @@ export default {
         "box-shadow": "none",
       },
       moreOptions: [
+        ["templatesMenuButton", "toggleMoreOptionsButton"],
         [
-          "templates",
-          "changeToolbar",
-          "undo",
-          "redo",
-          "viewsource",
-          "hr",
-          "link",
-        ],
-        [
-          {
-            label: this.$q.lang.editor.align,
-            icon: this.$q.iconSet.editor.align,
-            fixedLabel: true,
-            options: ["left", "center", "right", "justify"],
-          },
           {
             label: "Style",
             icon: this.$q.iconSet.editor.bold,
@@ -133,15 +133,33 @@ export default {
             options: ["bold", "italic", "strike", "underline"],
           },
           {
+            label: this.$q.lang.editor.align,
+            icon: this.$q.iconSet.editor.align,
+            fixedLabel: true,
+            options: ["left", "center", "right", "justify"],
+          },
+          {
             label: "Lists",
             icon: "list",
             fixedLabel: true,
             options: ["unordered", "ordered", "outdent", "indent"],
           },
-        ],
-        [
           {
-            label: this.$q.lang.editor.fontSize,
+            label: "Font",
+            icon: this.$q.iconSet.editor.font,
+            fixedIcon: true,
+            fixedLabel: true,
+            list: "no-icons",
+            options: [
+              "default_font",
+              "arial",
+              "courier_new",
+              "lucida_grande",
+              "verdana",
+            ],
+          },
+          {
+            label: "Size",
             icon: this.$q.iconSet.editor.fontSize,
             fixedLabel: true,
             fixedIcon: true,
@@ -155,40 +173,48 @@ export default {
               "size-6",
             ],
           },
-          {
-            label: this.$q.lang.editor.defaultFont,
-            icon: this.$q.iconSet.editor.font,
-            fixedIcon: true,
-            list: "no-icons",
-            options: [
-              "default_font",
-              "arial",
-              "courier_new",
-              "lucida_grande",
-              "verdana",
-            ],
-          },
+        ],
+        [
+          "undo",
+          "redo",
+          "fullscreenButton",
+          "link",
+          "hr",
+          "viewsource",
           "removeFormat",
         ],
       ],
       lessOptions: [
-        ["templates", "changeToolbar", "undo", "redo", "fullscreen"],
         [
-          {
-            label: "",
-            icon: "add",
-            fixedLabel: true,
-            options: ["viewsource", "hr", "link"],
-          },
+          "placeholderElementSmall",
+          "templatesMenuButton",
+          "toggleMoreOptionsButton",
         ],
+        ["placeholderElementSmall"],
+        ["undo", "redo", "fullscreenButton"],
       ],
     };
   },
   methods: {
     changeToolbarMode() {
-      this.isToolbarSetToLessOptions = !this.isToolbarSetToLessOptions;
+      this.isShowingFullToolbar = !this.isShowingFullToolbar;
     },
+    toggleFullscreen() {
+      let editorRef = this.$refs.editorRef;
+      if (this.isInFullscreenMode) {
+        // if the editor already is in fullscreen mode, and he clicks on this button, we want to go back to normal view, and hide the full toolbar.
+        this.isShowingFullToolbar = false;
+        this.isInFullscreenMode = false;
+        editorRef.exitFullscreen();
+      } else {
+        this.isShowingFullToolbar = true;
+        this.isInFullscreenMode = true;
+        editorRef.setFullscreen();
+      }
 
+      editorRef.refreshToolbar();
+      editorRef.focus();
+    },
     showTemplateCreator() {
       this.$emit("showTemplateCreator");
     },
@@ -204,31 +230,50 @@ let editorRef = this.$refs.editorRef;
  */
     },
   },
+
   computed: {
-    getIconForChangeToolbarButton() {
-      if (this.isToolbarSetToLessOptions) {
-        return "bi-plus-lg";
+    getLabelForToggleToolbarButton() {
+      if (this.isShowingFullToolbar) {
+        return "less";
       } else {
+        return "more";
+      }
+    },
+    getIconForToggleToolbarButton() {
+      if (this.isShowingFullToolbar) {
         return "bi-dash-lg";
+      } else {
+        return "bi-plus-lg";
       }
     },
     getToolbar() {
-      console.log("meh?", this.isToolbarSetToLessOptions);
-      if (this.isToolbarSetToLessOptions === true) {
-        console.log("less options");
+      if (this.isShowingFullToolbar === false) {
         return this.lessOptions;
       } else {
-        console.log("more options");
         return this.moreOptions;
       }
     },
   },
 };
 </script>
-
+<style>
+.q-editor__toolbar-group {
+  width: 95px !important;
+}
+</style>
 <style scoped src="98.css">
 .editor :deep(.q-editor__toolbars-container) {
   display: none;
+}
+
+.placeholderElementContainer {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+}
+
+.placeholderElement {
+  background-color: green;
 }
 
 .button.no-icon i {

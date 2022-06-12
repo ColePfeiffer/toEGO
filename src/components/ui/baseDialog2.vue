@@ -25,9 +25,18 @@
             <!-- Footer Slot | Option to hide buttons -->
             <slot name="footer">
               <div class="col-1 q-pa-sm q-pb-md">
-                <div class="row">
+                <div class="row justify-end">
+                    <q-btn
+                    class="button col-3 col-md-2 q-mx-xs"
+                    :style="accentBackground"
+                    flat
+                    @click="closeDialog"
+                  >
+                    <slot name="close-button">Templates</slot>
+                  </q-btn>
+
                   <q-btn
-                    class="button col-3 col-md-2 offset-5 offset-md-7 q-mx-xs"
+                    class="button col-3 col-md-2 q-mx-xs"
                     flat
                     @click="closeDialog"
                   >
@@ -84,6 +93,11 @@ export default {
         "background-color": "#989898 ",
         color: "black",
         width: this.widthOfDialog + "px",
+      },
+      accentBackground: {
+        //"background-color": "var(--q-accent)",
+         color: "var(--q-primary)",
+        border: "1px solid var(--q-accent)",
       },
 
       mobileModeActive: true,
