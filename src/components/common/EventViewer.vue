@@ -1,22 +1,13 @@
 <template>
   <div>
-    <DialogDeleteEvent
-      @deleteEvent="deleteEvent"
-      @closeDialog="closeDialog"
-    ></DialogDeleteEvent>
+    <DialogDeleteEvent @deleteEvent="deleteEvent" @closeDialog="closeDialog"></DialogDeleteEvent>
     <!-- no diary entry for this date doesn't exist yet -->
     <div v-if="this.diaryEntry === undefined">
       <div class="q-pa-md">
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             There is nothing here yet.
-            <q-btn
-              color="accent"
-              flat
-              dense
-              icon="add"
-              @click="showDialogForNewEvent"
-            />
+            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
           </q-card-section>
         </q-card>
       </div>
@@ -27,31 +18,15 @@
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             There are no tracked events.
-            <q-btn
-              color="accent"
-              flat
-              dense
-              icon="add"
-              @click="showDialogForNewEvent"
-            />
+            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
           </q-card-section>
         </q-card>
       </div>
     </div>
     <!-- showing events for diary entry -->
-    <div
-      v-else
-      class="row items-center justify-center q-px-sm"
-      v-for="event in events"
-      :key="event.id"
-    >
-      <EventCard
-        :eventData="event"
-        @changeEventData="changeEventData"
-        @editEvent="editEvent"
-        @deleteEvent="showConfirmDeleteDialog"
-        class="col-12"
-      />
+    <div v-else class="row items-center justify-center q-px-sm" v-for="event in events" :key="event.id">
+      <EventCard :eventData="event" @changeEventData="changeEventData" @editEvent="editEvent"
+        @deleteEvent="showConfirmDeleteDialog" class="col-12" />
     </div>
   </div>
 </template>
@@ -124,9 +99,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.my-card {
-  font-size: 12.5px;
-}
-</style>

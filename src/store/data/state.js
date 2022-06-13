@@ -1,6 +1,10 @@
 import { date } from "quasar";
 export default function () {
   return {
+    buttonFlatStyle: {
+      "box-shadow": "none",
+      "background-color": "var(--q-secondary)",
+    },
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",
@@ -35,6 +39,7 @@ export default function () {
     },
     debug: true,
     phone: false,
+    intentionText: "today's message to myself",
     //dialogs
     eventDialogSettings: { isOpen: false, editMode: false },
     dialogSettings: {

@@ -1,65 +1,27 @@
 <template>
   <div>
-    <DialogCreateTemplate
-      @createTemplate="createTemplate"
-      @closeDialog="closeDialog"
-    ></DialogCreateTemplate>
-    <DialogViewTemplates
-      @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate"
-      @closeDialog="closeDialog"
-    ></DialogViewTemplates>
+    <DialogCreateTemplate @createTemplate="createTemplate" @closeDialog="closeDialog"></DialogCreateTemplate>
+    <DialogViewTemplates @pasteTemplate="pasteTemplate" @deleteTemplate="deleteTemplate" @closeDialog="closeDialog">
+    </DialogViewTemplates>
     <!--shown when in viewing mode -->
     <div v-if="viewingMode === 'view'" class="row justify-end">
-      <q-btn
-        v-if="(editor != undefined) & (editor != '')"
-        class="col-4 smallText"
-        flat
-        icon="bi-fullscreen"
-        label="view"
-        color="secondary"
-        @click="openEntryInFullscreen"
-      ></q-btn>
+      <q-btn v-if="(editor != undefined) & (editor != '')" class="col-4 smallText" flat icon="bi-fullscreen"
+        label="view" color="secondary" @click="openEntryInFullscreen"></q-btn>
       <div v-else class="col-4"></div>
-      <q-btn
-        class="col-4 smallText"
-        flat
-        :icon="getEditCreateIcon"
-        color="secondary"
-        :label="editBtnText"
-        @click="editCreate"
-      ></q-btn>
+      <q-btn class="col-4 smallText" flat :icon="getEditCreateIcon" color="secondary" :label="editBtnText"
+        @click="editCreate"></q-btn>
     </div>
     <!-- shown when in editing mode -->
     <div v-else class="row justify-end">
-      <q-btn
-        class="col-4 smallText"
-        flat
-        icon="fas fa-save"
-        label="save"
-        color="secondary"
-        @click="saveChanges"
-      ></q-btn>
-      <q-btn
-        class="col-4 smallText"
-        flat
-        icon="fas fa-angle-left"
-        color="secondary"
-        label="back"
-        @click="changeView('view')"
-      ></q-btn>
+      <q-btn class="col-4 smallText" flat icon="fas fa-save" label="save" color="secondary" @click="saveChanges">
+      </q-btn>
+      <q-btn class="col-4 smallText" flat icon="fas fa-angle-left" color="secondary" label="back"
+        @click="changeView('view')"></q-btn>
     </div>
     <!-- entry exists -->
     <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
-      <BasePanelWithButtons
-        class="secondary"
-        :options="options"
-        :names="names"
-        :hideBordersOnInit="hideBordersOnInit"
-        :showNames="showNames"
-        :buttonLeftStyle="simplifiedStyle"
-        :buttonRightStyle="simplifiedStyle"
-      >
+      <BasePanelWithButtons class="secondary" :options="options" :names="names" :hideBordersOnInit="hideBordersOnInit"
+        :showNames="showNames" :buttonLeftStyle="simplifiedStyle" :buttonRightStyle="simplifiedStyle">
         <template v-slot:panelLeftSlot>
           <div class="row justify-center items-center">
             <div class="col">
@@ -67,10 +29,7 @@
                 <!-- VIEW MODE -->
                 <div v-if="viewingMode === 'view'">
                   <!-- If there is an entry for that day. -->
-                  <q-card
-                    v-if="editor != ''"
-                    class="editorCard shadow-3 text-justify"
-                  >
+                  <q-card v-if="editor != ''" class="editorCard shadow-3 text-justify">
                     <q-item>
                       <q-item-section v-html="editor"> </q-item-section>
                     </q-item>
@@ -79,23 +38,14 @@
                   <q-card v-else class="editorCard shadow-3 text-justify">
                     <q-card-section class="card-text text-center">
                       There is no diary entry for this day yet.
-                      <q-btn
-                        class="statusElementIcon col=10 items-center"
-                        flat
-                        icon="bi-file-earmark-plus"
-                        color="secondary"
-                      ></q-btn>
+
                     </q-card-section>
                   </q-card>
                 </div>
                 <!-- EDIT MODE -->
                 <div class="editorContainer" v-else>
-                  <BaseEditor
-                    ref="editorRef1"
-                    v-model="changeData.editor"
-                    @showTemplateCreator="showTemplateCreator"
-                    @showTemplateViewer="showTemplateViewer"
-                  />
+                  <BaseEditor ref="editorRef1" v-model="changeData.editor" @showTemplateCreator="showTemplateCreator"
+                    @showTemplateViewer="showTemplateViewer" />
                 </div>
               </q-scroll-area>
             </div>
@@ -114,19 +64,8 @@
         </template>
         <template v-else v-slot:panelRightSlot>
           <div class="row justify-end">
-            <q-btn
-              class="col=1"
-              flat
-              icon="fas fa-folder-open"
-              color="secondary"
-            ></q-btn>
-            <q-select
-              dense
-              borderless
-              v-model="statusTemplateModel"
-              :options="statusTemplateOptions"
-              label="templates"
-            >
+            <q-btn class="col=1" flat icon="fas fa-folder-open" color="secondary"></q-btn>
+            <q-select dense borderless v-model="statusTemplateModel" :options="statusTemplateOptions" label="templates">
             </q-select>
           </div>
           <div class="column">
@@ -320,9 +259,7 @@ export default {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-.smallText {
-  font-size: 12.5px;
-}
+
 
 .editor {
   border-style: unset;
@@ -338,6 +275,5 @@ export default {
   font-size: 12.5px;
 }
 
-.editorContainer {
-}
+.editorContainer {}
 </style>

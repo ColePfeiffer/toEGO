@@ -1,166 +1,87 @@
 <template>
-  <baseDialog
-    v-model="isDialogVisible"
-    @closeDialog="closeDialog"
-    @save="saveChanges"
-    :hasHelpOption="false"
-    :widthOfDialog="dialogWidth"
-  >
-    <template v-slot:confirm-button>
-      {{ confirmButtonText }}
-    </template>
+  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="saveChanges" @clickExtraButton="showEditor"
+    :hasExtraButton="true" :extraButtonIcon="getIconForEditorButton" :hasHelpOption="false"
+    :widthOfDialog="dialogWidth">
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
       Event-Tracker
     </template>
-    <template v-if="!isEditorShown" v-slot:content>
+
+    <template v-if="isShowingEditor === false" v-slot:content>
       <div style="width: 310px" class="container">
-        <q-card class="testD transparent no-shadow">
-          <q-card-section class="row items-center">
-            <div class="container">
-              <!-- Column -->
-              <div class="column content-center">
-                <!-- How Are You-Section | Emoji-Selection -->
-                <div class="promptContainer col q-mx-md q-pa-md">
-                  <!-- Title -->
-                  <div class="row justify-center items-center">
-                    <div class="col-12 underlined promptTitle">
-                      How do you feel right now?
-                    </div>
-                  </div>
-                  <!-- Emoji Selection via Button Toggle -->
-                  <div
-                    class="
+        <q-card class="testD transparent no-shadow ">
+          <q-card-section class="row items-center justify-center">
+            <!-- How Are You-Section | Emoji-Selection -->
+            <div class="promptContainer col-12 q-mx-md q-pa-md">
+              <!-- Title -->
+              <div class="row justify-center items-center">
+                <div class="col-12 underlined promptTitle">
+                  How do you feel right now?
+                </div>
+              </div>
+              <!-- Emoji Selection via Button Toggle -->
+              <div class="
                       emojiSelection
                       q-mt-md
                       row
                       justify-center
                       items-center
-                    "
-                  >
-                    <div class="col-12">
-                      <div class="align-center">
-                        <q-btn-toggle
-                          v-model="mood"
-                          toggle-color="accent"
-                          padding="none"
-                          flat
-                          :options="[
-                            { value: 'las la-angry', slot: 'angry' },
-                            { value: 'las la-sad-tear', slot: 'sad' },
-                            { value: 'las la-frown', slot: 'unhappy' },
-                            { value: 'las la-smile', slot: 'content' },
-                            { value: 'las la-grin', slot: 'happy' },
-                          ]"
-                        >
-                          <template v-slot:angry>
-                            <q-btn padding="xs" flat icon="las la-angry" />
-                          </template>
+                    ">
+                <div class="col-12">
+                  <div class="align-center">
+                    <q-btn-toggle v-model="mood" toggle-color="accent" padding="none" flat :options="[
+                      { value: 'las la-angry', slot: 'angry' },
+                      { value: 'las la-sad-tear', slot: 'sad' },
+                      { value: 'las la-frown', slot: 'unhappy' },
+                      { value: 'las la-smile', slot: 'content' },
+                      { value: 'las la-grin', slot: 'happy' },
+                    ]">
+                      <template v-slot:angry>
+                        <q-btn padding="xs" flat icon="las la-angry" />
+                      </template>
 
-                          <template v-slot:sad>
-                            <q-btn padding="xs" flat icon="las la-sad-tear" />
-                          </template>
+                      <template v-slot:sad>
+                        <q-btn padding="xs" flat icon="las la-sad-tear" />
+                      </template>
 
-                          <template v-slot:unhappy>
-                            <q-btn padding="xs" flat icon="las la-frown" />
-                          </template>
+                      <template v-slot:unhappy>
+                        <q-btn padding="xs" flat icon="las la-frown" />
+                      </template>
 
-                          <template v-slot:content>
-                            <q-btn padding="xs" flat icon="las la-smile" />
-                          </template>
+                      <template v-slot:content>
+                        <q-btn padding="xs" flat icon="las la-smile" />
+                      </template>
 
-                          <template v-slot:happy>
-                            <q-btn padding="xs" flat icon="las la-grin" />
-                          </template>
-                        </q-btn-toggle>
-                      </div>
-                    </div>
+                      <template v-slot:happy>
+                        <q-btn padding="xs" flat icon="las la-grin" />
+                      </template>
+                    </q-btn-toggle>
                   </div>
                 </div>
+              </div>
+            </div>
 
-                <!-- What Happened-Section -->
-                <div class="promptContainer col q-mx-md q-mt-xs q-px-md">
-                  <!-- Title -->
-                  <div class="row justify-center items-center">
-                    <div class="col-12 underlined promptTitle">
-                      What's on your mind?
-                    </div>
-                  </div>
-                  <!-- Text Input -->
-                  <div class="row justify-center q-mt-xs items-center">
-                    <div class="col-12">
-                      <q-input
-                        class="input"
-                        v-model="title"
-                        filled
-                        square
-                        label="Title"
-                        input-style="max-height: 50px; min-height: 25px;"
-                        :rules="[
-                          (val) =>
-                            val.length <= 30 ||
-                            'Please use maximum 30 characters',
-                        ]"
-                      />
-                    </div>
-                  </div>
-                  <!-- Text Input -->
-                  <div class="row justify-center q-mt-xs items-center">
-                    <div class="col-12">
-                      <q-input
-                        class="input"
-                        v-model="text"
-                        label="What happened?"
-                        filled
-                        square
-                        autogrow
-                        input-style="max-height: 250px; min-height: 100px;"
-                      />
-                    </div>
-                  </div>
+            <!-- What Happened-Section -->
+            <div class="promptContainer col-12 q-mx-md q-mt-xs q-px-md">
+              <!-- Title -->
+              <div class="row justify-center items-center">
+              </div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-11">
+                  <q-input class="input" v-model="title" filled square label="Title"
+                    input-style="max-height: 50px; min-height: 25px;" :rules="[
+                      (val) =>
+                        val.length <= 30 ||
+                        'Please use maximum 30 characters',
+                    ]" />
                 </div>
-                <!-- Methods-Section -->
-                <div>
-                  <div class="row justify-center q-pa-md">
-                    <BaseButton
-                      :text="''"
-                      :changeColor="false"
-                      :setStyleTo="simplifiedStyle"
-                      :icon="getIconForEditorButton"
-                      ref="button1"
-                      class="FloatingButton"
-                      @onClick="showEditor"
-                    ></BaseButton>
-                  </div>
-
-                  <div
-                    v-if="isEditorShown"
-                    class="row justify-center items-center"
-                  >
-                    <div class="col">
-                      <q-scroll-area
-                        class="scroll overflow-hidden"
-                        style="height: 250px"
-                        ref="scrollArea"
-                      >
-                        <!-- EDIT MODE -->
-                        <div class="editorContainer">
-                          <BaseEditor
-                            ref="editorRef1"
-                            v-model="editor"
-                            @showTemplateCreator="showTemplateCreator"
-                            @showTemplateViewer="showTemplateViewer"
-                          />
-                        </div>
-                      </q-scroll-area>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  v-if="false"
-                  class="promptContainer col q-mx-md q-mt-xs q-pa-md"
-                >
-                  <methodsPanel @scroll="scrollDown"> </methodsPanel>
+              </div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-11">
+                  <q-input class="input" v-model="text" label="What happened?" filled square autogrow
+                    input-style="max-height: 280px; min-height: 220px;" />
                 </div>
               </div>
             </div>
@@ -168,6 +89,7 @@
         </q-card>
       </div>
     </template>
+
     <template v-else v-slot:content>
       <div class="column">
         <!-- Button for showing event's text -->
@@ -177,47 +99,28 @@
         <!-- Editor -->
         <div class="row justify-center">
           <div class="col-12 q-px-xs q-py-md">
-            <q-scroll-area style="height: 260px" ref="scrollArea">
-              <BaseEditor
-                ref="editorRef1"
-                v-model="editor"
-                @showTemplateCreator="showTemplateCreator"
-                @showTemplateViewer="showTemplateViewer"
-              />
+            <q-scroll-area style="height: 400px" ref="scrollArea">
+              <BaseEditor ref="editorRef1" v-model="editor" minHeight="300px" @showTemplateCreator="showTemplateCreator"
+                @showTemplateViewer="showTemplateViewer" />
             </q-scroll-area>
           </div>
         </div>
-        <!-- Button to go back to normal view -->
-        <div class="row items-center justify-center q-pa-md">
-          <BaseButton
-            :text="''"
-            :changeColor="false"
-            :setStyleTo="simplifiedStyle"
-            :icon="getIconForEditorButton"
-            ref="button1"
-            class="FloatingButton"
-            @onClick="showEditor"
-          ></BaseButton>
-        </div>
+
       </div>
     </template>
   </baseDialog>
 </template>
 
 <script>
-import BaseButton from "../../ui/BaseButton.vue";
 import BaseEditor from "../../ui/BaseEditor.vue";
 import baseDialog from "../../ui/BaseDialog2.vue";
 import shared from "../../../shared.js";
-import methodsPanel from "./MethodsPanel.vue";
 import { mapState } from "vuex";
 
 export default {
   name: "DialogNewEvent",
   components: {
-    methodsPanel,
     baseDialog,
-    BaseButton,
     BaseEditor,
   },
   created() {
@@ -225,7 +128,7 @@ export default {
   },
   data() {
     return {
-      isEditorShown: false,
+      isShowingEditor: false,
       dialogWidth: 315,
       icon: true,
       editor: "",
@@ -235,8 +138,8 @@ export default {
       ],
       names: ["Diary", "Status"],
       simplifiedStyle: {
-        "background-color": "var(--q-secondary)",
-
+        //"background-color": "var(--q-secondary)",
+        "background-color": "#ffffffd4",
         color: "black",
         height: "33px",
         "border-style": "unset",
@@ -247,7 +150,7 @@ export default {
   },
 
   methods: {
-    showEventText() {},
+    showEventText() { },
     showTemplateCreator() {
       console.log("showing template creator")
     },
@@ -256,7 +159,7 @@ export default {
 
     },
     showEditor() {
-      this.isEditorShown = !this.isEditorShown;
+      this.isShowingEditor = !this.isShowingEditor;
     },
     scrollDown() {
       this.scroll(+200);
@@ -306,7 +209,7 @@ export default {
   },
   computed: {
     getIconForEditorButton() {
-      if (this.isEditorShown) {
+      if (this.isShowingEditor) {
         return "bi-arrow-left";
       } else {
         return "bi-plus-lg";
@@ -360,16 +263,7 @@ export default {
         this.$store.commit("data/updateText", value);
       },
     },
-    confirmButtonText() {
-      if (
-        this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-        "dialogEditEvent"
-      ) {
-        return "edit";
-      } else {
-        return "save";
-      }
-    },
+
   },
 };
 </script>
@@ -379,9 +273,6 @@ export default {
 <style scoped>
 .testD {
   max-height: 800px;
-}
-.container {
-  width: 315px;
 }
 
 .container :deep(.promptTitle) {
@@ -397,15 +288,8 @@ export default {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
 }
-/* Adjusting the top padding for the input field */
+
 .container :deep(.q-textarea .q-field__native) {
   padding-top: 10px;
-}
-
-.text-lightGray {
-  color: #c0c0c0 !important;
-}
-.bg-lightGray {
-  background: #c0c0c0 !important;
 }
 </style>

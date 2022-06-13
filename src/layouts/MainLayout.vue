@@ -7,14 +7,11 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
-            <router-view
-              v-slot="{ Component }"
-              v-if="
-                $store.state.data.dialogSettings.isVisible == false ||
-                ($store.state.data.dialogSettings.isVisible == true &&
-                  $store.state.data.dialogSettings.isBackgroundVisible == true)
-              "
-            >
+            <router-view v-slot="{ Component }" v-if="
+              $store.state.data.dialogSettings.isVisible == false ||
+              ($store.state.data.dialogSettings.isVisible == true &&
+                $store.state.data.dialogSettings.isBackgroundVisible == true)
+            ">
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -24,39 +21,22 @@
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
-    <q-footer
-      v-if="
-        ($store.state.data.dialogSettings.isVisible == false) |
-          (($store.state.data.dialogSettings.isVisible == true) &
-            ($store.state.data.dialogSettings.isBackgroundVisible == true))
-      "
-      elevated
-      class="primary"
-    >
+    <q-footer v-if="
+      ($store.state.data.dialogSettings.isVisible == false) |
+      (($store.state.data.dialogSettings.isVisible == true) &
+        ($store.state.data.dialogSettings.isBackgroundVisible == true))
+    " elevated class="primary">
       <q-toolbar>
         <q-space />
-        <q-btn-toggle
-          v-model="model"
-          flat
-          stretch
-          padding="ml"
-          toggle-color="secondary"
-          @update:model-value="goToPage"
+        <q-btn-toggle v-model="model" flat stretch padding="ml" toggle-color="secondary" @update:model-value="goToPage"
           :options="[
             { label: '', value: 'home', icon: 'visibility' },
             { label: '', value: 'diary', icon: 'book' },
             { label: '', value: 'items', icon: 'fas fa-calendar-alt' },
             { label: '', value: 'settings', icon: 'settings' },
-          ]"
-        />
+          ]" />
         <q-space />
-        <q-btn
-          color="accent"
-          flat
-          dense
-          icon="add"
-          @click="showDialogForNewEvent"
-        />
+        <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -125,4 +105,14 @@ export default {
   background-size: cover
   margin: auto
   padding: auto
+
+.card-separator
+  background-color: rgba(157, 157, 213, 0.6)
+      background: var(--q-secondary) !important
+
+.smallText
+  font-size: 12.5px
+
+.my-card
+  font-size: 12.5px
 </style>

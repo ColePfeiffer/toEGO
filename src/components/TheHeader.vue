@@ -1,44 +1,52 @@
 <template>
   <!-- infoHeader including status and intentionOfTheWeek -->
-  <div class="fit row no-wrap justify-between items-center content-center">
-    <!-- Container that holds information about tasks -->
-    <div class="statusContainer col-3">
-      <!-- Diary Entry Made? -->
-      <div class="statusEntryMade fit row no-wrap">
-        <q-btn
-          class="statusElementIcon col=10 items-center"
-          flat
-          icon="bi-journal-bookmark-fill"
-          color="primary"
-        ></q-btn>
-        <div class="col=6 statusElementText items-center">
-          <span style="color: White">X</span>
-        </div>
+  <div v-if="false">
+    <div class=" row no-wrap  q-pa-md items-center content-center">
+      <!-- Container that holds information about tasks -->
+
+      <div class="col ">
+        <q-btn class="col-2" flat icon="bi-eye-slash" color="primary"></q-btn>
+        <q-btn flat icon="bi-eye-fill" class="col-2" color="primary"></q-btn>
       </div>
-      <!-- Status Updates Made? -->
-      <div class="statusUpdatesMade fit row no-wrap">
-        <q-btn
-          class="statusElementIcon col=6 items-center"
-          flat
-          icon="bi-chat-left-fill"
-          color="primary"
-        ></q-btn>
-        <p class="col=6 statusElementText items-center">1/3</p>
-      </div>
+      <span class="col-6 " style="font-weight: bold">{{ getIntentionText }}</span>
+
     </div>
+    <span class="col-12 q-pa-md">{{ text }}</span>
     <!-- Col=6 Intention of the Week -->
-    <div class="col-flex"></div>
-    <div class="intentionOfTheWeek col=6">
-      <div class="fit row no-wrap">
-        <q-btn class="col=1" flat icon="fas fa-eye" color="primary"></q-btn>
-        <span class="col=11" style="font-weight: bold">CURRENT INTENTION</span>
-      </div>
-      <q-separator class="seperator" color="primary" />
-      <div class="fit row reverse no-wrap">
-        <span class="col=10">- {{ text }}</span>
-      </div>
+
+  </div>
+  <div v-if="false">
+    <div class="q-pa-md">
+      <q-card class="my-card  shadow-3 row justify-center ">
+        <q-card-section class="card-text">
+          {{ getIntentionText }}
+          <q-btn color="accent" flat dense icon="bi-envelope" />
+        </q-card-section>
+        <q-card-section>
+          <q-input class="card-input" v-model="text" filled autogrow />
+        </q-card-section>
+      </q-card>
     </div>
   </div>
+  <div class="q-pa-md">
+
+    <q-expansion-item v-model="expanded" icon="bi-envelope" :label="getIntentionText"
+      class="q-pa-xs text-center justify-center">
+      <q-card class="my-card shadow-3 q-py-md q-mt-md">
+        <q-card-section>
+          <div class="cursor-pointer smallText">
+            {{ text }}
+            <q-popup-edit v-model="text" auto-save v-slot="scope">
+              <q-input type="textarea" v-model="scope.value" autofocus counter @keyup.enter="scope.set" />
+            </q-popup-edit>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
+  </div>
+
+
+
 </template>
 
 <script>
@@ -49,10 +57,18 @@ export default {
   data() {
     return {
       //text: "Going outside and doing some cool stuff",
-      text: "get work done!",
+      text: "Be productive. Get the project done! Celebrate yourself.",
+      expanded: false,
     };
   },
   methods: {
+    getShortenedIntentionText() {
+      if (this.text.length >= 25) {
+        return this.text.substring(0, 25) + "...";
+      } else {
+        return this.text;
+      }
+    },
     saveChangesInProfilePage(roomie, changeData) {
       roomie.username = changeData.username;
       roomie.description = changeData.description;
@@ -70,31 +86,18 @@ export default {
       this.$emit("toggle-dialogCashUp", true);
     },
   },
+  computed: {
+    getIntentionText() {
+      return this.$store.state.data.intentionText
+    }
+  }
 };
 </script>
 
-<style>
-.seperator {
-  opacity: 0;
-}
-
-.statusContainer {
-  padding: 5px;
-  width: 100px;
-}
-
-.intentionOfTheWeek {
-  padding: 15px;
-  font-size: 85%;
-  max-width: 200px;
-}
-
-.balance-plus {
-  color: green;
-}
-
-.balance-minus {
-  color: red;
+<style scoped>
+.card-input {
+  color: white;
+  border-left: 1px solid black;
 }
 
 .statusElementIcon {

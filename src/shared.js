@@ -18,6 +18,10 @@ export default {
     color: "white",
     height: "33px",
   },
+  buttonFlatStyle: {
+    "box-shadow": "none",
+    "background-color": "var(--q-secondary)",
+  },
 
   scroll(offset) {
     /*

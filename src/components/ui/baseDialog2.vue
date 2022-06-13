@@ -1,22 +1,18 @@
 <template>
   <!-- whole thing -->
-  <q-dialog class="baseDialog" persistent>
+  <q-dialog class="baseDialog " persistent>
     <!-- row -->
     <div class="row" :style="boxShadowStyle">
       <div class="col-12 col-sm-8 col-md-3 col-xl-3">
         <div class="window dialogBox column" :style="styleB">
-          <!-- Title Bar -->
           <div class="col-1">
+            <!-- Title Bar -->
             <div class="title-bar row" style="background: #dfd4f5">
               <div class="title-bar-text">
                 <slot name="dialogTitle"></slot>
               </div>
               <div class="title-bar-controls">
-                <button
-                  v-if="hasHelpOption"
-                  aria-label="Help"
-                  @click="showHelp"
-                ></button>
+                <button v-if="hasHelpOption" aria-label="Help" @click="showHelp"></button>
                 <button aria-label="Close" @click="closeDialog"></button>
               </div>
             </div>
@@ -24,30 +20,20 @@
             <slot name="content"></slot>
             <!-- Footer Slot | Option to hide buttons -->
             <slot name="footer">
-              <div class="col-1 q-pa-sm q-pb-md">
+              <div class="col-1 q-pa-sm q-pb-md q-mt-md">
                 <div class="row justify-end">
-                    <q-btn
-                    class="button col-3 col-md-2 q-mx-xs"
-                    :style="accentBackground"
-                    flat
-                    @click="closeDialog"
-                  >
-                    <slot name="close-button">Templates</slot>
+                  <q-btn v-if="hasExtraButton" class="button extraButton col-3 col-md-2 q-mx-xs" flat
+                    :style="$store.state.data.buttonFlatStyle" :icon="extraButtonIcon" @click="clickExtraButton">
+                    <slot name="close-button"></slot>
                   </q-btn>
 
-                  <q-btn
-                    class="button col-3 col-md-2 q-mx-xs"
-                    flat
-                    @click="closeDialog"
-                  >
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                    @click="closeDialog">
                     <slot name="close-button"> Cancel </slot>
                   </q-btn>
 
-                  <q-btn
-                    class="button col-3 col-md-2 q-mx-xs"
-                    :disabled="isSaveButtonDisabled"
-                    @click="saveChanges"
-                  >
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                    :disabled="isSaveButtonDisabled" @click="saveChanges">
                     <slot name="confirm-button"> Save </slot>
                   </q-btn>
                 </div>
@@ -65,13 +51,26 @@
 for main container
 color: white; background-color: black
 */
+import shared from "../../shared";
 
 export default {
   name: "baseDialog",
-  emits: ["closeDialog", "save", "showHelp"],
+  emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
   props: {
     widthOfDialog: Number,
     hasHelpOption: Boolean,
+    hasExtraButton: {
+      type: Boolean,
+      default: false
+    },
+    extraButtonLabel: {
+      type: String,
+      default: ""
+    },
+    extraButtonIcon: {
+      type: String,
+      default: ""
+    },
     isSaveButtonDisabled: {
       type: Boolean,
       default: false,
@@ -93,10 +92,11 @@ export default {
         "background-color": "#989898 ",
         color: "black",
         width: this.widthOfDialog + "px",
+        "background-color": "rgb(255 255 255 / 90%)",
       },
       accentBackground: {
         //"background-color": "var(--q-accent)",
-         color: "var(--q-primary)",
+        color: "var(--q-primary)",
         border: "1px solid var(--q-accent)",
       },
 
@@ -104,9 +104,13 @@ export default {
       // inline css style with variables
       classSmall: { "full-width": true },
       classBig: { "max-width": "80%", width: "70%" },
+
     };
   },
   methods: {
+    clickExtraButton() {
+      this.$emit("clickExtraButton");
+    },
     closeDialog() {
       this.$emit("closeDialog");
     },
@@ -118,7 +122,6 @@ export default {
     },
   },
   computed: {
-    // a computed getter
     setStyle() {
       var style = {};
       console.log("display mode changed");
@@ -139,6 +142,14 @@ export default {
 </script>
 
 <style scoped src="98.css">
+.defaultFont {
+  font-family: "PressStart";
+}
+
+.extraButton {
+  background-color: yellow !important;
+}
+
 .baseDialog :deep(.window) {
   color: #fff;
 }

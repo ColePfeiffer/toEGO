@@ -1,13 +1,9 @@
 <template>
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
-    <q-separator color="primary" class="q-mb-sm" />
-    <EventViewer
-      :diaryEntry="getDiaryEntry"
-      class="col"
-      @showDialogForExistingEvent="showDialogForExistingEvent"
-      @showDialogForNewEvent="showDialogForNewEvent"
-    ></EventViewer>
+    <q-separator color="secondary" class="q-mb-sm" />
+    <EventViewer :diaryEntry="getDiaryEntry" class="col" @showDialogForExistingEvent="showDialogForExistingEvent"
+      @showDialogForNewEvent="showDialogForNewEvent"></EventViewer>
     <!-- Player Character -->
   </q-page>
 </template>
@@ -62,4 +58,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
