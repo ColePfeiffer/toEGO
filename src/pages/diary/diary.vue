@@ -35,6 +35,11 @@
         </div>
       </div>
 
+      <!-- DIARY SELECTION -->
+      <diarySection class="q-pt-xl q-mt-md q-py-md" :diaryEntry="getDiaryEntry" :viewingMode="viewingMode"
+        :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
+        @openEntryInFullscreen="openEntryInFullscreen"></diarySection>
+
       <!-- EVENT SELECTION -->
       <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen">
         <!-- Title, Button Row -->
@@ -51,18 +56,13 @@
         <q-separator color="secondary" />
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <EventViewer :diaryEntry="getDiaryEntry" @showDialogForExistingEvent="showDialogForExistingEvent"
-            @showDialogForNewEvent="showDialogForNewEvent">
+          <EventViewer :diaryEntry="getDiaryEntry" :showMessageIfThereAreNoEvents="true"
+            @showDialogForExistingEvent="showDialogForExistingEvent" @showDialogForNewEvent="showDialogForNewEvent">
           </EventViewer>
         </q-scroll-area>
       </div>
 
-      <!-- DIARY SELECTION -->
-      <div v-if="isDiarySectionVisible && !isDiaryEntryShownInFullscreen">
-        <diaryPanels class="q-pt-xl q-mt-md q-py-md" :diaryEntry="getDiaryEntry" :viewingMode="viewingMode"
-          :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
-          @openEntryInFullscreen="openEntryInFullscreen"></diaryPanels>
-      </div>
+      <!-- DIARY SELECTION FULLSCREEN -->
       <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
         <div class="row justify-end">
           <div class="col-4"></div>
@@ -83,7 +83,7 @@
 
 <script>
 import EventViewer from "../../components/common/EventViewer.vue";
-import diaryPanels from "../../components/diary/TheDiaryPanels.vue";
+import diarySection from "../../components/diary/diarySection.vue";
 import BaseExpandableButton from "../../components/ui/BaseExpandableButton.vue";
 import { date } from "quasar";
 import shared from "../../shared.js";
@@ -128,7 +128,7 @@ export default {
   },
   components: {
     EventViewer,
-    diaryPanels,
+    diarySection,
     BaseExpandableButton,
   },
   watch: {

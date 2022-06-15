@@ -3,7 +3,7 @@
     <DialogDeleteEvent @deleteEvent="deleteEvent" @closeDialog="closeDialog"></DialogDeleteEvent>
     <!-- no diary entry for this date doesn't exist yet -->
     <div v-if="this.diaryEntry === undefined">
-      <div class="q-pa-md">
+      <div v-if="showMessageIfThereAreNoEvents" class="q-pa-md">
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             There is nothing here yet.
@@ -40,6 +40,10 @@ export default {
   emits: ["showDialogForNewEvent", "showDialogForExistingEvent"],
   props: {
     diaryEntry: Object,
+    showMessageIfThereAreNoEvents: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
