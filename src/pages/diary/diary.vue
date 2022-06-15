@@ -17,8 +17,9 @@
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
                         <q-date v-model="formattedDate">
                           <div class="row items-center justify-end">
-                            <q-btn label="today" color="primary" flat @click="setDateToToday" />
                             <q-btn v-close-popup label="Close" color="primary" flat />
+                            <q-btn label="today" color="primary" flat @click="setDateToToday" />
+
                           </div>
                         </q-date>
                       </q-popup-proxy>
