@@ -4,10 +4,10 @@
     <!-- row -->
     <div class="row" :style="boxShadowStyle">
       <div class="col-12 col-sm-8 col-md-3 col-xl-3">
-        <div class="window dialogBox column" :style="styleB">
+        <div class="window dialogBox column" :style="getStyleForDialog">
           <div class="col-1">
             <!-- Title Bar -->
-            <div class="title-bar row" style="background: #dfd4f5">
+            <div class="title-bar row" :style="getStyleForDialogTitleBar">
               <div class="title-bar-text">
                 <slot name="dialogTitle"></slot>
               </div>
@@ -17,7 +17,10 @@
               </div>
             </div>
             <!-- Content Slot -->
-            <slot name="content"></slot>
+
+            <slot name="content" :style="getStyleForDialog"></slot>
+
+
             <!-- Footer Slot | Option to hide buttons -->
             <slot name="footer">
               <div class="col-1 q-pa-sm q-pb-md q-mt-md">
@@ -82,17 +85,16 @@ export default {
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      styleA: {
-        "background-color": "#121212 ",
-        color: "white",
-        opacity: "0.8",
-        width: "400px",
-      },
-      styleB: {
-        "background-color": "#989898 ",
-        color: "black",
+
+      styleDark: {
         width: this.widthOfDialog + "px",
-        "background-color": "rgb(255 255 255 / 90%)",
+        "background-color": "rgb(0 0 0 / 77%)",
+        color: "white",
+      },
+      styleLight: {
+        width: this.widthOfDialog + "px",
+        "background-color": "rgb(255 255 255 )",
+        color: "black",
       },
       accentBackground: {
         //"background-color": "var(--q-accent)",
@@ -104,7 +106,8 @@ export default {
       // inline css style with variables
       classSmall: { "full-width": true },
       classBig: { "max-width": "80%", width: "70%" },
-
+      styleForDialogTitleBar: { "background": "var(--q-secondary)" },
+      styleForDialogTitleBarDark: { "background": "var(--q-secondary)" }
     };
   },
   methods: {
@@ -122,20 +125,21 @@ export default {
     },
   },
   computed: {
-    setStyle() {
-      var style = {};
-      console.log("display mode changed");
-
-      if (this.mobileModeActive) {
-        console.log("mobile");
-        // `this` points to the vm instance
-        style = this.styleA;
+    getStyleForDialogTitleBar() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.styleForDialogTitleBarDark;
       } else {
-        console.log("desktop view");
-        style = this.styleB;
+        return this.styleForDialogTitleBar;
       }
 
-      return style;
+    },
+    getStyleForDialog() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.styleDark;
+      } else {
+        return this.styleLight;
+      }
+
     },
   },
 };
@@ -144,10 +148,6 @@ export default {
 <style scoped src="98.css">
 .defaultFont {
   font-family: "PressStart";
-}
-
-.extraButton {
-  background-color: yellow !important;
 }
 
 .baseDialog :deep(.window) {

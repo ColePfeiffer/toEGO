@@ -30,13 +30,13 @@
         <q-space />
         <q-btn-toggle v-model="model" flat stretch padding="ml" toggle-color="secondary" @update:model-value="goToPage"
           :options="[
-            { label: '', value: 'home', icon: 'visibility' },
-            { label: '', value: 'diary', icon: 'book' },
-            { label: '', value: 'items', icon: 'fas fa-calendar-alt' },
-            { label: '', value: 'settings', icon: 'settings' },
+            { label: '', value: 'home', icon: 'bi-eye' },
+            { label: '', value: 'diary', icon: 'bi-journal-text' },
+            { label: '', value: 'items', icon: 'bi-calendar3' },
+            { label: '', value: 'settings', icon: 'bi-gear' },
           ]" />
         <q-space />
-        <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
+        <q-btn color="accent" flat dense icon="bi-plus-lg" @click="showDialogForNewEvent" />
       </q-toolbar>
     </q-footer>
   </q-layout>

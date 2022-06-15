@@ -69,8 +69,8 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
-                  <q-input class="input" v-model="title" filled square label="Title"
-                    input-style="max-height: 50px; min-height: 25px;" :rules="[
+                  <q-input class="input" color="primary" v-model="title" filled square label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
                       (val) =>
                         val.length <= 30 ||
                         'Please use maximum 30 characters',
@@ -81,7 +81,7 @@
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
                   <q-input class="input" v-model="text" label="What happened?" filled square autogrow
-                    input-style="max-height: 280px; min-height: 220px;" />
+                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px" />
                 </div>
               </div>
             </div>
