@@ -1,46 +1,9 @@
 <template>
   <div class="row justify-center items-center">
     <div class="col ButtonWrapper" :style="hideBorder">
-      <q-btn-toggle
-        v-model="panel"
-        toggle-color="accent"
-        flat
-        :options="[
-          { value: 'panelLeft', slot: 'button1' },
-          { value: 'panelRight', slot: 'button2' },
-        ]"
-      >
-        <template v-slot:button1>
-          <baseButton
-            :text="names[0]"
-            :changeColor="false"
-            :setStyleTo="buttonLeftStyle"
-            ref="button1"
-            class="FloatingButton"
-            @onClick="togglePanelVisibility('panelLeft')"
-          ></baseButton>
-        </template>
-        <template v-slot:button2 v-if="hasTwoButtons">
-          <baseButton
-            :text="names[1]"
-            :changeColor="false"
-            :setStyleTo="buttonRightStyle"
-            class="FloatingButton"
-            @onClick="togglePanelVisibility('panelRight')"
-          ></baseButton>
-        </template>
-      </q-btn-toggle>
       <!-- Panels -->
-      <div
-        v-if="panelsSetToVisible"
-        class="col fit justify-center items-center"
-      >
-        <q-tab-panels
-          v-model="panel"
-          animated
-          class="noBackground"
-          style="margin-top: -15px"
-        >
+      <div v-if="panelsSetToVisible" class="col fit justify-center items-center">
+        <q-tab-panels v-model="panel" animated class="noBackground">
           <q-tab-panel name="panelLeft" ref="panelLeft">
             <div v-if="showNames">
               <div class="text-h6">{{ names[0] }}</div>
@@ -59,6 +22,19 @@
           </q-tab-panel>
         </q-tab-panels>
       </div>
+      <q-btn-toggle v-model="panel" style="margin-bottom: -36px" toggle-color="accent" flat :options="[
+        { value: 'panelLeft', slot: 'button1' },
+        { value: 'panelRight', slot: 'button2' },
+      ]">
+        <template v-slot:button1>
+          <baseButton :text="names[0]" :changeColor="false" :setStyleTo="buttonLeftStyle" ref="button1"
+            class="FloatingButton" @onClick="togglePanelVisibility('panelLeft')"></baseButton>
+        </template>
+        <template v-slot:button2 v-if="hasTwoButtons">
+          <baseButton :text="names[1]" :changeColor="false" :setStyleTo="buttonRightStyle" class="FloatingButton"
+            @onClick="togglePanelVisibility('panelRight')"></baseButton>
+        </template>
+      </q-btn-toggle>
     </div>
   </div>
 </template>
@@ -197,6 +173,7 @@ export default {
   position: relative;
   bottom: 1.5em;
 }
+
 .ButtonWrapper {
   display: flex;
   flex-direction: column;

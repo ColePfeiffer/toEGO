@@ -19,7 +19,7 @@
         @click="changeView('view')"></q-btn>
     </div>
     <!-- entry exists -->
-    <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
+    <div v-if="diaryEntry != undefined && editor != '' || isCreatingNewDiaryEntry === true">
       <BasePanelWithButtons class="secondary" :options="options" :names="names" :hideBordersOnInit="hideBordersOnInit"
         :showNames="showNames" :buttonLeftStyle="simplifiedStyle" :buttonRightStyle="simplifiedStyle">
         <template v-slot:panelLeftSlot>
@@ -35,12 +35,7 @@
                     </q-item>
                   </q-card>
                   <!-- If there is no entry yet for that day. -->
-                  <q-card v-else class="editorCard shadow-3 text-justify">
-                    <q-card-section class="card-text text-center">
-                      There is no diary entry for this day yet.
 
-                    </q-card-section>
-                  </q-card>
                 </div>
                 <!-- EDIT MODE -->
                 <div class="editorContainer" v-else>
@@ -80,7 +75,7 @@
       </BasePanelWithButtons>
     </div>
     <!-- diary entry doesn't exist yet. -->
-    <div v-else></div>
+
   </div>
 </template>
 
