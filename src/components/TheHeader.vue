@@ -1,35 +1,5 @@
 <template>
-  <!-- infoHeader including status and intentionOfTheWeek -->
-  <div v-if="false">
-    <div class=" row no-wrap  q-pa-md items-center content-center">
-      <!-- Container that holds information about tasks -->
-
-      <div class="col ">
-        <q-btn class="col-2" flat icon="bi-eye-slash" color="primary"></q-btn>
-        <q-btn flat icon="bi-eye-fill" class="col-2" color="primary"></q-btn>
-      </div>
-      <span class="col-6 " style="font-weight: bold">{{ getIntentionText }}</span>
-
-    </div>
-    <span class="col-12 q-pa-md">{{ text }}</span>
-    <!-- Col=6 Intention of the Week -->
-
-  </div>
-  <div v-if="false">
-    <div class="q-pa-md">
-      <q-card class="my-card  shadow-3 row justify-center ">
-        <q-card-section class="card-text">
-          {{ getIntentionText }}
-          <q-btn color="accent" flat dense icon="bi-envelope" />
-        </q-card-section>
-        <q-card-section>
-          <q-input class="card-input" v-model="text" filled autogrow />
-        </q-card-section>
-      </q-card>
-    </div>
-  </div>
   <div class="q-pa-md">
-
     <q-expansion-item v-model="expanded" icon="bi-eye-fill" icon-size="xs" :label="getIntentionText"
       class="smallText q-pa-xs text-center" :style="textStyleDark" expand-icon-class="text-accent">
       <q-card class="my-card  shadow-3 q-py-md q-mt-md" :style="getStyleForTransparentCard">
@@ -44,9 +14,6 @@
       </q-card>
     </q-expansion-item>
   </div>
-
-
-
 </template>
 
 <script>

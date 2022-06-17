@@ -1,9 +1,9 @@
 <template>
-  <q-page>
+  <q-page class="q-pa-sm">
     <div class="bookmark" v-if="viewingMode === 'view' && false"></div>
     <div class="column">
       <!-- DAY SELECTION -->
-      <div class="col q-py-md q-pt-lg maxHeight">
+      <div class="col q-py-md q-pt-lg  maxHeight">
         <div class="row justify-center text-center">
           <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_left" color="white"
             :style="getStyleForText" @click="subtractFromDate(1)"></q-btn>
@@ -25,7 +25,7 @@
                       </q-popup-proxy>
                     </q-btn>
                   </div>
-                  <div class="col text-secondary smallText" :style="getStyleForText">{{ getDay }}</div>
+                  <div class="col text-white smallText q-pb-lg" :style="textStyleAccent">{{ getDay }}</div>
                 </div>
               </div>
             </div>
@@ -35,20 +35,22 @@
         </div>
       </div>
 
-      <!-- DIARY SELECTION -->
-      <diarySection class="q-pt-xl q-mt-md q-py-md" :diaryEntry="getDiaryEntry" :viewingMode="viewingMode"
-        :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
-        @openEntryInFullscreen="openEntryInFullscreen"></diarySection>
-
       <!-- EVENT SELECTION -->
-      <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen">
+      <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
         <!-- Title, Button Row -->
         <div class="row justify-center items-center">
           <!-- Title -->
-          <div class="col-6 eventTitle text-left text-secondary">EVENTS</div>
+
+          <div class="col-5 eventTitle smallText text-left text-white" :style="textStyleAccent">{{
+              getTextForFirstHeadline
+          }}
+          </div>
           <!-- Button -->
-          <div class="col-6 eventchangeViewButton text-right">
-            <div v-if="hasEvents | (isDiarySectionVisible === false)" class="col">
+          <div class="col-6 text-right">
+            <q-btn class="col smallText text-right" flat icon="add" color="accent">
+            </q-btn>
+            <div v-if="hasEvents || (isDiarySectionVisible === false)"
+              class="col smallText eventchangeViewButton text-right">
               <base-expandable-button @expandMore="expandMore" @expandLess="expandLess"></base-expandable-button>
             </div>
           </div>
@@ -56,11 +58,17 @@
         <q-separator color="secondary" />
         <!-- Events Container -->
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <EventViewer :diaryEntry="getDiaryEntry" :showMessageIfThereAreNoEvents="true"
+          <EventViewer :diaryEntry="getDiaryEntry" :showMessageIfThereAreNoEvents="false"
             @showDialogForExistingEvent="showDialogForExistingEvent" @showDialogForNewEvent="showDialogForNewEvent">
           </EventViewer>
         </q-scroll-area>
       </div>
+
+      <!-- DIARY SELECTION -->
+      <diarySection v-if="!isDiaryEntryShownInFullscreen" :class="getDiarySectionClass" :diaryEntry="getDiaryEntry"
+        :viewingMode="viewingMode" :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
+        @openEntryInFullscreen="openEntryInFullscreen" @showDialogForNewEvent="showDialogForNewEvent">
+      </diarySection>
 
       <!-- DIARY SELECTION FULLSCREEN -->
       <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
@@ -124,6 +132,7 @@ export default {
         opacity: "0.8",
       },
       classBig: { "max-width": "80%", width: "70%" },
+
     };
   },
   components: {
@@ -132,6 +141,7 @@ export default {
     BaseExpandableButton,
   },
   watch: {
+
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
     getDate(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
@@ -153,6 +163,29 @@ export default {
     },
   },
   computed: {
+    // adjusts the top padding
+    getDiarySectionClass() {
+      if (this.getDiaryEntry === undefined) {
+        return {
+          "padding-top": "20px",
+          "margin-top": "16px",
+          "padding-bottom": "16px"
+        };
+      } else {
+        return {
+          "padding-top": "48px",
+          "margin-top": "16px",
+          "padding-bottom": "16px"
+        }
+      }
+    },
+    getTextForFirstHeadline() {
+      if (this.getDiaryEntry != undefined) {
+        return "EVENTS";
+      } else {
+        return "";
+      }
+    },
     getStyleForText() {
       if (this.$store.getters["data/isDarkModeActive"]) {
         return this.textStyleDark;
@@ -313,9 +346,7 @@ export default {
   font-size: 12.5px;
 }
 
-.datePickerButton {
-  .text-transform: lowercase;
-}
+
 
 .maxHeight {
   max-height: 80px;

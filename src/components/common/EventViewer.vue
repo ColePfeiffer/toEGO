@@ -1,8 +1,10 @@
 <template>
   <div>
     <DialogDeleteEvent @deleteEvent="deleteEvent" @closeDialog="closeDialog"></DialogDeleteEvent>
-    <!-- no diary entry for this date doesn't exist yet -->
-    <div v-if="this.diaryEntry === undefined">
+
+    <!-- Case 1: There is no diary entry for the selected day. -->
+    <div v-if="diaryEntry === undefined">
+      <!-- Case 1A: Show +, if showMessageIfThereAreNoEvents is set to true. This is used by the home page. -->
       <div v-if="showMessageIfThereAreNoEvents" class="q-pa-md">
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
@@ -12,18 +14,17 @@
         </q-card>
       </div>
     </div>
-    <!-- entry exists, but no events have been created -->
-    <div v-else-if="this.diaryEntry.events.length < 1">
+    <!-- Case 2: Entry exists, but no events have been created yet. -->
+    <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1">
       <div class="q-pa-md">
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
-            There are no tracked events.
             <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
           </q-card-section>
         </q-card>
       </div>
     </div>
-    <!-- showing events for diary entry -->
+    <!-- Case 3: Entry and events exist. -->
     <div v-else class="row items-center justify-center q-px-sm" v-for="event in events" :key="event.id">
       <EventCard :eventData="event" @changeEventData="changeEventData" @editEvent="editEvent"
         @deleteEvent="showConfirmDeleteDialog" class="col-12" />

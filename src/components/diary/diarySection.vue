@@ -7,11 +7,15 @@
     <!-- Title, Buttons -->
     <div class="col q-px-md q-pt-lg">
       <!-- Title, Button Row -->
-      <div class="row justify-center items-center">
+      <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true" class="row justify-center items-center">
         <!-- Title -->
-        <div class="col-3 eventTitle text-left text-secondary">{{ getTitle }}</div>
+        <div class="col-6 eventTitle smallText text-left text-white" :style="textStyleAccent">
+          DIARY
+          <q-btn class="col smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection"></q-btn>
+          STATUS
+        </div>
         <!-- Button -->
-        <q-btn class="col smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection"></q-btn>
+
         <div class="col-6 eventchangeViewButton text-right">
           <q-btn class="col smallText" flat :icon="getEditCreateIcon" color="secondary" @click="editCreate"
             v-if="viewingMode === 'view'"></q-btn>
@@ -27,79 +31,102 @@
       </div>
       <q-separator color="secondary" />
     </div>
-    <!-- DIARY / STATUS Section -->
-    <!-- Entry exists -->
-    <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
-      class="row justify-center items-center q-pa-md q-ma-md">
-      <!-- IS SHOWING DIARY -->
-      <div v-if="isShowingDiarySection" class="col">
-        <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <!-- VIEW MODE -->
-          <div v-if="viewingMode === 'view'">
-            <!-- If there is an entry for that day. -->
-            <q-card v-if="editor != ''" class="editorCard shadow-3 text-justify">
-              <q-item>
-                <q-item-section v-html="editor"> </q-item-section>
-              </q-item>
-            </q-card>
-            <!-- If there is no entry yet for that day. -->
-            <q-card v-else class="editorCard shadow-3 text-justify">
-              <q-card-section class="card-text text-center">
-                There is no diary entry for this day yet.
 
-              </q-card-section>
-            </q-card>
-
-          </div>
-          <!-- EDIT MODE -->
-          <div class="editorContainer" v-else>
-            <BaseEditor ref="editorRef1" v-model="changeData.editor" @showTemplateCreator="showTemplateCreator"
-              @showTemplateViewer="showTemplateViewer" />
-          </div>
-        </q-scroll-area>
-      </div>
-      <!-- IS SHOWING STATUS -->
-      <div v-else class="col">
-        <!-- MODE: VIEW -->
-        <div v-if="viewingMode === 'view'" class="column">
-          <div class="col text-left">Overall Mood</div>
-          <div class="col text-center">O O O O O</div>
-
-          <div class="col text-left">Weather</div>
-          <div class="col text-center">O O O O O</div>
-          <div class="col text-left">Tags</div>
-          <div class="col text-center">O O O O O</div>
-        </div>
-        <!-- MODE: EDIT -->
-        <div v-else>
-          <div class="row justify-end">
-            <q-btn class="col=1" flat icon="fas fa-folder-open" color="secondary"></q-btn>
-            <q-select dense borderless v-model="statusTemplateModel" :options="statusTemplateOptions" label="templates">
-            </q-select>
-          </div>
-          <div class="column">
-            <div class="col text-left">Overall Mood</div>
-            <div class="col text-center">O O O O O</div>
-          </div>
-          <div class="col text-left">Weather</div>
-          <div class="col text-center">O O O O O</div>
-          <div class="col text-left">Tags</div>
-          <div class="col text-center">O O O O O</div>
-        </div>
-      </div>
-
-    </div>
-    <!-- Entry doesn't exist -->
-    <div v-else class="row justify-center items-center q-pa-md q-ma-md">
-      <div class="col">
-        <!-- If there is no entry yet for that day. -->
-        <q-card v-if="diaryEntry === undefined" class="editorCard shadow-3 text-justify">
+    <!-- Case 1: There is no diary entry for the selected day. -->
+    <div v-if="diaryEntry === undefined && isCreatingNewDiaryEntry === false">
+      <div class="q-pa-md q-mx-xs">
+        <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
-            There is no diary entry for this day yet.
+            Nothing here yet. Add an event
+            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
+            <br>
+            or create an entry.
+            <q-btn color="accent" flat dense icon="bi-file-earmark-plus-fill" @click="editCreate" />
           </q-card-section>
         </q-card>
       </div>
     </div>
+    <!-- Case 2: There is an entry. -->
+    <div v-else>
+      <!-- Case 2A: Showing entry. -->
+      <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
+        <div class="row justify-center items-center q-pa-md q-ma-md">
+          <!-- IS SHOWING DIARY -->
+          <div v-if="isShowingDiarySection" class="col">
+            <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+              <!-- VIEW MODE -->
+              <div v-if="viewingMode === 'view'">
+                <!-- If there is an entry for that day. -->
+                <q-card v-if="editor != ''" class="editorCard shadow-3 text-justify">
+                  <q-item>
+                    <q-item-section v-html="editor"> </q-item-section>
+                  </q-item>
+                </q-card>
+                <!-- If there is no entry yet for that day. -->
+                <q-card v-else class="editorCard shadow-3 text-justify">
+                  <q-card-section class="card-text text-center">
+                    <q-btn color="accent" flat dense icon="add" @click="editCreate" />
+                  </q-card-section>
+                </q-card>
+              </div>
+              <!-- EDIT MODE -->
+              <div class="editorContainer" v-else>
+                <BaseEditor ref="editorRef1" v-model="changeData.editor" @showTemplateCreator="showTemplateCreator"
+                  @showTemplateViewer="showTemplateViewer" minHeight="300px" />
+              </div>
+            </q-scroll-area>
+          </div>
+          <!-- IS SHOWING STATUS -->
+          <div v-else class="col">
+            <!-- MODE: VIEW -->
+            <div v-if="viewingMode === 'view'" class="column">
+              <div class="col text-left">Overall Mood</div>
+              <div class="col text-center">O O O O O</div>
+
+              <div class="col text-left">Weather</div>
+              <div class="col text-center">O O O O O</div>
+              <div class="col text-left">Tags</div>
+              <div class="col text-center">O O O O O</div>
+            </div>
+            <!-- MODE: EDIT -->
+            <div v-else>
+              <div class="row justify-end">
+                <q-btn class="col=1" flat icon="fas fa-folder-open" color="secondary"></q-btn>
+                <q-select dense borderless v-model="statusTemplateModel" :options="statusTemplateOptions"
+                  label="templates">
+                </q-select>
+              </div>
+              <div class="column">
+                <div class="col text-left">Overall Mood</div>
+                <div class="col text-center">O O O O O</div>
+              </div>
+              <div class="col text-left">Weather</div>
+              <div class="col text-center">O O O O O</div>
+              <div class="col text-left">Tags</div>
+              <div class="col text-center">O O O O O</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- Case 2B: Empty diary entry. Show create. -->
+      <div v-else-if="changeData.editor === undefined || changeData.editor === ''">
+        <div class="row justify-center items-center q-pa-md q-ma-md">
+          <div class="col">
+            <q-card class="editorCard shadow-3 text-justify">
+              <q-card-section class="card-text text-center">
+                <q-btn color="accent" flat dense icon="add" @click="editCreate" />
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
   </div>
 </template>
 
@@ -115,14 +142,28 @@ export default {
     DialogCreateTemplate,
     DialogViewTemplates,
   },
-  emits: ["scroll", "change-view", "save-changes", "openEntryInFullscreen"],
+  emits: ["scroll", "change-view", "save-changes", "openEntryInFullscreen", "showDialogForNewEvent"],
   data() {
     return {
+      textStyleDark: {
+        "text-shadow": "2px 2px #000000",
+        "text-shadow": "rgb(0 0 0) 2px 2px 2px"
+      },
+      textStyle: {
+        "text-color": "white",
+        //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
+        "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
+      },
+      textStyleAccent: {
+        "color": "var(--q-accent)",
+        //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
+        "text-shadow": "var(--q-info) 2px 2px 2px"
+      },
       isShowingDiarySection: true,
       storedTemplateString: "",
       isCreatingNewDiaryEntry: false,
       changeData: {},
-      heightForScrollArea: "height: 250px",
+      heightForScrollArea: "height: 450px",
       //"<div style='text-align: left;'><b>What did go well today?</b><br></div><div style='text-align: left;'><span style='text-align: right;'>Got work done. Yaay.</span></div><div style='text-align: left;'><b><br></b></div><div style='text-align: right;'><div style='text-align: right;'><b>What are you grateful for?</b></div><div style='text-align: right;'>Grateful for my boyfriend, my mom, my dad, my sister. Life. Music. Food. Sun.&nbsp;</div></div><div style='text-align: center;'><br></div><div style='text-align: left;'><b>What will you do tomorrow?</b></div>",
       statusTemplateModel: "default",
       statusTemplateOptions: ["default", "gratitude"],
@@ -158,9 +199,9 @@ export default {
     },
     getSectionIcon() {
       if (this.isShowingDiarySection === true) {
-        return "bi-toggle-off";
+        return "bi-toggle2-off";
       } else {
-        return "bi-toggle-on";
+        return "bi-toggle2-on";
       }
     },
     getEditCreateIcon() {
@@ -186,6 +227,9 @@ export default {
     },
   },
   methods: {
+    showDialogForNewEvent() {
+      this.$emit("showDialogForNewEvent");
+    },
     switchSection() {
       this.isShowingDiarySection = !this.isShowingDiarySection;
     },
