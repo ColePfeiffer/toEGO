@@ -9,14 +9,19 @@
       <!-- Title, Button Row -->
       <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true" class="row justify-center items-center">
         <!-- Title -->
-        <div class="col-6 eventTitle smallText text-left text-white" :style="textStyleAccent">
-          DIARY
-          <q-btn class="col smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection"></q-btn>
-          STATUS
+        <div class="col-7 smallText text-left no-wrap">
+          <q-btn class="col-3 smallText text-left" dense flat :style="headlineDiary"
+            @click="isShowingDiarySection = true">DIARY</q-btn>
+          <q-btn class="col-1 smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection">
+          </q-btn>
+          <q-btn class="col-3 smallText" dense flat :style="headlineStatus" @click="isShowingDiarySection = false">
+            STATUS</q-btn>
         </div>
+
+
         <!-- Button -->
 
-        <div class="col-6 eventchangeViewButton text-right">
+        <div class="col-5 eventchangeViewButton text-right">
           <q-btn class="col smallText" flat :icon="getEditCreateIcon" color="secondary" @click="editCreate"
             v-if="viewingMode === 'view'"></q-btn>
           <q-btn v-if="viewingMode === 'edit'" class="col-4 smallText" flat icon="bi-arrow-left" color="secondary"
@@ -189,7 +194,39 @@ export default {
     diaryEntry: Object,
     viewingMode: String,
   },
+
   computed: {
+    headlineDiary() {
+      if (this.isShowingDiarySection === true) {
+        return {
+          "text-decoration": "underline",
+          "color": "white",
+          "text-decoration-style": "solid",
+          "text-decoration-color": "var(--q-accent)",
+          "text-shadow": "var(--q-info) 2px 2px 2px"
+        };
+      } else {
+        return {
+          "text-decoration": "none",
+          "color": "white",
+          "text-shadow": "var(--q-info) 2px 2px 2px"
+        }
+      }
+    },
+    headlineStatus() {
+      if (this.isShowingDiarySection === false) {
+        return {
+          "text-decoration": "underline",
+          "color": "white",
+          "text-decoration-style": "solid",
+          "text-decoration-color": "var(--q-accent)",
+          "text-shadow": "var(--q-info) 2px 2px 2px"
+        };
+      } else {
+        return { "text-decoration": "none", "color": "white", "text-shadow": "var(--q-info) 2px 2px 2px" }
+      }
+    },
+
     getTitle() {
       if (this.isShowingDiarySection === true) {
         return "DIARY";

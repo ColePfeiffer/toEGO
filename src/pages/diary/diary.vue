@@ -37,21 +37,20 @@
 
       <!-- EVENT SELECTION -->
       <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
-        <!-- Title, Button Row -->
-        <div class="row justify-center items-center">
-          <!-- Title -->
 
-          <div class="col-5 eventTitle smallText text-left text-white" :style="textStyleAccent">{{
+        <!-- Title, Button Row -->
+        <div class="row ">
+          <!-- Title -->
+          <div class="col-7 smallText text-left text-white no-wrap" :style="textStyleAccent">{{
               getTextForFirstHeadline
           }}
           </div>
           <!-- Button -->
-          <div class="col-6 text-right">
-            <q-btn class="col smallText text-right" flat icon="add" color="accent">
+          <div class="col-5 text-right">
+            <q-btn class="col-2 smallText dense text-right" flat icon="add" color="accent">
             </q-btn>
-            <div v-if="hasEvents || (isDiarySectionVisible === false)"
-              class="col smallText eventchangeViewButton text-right">
-              <base-expandable-button @expandMore="expandMore" @expandLess="expandLess"></base-expandable-button>
+            <div v-if="hasEvents || (isDiarySectionVisible === false)" class="col smallText text-right">
+              <base-expandable-button dense @expandMore="expandMore" @expandLess="expandLess"></base-expandable-button>
             </div>
           </div>
         </div>
