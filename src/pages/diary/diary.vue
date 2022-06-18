@@ -1,89 +1,79 @@
 <template>
   <q-page class="q-pa-sm">
     <div class="bookmark" v-if="viewingMode === 'view' && false"></div>
-    <div class="column">
-      <!-- DAY SELECTION -->
-      <div class="col q-py-md q-pt-lg  maxHeight">
-        <div class="row justify-center text-center">
-          <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_left" color="white"
-            :style="getStyleForText" @click="subtractFromDate(1)"></q-btn>
-          <div class="col">
-            <div class="row justify-center items-center">
-              <div class="col">
-                <div class="column" style="margin-top: 5.5px">
-                  <div class="col text-accent">
-                    <q-btn class="datePickerButton" no-wrap no-caps flat icon-right="event" :style="textStyleAccent"
-                      :label="formatDate(getDate)">
-                      <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                        <q-date v-model="formattedDate">
-                          <div class="row items-center justify-end">
-                            <q-btn v-close-popup label="Close" color="primary" flat />
-                            <q-btn label="today" color="primary" flat @click="setDateToToday" />
-
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-btn>
-                  </div>
-                  <div class="col text-white smallText q-pb-lg" :style="textStyleAccent">{{ getDay }}</div>
+    <!-- DAY SELECTION -->
+    <div class="row justify-center text-center q-py-md q-pt-lg  maxHeight">
+      <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_left" color="white"
+        :style="getStyleForText" @click="subtractFromDate(1)"></q-btn>
+      <div class="row justify-center items-center">
+        <div class="column" style="margin-top: 5.5px">
+          <!-- Calendar -->
+          <q-btn class="datePickerButton" no-wrap no-caps flat icon-right="event" :style="textStyleAccent"
+            :label="formatDate(getDate)">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date v-model="formattedDate">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat />
+                  <q-btn label="today" color="primary" flat @click="setDateToToday" />
                 </div>
-              </div>
-            </div>
-          </div>
-          <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_right" color="white"
-            :style="getStyleForText" @click="addToDate(1)"></q-btn>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
+          <div class="col text-white smallText q-pb-lg" :style="textStyleAccent">{{ getDay }}</div>
         </div>
       </div>
+      <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_right" color="white"
+        :style="getStyleForText" @click="addToDate(1)"></q-btn>
+    </div>
 
-      <!-- EVENT SELECTION -->
-      <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
+    <!-- EVENT SELECTION -->
+    <div class="col q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
 
-        <!-- Title, Button Row -->
-        <div class="row ">
-          <!-- Title -->
-          <div class="col-7 smallText text-left text-white no-wrap" :style="textStyleAccent">{{
-              getTextForFirstHeadline
-          }}
-          </div>
-          <!-- Button -->
-          <div class="col-5 text-right">
-            <q-btn class="col-2 smallText dense text-right" flat icon="add" color="accent">
-            </q-btn>
-            <div v-if="hasEvents || (isDiarySectionVisible === false)" class="col smallText text-right">
-              <base-expandable-button dense @expandMore="expandMore" @expandLess="expandLess"></base-expandable-button>
-            </div>
+      <!-- Title, Button Row -->
+      <div class="row justify-center items-center content-center">
+        <!-- Title -->
+        <div class="col-7 smallText text-left text-white no-wrap" :style="textStyleAccent">{{
+            getTextForFirstHeadline
+        }}
+        </div>
+        <!-- Button -->
+        <div class="col-5 text-right">
+          <q-btn class="col-2 smallText dense text-right" flat icon="add" color="accent">
+          </q-btn>
+          <div v-if="hasEvents || (isDiarySectionVisible === false)" class="col smallText text-right">
+            <base-expandable-button dense @expandMore="expandMore" @expandLess="expandLess"></base-expandable-button>
           </div>
         </div>
-        <q-separator color="secondary" />
-        <!-- Events Container -->
-        <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-          <EventViewer :diaryEntry="getDiaryEntry" :showMessageIfThereAreNoEvents="false"
-            @showDialogForExistingEvent="showDialogForExistingEvent" @showDialogForNewEvent="showDialogForNewEvent">
-          </EventViewer>
-        </q-scroll-area>
+      </div>
+      <q-separator color="secondary" />
+      <!-- Events Container -->
+      <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+        <EventViewer :diaryEntry="getDiaryEntry" :showMessageIfThereAreNoEvents="false"
+          @showDialogForExistingEvent="showDialogForExistingEvent" @showDialogForNewEvent="showDialogForNewEvent">
+        </EventViewer>
+      </q-scroll-area>
+    </div>
+
+    <!-- DIARY SELECTION -->
+    <diarySection v-if="!isDiaryEntryShownInFullscreen" :class="getDiarySectionClass" :diaryEntry="getDiaryEntry"
+      :viewingMode="viewingMode" :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
+      @openEntryInFullscreen="openEntryInFullscreen" @showDialogForNewEvent="showDialogForNewEvent">
+    </diarySection>
+
+    <!-- DIARY SELECTION FULLSCREEN -->
+    <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
+      <div class="row justify-end">
+        <div class="col-4"></div>
+        <q-btn class="col-4 smallText" flat icon="bi-fullscreen-exit" label="exit" color="secondary"
+          @click="exitFullscreen"></q-btn>
       </div>
 
-      <!-- DIARY SELECTION -->
-      <diarySection v-if="!isDiaryEntryShownInFullscreen" :class="getDiarySectionClass" :diaryEntry="getDiaryEntry"
-        :viewingMode="viewingMode" :scroll="scroll" @change-view="changeViewMode" @save-changes="saveChangesToEntry"
-        @openEntryInFullscreen="openEntryInFullscreen" @showDialogForNewEvent="showDialogForNewEvent">
-      </diarySection>
-
-      <!-- DIARY SELECTION FULLSCREEN -->
-      <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
-        <div class="row justify-end">
-          <div class="col-4"></div>
-          <q-btn class="col-4 smallText" flat icon="bi-fullscreen-exit" label="exit" color="secondary"
-            @click="exitFullscreen"></q-btn>
-        </div>
-
-        <q-card class="editorCard shadow-3 text-justify">
-          <q-item>
-            <q-item-section v-html="editorDisplayedInFullscreen">
-            </q-item-section>
-          </q-item>
-        </q-card>
-      </div>
+      <q-card class="editorCard shadow-3 text-justify">
+        <q-item>
+          <q-item-section v-html="editorDisplayedInFullscreen">
+          </q-item-section>
+        </q-item>
+      </q-card>
     </div>
   </q-page>
 </template>
