@@ -314,7 +314,7 @@ export default {
 }
 
 .datePickerButton {
-  .text-transform: lowercase;
+  text-transform: lowercase;
 }
 
 .maxHeight {

@@ -22,3 +22,13 @@ $positive: #21ba45;
 $negative: #c10015;
 $info: #35359fc9;
 $warning: #f2c037;
+
+$lightGray: #c0c0c0;
+
+.text-lightGray {
+    color: $lightGray;
+}
+
+.bg-lightGray {
+    color: $lightGray;
+}

@@ -244,6 +244,10 @@ let editorRef = this.$refs.editorRef;
 }
 </style>
 <style scoped src="98.css">
+.q-editor__toolbar-group {
+  width: 20px;
+}
+
 .editor :deep(.q-editor__toolbars-container) {
   display: none;
 }
