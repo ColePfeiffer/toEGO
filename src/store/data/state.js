@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    eventsOnDiaryPageAreExpanded: false,
     buttonFlatStyle: {
       "box-shadow": "none",
       "background-color": "var(--q-secondary)",

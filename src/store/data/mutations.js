@@ -51,16 +51,18 @@ export const updateExpandedStatusOfEventViaEventID = (state, payload) => {
 export const setExpandedStatusOfAllEvents = (state, payload) => {
   /*  payload uses the following keys:
       diaryEntryRef: current diaryEntry
-      expansedState: true / false 
+      isExpanded: true / false 
   */
   if (payload.diaryEntryRef != undefined) {
-    console.log("in mutations: setExpandedStatusOfEvents");
-    console.log(payload.diaryEntryRef);
-    console.log(payload);
     payload.diaryEntryRef.events.forEach((event) => {
-      event.expanded = payload.expansedState;
+      event.expanded = payload.isExpanded;
+      console.log("set expanded");
     });
   }
+};
+
+export const setExpandedStatusOfEventsOnDiaryPage = (state, isExpanded) => {
+  state.eventsOnDiaryPageAreExpanded = isExpanded;
 };
 
 // if there is no

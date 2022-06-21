@@ -7,11 +7,14 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
-            <router-view v-slot="{ Component }" v-if="
-              $store.state.data.dialogSettings.isVisible == false ||
-              ($store.state.data.dialogSettings.isVisible == true &&
-                $store.state.data.dialogSettings.isBackgroundVisible == true)
-            ">
+            <router-view
+              v-slot="{ Component }"
+              v-if="
+                $store.state.data.dialogSettings.isVisible == false ||
+                ($store.state.data.dialogSettings.isVisible == true &&
+                  $store.state.data.dialogSettings.isBackgroundVisible == true)
+              "
+            >
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -21,22 +24,39 @@
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
-    <q-footer v-if="
-      ($store.state.data.dialogSettings.isVisible == false) |
-      (($store.state.data.dialogSettings.isVisible == true) &
-        ($store.state.data.dialogSettings.isBackgroundVisible == true))
-    " elevated class="primary">
+    <q-footer
+      v-if="
+        ($store.state.data.dialogSettings.isVisible == false) |
+          (($store.state.data.dialogSettings.isVisible == true) &
+            ($store.state.data.dialogSettings.isBackgroundVisible == true))
+      "
+      elevated
+      class="primary"
+    >
       <q-toolbar>
         <q-space />
-        <q-btn-toggle v-model="model" flat stretch padding="ml" toggle-color="secondary" @update:model-value="goToPage"
+        <q-btn-toggle
+          v-model="model"
+          flat
+          stretch
+          padding="ml"
+          toggle-color="secondary"
+          @update:model-value="goToPage"
           :options="[
             { label: '', value: 'home', icon: 'bi-eye' },
             { label: '', value: 'diary', icon: 'bi-journal-text' },
             { label: '', value: 'items', icon: 'bi-calendar3' },
             { label: '', value: 'settings', icon: 'bi-gear' },
-          ]" />
+          ]"
+        />
         <q-space />
-        <q-btn color="accent" flat dense icon="bi-plus-lg" @click="showDialogForNewEvent" />
+        <q-btn
+          color="accent"
+          flat
+          dense
+          icon="bi-plus-lg"
+          @click="showDialogForNewEvent"
+        />
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -70,6 +90,28 @@ export default {
   },
   components: {
     DialogNewEvent,
+  },
+  computed: {
+    currentRouterPath() {
+      return this.$route.path;
+    },
+    getDiaryEntryForToday() {
+      let getDiaryEntryRefForToday = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](new Date());
+      return getDiaryEntryRefForToday;
+    },
+  },
+
+  watch: {
+    // whenever the router path updates, we want to set expanded to false for events.
+    currentRouterPath(newPath) {
+      let payload = {
+        isExpanded: false,
+        diaryEntryRef: this.getDiaryEntryForToday,
+      };
+      this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
+    },
   },
   created() {
     this.$store.commit("data/initiateDay");

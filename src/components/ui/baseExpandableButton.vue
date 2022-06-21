@@ -1,5 +1,5 @@
 <template>
-  <q-btn flat :icon="icon" color="accent" @click="expand"></q-btn>
+  <q-btn flat :icon="eventViewerIcon" color="accent" @click="expand"></q-btn>
 </template>
 
 <script>
@@ -16,19 +16,6 @@ export default {
     return {
       eventViewerIcon: "expand_more",
     };
-  },
-  computed: {
-    icon() {
-      if (this.eventData !== null) {
-        if (this.eventData.expanded === false) {
-          return "expand_more";
-        } else {
-          return "expand_less";
-        }
-      } else {
-        return this.eventViewerIcon;
-      }
-    },
   },
   methods: {
     expand() {

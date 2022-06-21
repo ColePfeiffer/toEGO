@@ -5,7 +5,12 @@
       <q-item>
         <!-- mood emoji -->
         <q-item-section avatar>
-          <q-icon size="22.5px" :name="eventData.mood" text-color="secondary" color="secondary"></q-icon>
+          <q-icon
+            size="22.5px"
+            :name="eventData.mood"
+            text-color="secondary"
+            color="secondary"
+          ></q-icon>
         </q-item-section>
 
         <!-- event title, expand button -->
@@ -13,13 +18,21 @@
           <div class="row justify-center items-center">
             <div class="col-6 text-left">
               <q-item-label class="card-title">{{
-                  eventData.title
+                eventData.title
               }}</q-item-label>
             </div>
-            <div class="col-6 text-right">
-              <base-expandable-button :eventData="eventData" color="secondary" @expandMore="expand"
-                @expandLess="expand"></base-expandable-button>
+            <div
+              v-if="isShowingExpandButtonOfEventCard === true"
+              class="col-6 text-right"
+            >
+              <base-expandable-button
+                :eventData="eventData"
+                color="secondary"
+                @expandMore="expand"
+                @expandLess="expand"
+              ></base-expandable-button>
             </div>
+            <div v-else class="col-6 text-right"></div>
           </div>
         </q-item-section>
       </q-item>
@@ -28,15 +41,21 @@
       <!-- Text, Extras -->
       <div class="q-pa-sm" style="min-height: 80px">
         <!-- view when not expanded + shortened text -->
-        <q-card-section class="card-text" v-if="
-          eventData.expanded === false &&
-          eventData.text.length >= maxLengthOfCardText
-        ">
+        <q-card-section
+          class="card-text"
+          v-if="
+            eventData.expanded === false &&
+            eventData.text.length >= maxLengthOfCardText
+          "
+        >
           {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
         </q-card-section>
 
         <!-- view when not expanded -->
-        <q-card-section class="card-text" v-else-if="eventData.expanded === false">
+        <q-card-section
+          class="card-text"
+          v-else-if="eventData.expanded === false"
+        >
           {{ eventData.text }}
         </q-card-section>
         <!-- view when expanded -->
@@ -51,10 +70,22 @@
               </div>
               <div class="col-3">
                 <div class="row no-wrap">
-                  <q-btn class="col" v-if="eventData.expanded === true" flat icon="delete" color="secondary"
-                    @click="deleteEvent"></q-btn>
-                  <q-btn class="col" v-if="eventData.expanded === true" flat icon="edit" color="secondary"
-                    @click="editEvent"></q-btn>
+                  <q-btn
+                    class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="delete"
+                    color="secondary"
+                    @click="deleteEvent"
+                  ></q-btn>
+                  <q-btn
+                    class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="edit"
+                    color="secondary"
+                    @click="editEvent"
+                  ></q-btn>
                 </div>
               </div>
             </div>
@@ -78,6 +109,10 @@ export default {
   },
   props: {
     eventData: Object,
+    isShowingExpandButtonOfEventCard: {
+      type: Boolean,
+      default: true,
+    },
   },
   emits: ["changeEventData", "deleteEvent", "editEvent"],
   data() {

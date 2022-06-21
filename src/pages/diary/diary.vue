@@ -63,11 +63,11 @@
 
     <!-- EVENT SELECTION -->
     <div
-      class="col-12 q-px-md q-pt-lg"
+      class="q-px-md q-pt-lg"
       v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
     >
       <!-- Title, Button Row -->
-      <div class="row justify-center items-center justify-center no-wrap">
+      <div class="row justify-center items-center no-wrap">
         <!-- Title -->
         <div
           class="col-10 smallText text-left text-white"
@@ -80,12 +80,29 @@
           v-if="hasEvents || isDiarySectionVisible === false"
           class="smallText col-1 text-right"
         >
-          <base-expandable-button
+          <!-- Open Fullscreen Button -->
+          <q-btn
+            v-if="this.$store.state.data.eventsOnDiaryPageAreExpanded === false"
+            class="col-auto"
+            flat
             dense
-            @expandMore="expandMore"
-            @expandLess="expandLess"
+            icon="bi-eye"
+            color="accent"
+            @click="expandMore"
             :style="textStyleAccent"
-          ></base-expandable-button>
+            size="14px"
+          ></q-btn>
+          <q-btn
+            v-else
+            class="col-auto"
+            flat
+            dense
+            :style="textStyleAccent"
+            icon="bi-arrow-left"
+            color="white"
+            @click="expandLess"
+            size="14px"
+          ></q-btn>
         </div>
         <div v-else class="smallText col-1 text-right"></div>
         <q-btn
@@ -95,6 +112,7 @@
           color="accent"
           @click="showDialogForNewEvent"
           :style="textStyleAccent"
+          size="14px"
         >
         </q-btn>
       </div>
@@ -103,6 +121,7 @@
       <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
         <EventViewer
           :diaryEntry="getDiaryEntry"
+          :isShowingExpandButtonOfEventCard="false"
           :showMessageIfThereAreNoEvents="false"
           @showDialogForExistingEvent="showDialogForExistingEvent"
           @showDialogForNewEvent="showDialogForNewEvent"
@@ -128,14 +147,16 @@
     <!-- DIARY SELECTION FULLSCREEN -->
     <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
       <div class="row justify-end">
-        <div class="col-4"></div>
+        <div class="col-4 smallText text-right"></div>
         <q-btn
-          class="col-4 smallText"
+          class="smallText text-right"
           flat
-          icon="bi-fullscreen-exit"
-          label="exit"
-          color="secondary"
+          dense
+          icon="bi-arrow-left"
+          label="back"
+          color="white"
           @click="exitFullscreen"
+          :style="textStyleAccent"
         ></q-btn>
       </div>
 
@@ -152,7 +173,6 @@
 <script>
 import EventViewer from "../../components/common/EventViewer.vue";
 import diarySection from "../../components/diary/diarySection.vue";
-import BaseExpandableButton from "../../components/ui/BaseExpandableButton.vue";
 import { date } from "quasar";
 import shared from "../../shared.js";
 
@@ -197,7 +217,6 @@ export default {
   components: {
     EventViewer,
     diarySection,
-    BaseExpandableButton,
   },
   watch: {
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
@@ -377,20 +396,21 @@ export default {
       this.viewingMode = mode;
     },
     expandMore() {
+      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
       this.toggleExpansedStatusOfAllEvents(true);
       this.isDiarySectionVisible = false;
       this.heightForScrollArea = "height: 650px";
     },
     expandLess() {
+      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
       this.heightForScrollArea = "height: 175px";
-
       this.toggleExpansedStatusOfAllEvents(false);
       this.isDiarySectionVisible = true;
     },
-    toggleExpansedStatusOfAllEvents(expansedState) {
+    toggleExpansedStatusOfAllEvents(isExpanded) {
       let payload = {
         diaryEntryRef: this.getDiaryEntry,
-        expansedState: expansedState,
+        isExpanded: isExpanded,
       };
       console.log(payload);
       this.$store.commit("data/setExpandedStatusOfAllEvents", payload);

@@ -68,11 +68,11 @@
           class="col-1 smallText"
           flat
           dense
-          icon="bi-fullscreen"
+          icon="bi-eye"
           color="accent"
           @click="openEntryInFullscreen"
           :style="textStyleAccent"
-          size="9px"
+          size="10px"
         ></q-btn>
         <div v-else class="col-1"></div>
 
@@ -100,7 +100,7 @@
           color="accent"
           @click="editDiaryEntry"
           :style="textStyleAccent"
-          size="10px"
+          size="9px"
         ></q-btn>
         <div v-else class="col-1"></div>
       </div>
