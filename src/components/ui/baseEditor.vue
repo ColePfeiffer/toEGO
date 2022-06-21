@@ -1,7 +1,14 @@
 <template>
-  <q-editor ref="editorRef" :content-class="{ 'max-width': '200px' }" class="editor shadow-3 text-justify"
-    :min-height="minHeight" :toolbar-bg="toolbarColor" toolbar-text-color="primary" toolbar-color="primary"
-    :toolbar="getToolbar" :fonts="{
+  <q-editor
+    ref="editorRef"
+    :content-class="{ 'max-width': '200px' }"
+    class="editor shadow-3 text-justify"
+    :min-height="minHeight"
+    :toolbar-bg="getToolbarBackgroundColor"
+    :toolbar-text-color="getToolbarIconColor"
+    :toolbar-color="getToolbarIconColor"
+    :toolbar="getToolbar"
+    :fonts="{
       arial: 'Arial',
       arial_black: 'Arial Black',
       comic_sans: 'Comic Sans MS',
@@ -10,12 +17,19 @@
       lucida_grande: 'Lucida Grande',
       times_new_roman: 'Times New Roman',
       verdana: 'Verdana',
-    }">
-
+    }"
+  >
     <template v-slot:fullscreenButton>
-      <q-btn flat no-wrap icon="bi-fullscreen" :style="ButtonStyleFlatJustIcon" :ripple="false" text-color="primary"
-        size="xs" @click="toggleFullscreen">
-
+      <q-btn
+        flat
+        no-wrap
+        icon="bi-fullscreen"
+        :style="ButtonStyleFlatJustIcon"
+        :ripple="false"
+        :text-color="getToolbarIconColor"
+        size="xs"
+        @click="toggleFullscreen"
+      >
       </q-btn>
     </template>
 
@@ -26,10 +40,21 @@
     </template>
 
     <template v-slot:toggleMoreOptionsButton>
-      <q-btn flat no-caps @click="changeToolbarMode" :style="ButtonStyleRegularButton" :ripple="false">
+      <q-btn
+        flat
+        no-caps
+        @click="changeToolbarMode"
+        :style="ButtonStyleRegularButton"
+        :ripple="false"
+      >
         <div class="row items-center no-wrap">
-          <q-icon size="8px" left :name="getIconForToggleToolbarButton" />
-          <div class="text-center" style="font-size: 12.5px">
+          <q-icon
+            size="8px"
+            color="black"
+            left
+            :name="getIconForToggleToolbarButton"
+          />
+          <div class="text-center text-black" style="font-size: 12.5px">
             {{ getLabelForToggleToolbarButton }}
           </div>
         </div>
@@ -39,8 +64,15 @@
     <template v-slot:templatesMenuButton>
       <q-btn flat no-caps :style="ButtonStyleRegularButton" :ripple="false">
         <div class="row items-center no-wrap">
-          <q-icon size="8px" left name="bi-layout-text-sidebar-reverse" />
-          <div class="text-center" style="font-size: 12.5px">Temps</div>
+          <q-icon
+            size="8px"
+            color="black"
+            left
+            name="bi-layout-text-sidebar-reverse"
+          />
+          <div class="text-center text-black" style="font-size: 12.5px">
+            Temps
+          </div>
         </div>
         <q-menu>
           <q-list style="min-width: 100px">
@@ -59,7 +91,10 @@
       </q-btn>
     </template>
 
-    <dialogCreateTemplate @closeDialog="closeDialog" @createTemplate="createTemplate"></dialogCreateTemplate>
+    <dialogCreateTemplate
+      @closeDialog="closeDialog"
+      @createTemplate="createTemplate"
+    ></dialogCreateTemplate>
   </q-editor>
 </template>
 
@@ -70,14 +105,12 @@ export default {
   emits: ["showTemplateCreator", "showTemplateViewer"],
   props: {
     minHeight: String,
-    toolbarColor: {
-      type: String,
-      default: "white",
-    },
   },
-  components: { dialogCreateTemplate, },
+  components: { dialogCreateTemplate },
   data() {
     return {
+      styleForToolbarDark: { background: "black" },
+      styleForToolbar: { background: "white" },
       isShowingFullToolbar: false,
       isInFullscreenMode: false,
       templateHolder: "",
@@ -214,6 +247,27 @@ let editorRef = this.$refs.editorRef;
   },
 
   computed: {
+    getToolbarIconColor() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return "secondary";
+      } else {
+        return "black";
+      }
+    },
+    getToolbarBackgroundColor() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return "black";
+      } else {
+        return "white";
+      }
+    },
+    getStyleForToolbar() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.styleForToolbarDark;
+      } else {
+        return this.styleForToolbar;
+      }
+    },
     getLabelForToggleToolbarButton() {
       if (this.isShowingFullToolbar) {
         return "less";

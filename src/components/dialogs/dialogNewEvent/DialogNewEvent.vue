@@ -1,7 +1,14 @@
 <template>
-  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="saveChanges" @clickExtraButton="showEditor"
-    :hasExtraButton="true" :extraButtonIcon="getIconForEditorButton" :hasHelpOption="false"
-    :widthOfDialog="dialogWidth">
+  <baseDialog
+    v-model="isDialogVisible"
+    @closeDialog="closeDialog"
+    @save="saveChanges"
+    @clickExtraButton="showEditor"
+    :hasExtraButton="true"
+    :extraButtonIcon="getIconForEditorButton"
+    :hasHelpOption="false"
+    :widthOfDialog="dialogWidth"
+  >
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
       Event-Tracker
@@ -9,7 +16,7 @@
 
     <template v-if="isShowingEditor === false" v-slot:content>
       <div style="width: 310px" class="container">
-        <q-card class="testD transparent no-shadow ">
+        <q-card class="testD transparent no-shadow">
           <q-card-section class="row items-center justify-center">
             <!-- How Are You-Section | Emoji-Selection -->
             <div class="promptContainer col-12 q-mx-md q-pa-md">
@@ -20,22 +27,24 @@
                 </div>
               </div>
               <!-- Emoji Selection via Button Toggle -->
-              <div class="
-                      emojiSelection
-                      q-mt-md
-                      row
-                      justify-center
-                      items-center
-                    ">
+              <div
+                class="emojiSelection q-mt-md row justify-center items-center"
+              >
                 <div class="col-12">
                   <div class="align-center">
-                    <q-btn-toggle v-model="mood" toggle-color="accent" padding="none" flat :options="[
-                      { value: 'las la-angry', slot: 'angry' },
-                      { value: 'las la-sad-tear', slot: 'sad' },
-                      { value: 'las la-frown', slot: 'unhappy' },
-                      { value: 'las la-smile', slot: 'content' },
-                      { value: 'las la-grin', slot: 'happy' },
-                    ]">
+                    <q-btn-toggle
+                      v-model="mood"
+                      toggle-color="accent"
+                      padding="none"
+                      flat
+                      :options="[
+                        { value: 'las la-angry', slot: 'angry' },
+                        { value: 'las la-sad-tear', slot: 'sad' },
+                        { value: 'las la-meh', slot: 'unhappy' },
+                        { value: 'las la-smile', slot: 'content' },
+                        { value: 'las la-grin-alt', slot: 'happy' },
+                      ]"
+                    >
                       <template v-slot:angry>
                         <q-btn padding="xs" flat icon="las la-angry" />
                       </template>
@@ -45,7 +54,7 @@
                       </template>
 
                       <template v-slot:unhappy>
-                        <q-btn padding="xs" flat icon="las la-frown" />
+                        <q-btn padding="xs" flat icon="las la-meh" />
                       </template>
 
                       <template v-slot:content>
@@ -53,7 +62,7 @@
                       </template>
 
                       <template v-slot:happy>
-                        <q-btn padding="xs" flat icon="las la-grin" />
+                        <q-btn padding="xs" flat icon="las la-grin-alt" />
                       </template>
                     </q-btn-toggle>
                   </div>
@@ -64,24 +73,37 @@
             <!-- What Happened-Section -->
             <div class="promptContainer col-12 q-mx-md q-mt-xs q-px-md">
               <!-- Title -->
-              <div class="row justify-center items-center">
-              </div>
+              <div class="row justify-center items-center"></div>
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
-                  <q-input class="input" color="primary" v-model="title" filled square label="Title"
-                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
+                  <q-input
+                    class="input"
+                    color="primary"
+                    v-model="title"
+                    filled
+                    square
+                    label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
+                    :rules="[
                       (val) =>
-                        val.length <= 30 ||
-                        'Please use maximum 30 characters',
-                    ]" />
+                        val.length <= 30 || 'Please use maximum 30 characters',
+                    ]"
+                  />
                 </div>
               </div>
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
-                  <q-input class="input" v-model="text" label="What happened?" filled square autogrow
-                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px" />
+                  <q-input
+                    class="input"
+                    v-model="text"
+                    label="What happened?"
+                    filled
+                    square
+                    autogrow
+                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px"
+                  />
                 </div>
               </div>
             </div>
@@ -100,12 +122,16 @@
         <div class="row justify-center">
           <div class="col-12 q-px-xs q-py-md">
             <q-scroll-area style="height: 400px" ref="scrollArea">
-              <BaseEditor ref="editorRef1" v-model="editor" minHeight="300px" @showTemplateCreator="showTemplateCreator"
-                @showTemplateViewer="showTemplateViewer" />
+              <BaseEditor
+                ref="editorRef1"
+                v-model="editor"
+                minHeight="300px"
+                @showTemplateCreator="showTemplateCreator"
+                @showTemplateViewer="showTemplateViewer"
+              />
             </q-scroll-area>
           </div>
         </div>
-
       </div>
     </template>
   </baseDialog>
@@ -150,13 +176,12 @@ export default {
   },
 
   methods: {
-    showEventText() { },
+    showEventText() {},
     showTemplateCreator() {
-      console.log("showing template creator")
+      console.log("showing template creator");
     },
     showTemplateViewer() {
-      console.log("showing template viewer")
-
+      console.log("showing template viewer");
     },
     showEditor() {
       this.isShowingEditor = !this.isShowingEditor;
@@ -263,12 +288,9 @@ export default {
         this.$store.commit("data/updateText", value);
       },
     },
-
   },
 };
 </script>
-
-
 
 <style scoped>
 .testD {
