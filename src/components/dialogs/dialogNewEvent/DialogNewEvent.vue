@@ -40,7 +40,7 @@
                       :options="[
                         { value: 'las la-angry', slot: 'angry' },
                         { value: 'las la-sad-tear', slot: 'sad' },
-                        { value: 'las la-meh', slot: 'unhappy' },
+                        { value: 'las la-meh', slot: 'meh' },
                         { value: 'las la-smile', slot: 'content' },
                         { value: 'las la-grin-alt', slot: 'happy' },
                       ]"
@@ -53,7 +53,7 @@
                         <q-btn padding="xs" flat icon="las la-sad-tear" />
                       </template>
 
-                      <template v-slot:unhappy>
+                      <template v-slot:meh>
                         <q-btn padding="xs" flat icon="las la-meh" />
                       </template>
 
@@ -116,7 +116,22 @@
       <div class="column">
         <!-- Button for showing event's text -->
         <div class="row justify-end">
-          <q-btn class="col-2" icon="add" @click="showEventText"></q-btn>
+          <q-btn
+            class="col-1"
+            flat
+            icon="bi-blockquote-right"
+            @click="toggleVisibilityOfEventText"
+          ></q-btn>
+        </div>
+        <div
+          v-if="isShowingEventText"
+          class="q-pa-md defaultFont smallText"
+          :style="getStyleForQuotedEventText"
+        >
+          <q-scroll-area :style="styleEventTextScrollArea">
+            <span class="bold">You wrote:</span> <br />
+            <span class="text-justify keep-whitespace">{{ quotedText }}</span>
+          </q-scroll-area>
         </div>
         <!-- Editor -->
         <div class="row justify-center">
@@ -155,7 +170,23 @@ export default {
   data() {
     return {
       isShowingEditor: false,
+      isShowingEventText: false,
       dialogWidth: 315,
+      styleEventTextScrollArea: {
+        height: "200px",
+      },
+      styleQuotedText: {
+        background: "#f9f9f9",
+        "border-left": "5px solid var(--q-secondary)",
+        margin: "1.5em 10px",
+        padding: "0.5em 10px",
+      },
+      styleQuotedTextDark: {
+        background: "#ffffff2b",
+        "border-left": "5px solid var(--q-secondary)",
+        margin: "1.5em 10px",
+        padding: "0.5em 10px",
+      },
       icon: true,
       editor: "",
       options: [
@@ -176,7 +207,9 @@ export default {
   },
 
   methods: {
-    showEventText() {},
+    toggleVisibilityOfEventText() {
+      this.isShowingEventText = !this.isShowingEventText;
+    },
     showTemplateCreator() {
       console.log("showing template creator");
     },
@@ -233,6 +266,21 @@ export default {
     },
   },
   computed: {
+    quotedText() {
+      //eventData.text.substring(0, this.maxLengthOfCardText) + "..."
+      if (this.text === "") {
+        return "Nothing yet.";
+      } else {
+        return '"' + this.text + '"';
+      }
+    },
+    getStyleForQuotedEventText() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.styleQuotedTextDark;
+      } else {
+        return this.styleQuotedText;
+      }
+    },
     getIconForEditorButton() {
       if (this.isShowingEditor) {
         return "bi-arrow-left";

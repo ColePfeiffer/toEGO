@@ -155,6 +155,18 @@ export default {
 .smallText
   font-size: 12.5px
 
+.bold
+  font-weight: bold
+
+.text-justify
+  text-align: justify !important
+
+.keep-whitespace
+  white-space: pre-wrap !important
+
+.defaultFont
+  font-family: 'PressStart' !important
+
 .my-card
   font-size: 12.5px
 </style>
