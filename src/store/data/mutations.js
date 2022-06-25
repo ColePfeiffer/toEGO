@@ -51,7 +51,7 @@ export const updateExpandedStatusOfEventViaEventID = (state, payload) => {
 export const setExpandedStatusOfAllEvents = (state, payload) => {
   /*  payload uses the following keys:
       diaryEntryRef: current diaryEntry
-      isExpanded: true / false 
+      isExpanded: true / false
   */
   if (payload.diaryEntryRef != undefined) {
     payload.diaryEntryRef.events.forEach((event) => {
@@ -139,8 +139,12 @@ export const createTemplateAndAddToList = (state, payload) => {
     text: payload.text,
     isSetToDefault: false,
   };
-  console.log(newTemplate);
-  state.diaryTemplates.push(newTemplate);
+  console.log(payload.text);
+  if (payload.type === "DIARY") {
+    state.diaryTemplates.push(newTemplate);
+  } else {
+    state.eventTemplates.push(newTemplate);
+  }
 };
 
 export const deleteTemplate = (state, template) => {

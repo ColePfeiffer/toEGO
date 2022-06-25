@@ -1,14 +1,8 @@
 <template>
-  <baseDialog
-    v-model="isDialogVisible"
-    @closeDialog="closeDialog"
-    @save="saveChanges"
-    @clickExtraButton="showEditor"
-    :hasExtraButton="true"
-    :extraButtonIcon="getIconForEditorButton"
-    :hasHelpOption="false"
-    :widthOfDialog="dialogWidth"
-  >
+  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="saveChanges" @clickExtraButton="showEditor"
+    :hasExtraButton="true" :extraButtonIcon="getIconForEditorButton" :hasHelpOption="false"
+    :widthOfDialog="dialogWidth">
+
     <template v-slot:dialogTitle>
       <q-icon name="theater_comedy" size="25px" />
       Event-Tracker
@@ -27,24 +21,16 @@
                 </div>
               </div>
               <!-- Emoji Selection via Button Toggle -->
-              <div
-                class="emojiSelection q-mt-md row justify-center items-center"
-              >
+              <div class="emojiSelection q-mt-md row justify-center items-center">
                 <div class="col-12">
                   <div class="align-center">
-                    <q-btn-toggle
-                      v-model="mood"
-                      toggle-color="accent"
-                      padding="none"
-                      flat
-                      :options="[
-                        { value: 'las la-angry', slot: 'angry' },
-                        { value: 'las la-sad-tear', slot: 'sad' },
-                        { value: 'las la-meh', slot: 'meh' },
-                        { value: 'las la-smile', slot: 'content' },
-                        { value: 'las la-grin-alt', slot: 'happy' },
-                      ]"
-                    >
+                    <q-btn-toggle v-model="mood" toggle-color="accent" padding="none" flat :options="[
+                      { value: 'las la-angry', slot: 'angry' },
+                      { value: 'las la-sad-tear', slot: 'sad' },
+                      { value: 'las la-meh', slot: 'meh' },
+                      { value: 'las la-smile', slot: 'content' },
+                      { value: 'las la-grin-alt', slot: 'happy' },
+                    ]">
                       <template v-slot:angry>
                         <q-btn padding="xs" flat icon="las la-angry" />
                       </template>
@@ -77,33 +63,18 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
-                  <q-input
-                    class="input"
-                    color="primary"
-                    v-model="title"
-                    filled
-                    square
-                    label="Title"
-                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
-                    :rules="[
+                  <q-input class="input" color="primary" v-model="title" filled square label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
                       (val) =>
                         val.length <= 30 || 'Please use maximum 30 characters',
-                    ]"
-                  />
+                    ]" />
                 </div>
               </div>
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-11">
-                  <q-input
-                    class="input"
-                    v-model="text"
-                    label="What happened?"
-                    filled
-                    square
-                    autogrow
-                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px"
-                  />
+                  <q-input class="input" v-model="text" label="What happened?" filled square autogrow
+                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px" />
                 </div>
               </div>
             </div>
@@ -116,18 +87,9 @@
       <div class="column">
         <!-- Button for showing event's text -->
         <div class="row justify-end">
-          <q-btn
-            class="col-1"
-            flat
-            icon="bi-blockquote-right"
-            @click="toggleVisibilityOfEventText"
-          ></q-btn>
+          <q-btn class="col-1" flat icon="bi-blockquote-right" @click="toggleVisibilityOfEventText"></q-btn>
         </div>
-        <div
-          v-if="isShowingEventText"
-          class="q-pa-md defaultFont smallText"
-          :style="getStyleForQuotedEventText"
-        >
+        <div v-if="isShowingEventText" class="q-pa-md defaultFont smallText" :style="getStyleForQuotedEventText">
           <q-scroll-area :style="styleEventTextScrollArea">
             <span class="bold">You wrote:</span> <br />
             <span class="text-justify keep-whitespace">{{ quotedText }}</span>
@@ -137,13 +99,9 @@
         <div class="row justify-center">
           <div class="col-12 q-px-xs q-py-md">
             <q-scroll-area style="height: 400px" ref="scrollArea">
-              <BaseEditor
-                ref="editorRef1"
-                v-model="editor"
-                minHeight="300px"
-                @showTemplateCreator="showTemplateCreator"
-                @showTemplateViewer="showTemplateViewer"
-              />
+              <BaseEditor ref="editorRef1" v-model="eventEditor" minHeight="300px"
+                @openDialogCreateTemplate="openDialogCreateTemplate"
+                @openDialogViewTemplates="openDialogViewTemplates" />
             </q-scroll-area>
           </div>
         </div>
@@ -155,6 +113,7 @@
 <script>
 import BaseEditor from "../../ui/BaseEditor.vue";
 import baseDialog from "../../ui/BaseDialog2.vue";
+
 import shared from "../../../shared.js";
 import { mapState } from "vuex";
 
@@ -164,6 +123,7 @@ export default {
     baseDialog,
     BaseEditor,
   },
+  emits: ["openDialogCreateTemplate", "openDialogViewTemplates"],
   created() {
     this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
@@ -188,7 +148,7 @@ export default {
         padding: "0.5em 10px",
       },
       icon: true,
-      editor: "",
+      eventEditor: "",
       options: [
         { value: "Diary", slot: "diaryBtnSlot" },
         { value: "Status", slot: "statusBtnSlot" },
@@ -207,20 +167,18 @@ export default {
   },
 
   methods: {
+    openDialogCreateTemplate() {
+      this.$emit("openDialogCreateTemplate", this.eventEditor);
+    },
+    openDialogViewTemplates() {
+
+      this.$emit("openDialogViewTemplates", this.eventEditor);
+    },
     toggleVisibilityOfEventText() {
       this.isShowingEventText = !this.isShowingEventText;
     },
-    showTemplateCreator() {
-      console.log("showing template creator");
-    },
-    showTemplateViewer() {
-      console.log("showing template viewer");
-    },
     showEditor() {
       this.isShowingEditor = !this.isShowingEditor;
-    },
-    scrollDown() {
-      this.scroll(+200);
     },
     closeDialog() {
       this.$store.commit("data/resetEventData");

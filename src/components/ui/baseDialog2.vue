@@ -12,11 +12,7 @@
                 <slot name="dialogTitle"></slot>
               </div>
               <div class="title-bar-controls">
-                <button
-                  v-if="hasHelpOption"
-                  aria-label="Help"
-                  @click="showHelp"
-                ></button>
+                <button v-if="hasHelpOption" aria-label="Help" @click="showHelp"></button>
                 <button aria-label="Close" @click="closeDialog"></button>
               </div>
             </div>
@@ -28,33 +24,18 @@
             <slot name="footer">
               <div class="col-1 q-pa-sm q-pb-md q-mt-md">
                 <div class="row justify-end">
-                  <q-btn
-                    v-if="hasExtraButton"
-                    class="button extraButton col-3 col-md-2 q-mx-xs"
-                    flat
-                    :style="$store.state.data.buttonFlatStyle"
-                    :icon="extraButtonIcon"
-                    @click="clickExtraButton"
-                  >
+                  <q-btn v-if="hasExtraButton" class="button extraButton col-3 col-md-2 q-mx-xs" flat
+                    :style="$store.state.data.buttonFlatStyle" :icon="extraButtonIcon" @click="clickExtraButton">
                     <slot name="close-button"></slot>
                   </q-btn>
 
-                  <q-btn
-                    class="button col-3 col-md-2 q-mx-xs"
-                    :style="$store.state.data.buttonFlatStyle"
-                    flat
-                    @click="closeDialog"
-                  >
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                    @click="closeDialog">
                     <slot name="close-button"> Cancel </slot>
                   </q-btn>
 
-                  <q-btn
-                    class="button col-3 col-md-2 q-mx-xs"
-                    :style="$store.state.data.buttonFlatStyle"
-                    flat
-                    :disabled="isSaveButtonDisabled"
-                    @click="saveChanges"
-                  >
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                    :disabled="isSaveButtonDisabled" @click="saveChanges">
                     <slot name="confirm-button"> Save </slot>
                   </q-btn>
                 </div>

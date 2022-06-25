@@ -132,5 +132,14 @@ export default function () {
         isSetToDefault: false,
       },
     ],
+    eventTemplates: [
+      {
+        id: 0,
+        name: "Grounding: 5-to-1",
+        text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><ol><li style='text-align: left;'>Acknowledge <strong style='color: #FF6663'>five</strong> things you can see around you.</li><li style='text-align: left;'>Acknowledge <strong style='color: #FEB144'>four</strong> things you can touch around you.</li><li style='text-align: left;'>Acknowledge <strong style='color: #9EE09E'>three</strong> things you can hear right now.</li><li style='text-align: left;'>Acknowledge <strong style='color: #9EC1CF'>two</strong> things you can smell.</li><li style='text-align: left;'>Acknowledge <strong style='color: #CC99C9'>one</strong> thing you can taste.</li></ol></ol>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+      },
+    ],
   };
 }

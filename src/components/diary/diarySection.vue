@@ -1,107 +1,46 @@
 <template>
   <div>
-    <DialogCreateTemplate
-      @createTemplate="createTemplate"
-      @closeDialog="closeDialog"
-    ></DialogCreateTemplate>
-    <DialogViewTemplates
-      @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate"
-      @closeDialog="closeDialog"
-    >
+    <DialogCreateTemplate @createTemplate="createTemplate" @closeDialog="closeDialog"></DialogCreateTemplate>
+    <DialogViewTemplates :templateList="$store.state.data.diaryTemplates" @pasteTemplate="pasteTemplate"
+      @deleteTemplate="deleteTemplate" @closeDialog="closeDialog">
     </DialogViewTemplates>
 
     <!-- Title, Buttons -->
     <div class="q-px-md q-pt-lg">
       <!-- Title, Button Row -->
-      <div
-        v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
-        class="row justify-center items-center no-wrap"
-      >
+      <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
+        class="row justify-center items-center no-wrap">
         <!-- Title -->
         <div class="col-10 smallText text-left">
-          <q-btn
-            class="col-auto smallText text-left"
-            dense
-            flat
-            :style="headlineDiary"
-            @click="isShowingDiarySection = true"
-            >DIARY</q-btn
-          >
-          <q-btn
-            class="col-1 smallText"
-            flat
-            :icon="getSectionIcon"
-            color="accent"
-            @click="switchSection"
-          >
+          <q-btn class="col-auto smallText text-left" dense flat :style="headlineDiary"
+            @click="isShowingDiarySection = true">DIARY</q-btn>
+          <q-btn class="col-1 smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection">
           </q-btn>
-          <q-btn
-            class="col-auto smallText"
-            dense
-            flat
-            :style="headlineStatus"
-            @click="isShowingDiarySection = false"
-          >
-            STATUS</q-btn
-          >
+          <q-btn class="col-auto smallText" dense flat :style="headlineStatus" @click="isShowingDiarySection = false">
+            STATUS</q-btn>
         </div>
 
         <!-- Buttons -->
         <!-- Go back / Cancel editing Button -->
-        <q-btn
-          v-if="viewingMode === 'edit'"
-          class="col-1 smallText dense"
-          flat
-          icon="bi-arrow-left"
-          color="white"
-          @click="changeView('view')"
-          :style="textStyleAccent"
-          size="10px"
-        >
+        <q-btn v-if="viewingMode === 'edit'" class="col-1 smallText dense" flat icon="bi-arrow-left" color="white"
+          @click="changeView('view')" :style="textStyleAccent" size="10px">
         </q-btn>
         <!-- Open Fullscreen Button -->
-        <q-btn
-          v-else-if="
-            viewingMode === 'view' && editor != undefined && editor != ''
-          "
-          class="col-1 smallText"
-          flat
-          dense
-          icon="bi-eye"
-          color="accent"
-          @click="openEntryInFullscreen"
-          :style="textStyleAccent"
-          size="10px"
-        ></q-btn>
+        <q-btn v-else-if="
+          viewingMode === 'view' && editor != undefined && editor != ''
+        " class="col-1 smallText" flat dense icon="bi-eye" color="accent" @click="openEntryInFullscreen"
+          :style="textStyleAccent" size="10px"></q-btn>
         <div v-else class="col-1"></div>
 
         <!-- Save Button -->
-        <q-btn
-          v-if="viewingMode === 'edit'"
-          class="col-1 smallText dense"
-          flat
-          icon="fas fa-save"
-          color="accent"
-          @click="saveChanges"
-          :style="textStyleAccent"
-          size="10px"
-        >
+        <q-btn v-if="viewingMode === 'edit'" class="col-1 smallText dense" flat icon="fas fa-save" color="accent"
+          @click="saveChanges" :style="textStyleAccent" size="10px">
         </q-btn>
         <!-- Edit Button -->
-        <q-btn
-          v-else-if="
-            viewingMode === 'view' && editor != undefined && editor != ''
-          "
-          class="col-1 smallText text-right"
-          flat
-          dense
-          icon="bi-pencil-fill"
-          color="accent"
-          @click="editDiaryEntry"
-          :style="textStyleAccent"
-          size="9px"
-        ></q-btn>
+        <q-btn v-else-if="
+          viewingMode === 'view' && editor != undefined && editor != ''
+        " class="col-1 smallText text-right" flat dense icon="bi-pencil-fill" color="accent" @click="editDiaryEntry"
+          :style="textStyleAccent" size="9px"></q-btn>
         <div v-else class="col-1"></div>
       </div>
       <q-separator color="secondary" />
@@ -113,22 +52,10 @@
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             Nothing here yet. Add an event
-            <q-btn
-              color="accent"
-              flat
-              dense
-              icon="add"
-              @click="showDialogForNewEvent"
-            />
+            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
             <br />
             or create an entry.
-            <q-btn
-              color="accent"
-              flat
-              dense
-              icon="bi-file-earmark-plus-fill"
-              @click="createDiaryEntry"
-            />
+            <q-btn color="accent" flat dense icon="bi-file-earmark-plus-fill" @click="createDiaryEntry" />
           </q-card-section>
         </q-card>
       </div>
@@ -144,10 +71,7 @@
               <!-- VIEW MODE -->
               <div v-if="viewingMode === 'view'">
                 <!-- If there is an entry for that day. -->
-                <q-card
-                  v-if="editor != ''"
-                  class="editorCard shadow-3 text-justify"
-                >
+                <q-card v-if="editor != ''" class="editorCard shadow-3 text-justify">
                   <q-item>
                     <q-item-section v-html="editor"> </q-item-section>
                   </q-item>
@@ -155,25 +79,14 @@
                 <!-- If there is no entry yet for that day. -->
                 <q-card v-else class="editorCard shadow-3 text-justify">
                   <q-card-section class="card-text text-center">
-                    <q-btn
-                      color="accent"
-                      flat
-                      dense
-                      icon="add"
-                      @click="createDiaryEntry"
-                    />
+                    <q-btn color="accent" flat dense icon="add" @click="createDiaryEntry" />
                   </q-card-section>
                 </q-card>
               </div>
               <!-- EDIT MODE -->
               <div class="editorContainer" v-else>
-                <BaseEditor
-                  ref="editorRef1"
-                  v-model="changeData.editor"
-                  @showTemplateCreator="showTemplateCreator"
-                  @showTemplateViewer="showTemplateViewer"
-                  minHeight="300px"
-                />
+                <BaseEditor ref="editorRef1" v-model="changeData.editor" @showTemplateCreator="showTemplateCreator"
+                  @showTemplateViewer="showTemplateViewer" minHeight="300px" />
               </div>
             </q-scroll-area>
           </div>
@@ -192,19 +105,9 @@
             <!-- MODE: EDIT -->
             <div v-else>
               <div class="row justify-end">
-                <q-btn
-                  class="col=1"
-                  flat
-                  icon="fas fa-folder-open"
-                  color="secondary"
-                ></q-btn>
-                <q-select
-                  dense
-                  borderless
-                  v-model="statusTemplateModel"
-                  :options="statusTemplateOptions"
-                  label="templates"
-                >
+                <q-btn class="col=1" flat icon="fas fa-folder-open" color="secondary"></q-btn>
+                <q-select dense borderless v-model="statusTemplateModel" :options="statusTemplateOptions"
+                  label="templates">
                 </q-select>
               </div>
               <div class="column">
@@ -220,20 +123,12 @@
         </div>
       </div>
       <!-- Case 2B: Empty diary entry. Show create. -->
-      <div
-        v-else-if="changeData.editor === undefined || changeData.editor === ''"
-      >
+      <div v-else-if="changeData.editor === undefined || changeData.editor === ''">
         <div class="row justify-center items-center q-pa-md q-ma-md">
           <div class="col">
             <q-card class="editorCard shadow-3 text-justify">
               <q-card-section class="card-text text-center">
-                <q-btn
-                  color="accent"
-                  flat
-                  dense
-                  icon="add"
-                  @click="createDiaryEntry"
-                />
+                <q-btn color="accent" flat dense icon="add" @click="createDiaryEntry" />
               </q-card-section>
             </q-card>
           </div>
@@ -423,7 +318,7 @@ export default {
     },
 
     createTemplate(templateName) {
-      let newTemplate = { name: templateName, text: this.changeData.editor };
+      let newTemplate = { name: templateName, text: this.changeData.editor, type: "DIARY" };
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
