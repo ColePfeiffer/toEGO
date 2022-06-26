@@ -171,7 +171,7 @@ export default {
       this.$emit("openDialogCreateTemplate", this.eventEditor);
     },
     openDialogViewTemplates() {
-
+      console.log(this.eventEditor);
       this.$emit("openDialogViewTemplates", this.eventEditor);
     },
     toggleVisibilityOfEventText() {

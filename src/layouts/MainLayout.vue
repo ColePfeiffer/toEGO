@@ -113,9 +113,9 @@ export default {
     openDialogViewTemplates(editor) {
       console.log("editor", editor);
       editor = "BIEPO";
-      this.editor = "GBI"
       console.log("editor", editor);
       this.eventEditor = editor;
+      this.eventEditor = "BIEPO?";
       let payload = {
         isVisible: true,
         isBackgroundVisible: false,

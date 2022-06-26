@@ -1,6 +1,7 @@
 <template>
-  <q-editor ref="editorRef" :content-class="{ 'max-width': '200px' }" class="editor shadow-3 text-justify"
-    :min-height="minHeight" :toolbar-bg="getToolbarBackgroundColor" :toolbar-text-color="getToolbarIconColor"
+  <q-editor ref="editorRef" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
+    :content-class="{ 'max-width': '200px' }" class="editor shadow-3 text-justify" :min-height="minHeight"
+    :toolbar-bg="getToolbarBackgroundColor" :toolbar-text-color="getToolbarIconColor"
     :toolbar-color="getToolbarIconColor" :toolbar="getToolbar" :fonts="{
       arial: 'Arial',
       arial_black: 'Arial Black',
@@ -70,6 +71,7 @@ export default {
   emits: ["openDialogCreateTemplate", "openDialogViewTemplates"],
   props: {
     minHeight: String,
+    modelValue: String,
   },
   components: { dialogCreateTemplate },
   data() {
