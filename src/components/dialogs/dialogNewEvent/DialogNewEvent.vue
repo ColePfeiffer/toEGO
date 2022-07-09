@@ -99,7 +99,7 @@
         <div class="row justify-center">
           <div class="col-12 q-px-xs q-py-md">
             <q-scroll-area style="height: 400px" ref="scrollArea">
-              <BaseEditor ref="editorRef1" v-model="eventEditor" minHeight="300px"
+              <BaseEditor ref="editorRef1" v-model="editor" minHeight="300px"
                 @openDialogCreateTemplate="openDialogCreateTemplate"
                 @openDialogViewTemplates="openDialogViewTemplates" />
             </q-scroll-area>
@@ -148,7 +148,6 @@ export default {
         padding: "0.5em 10px",
       },
       icon: true,
-      eventEditor: "",
       options: [
         { value: "Diary", slot: "diaryBtnSlot" },
         { value: "Status", slot: "statusBtnSlot" },
@@ -168,11 +167,10 @@ export default {
 
   methods: {
     openDialogCreateTemplate() {
-      this.$emit("openDialogCreateTemplate", this.eventEditor);
+      this.$emit("openDialogCreateTemplate");
     },
     openDialogViewTemplates() {
-      console.log(this.eventEditor);
-      this.$emit("openDialogViewTemplates", this.eventEditor);
+      this.$emit("openDialogViewTemplates");
     },
     toggleVisibilityOfEventText() {
       this.isShowingEventText = !this.isShowingEventText;
@@ -224,6 +222,14 @@ export default {
     },
   },
   computed: {
+    editor: {
+      get() {
+        return this.$store.state.data.eventData.editor;
+      },
+      set(value) {
+        this.$store.commit("data/updateEditor", value);
+      },
+    },
     quotedText() {
       //eventData.text.substring(0, this.maxLengthOfCardText) + "..."
       if (this.text === "") {

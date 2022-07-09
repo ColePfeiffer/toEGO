@@ -73,7 +73,6 @@ export default {
     return {
       drawer: false,
       model: "one",
-      eventEditor: "",
       boxShadowStyle: {
         "box-shadow": "none",
       },
@@ -110,12 +109,7 @@ export default {
     this.$store.commit("data/initiateDay");
   },
   methods: {
-    openDialogViewTemplates(editor) {
-      console.log("editor", editor);
-      editor = "BIEPO";
-      console.log("editor", editor);
-      this.eventEditor = editor;
-      this.eventEditor = "BIEPO?";
+    openDialogViewTemplates() {
       let payload = {
         isVisible: true,
         isBackgroundVisible: false,
@@ -124,24 +118,25 @@ export default {
       this.$store.commit("data/setDialogVisibility", payload);
     },
     pasteTemplate(template) {
-      if (this.eventEditor != "") {
-        this.eventEditor =
-          this.eventEditor + "<br>" + template.text;
+      let newEditorContent;
+      if (this.$store.state.data.eventData.editor != "") {
+        newEditorContent =
+          this.$store.state.data.eventData.editor + "<br>" + template.text;
       } else {
-        this.eventEditor = template.text;
+        newEditorContent = template.text;
       }
+
+      this.$store.commit("data/updateEditor", newEditorContent);
     },
     deleteTemplate(template) {
       this.$store.commit("data/deleteTemplate", template);
     },
     eventCreateTemplate(templateName) {
-      let newTemplate = { name: templateName, text: this.eventEditor, type: "EVENT" };
+      let newTemplate = { name: templateName, text: this.$store.state.data.eventData.editor, type: "EVENT" };
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
-    openDialogCreateTemplate(editor) {
-      this.eventEditor = editor; // update
-
+    openDialogCreateTemplate() {
       let payload = {
         isVisible: true,
         isBackgroundVisible: false,

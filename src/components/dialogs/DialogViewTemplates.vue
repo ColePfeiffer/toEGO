@@ -1,5 +1,5 @@
 <template>
-  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplate" @showHelp="showHelp"
+  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplateAndClose" @showHelp="showHelp"
     :widthOfDialog="315" :hasHelpOption="true" :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
     <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Cancel </template>
@@ -27,11 +27,14 @@
                 <div class="text-h6">{{ currentTemplate.name }}</div>
               </q-card-section>
 
-              <q-card-section class="templateTextContainer">
-                <div v-if="currentTemplate.text.length >= 350">
-                  <div v-html="currentTemplate.text.substring(0, 350) + ' [...]'"></div>
-                </div>
-                <div v-else v-html="currentTemplate.text"></div>
+              <q-card-section class="templateTextContainer ">
+                <q-scroll-area :style="StyleTmplateTextScrollArea">
+                  <div v-if="currentTemplate.text.length >= maxNumberOfDisplayedChars">
+                    <div v-html="currentTemplate.text.substring(0, maxNumberOfDisplayedChars) + ' [...]'"></div>
+                  </div>
+                  <div v-else v-html="currentTemplate.text"></div>
+                </q-scroll-area>
+
               </q-card-section>
               <q-separator />
 
@@ -89,7 +92,6 @@
 </template>
 
 <script>
-import M from "minimatch";
 import baseDialog from "../ui/BaseDialog2.vue";
 
 export default {
@@ -105,6 +107,10 @@ export default {
       menuIcon: "bi-file-earmark-font",
       isHelpShown: false,
       currentTemplate: this.templateList[0],
+      maxNumberOfDisplayedChars: 1200,
+      StyleTmplateTextScrollArea: {
+        height: "270px",
+      },
     };
   },
   watch: {
@@ -136,6 +142,10 @@ export default {
     },
     pasteTemplate() {
       this.$emit("pasteTemplate", this.currentTemplate);
+    },
+    pasteTemplateAndClose() {
+      this.$emit("pasteTemplate", this.currentTemplate);
+      this.closeDialog();
     },
   },
   computed: {

@@ -11,12 +11,6 @@ export default function () {
     modalComponent: "",
     buttonClicked: 0,
     lastButtonClicked: "",
-    currentDiaryEntry: {
-      id: "",
-      date: "",
-      editor: "No entry here yet.",
-      events: [],
-    },
     diaryEntryForCurrentDay: "",
     diaryEntryRef: "",
     eventData: {
@@ -24,6 +18,7 @@ export default function () {
       mood: "las la-meh-blank",
       title: "",
       text: "",
+      editor: "biep",
       tags: "",
       createdOn: "",
       createdBy: "me", // ref or id
@@ -136,7 +131,7 @@ export default function () {
       {
         id: 0,
         name: "Grounding: 5-to-1",
-        text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><ol><li style='text-align: left;'>Acknowledge <strong style='color: #FF6663'>five</strong> things you can see around you.</li><li style='text-align: left;'>Acknowledge <strong style='color: #FEB144'>four</strong> things you can touch around you.</li><li style='text-align: left;'>Acknowledge <strong style='color: #9EE09E'>three</strong> things you can hear right now.</li><li style='text-align: left;'>Acknowledge <strong style='color: #9EC1CF'>two</strong> things you can smell.</li><li style='text-align: left;'>Acknowledge <strong style='color: #CC99C9'>one</strong> thing you can taste.</li></ol></ol>",
+        text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(255, 102, 99);'>five</strong><span style='text-align: left;'> things you can see around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(254, 177, 68);'>four</strong><span style='text-align: left;'> things you can touch around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 224, 158);'>three</strong><span style='text-align: left;'> things you can hear right now.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 193, 207);'>two</strong><span style='text-align: left;'> things you can smell.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(204, 153, 201);'>one</strong><span style='text-align: left;'> thing you can taste.</span><br></li></ol>",
         icon: "fas fa-sun",
         isSetToDefault: false,
       },

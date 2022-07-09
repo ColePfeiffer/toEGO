@@ -17,6 +17,7 @@ export const resetEventData = (state) => {
     mood: "",
     text: "",
     tags: "",
+    editor: "",
     createdOn: "",
     createdBy: "me", // ref or id
     expanded: false,
@@ -98,6 +99,10 @@ export const updateTitle = (state, value) => {
 
 export const updateText = (state, value) => {
   state.eventData.text = value;
+};
+
+export const updateEditor = (state, value) => {
+  state.eventData.editor = value;
 };
 
 export const updateMood = (state, value) => {

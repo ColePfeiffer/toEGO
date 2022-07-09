@@ -85,8 +85,8 @@
               </div>
               <!-- EDIT MODE -->
               <div class="editorContainer" v-else>
-                <BaseEditor ref="editorRef1" v-model="changeData.editor" @showTemplateCreator="showTemplateCreator"
-                  @showTemplateViewer="showTemplateViewer" minHeight="300px" />
+                <BaseEditor ref="editorRef1" v-model="changeData.editor" @openDialogCreateTemplate="showTemplateCreator"
+                  @openDialogViewTemplates="showTemplateViewer" minHeight="300px" />
               </div>
             </q-scroll-area>
           </div>
