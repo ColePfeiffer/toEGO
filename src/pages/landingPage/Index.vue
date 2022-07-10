@@ -24,6 +24,13 @@ export default {
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
 
+      // applying default template
+      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.$store.commit("data/updateEditor", defaultTemplate);
+      }
+
+      //setting dialog visibilty
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
         isBackgroundVisible: false,

@@ -16,24 +16,33 @@ export const getDiaryEntryByDate = (state) => {
       date.isSameDate(diaryEntry.date, selectedDate, "day")
     );
     if (refToDiaryInStore != undefined) {
-      console.log("entry found: ", refToDiaryInStore);
+      console.log("Entry found: ", refToDiaryInStore);
     } else {
-      console.log("no diary entry found, returning undefined.");
+      console.log("Entry found: none, returning undefined.");
     }
     return refToDiaryInStore;
   };
 };
 
+// takes templateType (String, "DIARY" or "EVENT") as an argument, chekcs if there is a default template
 export const getDefaultTemplate = (state) => {
-  let defaultTemplate = state.diaryTemplates.find(
-    (template) => template.isSetToDefault === true
-  );
+  return (templateType) => {
+    let templateList;
+    if (templateType === "EVENT") {
+      templateList = state.eventTemplates;
+    } else {
+      templateList = state.diaryTemplates;
+    }
+    let defaultTemplate = templateList.find(
+      (template) => template.isSetToDefault === true
+    );
 
-  if (defaultTemplate != undefined) {
-    return defaultTemplate.text;
-  } else {
-    return undefined;
-  }
+    if (defaultTemplate != undefined) {
+      return defaultTemplate.text;
+    } else {
+      return undefined;
+    }
+  };
 };
 
 // takes the method's ID as an argument and returns the matching method

@@ -240,9 +240,6 @@ export default {
   created() {
     this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
   },
-  unmounted() {
-    console.log("mHE???");
-  },
   methods: {
     setDateToToday() {
       this.getDate = Date.now();
@@ -257,11 +254,20 @@ export default {
     },
     showDialogForNewEvent() {
       this.$store.commit("data/resetEventData");
+
+      // applying default template
+      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.$store.commit("data/updateEditor", defaultTemplate);
+      }
+
+      //setting dialog visibilty
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
         isBackgroundVisible: false,
         nameOfCurrentDialog: "dialogNewEvent",
       });
+
     },
     showDialogForExistingEvent(eventData) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[

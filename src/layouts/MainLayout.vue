@@ -129,7 +129,11 @@ export default {
       this.$store.commit("data/updateEditor", newEditorContent);
     },
     deleteTemplate(template) {
-      this.$store.commit("data/deleteTemplate", template);
+      let payload = {
+        template: template,
+        templateListType: "EVENT"
+      }
+      this.$store.commit("data/deleteTemplate", payload);
     },
     eventCreateTemplate(templateName) {
       let newTemplate = { name: templateName, text: this.$store.state.data.eventData.editor, type: "EVENT" };
@@ -148,6 +152,14 @@ export default {
       this.drawer = !this.drawer;
     },
     showDialogForNewEvent() {
+      this.$store.commit("data/resetEventData");
+      // applying default template
+      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.$store.commit("data/updateEditor", defaultTemplate);
+      }
+
+      //setting dialog visibilty
       let payload = {
         isVisible: true,
         isBackgroundVisible: false,

@@ -152,15 +152,21 @@ export const createTemplateAndAddToList = (state, payload) => {
   }
 };
 
-export const deleteTemplate = (state, template) => {
-  let indexOfTemplate = state.diaryTemplates.indexOf(template);
-  console.log("index OF Template: ", indexOfTemplate);
-  state.diaryTemplates.splice(indexOfTemplate, 1);
+export const deleteTemplate = (state, payload) => {
+  let templateList;
+  if (payload.templateListType === "DIARY") {
+    templateList = state.diaryTemplates;
+  } else {
+    templateList = state.eventTemplates;
+  }
+  let indexOfTemplate = templateList.indexOf(payload.template);
+  console.log("index OF Template: ", indexOfTemplate, " deleted");
+  templateList.splice(indexOfTemplate, 1);
 };
 
-export const setDefaultStatusOfTemplate = (state, id) => {
-  state.diaryTemplates.forEach((template) => {
-    if (template.id === id) {
+export const setDefaultStatusOfTemplate = (state, payload) => {
+  payload.templateList.forEach((template) => {
+    if (template.id === payload.id) {
       template.isSetToDefault = !template.isSetToDefault;
     } else {
       template.isSetToDefault = false;

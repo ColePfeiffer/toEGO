@@ -121,10 +121,13 @@ export default {
   },
   methods: {
     setDefaultStatus() {
+      let payload = {
+        id: this.currentTemplate.id,
+        templateList:
+          this.templateList,
+      };
       this.$store.commit(
-        "data/setDefaultStatusOfTemplate",
-        this.currentTemplate.id
-      );
+        "data/setDefaultStatusOfTemplate", payload);
     },
     setTemplate(index) {
       this.currentTemplate = this.templates[index];

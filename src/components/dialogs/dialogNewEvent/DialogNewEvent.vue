@@ -32,23 +32,23 @@
                       { value: 'las la-grin-alt', slot: 'happy' },
                     ]">
                       <template v-slot:angry>
-                        <q-btn padding="xs" flat icon="las la-angry" />
+                        <q-btn padding="xs" flat size="15px" icon="las la-angry" />
                       </template>
 
                       <template v-slot:sad>
-                        <q-btn padding="xs" flat icon="las la-sad-tear" />
+                        <q-btn padding="xs" flat size="15px" icon="las la-sad-tear" />
                       </template>
 
                       <template v-slot:meh>
-                        <q-btn padding="xs" flat icon="las la-meh" />
+                        <q-btn padding="xs" flat size="15px" icon="las la-meh" />
                       </template>
 
                       <template v-slot:content>
-                        <q-btn padding="xs" flat icon="las la-smile" />
+                        <q-btn padding="xs" flat size="15px" icon="las la-smile" />
                       </template>
 
                       <template v-slot:happy>
-                        <q-btn padding="xs" flat icon="las la-grin-alt" />
+                        <q-btn padding="xs" flat size="15px" icon="las la-grin-alt" />
                       </template>
                     </q-btn-toggle>
                   </div>

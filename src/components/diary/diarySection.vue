@@ -304,7 +304,11 @@ export default {
       }
     },
     deleteTemplate(template) {
-      this.$store.commit("data/deleteTemplate", template);
+      let payload = {
+        template: template,
+        templateListType: "DIARY"
+      }
+      this.$store.commit("data/deleteTemplate", payload);
     },
 
     // Template Creator
@@ -359,7 +363,7 @@ export default {
       };
 
       // applying default template
-      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"];
+      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("DIARY");
       if (defaultTemplate != undefined) {
         this.changeData.editor = defaultTemplate;
       }

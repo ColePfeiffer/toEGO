@@ -51,9 +51,24 @@
               <q-item-section>Save as new template</q-item-section>
             </q-item>
             <q-separator />
+
             <q-item clickable v-close-popup>
               <q-item-section>Quick List</q-item-section>
+
+              <q-item-section side>
+                <q-icon name="keyboard_arrow_right" />
+              </q-item-section>
+
+              <q-menu anchor="top end" self="top start" auto-close>
+                <q-list>
+                  <q-item v-for="n in 3" :key="n" dense clickable>
+                    <q-item-section>Submenu Label</q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+
             </q-item>
+
           </q-list>
         </q-menu>
       </q-btn>
