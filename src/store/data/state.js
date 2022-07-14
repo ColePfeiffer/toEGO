@@ -3,6 +3,10 @@ export default function () {
   return {
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
+    buttonFlatStyleTransparent: {
+      "box-shadow": "none",
+      "background-color": "transparent",
+    },
     buttonFlatStyle: {
       "box-shadow": "none",
       "background-color": "var(--q-secondary)",
@@ -11,6 +15,7 @@ export default function () {
       "box-shadow": "none",
       "background-color": "var(--q-accent)",
     },
+
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",
