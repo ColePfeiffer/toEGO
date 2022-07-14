@@ -1,6 +1,6 @@
 <template>
   <!-- whole thing -->
-  <q-dialog class="baseDialog" persistent :maximized="true">
+  <q-dialog class="baseDialog" persistent>
     <!-- row -->
     <div class="row" :style="boxShadowStyle">
       <div class="col-12 col-sm-8 col-md-3 col-xl-3">

@@ -189,7 +189,7 @@ export default {
   computed: {
     getEditCreateIcon() {
       if (this.editBtnText === "create") {
-        return "bi-file-earmark-plus-fill";
+        return "bi-journal-plus";
       } else {
         return "bi-file-earmark-text-fill";
       }

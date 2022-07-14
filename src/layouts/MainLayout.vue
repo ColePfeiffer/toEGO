@@ -60,20 +60,71 @@
           toggle-color="secondary"
           @update:model-value="goToPage"
           :options="[
-            { label: '', value: 'home', icon: 'bi-eye' },
-            { label: '', value: 'diary', icon: 'bi-journal-text' },
-            { label: '', value: 'items', icon: 'bi-calendar3' },
-            { label: '', value: 'settings', icon: 'bi-gear' },
+            { label: '', value: 'home', icon: 'bi-eye', slot: 'home' },
+            {
+              label: '',
+              value: 'diary',
+              icon: 'bi-journal-text',
+              slot: 'diary',
+            },
+            {
+              label: '',
+              value: 'newEvent',
+              slot: 'newEvent',
+            },
+            { label: '', value: 'items', icon: 'bi-calendar', slot: 'items' },
+            { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings' },
           ]"
-        />
+        >
+          <template v-slot:home>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >home</q-tooltip
+            >
+          </template>
+          <template v-slot:diary>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >diary</q-tooltip
+            >
+          </template>
+          <template v-slot:newEvent>
+            <q-btn
+              color="accent"
+              flat
+              dense
+              icon="bi-plus-lg"
+              @click="showDialogForNewEvent"
+            />
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >create new event</q-tooltip
+            >
+          </template>
+          <template v-slot:items>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >calendar</q-tooltip
+            >
+          </template>
+          <template v-slot:settings>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >settings</q-tooltip
+            >
+          </template>
+        </q-btn-toggle>
         <q-space />
-        <q-btn
-          color="accent"
-          flat
-          dense
-          icon="bi-plus-lg"
-          @click="showDialogForNewEvent"
-        />
       </q-toolbar>
     </q-footer>
   </q-layout>
