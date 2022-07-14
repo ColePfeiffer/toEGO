@@ -67,8 +67,8 @@ module.exports = function (/* ctx */) {
       },
       extendWebpack(cfg) {
         cfg.watchOptions = {
-          aggregateTimeout: 200,
-          poll: 1000,
+          aggregateTimeout: 300,
+          poll: true,
         };
       },
     },

@@ -1,13 +1,22 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- Dialogs -->
-    <DialogNewEvent @openDialogCreateTemplate="openDialogCreateTemplate"
-      @openDialogViewTemplates="openDialogViewTemplates">
+    <DialogNewEvent
+      @openDialogCreateTemplate="openDialogCreateTemplate"
+      @openDialogViewTemplates="openDialogViewTemplates"
+    >
     </DialogNewEvent>
-    <DialogCreateTemplate @createTemplate="eventCreateTemplate" @closeDialog="closeDialog">
+    <DialogCreateTemplate
+      @createTemplate="eventCreateTemplate"
+      @closeDialog="closeDialog"
+    >
     </DialogCreateTemplate>
-    <DialogViewTemplates :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate" @closeDialog="closeDialog">
+    <DialogViewTemplates
+      :templateList="$store.state.data.eventTemplates"
+      @pasteTemplate="pasteTemplate"
+      @deleteTemplate="deleteTemplate"
+      @closeDialog="closeDialog"
+    >
     </DialogViewTemplates>
 
     <!-- Router-view -->
@@ -15,11 +24,14 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3">
-            <router-view v-slot="{ Component }" v-if="
-              $store.state.data.dialogSettings.isVisible == false ||
-              ($store.state.data.dialogSettings.isVisible == true &&
-                $store.state.data.dialogSettings.isBackgroundVisible == true)
-            ">
+            <router-view
+              v-slot="{ Component }"
+              v-if="
+                $store.state.data.dialogSettings.isVisible == false ||
+                ($store.state.data.dialogSettings.isVisible == true &&
+                  $store.state.data.dialogSettings.isBackgroundVisible == true)
+              "
+            >
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -29,22 +41,39 @@
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
-    <q-footer v-if="
-      ($store.state.data.dialogSettings.isVisible == false) |
-      (($store.state.data.dialogSettings.isVisible == true) &
-        ($store.state.data.dialogSettings.isBackgroundVisible == true))
-    " elevated class="primary">
+    <q-footer
+      v-if="
+        ($store.state.data.dialogSettings.isVisible == false) |
+          (($store.state.data.dialogSettings.isVisible == true) &
+            ($store.state.data.dialogSettings.isBackgroundVisible == true))
+      "
+      elevated
+      class="primary"
+    >
       <q-toolbar>
         <q-space />
-        <q-btn-toggle v-model="model" flat stretch padding="ml" toggle-color="secondary" @update:model-value="goToPage"
+        <q-btn-toggle
+          v-model="model"
+          flat
+          stretch
+          padding="ml"
+          toggle-color="secondary"
+          @update:model-value="goToPage"
           :options="[
             { label: '', value: 'home', icon: 'bi-eye' },
             { label: '', value: 'diary', icon: 'bi-journal-text' },
             { label: '', value: 'items', icon: 'bi-calendar3' },
             { label: '', value: 'settings', icon: 'bi-gear' },
-          ]" />
+          ]"
+        />
         <q-space />
-        <q-btn color="accent" flat dense icon="bi-plus-lg" @click="showDialogForNewEvent" />
+        <q-btn
+          color="accent"
+          flat
+          dense
+          icon="bi-plus-lg"
+          @click="showDialogForNewEvent"
+        />
       </q-toolbar>
     </q-footer>
   </q-layout>
@@ -81,7 +110,7 @@ export default {
   components: {
     DialogNewEvent,
     DialogCreateTemplate,
-    DialogViewTemplates
+    DialogViewTemplates,
   },
   computed: {
     currentRouterPath() {
@@ -125,18 +154,21 @@ export default {
       } else {
         newEditorContent = template.text;
       }
-
       this.$store.commit("data/updateEditor", newEditorContent);
     },
     deleteTemplate(template) {
       let payload = {
         template: template,
-        templateListType: "EVENT"
-      }
+        templateListType: "EVENT",
+      };
       this.$store.commit("data/deleteTemplate", payload);
     },
     eventCreateTemplate(templateName) {
-      let newTemplate = { name: templateName, text: this.$store.state.data.eventData.editor, type: "EVENT" };
+      let newTemplate = {
+        name: templateName,
+        text: this.$store.state.data.eventData.editor,
+        type: "EVENT",
+      };
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
@@ -152,13 +184,6 @@ export default {
       this.drawer = !this.drawer;
     },
     showDialogForNewEvent() {
-      this.$store.commit("data/resetEventData");
-      // applying default template
-      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("EVENT");
-      if (defaultTemplate != undefined) {
-        this.$store.commit("data/updateEditor", defaultTemplate);
-      }
-
       //setting dialog visibilty
       let payload = {
         isVisible: true,
@@ -174,7 +199,7 @@ export default {
     closeDialog() {
       this.showDialogForNewEvent();
     },
-  }
+  },
 };
 </script>
 

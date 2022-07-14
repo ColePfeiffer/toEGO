@@ -2,8 +2,12 @@
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
     <q-separator color="secondary" class="q-mb-sm" />
-    <EventViewer :diaryEntry="getDiaryEntry" class="col" @showDialogForExistingEvent="showDialogForExistingEvent"
-      @showDialogForNewEvent="showDialogForNewEvent"></EventViewer>
+    <EventViewer
+      :diaryEntry="getDiaryEntry"
+      class="col"
+      @showDialogForExistingEvent="showDialogForExistingEvent"
+      @showDialogForNewEvent="showDialogForNewEvent"
+    ></EventViewer>
     <!-- Player Character -->
   </q-page>
 </template>
@@ -22,14 +26,6 @@ export default {
   },
   methods: {
     showDialogForNewEvent() {
-      this.$store.commit("data/resetEventData");
-
-      // applying default template
-      let defaultTemplate = this.$store.getters["data/getDefaultTemplate"]("EVENT");
-      if (defaultTemplate != undefined) {
-        this.$store.commit("data/updateEditor", defaultTemplate);
-      }
-
       //setting dialog visibilty
       this.$store.commit("data/setDialogVisibility", {
         isVisible: true,
@@ -65,5 +61,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

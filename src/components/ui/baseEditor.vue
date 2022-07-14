@@ -1,7 +1,14 @@
 <template>
-  <q-editor ref="editorRef" :content-class="{ 'max-width': '200px' }" class="editor shadow-3 text-justify"
-    :min-height="minHeight" :toolbar-bg="getToolbarBackgroundColor" :toolbar-text-color="getToolbarIconColor"
-    :toolbar-color="getToolbarIconColor" :toolbar="getToolbar" :fonts="{
+  <q-editor
+    ref="editorRef"
+    :content-class="{ 'max-width': '200px' }"
+    class="editor shadow-3 text-justify"
+    :min-height="minHeight"
+    :toolbar-bg="getToolbarBackgroundColor"
+    :toolbar-text-color="getToolbarIconColor"
+    :toolbar-color="getToolbarIconColor"
+    :toolbar="getToolbar"
+    :fonts="{
       arial: 'Arial',
       arial_black: 'Arial Black',
       comic_sans: 'Comic Sans MS',
@@ -10,10 +17,19 @@
       lucida_grande: 'Lucida Grande',
       times_new_roman: 'Times New Roman',
       verdana: 'Verdana',
-    }">
+    }"
+  >
     <template v-slot:fullscreenButton>
-      <q-btn flat no-wrap icon="bi-fullscreen" :style="ButtonStyleFlatJustIcon" :ripple="false"
-        :text-color="getToolbarIconColor" size="xs" @click="toggleFullscreen">
+      <q-btn
+        flat
+        no-wrap
+        icon="bi-fullscreen"
+        :style="ButtonStyleFlatJustIcon"
+        :ripple="false"
+        :text-color="getToolbarIconColor"
+        size="xs"
+        @click="toggleFullscreen"
+      >
       </q-btn>
     </template>
 
@@ -24,9 +40,20 @@
     </template>
 
     <template v-slot:toggleMoreOptionsButton>
-      <q-btn flat no-caps @click="changeToolbarMode" :style="ButtonStyleRegularButton" :ripple="false">
+      <q-btn
+        flat
+        no-caps
+        @click="changeToolbarMode"
+        :style="ButtonStyleRegularButton"
+        :ripple="false"
+      >
         <div class="row items-center no-wrap">
-          <q-icon size="8px" color="black" left :name="getIconForToggleToolbarButton" />
+          <q-icon
+            size="8px"
+            color="black"
+            left
+            :name="getIconForToggleToolbarButton"
+          />
           <div class="text-center text-black" style="font-size: 12.5px">
             {{ getLabelForToggleToolbarButton }}
           </div>
@@ -37,7 +64,12 @@
     <template v-slot:templatesMenuButton>
       <q-btn flat no-caps :style="ButtonStyleRegularButton" :ripple="false">
         <div class="row items-center no-wrap">
-          <q-icon size="8px" color="black" left name="bi-layout-text-sidebar-reverse" />
+          <q-icon
+            size="8px"
+            color="black"
+            left
+            name="bi-layout-text-sidebar-reverse"
+          />
           <div class="text-center text-black" style="font-size: 12.5px">
             Temps
           </div>
@@ -52,13 +84,12 @@
             </q-item>
             <q-separator />
 
-            <q-item clickable v-close-popup>
-              <q-item-section>Quick List</q-item-section>
-
+            <q-item clickable>
+              <q-item-section>Paste Favorites</q-item-section>
               <q-item-section side>
                 <q-icon name="keyboard_arrow_right" />
               </q-item-section>
-
+              <!-- Submenu -->
               <q-menu anchor="top end" self="top start" auto-close>
                 <q-list>
                   <q-item v-for="n in 3" :key="n" dense clickable>
@@ -66,15 +97,16 @@
                   </q-item>
                 </q-list>
               </q-menu>
-
             </q-item>
-
           </q-list>
         </q-menu>
       </q-btn>
     </template>
 
-    <dialogCreateTemplate @closeDialog="closeDialog" @createTemplate="createTemplate"></dialogCreateTemplate>
+    <dialogCreateTemplate
+      @closeDialog="closeDialog"
+      @createTemplate="createTemplate"
+    ></dialogCreateTemplate>
   </q-editor>
 </template>
 
@@ -196,6 +228,7 @@ export default {
     },
     toggleFullscreen() {
       let editorRef = this.$refs.editorRef;
+
       if (this.isInFullscreenMode) {
         // if the editor already is in fullscreen mode, and he clicks on this button, we want to go back to normal view, and hide the full toolbar.
         this.isShowingFullToolbar = false;

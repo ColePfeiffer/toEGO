@@ -6,6 +6,10 @@ export default function () {
       "box-shadow": "none",
       "background-color": "var(--q-secondary)",
     },
+    buttonFlatStyleAccentColor: {
+      "box-shadow": "none",
+      "background-color": "var(--q-accent)",
+    },
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",
@@ -18,7 +22,7 @@ export default function () {
       mood: "las la-meh-blank",
       title: "",
       text: "",
-      editor: "biep",
+      editor: "",
       tags: "",
       createdOn: "",
       createdBy: "me", // ref or id
