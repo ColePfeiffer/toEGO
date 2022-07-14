@@ -3,6 +3,7 @@ import index from "pages/landingPage/Index.vue";
 import Diary from "pages/diary/Diary.vue";
 import Items from "pages/Items.vue";
 import Settings from "pages/Settings.vue";
+import NewEvent from "pages/NewEvent.vue";
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: "/home",
     component: mainLayout,
     children: [{ path: "", component: index }],
+  },
+  {
+    path: "/NewEvent",
+    component: mainLayout,
+    children: [{ path: "", component: NewEvent }],
   },
   {
     path: "/Diary",

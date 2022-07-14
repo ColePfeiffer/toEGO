@@ -121,7 +121,7 @@
       <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
         <EventViewer
           :diaryEntry="getDiaryEntry"
-          :isShowingExpandButtonOfEventCard="false"
+          :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
           :showMessageIfThereAreNoEvents="false"
           @showDialogForExistingEvent="showDialogForExistingEvent"
           @showDialogForNewEvent="showDialogForNewEvent"
@@ -240,6 +240,13 @@ export default {
     },
   },
   computed: {
+    isShowingExpandButtonOfEventCard() {
+      console.log(
+        this.$store.state.data.isShowingExpandButtonOfEventCardsOnDiaryPage
+      );
+      return this.$store.state.data
+        .isShowingExpandButtonOfEventCardsOnDiaryPage;
+    },
     areEventsShownInFullscreen() {
       console.log(
         "eventsOnDiaryPageAreExpanded: ",

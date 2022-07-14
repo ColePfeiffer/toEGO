@@ -53,7 +53,7 @@
       <q-toolbar>
         <q-space />
         <q-btn-toggle
-          v-model="model"
+          v-model="navButtonToggleModel"
           flat
           stretch
           padding="ml"
@@ -69,8 +69,8 @@
             },
             {
               label: '',
-              value: 'newEvent',
-              slot: 'newEvent',
+              value: 'NewEvent',
+              slot: 'NewEvent',
             },
             { label: '', value: 'items', icon: 'bi-calendar', slot: 'items' },
             { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings' },
@@ -92,7 +92,7 @@
               >diary</q-tooltip
             >
           </template>
-          <template v-slot:newEvent>
+          <template v-slot:NewEvent>
             <q-btn
               color="accent"
               flat
@@ -152,7 +152,7 @@ export default {
   data() {
     return {
       drawer: false,
-      model: "one",
+      navButtonToggleModel: "home",
       boxShadowStyle: {
         "box-shadow": "none",
       },
@@ -244,8 +244,7 @@ export default {
       this.$store.commit("data/setDialogVisibility", payload);
     },
     goToPage() {
-      console.log(this.model);
-      this.$router.push(this.model);
+      this.$router.push(this.navButtonToggleModel);
     },
     closeDialog() {
       this.showDialogForNewEvent();

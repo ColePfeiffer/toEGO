@@ -32,6 +32,11 @@ export const resetEventData = (state) => {
   };
 };
 
+export const toggleExpandButtonForEventsOnDiaryPage = (state) => {
+  state.isShowingExpandButtonOfEventCardsOnDiaryPage =
+    !state.isShowingExpandButtonOfEventCardsOnDiaryPage;
+};
+
 /*
 export const updateExpandedStatusOfEventViaEventID = (state, eventID) => {
   let event = state.events.find((event) => event.id === eventID);

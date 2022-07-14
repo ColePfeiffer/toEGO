@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
     buttonFlatStyle: {
       "box-shadow": "none",
