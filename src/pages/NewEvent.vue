@@ -1,11 +1,11 @@
 <template>
   <q-page class="q-pa-sm">
-    <div class="outerContainer">
-      <div class="title-bar row" :style="getStyleForDialogTitleBar">
+    <div class="outerContainer row justify-center items-center">
+      <div class="title-bar col-12 row" :style="getStyleForDialogTitleBar">
         <div class="title-bar-text">
           <div>
             <q-icon name="theater_comedy" size="25px" />
-            Event-Tracker
+            Creating a new event
           </div>
         </div>
         <div class="title-bar-controls">
@@ -18,147 +18,139 @@
           ></q-btn>
         </div>
       </div>
-
-      <div v-if="isShowingEditor === false">
-        <div class="container">
-          <q-card class="transparent no-shadow" style="max-height: 800px">
-            <q-card-section class="row items-center justify-center">
-              <!-- How Are You-Section | Emoji-Selection -->
-              <div class="promptContainer col-12 q-mx-md q-pa-md">
-                <!-- Title -->
-                <div class="row justify-center items-center">
-                  <div class="col-12 underlined promptTitle">
-                    How do you feel right now?
-                  </div>
-                </div>
-                <!-- Emoji Selection via Button Toggle -->
-                <div
-                  class="emojiSelection q-mt-md row justify-center items-center"
-                >
-                  <div class="col-12">
-                    <div class="align-center">
-                      <q-btn-toggle
-                        v-model="mood"
-                        toggle-color="accent"
-                        padding="none"
-                        flat
-                        :options="[
-                          { value: 'las la-angry', slot: 'angry' },
-                          { value: 'las la-sad-tear', slot: 'sad' },
-                          { value: 'las la-meh', slot: 'meh' },
-                          { value: 'las la-smile', slot: 'content' },
-                          { value: 'las la-grin-alt', slot: 'happy' },
-                        ]"
-                      >
-                        <template v-slot:angry>
-                          <q-btn
-                            padding="xs"
-                            :style="
-                              $store.state.data.buttonFlatStyleTransparent
-                            "
-                            flat
-                            size="15px"
-                            icon="las la-angry"
-                          />
-                        </template>
-
-                        <template v-slot:sad>
-                          <q-btn
-                            padding="xs"
-                            :style="
-                              $store.state.data.buttonFlatStyleTransparent
-                            "
-                            flat
-                            size="15px"
-                            icon="las la-sad-tear"
-                          />
-                        </template>
-
-                        <template v-slot:meh>
-                          <q-btn
-                            padding="xs"
-                            :style="
-                              $store.state.data.buttonFlatStyleTransparent
-                            "
-                            flat
-                            size="15px"
-                            icon="las la-meh"
-                          />
-                        </template>
-
-                        <template v-slot:content>
-                          <q-btn
-                            padding="xs"
-                            :style="
-                              $store.state.data.buttonFlatStyleTransparent
-                            "
-                            flat
-                            size="15px"
-                            icon="las la-smile"
-                          />
-                        </template>
-
-                        <template v-slot:happy>
-                          <q-btn
-                            padding="xs"
-                            :style="
-                              $store.state.data.buttonFlatStyleTransparent
-                            "
-                            flat
-                            size="15px"
-                            icon="las la-grin-alt"
-                          />
-                        </template>
-                      </q-btn-toggle>
-                    </div>
-                  </div>
+      <!-- make scrollable -->
+      <!-- Content: Emoji, Title, What happened? -->
+      <div class="col-12 container q-mt-sm" v-if="isShowingEditor === false">
+        <q-card class="transparent no-shadow" style="max-height: 800px">
+          <q-card-section class="row items-center justify-center">
+            <!-- How Are You-Section | Emoji-Selection -->
+            <div class="promptContainer col-12 q-mx-md q-pa-md">
+              <!-- Title -->
+              <div class="row justify-center items-center">
+                <div class="col-12 underlined promptTitle">
+                  How are you feeling?
                 </div>
               </div>
-
-              <!-- What Happened-Section -->
-              <div class="promptContainer col-12 q-mx-md q-mt-xs q-px-md">
-                <!-- Title -->
-                <div class="row justify-center items-center"></div>
-                <!-- Text Input -->
-                <div class="row justify-center q-mt-xs items-center">
-                  <div class="col-11">
-                    <q-input
-                      class="input"
-                      color="primary"
-                      v-model="title"
-                      filled
-                      square
-                      label="Title"
-                      input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
-                      :rules="[
-                        (val) =>
-                          val.length <= 30 ||
-                          'Please use maximum 30 characters',
+              <!-- Emoji Selection via Button Toggle -->
+              <div
+                class="emojiSelection q-mt-md row justify-center items-center"
+              >
+                <div class="col-12">
+                  <div class="align-center">
+                    <q-btn-toggle
+                      v-model="mood"
+                      toggle-color="accent"
+                      padding="none"
+                      flat
+                      :options="[
+                        { value: 'las la-angry', slot: 'angry' },
+                        { value: 'las la-sad-tear', slot: 'sad' },
+                        { value: 'las la-meh', slot: 'meh' },
+                        { value: 'las la-smile', slot: 'content' },
+                        { value: 'las la-grin-alt', slot: 'happy' },
                       ]"
-                    />
-                  </div>
-                </div>
-                <!-- Text Input -->
-                <div class="row justify-center q-mt-xs items-center">
-                  <div class="col-11">
-                    <q-input
-                      class="input"
-                      v-model="text"
-                      label="What happened?"
-                      filled
-                      square
-                      autogrow
-                      input-style="max-height: 280px; min-height: 220px; font-size: 12.5px"
-                    />
+                    >
+                      <template v-slot:angry>
+                        <q-btn
+                          padding="xs"
+                          :style="$store.state.data.buttonFlatStyleTransparent"
+                          flat
+                          size="15px"
+                          icon="las la-angry"
+                        />
+                      </template>
+
+                      <template v-slot:sad>
+                        <q-btn
+                          padding="xs"
+                          :style="$store.state.data.buttonFlatStyleTransparent"
+                          flat
+                          size="15px"
+                          icon="las la-sad-tear"
+                        />
+                      </template>
+
+                      <template v-slot:meh>
+                        <q-btn
+                          padding="xs"
+                          :style="$store.state.data.buttonFlatStyleTransparent"
+                          flat
+                          size="15px"
+                          icon="las la-meh"
+                        />
+                      </template>
+
+                      <template v-slot:content>
+                        <q-btn
+                          padding="xs"
+                          :style="$store.state.data.buttonFlatStyleTransparent"
+                          flat
+                          size="15px"
+                          icon="las la-smile"
+                        />
+                      </template>
+
+                      <template v-slot:happy>
+                        <q-btn
+                          padding="xs"
+                          :style="$store.state.data.buttonFlatStyleTransparent"
+                          flat
+                          size="15px"
+                          icon="las la-grin-alt"
+                        />
+                      </template>
+                    </q-btn-toggle>
                   </div>
                 </div>
               </div>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
+            </div>
 
-      <div v-else>
+            <!-- What Happened-Section -->
+            <div class="promptContainer col-12 q-mx-md q-mt-xs q-px-md">
+              <!-- Title -->
+              <div class="row justify-center items-center"></div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-12">
+                  <q-input
+                    class="input"
+                    color="primary"
+                    v-model="title"
+                    filled
+                    square
+                    label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
+                    :rules="[
+                      (val) =>
+                        val.length <= 30 || 'Please use maximum 30 characters',
+                    ]"
+                  />
+                </div>
+              </div>
+              <!-- Text Input -->
+              <div class="row justify-center q-mt-xs items-center">
+                <div class="col-12">
+                  <q-input
+                    class="input"
+                    v-model="text"
+                    label="What happened?"
+                    filled
+                    square
+                    autogrow
+                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px"
+                  />
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+      <!-- Content: Editor -->
+      <div
+        class="col-12 container q-mt-sm"
+        style="background-color: transparent"
+        v-else
+      >
         <div class="column">
           <div
             v-if="isShowingEventText"
@@ -188,20 +180,19 @@
       </div>
 
       <!-- Footer Slot | Option to hide buttons -->
-      <div class="col-1 q-pa-sm q-pb-md q-mt-md">
-        <div class="row justify-end">
+      <div class="col-12 q-mt-sm">
+        <div class="row justify-end items-center no-wrap">
           <q-btn
-            class="button col-3 col-md-2 q-mx-xs"
+            class="button col-2 q-mr-xs"
             flat
             :style="$store.state.data.buttonFlatStyleAccentColor"
             :icon="getIconForEditorButton"
             @click="showEditor"
           >
-            editor
           </q-btn>
 
           <q-btn
-            class="button col-3 col-md-2 q-mx-xs"
+            class="button col-2 q-mx-xs"
             :style="$store.state.data.buttonFlatStyle"
             flat
             @click="closeDialog"
@@ -210,7 +201,7 @@
           </q-btn>
 
           <q-btn
-            class="button col-3 col-md-2 q-mx-xs"
+            class="button col-2 q-ml-xs"
             :style="$store.state.data.buttonFlatStyle"
             flat
             @click="saveChanges"
@@ -442,16 +433,41 @@ export default {
 
 <style scoped>
 .outerContainer {
-  min-width: 450px;
-  max-width: 450px;
-  background-color: cyan;
+  min-width: 350px;
+  max-width: 350px;
 }
 .container {
-  min-width: 300px;
-  max-width: 300px;
-  background-color: yellow;
+  background-color: white;
 }
+
+.input {
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.definedWidth {
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.promptContainer {
+  text-align: center;
+}
+
 .normalStyle {
   color: green;
+}
+
+.topMargin {
+  margin-top: 20px;
+}
+.underlined {
+  border-bottom: 1px solid black;
+  padding: 0 0 4px;
+}
+
+.promptTitle {
+  font-weight: bolder;
+  font-size: 1.1em;
 }
 </style>
