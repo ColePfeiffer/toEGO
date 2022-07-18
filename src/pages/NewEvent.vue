@@ -116,6 +116,7 @@
                     class="input"
                     color="primary"
                     v-model="title"
+                    stack-label
                     filled
                     square
                     label="Title"
@@ -134,6 +135,7 @@
                     class="input"
                     v-model="text"
                     label="What happened?"
+                    stack-label
                     filled
                     square
                     autogrow
@@ -283,13 +285,7 @@ export default {
     },
     closeDialog() {
       this.$store.commit("data/resetEventData");
-      let payload = {
-        isVisible: false,
-        isBackgroundVisible: true,
-        nameOfCurrentDialog:
-          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
+      this.$router.go(-1);
     },
     saveChanges() {
       if (this.mood === "") {
