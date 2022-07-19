@@ -71,6 +71,8 @@
               label: '',
               value: 'NewEvent',
               slot: 'NewEvent',
+              icon: 'bi-plus-lg',
+              color: 'accent',
             },
             { label: '', value: 'items', icon: 'bi-calendar', slot: 'items' },
             { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings' },
@@ -93,13 +95,6 @@
             >
           </template>
           <template v-slot:NewEvent>
-            <q-btn
-              color="accent"
-              flat
-              dense
-              icon="bi-plus-lg"
-              @click="showDialogForNewEvent"
-            />
             <q-tooltip
               class="bg-secondary text-body2 text-black"
               :offset="[10, 10]"
@@ -163,6 +158,10 @@ export default {
     DialogCreateTemplate,
     DialogViewTemplates,
   },
+  mounted() {
+    // sets our v-models initital value to the path of the url we are starting the app from
+    this.navButtonToggleModel = this.currentRouterPath.substring(1);
+  },
   computed: {
     currentRouterPath() {
       return this.$route.path;
@@ -176,13 +175,16 @@ export default {
   },
 
   watch: {
-    // whenever the router path updates, we want to set expanded to false for events.
     currentRouterPath(newPath) {
+      // whenever the router path updates, we want to set expanded to false for events.
       let payload = {
         isExpanded: false,
         diaryEntryRef: this.getDiaryEntryForToday,
       };
       this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
+
+      // we also want to update navButtonToggleModel based on the new navigation
+      this.navButtonToggleModel = newPath.substring(1);
     },
   },
   created() {

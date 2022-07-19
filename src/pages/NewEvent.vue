@@ -284,8 +284,12 @@ export default {
       this.isShowingEditor = !this.isShowingEditor;
     },
     closeDialog() {
+      let lastPath = this.$router.options.history.state.back;
+      console.log(lastPath);
+      lastPath = lastPath.substring(1);
+      console.log(lastPath);
       this.$store.commit("data/resetEventData");
-      this.$router.go(-1);
+      this.$router.push(lastPath);
     },
     saveChanges() {
       if (this.mood === "") {
