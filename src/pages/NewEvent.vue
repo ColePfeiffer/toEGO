@@ -9,13 +9,8 @@
           </div>
         </div>
         <div class="title-bar-controls">
-          <q-btn
-            v-if="isShowingEditor"
-            :style="$store.state.data.buttonFlatStyleTransparent"
-            flat
-            icon="bi-blockquote-right"
-            @click="toggleVisibilityOfEventText"
-          ></q-btn>
+          <q-btn v-if="isShowingEditor" :style="$store.state.data.buttonFlatStyleTransparent" flat
+            icon="bi-blockquote-right" @click="toggleVisibilityOfEventText"></q-btn>
         </div>
       </div>
       <!-- make scrollable -->
@@ -32,72 +27,39 @@
                 </div>
               </div>
               <!-- Emoji Selection via Button Toggle -->
-              <div
-                class="emojiSelection q-mt-md row justify-center items-center"
-              >
+              <div class="emojiSelection q-mt-md row justify-center items-center">
                 <div class="col-12">
                   <div class="align-center">
-                    <q-btn-toggle
-                      v-model="mood"
-                      toggle-color="accent"
-                      padding="none"
-                      flat
-                      :options="[
-                        { value: 'las la-angry', slot: 'angry' },
-                        { value: 'las la-sad-tear', slot: 'sad' },
-                        { value: 'las la-meh', slot: 'meh' },
-                        { value: 'las la-smile', slot: 'content' },
-                        { value: 'las la-grin-alt', slot: 'happy' },
-                      ]"
-                    >
+                    <q-btn-toggle v-model="mood" toggle-color="accent" padding="none" flat :options="[
+                      { value: 'las la-angry', slot: 'angry' },
+                      { value: 'las la-sad-tear', slot: 'sad' },
+                      { value: 'las la-meh', slot: 'meh' },
+                      { value: 'las la-smile', slot: 'content' },
+                      { value: 'las la-grin-alt', slot: 'happy' },
+                    ]">
                       <template v-slot:angry>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-angry"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-angry" />
                       </template>
 
                       <template v-slot:sad>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-sad-tear"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-sad-tear" />
                       </template>
 
                       <template v-slot:meh>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-meh"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-meh" />
                       </template>
 
                       <template v-slot:content>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-smile"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-smile" />
                       </template>
 
                       <template v-slot:happy>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-grin-alt"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-grin-alt" />
                       </template>
                     </q-btn-toggle>
                   </div>
@@ -112,35 +74,18 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input
-                    class="input"
-                    color="primary"
-                    v-model="title"
-                    stack-label
-                    filled
-                    square
-                    label="Title"
-                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
-                    :rules="[
+                  <q-input class="input" color="primary" v-model="title" stack-label filled square label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
                       (val) =>
                         val.length <= 30 || 'Please use maximum 30 characters',
-                    ]"
-                  />
+                    ]" />
                 </div>
               </div>
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input
-                    class="input"
-                    v-model="text"
-                    label="What happened?"
-                    stack-label
-                    filled
-                    square
-                    autogrow
-                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px"
-                  />
+                  <q-input class="input" v-model="text" label="What happened?" stack-label filled square autogrow
+                    input-style="max-height: 280px; min-height: 220px; font-size: 12.5px" />
                 </div>
               </div>
             </div>
@@ -148,17 +93,9 @@
         </q-card>
       </div>
       <!-- Content: Editor -->
-      <div
-        class="col-12 container q-mt-sm"
-        style="background-color: transparent"
-        v-else
-      >
+      <div class="col-12 container q-mt-sm" style="background-color: transparent" v-else>
         <div class="column">
-          <div
-            v-if="isShowingEventText"
-            class="q-pa-md defaultFont smallText"
-            :style="getStyleForQuotedEventText"
-          >
+          <div v-if="isShowingEventText" class="q-pa-md defaultFont smallText" :style="getStyleForQuotedEventText">
             <q-scroll-area :style="styleEventTextScrollArea">
               <span class="bold">You wrote:</span> <br />
               <span class="text-justify keep-whitespace">{{ quotedText }}</span>
@@ -168,13 +105,9 @@
           <div class="row justify-center">
             <div class="col-12 q-px-xs q-py-md">
               <q-scroll-area style="height: 400px" ref="scrollArea">
-                <BaseEditor
-                  ref="editorRef1"
-                  v-model="editor"
-                  minHeight="300px"
+                <BaseEditor ref="editorRef1" v-model="editor" minHeight="300px"
                   @openDialogCreateTemplate="openDialogCreateTemplate"
-                  @openDialogViewTemplates="openDialogViewTemplates"
-                />
+                  @openDialogViewTemplates="openDialogViewTemplates" />
               </q-scroll-area>
             </div>
           </div>
@@ -184,31 +117,16 @@
       <!-- Footer Slot | Option to hide buttons -->
       <div class="col-12 q-mt-sm">
         <div class="row justify-end items-center no-wrap">
-          <q-btn
-            class="button col-2 q-mr-xs"
-            flat
-            :style="$store.state.data.buttonFlatStyleAccentColor"
-            :icon="getIconForEditorButton"
-            @click="showEditor"
-          >
+          <q-btn class="button col-2 q-mr-xs" flat :style="$store.state.data.buttonFlatStyleAccentColor"
+            :icon="getIconForEditorButton" @click="showEditor">
           </q-btn>
 
-          <q-btn
-            class="button col-2 q-mx-xs"
-            :style="$store.state.data.buttonFlatStyle"
-            flat
-            @click="closeDialog"
-          >
+          <q-btn class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat @click="closeDialog">
             discard
           </q-btn>
 
-          <q-btn
-            class="button col-2 q-ml-xs"
-            :style="$store.state.data.buttonFlatStyle"
-            flat
-            @click="saveChanges"
-          >
-            save
+          <q-btn class="button col-2 q-ml-xs" :style="$store.state.data.buttonFlatStyle" flat @click="saveChanges">
+            create
           </q-btn>
         </div>
       </div>
@@ -436,6 +354,7 @@ export default {
   min-width: 350px;
   max-width: 350px;
 }
+
 .container {
   background-color: white;
 }
@@ -461,6 +380,7 @@ export default {
 .topMargin {
   margin-top: 20px;
 }
+
 .underlined {
   border-bottom: 1px solid black;
   padding: 0 0 4px;
