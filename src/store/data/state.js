@@ -28,6 +28,10 @@ export default function () {
       //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
       "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
     },
+    sTextBasicShadowBlackFont: {
+      "text-shadow": "var(--q-secondary) 2px 2px 2px",
+      color: "black !important",
+    },
     sTextBasicShadowDarkWhiteFont: {
       "text-shadow": "2px 2px #000000",
       "text-shadow": "rgb(0 0 0) 2px 2px 2px",

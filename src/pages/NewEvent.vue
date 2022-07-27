@@ -24,7 +24,7 @@
             <div class="promptContainer col-12 q-mx-md q-pa-md">
               <!-- Title -->
               <div class="row justify-center items-center">
-                <div class="col-12 underlined promptTitle">
+                <div class="col-12 underlined promptTitle" :style="getStyleForHeadline">
                   How are you feeling?
                 </div>
               </div>
@@ -295,6 +295,14 @@ export default {
       } else {
         return '"' + this.text + '"';
       }
+    },
+    getStyleForHeadline() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.$store.state.data.sTextBasicShadowDarkWhiteFont;
+      } else {
+        return this.$store.state.data.sTextBasicShadowBlackFont;
+      }
+
     },
     getStyleForQuotedEventText() {
       if (this.$store.getters["data/isDarkModeActive"]) {
