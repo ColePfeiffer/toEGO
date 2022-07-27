@@ -14,7 +14,7 @@
         </div>
       </div>
       <!-- make scrollable -->
-      <div class="col-md-11 col-12 container q-mt-sm" :style="containerStyle">
+      <div class="col-md-11 col-12 container q-mt-sm" :style="outerContainerStyle">
         <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
           <!-- Content: Emoji, Title, What happened? -->
           <q-card v-if="isShowingEditor === false" class="transparent no-shadow">
@@ -119,15 +119,22 @@
       <div class="col-md-11 col-12 q-mt-sm">
         <div class="row justify-end items-center no-wrap">
           <q-btn class="button col-2 q-mr-xs" flat :style="$store.state.data.buttonFlatStyleAccentColor"
-            :icon="getIconForEditorButton" @click="showEditor">
+            @click="showEditor">
+            <q-icon color="black" :name="getIconForEditorButton" />
+          </q-btn>
+          <q-btn class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat @click="closeDialog">
+            <div class="text-center text-black">
+              discard
+            </div>
           </q-btn>
 
-          <q-btn class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat @click="closeDialog">
-            discard
-          </q-btn>
+
+
 
           <q-btn class="button col-2 q-ml-xs" :style="$store.state.data.buttonFlatStyle" flat @click="saveChanges">
-            create
+            <div class="text-center text-black">
+              create
+            </div>
           </q-btn>
         </div>
       </div>
@@ -155,24 +162,24 @@ export default {
       styleQuotedText: {
         background: "#f9f9f9",
         "border-left": "5px solid var(--q-secondary)",
-        margin: "1.5em 10px",
         padding: "0.5em 10px",
+        "margin-bottom": "10px",
+        "margin-top": "2px",
       },
       styleQuotedTextDark: {
-        background: "#ffffff2b",
+        "background": "var(--q-dark)",
+        "text-shadow": "rgb(0 0 0) 2px 2px 2px",
         "border-left": "5px solid var(--q-secondary)",
-        margin: "1.5em 10px",
         padding: "0.5em 10px",
-        "margin-left": "0em",
-        "padding-left": "0em"
+        "margin-bottom": "10px",
+        "margin-top": "2px",
+
       },
       styleDark: {
-        width: this.widthOfDialog + "px",
         "background-color": "rgb(0 0 0 / 77%)",
         color: "white",
       },
       styleLight: {
-        width: this.widthOfDialog + "px",
         "background-color": "rgb(255 255 255 )",
         color: "black",
       },
@@ -247,6 +254,30 @@ export default {
     },
   },
   computed: {
+    outerContainerStyle() {
+      let currentStyle;
+      let styleDark = {
+        "background-color": "var(--q-dark)",
+        color: "white",
+      };
+      let styleLight = {
+        "background-color": "rgb(255 255 255 )",
+        color: "black",
+      };
+
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        currentStyle = styleDark;
+      } else {
+        currentStyle = styleLight;
+      }
+
+      if (this.isShowingEditor === true) {
+        return "background-color: transparent";
+      } else {
+        return currentStyle;
+      }
+
+    },
     containerStyle() {
       if (this.isShowingEditor === true) {
         return "background-color: transparent";

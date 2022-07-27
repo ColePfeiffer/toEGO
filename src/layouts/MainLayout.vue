@@ -14,7 +14,7 @@
     <q-page-container>
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
-          <div class="col-12 col-xs-10 col-sm-8 col-md-5 col-xl-3 q-pt-xs">
+          <div class="col-12 col-xs-10 col-sm-8 col-md-4 col-xl-3 q-pt-xs">
             <router-view v-slot="{ Component }" v-if="
               $store.state.data.dialogSettings.isVisible == false ||
               ($store.state.data.dialogSettings.isVisible == true &&
