@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
     buttonFlatStyleTransparent: {
@@ -8,10 +9,16 @@ export default function () {
       "background-color": "transparent",
     },
     buttonFlatStyle: {
+      "min-width": "83px",
+      "max-width": "83px",
+      "min-height": "23px",
       "box-shadow": "none",
       "background-color": "var(--q-secondary)",
     },
     buttonFlatStyleAccentColor: {
+      "min-width": "83px",
+      "max-width": "83px",
+      "min-height": "23px",
       "box-shadow": "none",
       "background-color": "var(--q-accent)",
     },

@@ -118,22 +118,29 @@
       <!-- Footer Slot | Option to hide buttons -->
       <div class="col-md-11 col-12 q-mt-sm">
         <div class="row justify-end items-center no-wrap">
-          <q-btn class="button col-2 q-mr-xs" flat :style="$store.state.data.buttonFlatStyleAccentColor"
+          <q-btn no-caps no-wrap class="button col-2 q-mr-xs" flat :style="$store.state.data.buttonFlatStyleAccentColor"
             @click="showEditor">
-            <q-icon color="black" :name="getIconForEditorButton" />
+            <div class="row items-center no-wrap">
+              <q-icon size="15px" color="black" left :name="getIconForEditorButton" />
+              <div class="text-center text-black">
+                Editor
+              </div>
+            </div>
           </q-btn>
-          <q-btn class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat @click="closeDialog">
+          <q-btn no-caps class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+            @click="closeDialog">
             <div class="text-center text-black">
-              discard
+              Discard
             </div>
           </q-btn>
 
 
 
 
-          <q-btn class="button col-2 q-ml-xs" :style="$store.state.data.buttonFlatStyle" flat @click="saveChanges">
+          <q-btn no-caps class="button col-2 q-ml-xs" :style="$store.state.data.buttonFlatStyle" flat
+            @click="saveChanges">
             <div class="text-center text-black">
-              create
+              Create
             </div>
           </q-btn>
         </div>
@@ -214,9 +221,7 @@ export default {
     },
     closeDialog() {
       let lastPath = this.$router.options.history.state.back;
-      console.log(lastPath);
       lastPath = lastPath.substring(1);
-      console.log(lastPath);
       this.$store.commit("data/resetEventData");
       this.$router.push(lastPath);
     },
@@ -226,20 +231,16 @@ export default {
       }
 
       // check wether a new event is created or an existing one is being edited
-      if (
-        this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-        "dialogNewEvent"
-      ) {
-        let route = this.$route.path;
+      if (this.$store.state.data.newEventIsInCreationMode) {
+
+        let lastPath = this.$router.options.history.state.back;
 
         // if we are at home, we want to use new Date
-        if (route === "/home") {
-          console.log("home");
+        if (lastPath === "/home") {
           // creating a new event:
           this.$store.commit("data/addEventToEvents", new Date());
           // if we are at the diary page, we want to use lastSelectedDate
-        } else if (route === "/diary") {
-          console.log("diary");
+        } else if (lastPath === "/diary") {
           // creating a new event:
           this.$store.commit(
             "data/addEventToEvents",
@@ -312,7 +313,7 @@ export default {
       if (this.isShowingEditor) {
         return "bi-arrow-left";
       } else {
-        return "bi-plus-lg";
+        return "bi-file-text";
       }
     },
     isDialogVisible: {
