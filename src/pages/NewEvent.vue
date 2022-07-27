@@ -79,7 +79,7 @@
                   <q-input class="input" color="primary" v-model="title" stack-label filled square label="Title"
                     input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
                       (val) =>
-                        val.length <= 30 || 'Please use maximum 30 characters',
+                        val.length <= 50 || 'Please use maximum 50 characters',
                     ]" />
                 </div>
               </div>
@@ -95,22 +95,24 @@
         </q-card>
         <!-- Content: Editor -->
         <div v-else class="column">
-          <div v-if="isShowingEventText" class="defaultFont smallText" :style="getStyleForQuotedEventText">
-            <q-scroll-area :style="styleEventTextScrollArea">
-              <span class="bold">You wrote:</span> <br />
-              <span class="text-justify keep-whitespace">{{ quotedText }}</span>
-            </q-scroll-area>
-          </div>
-          <!-- Editor -->
-          <div class="row justify-center">
-            <div class="col-12 " :style="heightForScrollArea">
-              <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-                <BaseEditor class="no-border-radius no-box-shadow" ref="editorRef1" v-model="editor" minHeight="535px"
-                  @openDialogCreateTemplate="openDialogCreateTemplate"
-                  @openDialogViewTemplates="openDialogViewTemplates" />
+          <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+            <div v-if="isShowingEventText" class="defaultFont smallText" :style="getStyleForQuotedEventText">
+              <q-scroll-area :style="styleEventTextScrollArea">
+                <span class="bold">You wrote:</span> <br />
+                <span class="text-justify keep-whitespace">{{ quotedText }}</span>
               </q-scroll-area>
             </div>
-          </div>
+            <!-- Editor -->
+            <div class="row justify-center">
+              <div class="col-12">
+                <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
+                  <BaseEditor class="no-border-radius no-box-shadow" ref="editorRef1" v-model="editor" minHeight="535px"
+                    @openDialogCreateTemplate="openDialogCreateTemplate"
+                    @openDialogViewTemplates="openDialogViewTemplates" />
+                </q-scroll-area>
+              </div>
+            </div>
+          </q-scroll-area>
         </div>
 
       </div>
@@ -228,7 +230,7 @@ export default {
       if (this.mood === "") {
         this.mood = "las la-meh-blank";
       }
-
+      console.log("mode: ", this.$store.state.data.newEventIsInCreationMode);
       // check wether a new event is created or an existing one is being edited
       if (this.$store.state.data.newEventIsInCreationMode) {
 

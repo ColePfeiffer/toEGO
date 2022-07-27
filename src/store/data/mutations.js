@@ -32,6 +32,15 @@ export const resetEventData = (state) => {
   };
 };
 
+// mode can either be CREATE or EDIT
+export const setModeForNewEvent = (state, mode) => {
+  if (mode === "CREATE") {
+    state.newEventIsInCreationMode = true;
+  } else {
+    state.newEventIsInCreationMode = false;
+  }
+};
+
 export const toggleExpandButtonForEventsOnDiaryPage = (state) => {
   state.isShowingExpandButtonOfEventCardsOnDiaryPage =
     !state.isShowingExpandButtonOfEventCardsOnDiaryPage;

@@ -11,16 +11,16 @@
         <!-- event title, expand button -->
         <q-item-section>
           <div class="row justify-center items-center">
-            <div class="col-6 text-left">
+            <div class="col-9 text-left">
               <q-item-label class="card-title">{{
                   eventData.title
               }}</q-item-label>
             </div>
-            <div v-if="isShowingExpandButtonOfEventCard === true" class="col-6 text-right">
+            <div v-if="isShowingExpandButtonOfEventCard === true" class="col-3 text-right">
               <base-expandable-button :eventData="eventData" color="secondary" @expandMore="expand"
                 @expandLess="expand"></base-expandable-button>
             </div>
-            <div v-else class="col-6 text-right"></div>
+            <div v-else class="col-3"></div>
           </div>
         </q-item-section>
       </q-item>

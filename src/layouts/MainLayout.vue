@@ -1,9 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- Dialogs -->
-    <DialogNewEvent @openDialogCreateTemplate="openDialogCreateTemplate"
-      @openDialogViewTemplates="openDialogViewTemplates">
-    </DialogNewEvent>
     <DialogCreateTemplate @createTemplate="eventCreateTemplate" @closeDialog="closeDialog">
     </DialogCreateTemplate>
     <DialogViewTemplates :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate"
@@ -79,7 +76,6 @@
 </template>
 
 <script>
-import DialogNewEvent from "../components/dialogs/dialogNewEvent/DialogNewEvent.vue";
 import DialogCreateTemplate from "../components/dialogs/DialogCreateTemplate.vue";
 import DialogViewTemplates from "../components/dialogs/DialogViewTemplates.vue";
 import { date } from "quasar";
@@ -107,7 +103,6 @@ export default {
     };
   },
   components: {
-    DialogNewEvent,
     DialogCreateTemplate,
     DialogViewTemplates,
   },
@@ -189,20 +184,18 @@ export default {
     toggleLeftDialog() {
       this.drawer = !this.drawer;
     },
-    showDialogForNewEvent() {
-      //setting dialog visibilty
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogNewEvent",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
-    },
     goToPage() {
       this.$router.push(this.navButtonToggleModel);
     },
     closeDialog() {
-      this.showDialogForNewEvent();
+      let payload = {
+        isVisible: false,
+        isBackgroundVisible:
+          this.$store.state.data.dialogSettings.isBackgroundVisible,
+        nameOfCurrentDialog:
+          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
   },
 };

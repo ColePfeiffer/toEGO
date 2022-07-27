@@ -46,24 +46,23 @@
         </div>
         <div v-else class="smallText col-1 text-right"></div>
         <q-btn class="smallText col-1 dense text-right" flat icon="bi-plus-lg" color="accent"
-          @click="showDialogForNewEvent" :style="$store.state.data.sTextAccentShadow" size="14px">
+          @click="goToPageNewEventSetToCreationMode" :style="$store.state.data.sTextAccentShadow" size="14px">
         </q-btn>
       </div>
       <q-separator color="secondary" />
       <!-- Events Container -->
       <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
         <EventViewer :diaryEntry="getDiaryEntry" :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :showMessageIfThereAreNoEvents="false" @showDialogForExistingEvent="showDialogForExistingEvent"
-          @showDialogForNewEvent="showDialogForNewEvent">
+          :showMessageIfThereAreNoEvents="false">
         </EventViewer>
       </q-scroll-area>
     </div>
 
     <!-- DIARY SELECTION -->
     <diarySection v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen" :class="getDiarySectionClass"
-      :diaryEntry="getDiaryEntry" :viewingMode="viewingMode" :scroll="scroll" @change-view="changeViewMode"
+      :diaryEntry="getDiaryEntry" :viewingMode="viewingMode" @change-view="changeViewMode"
       @save-changes="saveChangesToEntry" @openEntryInFullscreen="openEntryInFullscreen"
-      @showDialogForNewEvent="showDialogForNewEvent">
+      @showDialogForNewEvent="goToPageNewEventSetToCreationMode">
     </diarySection>
 
     <!-- DIARY SELECTION FULLSCREEN -->
@@ -221,28 +220,23 @@ export default {
     exitFullscreen() {
       this.isDiaryEntryShownInFullscreen = false;
     },
-    showDialogForNewEvent() {
-      //setting dialog visibilty
-      this.$store.commit("data/setDialogVisibility", {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogNewEvent",
-      });
+    goToPageNewEventSetToCreationMode() {
+      this.$store.commit("data/setModeForNewEvent", "CREATE");
+      this.$router.push("NewEvent");
     },
-    showDialogForExistingEvent(eventData) {
+    goToPageNewEventSetToEditingMode(eventData) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "data/getDiaryEntryByDate"
       ](eventData.createdOn);
+
+
       this.$store.commit("data/updateEventData", {
         eventData: eventData,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
+      this.$store.commit("data/setModeForNewEvent", "EDIT");
+      this.$router.push("NewEvent");
 
-      this.$store.commit("data/setDialogVisibility", {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogEditEvent",
-      });
     },
     saveChangesToEntry(changeData) {
       console.log(changeData);

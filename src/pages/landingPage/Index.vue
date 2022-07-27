@@ -2,12 +2,7 @@
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
     <q-separator color="secondary" class="q-mb-sm" />
-    <EventViewer
-      :diaryEntry="getDiaryEntry"
-      class="col"
-      @showDialogForExistingEvent="showDialogForExistingEvent"
-      @showDialogForNewEvent="showDialogForNewEvent"
-    ></EventViewer>
+    <EventViewer :diaryEntry="getDiaryEntry" class="col"></EventViewer>
     <!-- Player Character -->
   </q-page>
 </template>
@@ -25,29 +20,6 @@ export default {
     EventViewer,
   },
   methods: {
-    showDialogForNewEvent() {
-      //setting dialog visibilty
-      this.$store.commit("data/setDialogVisibility", {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogNewEvent",
-      });
-    },
-    showDialogForExistingEvent(eventData) {
-      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](eventData.createdOn);
-      this.$store.commit("data/updateEventData", {
-        eventData: eventData,
-        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
-      });
-
-      this.$store.commit("data/setDialogVisibility", {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogEditEvent",
-      });
-    },
   },
   computed: {
     // get diary entry for today
@@ -61,4 +33,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

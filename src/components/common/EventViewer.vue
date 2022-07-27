@@ -9,7 +9,7 @@
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             There is nothing here yet.
-            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
+            <q-btn color="accent" flat dense icon="add" @click="goToPageNewEventSetToCreationMode" />
           </q-card-section>
         </q-card>
       </div>
@@ -18,15 +18,15 @@
     <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1" class="q-pa-md">
       <q-card class="my-card shadow-3 text-justify">
         <q-card-section class="card-text text-center">
-          <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
+          <q-btn color="accent" flat dense icon="add" @click="goToPageNewEventSetToCreationMode" />
         </q-card-section>
       </q-card>
     </div>
     <!-- Case 3: Entry and events exist. -->
     <div v-else class="row items-center justify-center q-px-sm" v-for="event in events" :key="event.id">
       <EventCard :eventData="event" :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-        @changeEventData="changeEventData" @editEvent="editEvent" @deleteEvent="showConfirmDeleteDialog"
-        class="col-12" />
+        @changeEventData="changeEventData" @editEvent="goToPageNewEventSetToEditingMode"
+        @deleteEvent="showConfirmDeleteDialog" class="col-12" />
     </div>
   </div>
 </template>
@@ -37,7 +37,6 @@ import DialogDeleteEvent from "../dialogs/DialogDeleteEvent.vue";
 
 export default {
   name: "EventViewer",
-  emits: ["showDialogForNewEvent", "showDialogForExistingEvent"],
   props: {
     diaryEntry: Object,
     showMessageIfThereAreNoEvents: {
@@ -91,13 +90,21 @@ export default {
 
       this.closeDialog();
     },
-    // noch nicht richtig! wip
-    editEvent(eventData) {
-      this.$emit("showDialogForExistingEvent", eventData);
+    goToPageNewEventSetToCreationMode() {
+      this.$store.commit("data/setModeForNewEvent", "CREATE");
+      this.$router.push("NewEvent");
     },
-    // muss noch eingebunden werden im parent wip
-    showDialogForNewEvent() {
-      this.$emit("showDialogForNewEvent");
+    goToPageNewEventSetToEditingMode(eventData) {
+      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](eventData.createdOn);
+
+      this.$store.commit("data/updateEventData", {
+        eventData: eventData,
+        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
+      });
+      this.$store.commit("data/setModeForNewEvent", "EDIT");
+      this.$router.push("NewEvent");
     },
   },
   computed: {
