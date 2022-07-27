@@ -4,12 +4,12 @@
     <!-- DAY SELECTION -->
     <div class="row justify-center text-center q-py-md  maxHeight">
       <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_left" color="white"
-        :style="getStyleForText" @click="subtractFromDate(1)"></q-btn>
+        :style="$store.state.data.sTextBasicShadowDarkWhiteFont" @click="subtractFromDate(1)"></q-btn>
       <div class="col-6">
         <div class="row justify-center items-center">
           <!-- Calendar -->
-          <q-btn class="datePickerButton col-12" no-wrap no-caps flat icon-right="event" :style="textStyleAccent"
-            :label="formatDate(getDate)">
+          <q-btn class="datePickerButton col-12" no-wrap no-caps flat icon-right="event"
+            :style="$store.state.data.sTextAccentShadow" :label="formatDate(getDate)">
             <q-popup-proxy cover transition-show="scale" transition-hide="scale">
               <q-date v-model="formattedDate">
                 <div class="row items-center justify-end">
@@ -19,13 +19,13 @@
               </q-date>
             </q-popup-proxy>
           </q-btn>
-          <div class="col-12 text-white smallText q-pb-lg" :style="textStyleAccent">
+          <div class="col-12 text-white smallText q-pb-lg" :style="$store.state.data.sTextAccentShadow">
             {{ getDay }}
           </div>
         </div>
       </div>
       <q-btn v-if="viewingMode === 'view'" class="col-3" flat icon="keyboard_arrow_right" color="white"
-        :style="getStyleForText" @click="addToDate(1)"></q-btn>
+        :style="$store.state.data.sTextBasicShadowDarkWhiteFont" @click="addToDate(1)"></q-btn>
     </div>
 
     <!-- EVENT SELECTION -->
@@ -33,20 +33,20 @@
       <!-- Title, Button Row -->
       <div class="row justify-center items-center no-wrap">
         <!-- Title -->
-        <div class="col-10 smallText text-left text-white" :style="textStyleAccent">
+        <div class="col-10 smallText text-left text-white" :style="$store.state.data.sTextAccentShadow">
           {{ getTextForFirstHeadline }}
         </div>
         <!-- Buttons -->
         <div v-if="hasEvents || isDiarySectionVisible === false" class="smallText col-1 text-right">
           <!-- Open Fullscreen Button -->
           <q-btn v-if="!areEventsShownInFullscreen" class="col-auto" flat dense icon="bi-eye" color="accent"
-            @click="expandMore" :style="textStyleAccent" size="14px"></q-btn>
-          <q-btn v-else class="col-auto" flat dense :style="textStyleAccent" icon="bi-arrow-left" color="white"
-            @click="expandLess" size="14px"></q-btn>
+            @click="expandMore" :style="$store.state.data.sTextAccentShadow" size="14px"></q-btn>
+          <q-btn v-else class="col-auto" flat dense :style="$store.state.data.sTextAccentShadow" icon="bi-arrow-left"
+            color="white" @click="expandLess" size="14px"></q-btn>
         </div>
         <div v-else class="smallText col-1 text-right"></div>
         <q-btn class="smallText col-1 dense text-right" flat icon="bi-plus-lg" color="accent"
-          @click="showDialogForNewEvent" :style="textStyleAccent" size="14px">
+          @click="showDialogForNewEvent" :style="$store.state.data.sTextAccentShadow" size="14px">
         </q-btn>
       </div>
       <q-separator color="secondary" />
@@ -71,12 +71,12 @@
       <div class="row justify-end">
         <div class="col-4 smallText text-right"></div>
         <q-btn class="smallText text-right" flat dense icon="bi-arrow-left" label="back" color="white"
-          @click="exitFullscreen" :style="textStyleAccent"></q-btn>
+          @click="exitFullscreen" :style="$store.state.data.sTextAccentShadow"></q-btn>
       </div>
 
       <q-card class="editorCard shadow-3 text-justify">
         <q-item>
-          <q-item-section v-html="editorDisplayedInFullscreen">
+          <q-item-section v-html="editorHTMLContent">
           </q-item-section>
         </q-item>
       </q-card>
@@ -88,49 +88,25 @@
 import EventViewer from "../../components/common/EventViewer.vue";
 import diarySection from "../../components/diary/diarySection.vue";
 import { date } from "quasar";
-import shared from "../../shared.js";
 
 export default {
   name: "diary",
-  data() {
-    return {
-      textStyleDark: {
-        "text-shadow": "2px 2px #000000",
-        "text-shadow": "rgb(0 0 0) 2px 2px 2px",
-      },
-      textStyle: {
-        "text-color": "white",
-        //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-        "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
-      },
-      textStyleAccent: {
-        color: "var(--q-accent)",
-        //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-        "text-shadow": "var(--q-info) 2px 2px 2px",
-      },
-      isDiaryEntryShownInFullscreen: false,
-      editorDisplayedInFullscreen: "",
-      getDate: this.$store.state.data.lastSelectedDate,
-      isDiarySectionVisible: true,
-      viewingMode: "view",
-      day: "TODAY",
-      eventCounter: "< 1/2 >",
-      eventViewerIcon: "expand_more",
-      heightForScrollArea: "height: 175px",
-      boxShadowStyle: {
-        "box-shadow": "none",
-      },
-      styleABC: {
-        "background-color": "#121212 ",
-        color: "white",
-        opacity: "0.8",
-      },
-      classBig: { "max-width": "80%", width: "70%" },
-    };
-  },
   components: {
     EventViewer,
     diarySection,
+  },
+  data() {
+    return {
+      viewingMode: "view", // is either set to 'view' or 'edit'
+      isDiaryEntryShownInFullscreen: false,
+      isDiarySectionVisible: true, //if false, status section is shown
+      editorHTMLContent: "",
+
+      getDate: this.$store.state.data.lastSelectedDate,
+      day: "TODAY",
+
+      heightForScrollArea: "height: 175px",
+    };
   },
   watch: {
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
@@ -138,34 +114,27 @@ export default {
       this.$store.commit("data/updateLastSelectedDate", newDate);
       // if entry exists, show entries text
       if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor != "") {
-        this.editorDisplayedInFullscreen = this.getDiaryEntry.editor;
+        this.editorHTMLContent = this.getDiaryEntry.editor;
         // if no entry exists, but event(s) do.
       } else if (
         this.getDiaryEntry != undefined &&
         this.getDiaryEntry.editor === ""
       ) {
-        this.editorDisplayedInFullscreen =
+        this.editorHTMLContent =
           "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
         // if neither exists
       } else {
-        this.editorDisplayedInFullscreen =
+        this.editorHTMLContent =
           "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
       }
     },
   },
   computed: {
     isShowingExpandButtonOfEventCard() {
-      console.log(
-        this.$store.state.data.isShowingExpandButtonOfEventCardsOnDiaryPage
-      );
       return this.$store.state.data
         .isShowingExpandButtonOfEventCardsOnDiaryPage;
     },
     areEventsShownInFullscreen() {
-      console.log(
-        "eventsOnDiaryPageAreExpanded: ",
-        this.$store.state.data.eventsOnDiaryPageAreExpanded
-      );
       return this.$store.state.data.eventsOnDiaryPageAreExpanded;
     },
     // adjusts the top padding
@@ -189,13 +158,6 @@ export default {
         return "EVENTS";
       } else {
         return "";
-      }
-    },
-    getStyleForText() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.textStyleDark;
-      } else {
-        return this.textStyle;
       }
     },
     hasEvents() {
@@ -247,9 +209,6 @@ export default {
       }
     },
   },
-  created() {
-    this.scroll = shared.scroll; // now I can call this.foo() in my functions/template
-  },
   methods: {
     setDateToToday() {
       this.getDate = Date.now();
@@ -257,7 +216,7 @@ export default {
     openEntryInFullscreen(editor) {
       console.log("triggered in diary ", editor);
       this.isDiaryEntryShownInFullscreen = true;
-      this.editorDisplayedInFullscreen = editor;
+      this.editorHTMLContent = editor;
     },
     exitFullscreen() {
       this.isDiaryEntryShownInFullscreen = false;
@@ -284,9 +243,6 @@ export default {
         isBackgroundVisible: false,
         nameOfCurrentDialog: "dialogEditEvent",
       });
-    },
-    scroll(offset) {
-      this.scroll(+offset);
     },
     saveChangesToEntry(changeData) {
       console.log(changeData);

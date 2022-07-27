@@ -8,6 +8,7 @@ export default function () {
       "box-shadow": "none",
       "background-color": "transparent",
     },
+    sFontColor: "black",
     buttonFlatStyle: {
       "min-width": "83px",
       "max-width": "83px",
@@ -22,7 +23,26 @@ export default function () {
       "box-shadow": "none",
       "background-color": "var(--q-accent)",
     },
-
+    sTextBasicBlackFont: {
+      "font-color": "black",
+      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
+      "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
+    },
+    sTextBasicShadowDarkWhiteFont: {
+      "text-shadow": "2px 2px #000000",
+      "text-shadow": "rgb(0 0 0) 2px 2px 2px",
+      color: "white !important",
+    },
+    sTextAccentShadow: {
+      color: "var(--q-accent)",
+      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
+      "text-shadow": "var(--q-info) 2px 2px 2px",
+    },
+    sTextTitleBar: {
+      color: "white",
+      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
+      "text-shadow": "var(--q-info) 2px 2px 2px",
+    },
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",

@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md">
     <q-expansion-item v-model="expanded" icon="bi-eye-fill" icon-size="xs" :label="getIntentionText"
-      class="smallText q-pa-xs text-center" :style="textStyleDark" expand-icon-class="text-accent">
+      class="smallText q-pa-xs text-center" :style="$store.state.data.sTextBasicShadowDarkWhiteFont"
+      expand-icon-class="text-accent">
       <q-card class="my-card  shadow-3 q-py-md q-mt-md" :style="getStyleForTransparentCard">
         <q-card-section>
           <div class="cursor-pointer smallText" :style="getStyleForText">
@@ -36,17 +37,6 @@ export default {
         "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
         "color": "black !important"
       },
-      textStyleDark: {
-        "text-shadow": "2px 2px #000000",
-        "text-shadow": "rgb(0 0 0) 2px 2px 2px",
-        "color": "white !important"
-      },
-      textStyle: {
-        "font-color": "black",
-        //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-        "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
-      },
-
     };
   },
   methods: {
@@ -92,9 +82,9 @@ export default {
     },
     getStyleForText() {
       if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.textStyleDark;
+        return this.$store.state.data.sTextBasicShadowDarkWhiteFont;
       } else {
-        return this.textStyle;
+        return this.$store.state.data.sTextBasicBlackFont;
       }
     },
 
