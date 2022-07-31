@@ -9,6 +9,16 @@ export default function () {
       "background-color": "transparent",
     },
     sFontColor: "black",
+    // button fixed size, just icon
+    buttonFlatOnlyIcon: {
+      "background-color": "transparent",
+      "border-style": "unset",
+      "box-shadow": "none",
+      "min-width": "20px",
+      "max-width": "20px",
+      "min-height": "20px",
+    },
+    // button flat color; no borders
     buttonFlatStyle: {
       "min-width": "83px",
       "max-width": "83px",
@@ -16,6 +26,7 @@ export default function () {
       "box-shadow": "none",
       "background-color": "var(--q-secondary)",
     },
+    // button flat color for accent buttons; no borders
     buttonFlatStyleAccentColor: {
       "min-width": "83px",
       "max-width": "83px",

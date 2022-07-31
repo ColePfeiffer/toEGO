@@ -12,7 +12,7 @@
       verdana: 'Verdana',
     }">
     <template v-slot:fullscreenButton>
-      <q-btn flat no-wrap icon="bi-fullscreen" :style="ButtonStyleFlatJustIcon" :ripple="false"
+      <q-btn flat no-wrap icon="bi-fullscreen" :style="$store.state.data.buttonFlatOnlyIcon" :ripple="false"
         :text-color="getToolbarIconColor" size="xs" @click="toggleFullscreen">
       </q-btn>
     </template>
@@ -24,7 +24,7 @@
     </template>
 
     <template v-slot:toggleMoreOptionsButton>
-      <q-btn flat no-caps @click="changeToolbarMode" :style="ButtonStyleRegularButton" :ripple="false">
+      <q-btn flat no-caps @click="changeToolbarMode" :style="$store.state.data.buttonFlatStyle" :ripple="false">
         <div class="row items-center no-wrap">
           <q-icon size="8px" color="black" left :name="getIconForToggleToolbarButton" />
           <div class="text-center text-black" style="font-size: 12.5px">
@@ -35,7 +35,7 @@
     </template>
 
     <template v-slot:templatesMenuButton>
-      <q-btn flat no-caps :style="ButtonStyleRegularButton" :ripple="false">
+      <q-btn flat no-caps :style="$store.state.data.buttonFlatStyle" :ripple="false">
         <div class="row items-center no-wrap">
           <q-icon size="8px" color="black" left name="bi-layout-text-sidebar-reverse" />
           <div class="text-center text-black" style="font-size: 12.5px">
@@ -91,29 +91,6 @@ export default {
       isShowingFullToolbar: false,
       isInFullscreenMode: false,
       templateHolder: "",
-      ButtonStyleRegularButton: {
-        "min-width": "83px",
-        "max-width": "83px",
-        "min-height": "23px",
-        "box-shadow": "none",
-        "background-color": "var(--q-secondary)",
-      },
-      ButtonStyleFlatJustIcon: {
-        "background-color": "transparent",
-        "border-style": "unset",
-        "box-shadow": "none",
-        "min-width": "20px",
-        "max-width": "20px",
-        "min-height": "20px",
-      },
-      simplifiedStyle: {
-        "background-color": "var(--q-accent)",
-        color: "black",
-        height: "33px",
-        "border-style": "unset",
-        border: "1px solid black",
-        "box-shadow": "none",
-      },
       moreOptions: [
         ["templatesMenuButton", "toggleMoreOptionsButton"],
         [
