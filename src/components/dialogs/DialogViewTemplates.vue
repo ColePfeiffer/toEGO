@@ -1,13 +1,6 @@
 <template>
-  <baseDialog
-    v-model="isDialogVisible"
-    @closeDialog="closeDialog"
-    @save="pasteTemplateAndClose"
-    @showHelp="showHelp"
-    :widthOfDialog="315"
-    :hasHelpOption="true"
-    :isSaveButtonDisabled="!isAtLeastOneTemplateCreated"
-  >
+  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplateAndClose" @showHelp="showHelp"
+    :widthOfDialog="315" :hasHelpOption="true" :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
     <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
@@ -16,135 +9,119 @@
     </template>
     <template v-slot:content>
       <!-- v-for list of templates, kommt später weg -->
-      <div class="row items-center justify-center q-pa-md">
+      <div class="row items-center justify-center q-pa-md fixedHeight">
         <div class="column items-center justify-center">
-          <div v-if="isAtLeastOneTemplateCreated === true">
-            <q-btn-dropdown
-              ref="btnDropdown"
-              class="btnDropdown"
-              color="primary"
-              label="Template"
-            >
-              <q-virtual-scroll
-                style="max-height: 300px"
-                :items="templates"
-                separator
-                v-slot="{ item, index }"
-              >
-                <q-item :key="index" dense clickable>
-                  <q-item-section>
-                    <q-btn flat @click="setTemplate(index)"
-                      >#{{ index }} - {{ item.name }}</q-btn
-                    >
-                  </q-item-section>
-                </q-item>
-              </q-virtual-scroll>
-            </q-btn-dropdown>
+          <div class="row no-wrap justify-center items-center">
 
-            <q-card flat bordered class="templateCard bg-grey-1">
-              <q-card-section>
-                <div class="text-h6">{{ currentTemplate.name }}</div>
-              </q-card-section>
+            <div v-if="isAtLeastOneTemplateCreated === true" :style="'width: 300px'">
+              <!-- Template and Filter Dropdown Buttons -->
+              <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
+                <!-- Pick template Dropdown Button  -->
+                <q-btn-dropdown ref="btnDropdown " class="col-8" :ripple="false" flat no-caps color="transparent"
+                  text-color="black" label="Pick Template">
+                  <q-virtual-scroll style="max-height: 300px" :items="templates" separator v-slot="{ item, index }">
+                    <q-item :key="index" dense clickable>
+                      <q-item-section>
+                        <q-btn flat @click="setTemplate(index)">#{{ index }} - {{ item.name }}</q-btn>
+                      </q-item-section>
+                    </q-item>
+                  </q-virtual-scroll>
+                </q-btn-dropdown>
+                <!-- Filter Dropdown Button -->
+                <q-btn-dropdown ref="btnDropdown " class="col-4 " :ripple="false" flat no-caps color="transparent"
+                  text-color="black" label="Filter">
+                  <q-virtual-scroll style="max-height: 300px" :items="templates" separator v-slot="{ item, index }">
+                    <q-item :key="index" dense clickable>
+                      <q-item-section>
+                        <q-btn flat @click="setTemplate(index)">#{{ index }} - {{ item.name }}</q-btn>
+                      </q-item-section>
+                    </q-item>
+                  </q-virtual-scroll>
+                </q-btn-dropdown>
+              </div>
 
-              <q-card-section class="templateTextContainer">
-                <q-scroll-area :style="StyleTmplateTextScrollArea">
-                  <div
-                    v-if="
+
+              <q-card flat bordered square class=" bg-grey-1">
+                <q-card-section>
+                  <div class="text-h6">{{ currentTemplate.name }}</div>
+                </q-card-section>
+
+                <q-card-section class="templateTextContainer">
+                  <q-scroll-area :style="StyleTmplateTextScrollArea">
+                    <div v-if="
                       currentTemplate.text.length >= maxNumberOfDisplayedChars
-                    "
-                  >
-                    <div
-                      v-html="
+                    ">
+                      <div v-html="
                         currentTemplate.text.substring(
                           0,
                           maxNumberOfDisplayedChars
                         ) + ' [...]'
-                      "
-                    ></div>
-                  </div>
-                  <div v-else v-html="currentTemplate.text"></div>
-                </q-scroll-area>
-              </q-card-section>
-              <q-separator />
+                      "></div>
+                    </div>
+                    <div v-else v-html="currentTemplate.text"></div>
+                  </q-scroll-area>
+                </q-card-section>
+                <q-separator />
 
-              <q-card-actions class="row justify-center items-center">
-                <q-btn
-                  class="cardButton"
-                  :icon="defaultTemplateIcon"
-                  @click="setDefaultStatus"
-                  flat
-                >
-                </q-btn>
-                <q-btn
-                  class="cardButton"
-                  icon="bi-journal-plus"
-                  @click="pasteTemplate(currentTemplate.text)"
-                  flat
-                />
-                <div>
-                  <q-fab flat direction="right" padding="md">
-                    <template v-slot:icon="{ opened }">
-                      <q-icon
-                        :class="{
+                <q-card-actions class="row justify-center items-center">
+                  <q-btn class="cardButton" icon="bi-tags" @click="openSetCategoryMenu" flat>
+                  </q-btn>
+                  <q-btn class="cardButton" :icon="defaultTemplateIcon" @click="setDefaultStatus" flat>
+                  </q-btn>
+                  <q-btn class="cardButton" icon="bi-clipboard-plus" @click="pasteTemplate(currentTemplate.text)"
+                    flat />
+                  <div>
+                    <q-fab flat direction="right" padding="md">
+                      <template v-slot:icon="{ opened }">
+                        <q-icon :class="{
                           'example-fab-animate--hover': opened !== true,
-                        }"
-                        name="bi-trash"
-                        size="20px"
-                        style="top: -1px"
-                      />
-                    </template>
+                        }" name="bi-trash" size="20px" style="top: -1px" />
+                      </template>
 
-                    <q-fab-action
-                      style="left: -30px"
-                      class="fabButton"
-                      flat
-                      color="accent"
-                      @click="deleteTemplate"
-                      icon="bi-check"
-                    />
-                  </q-fab>
-                </div>
-              </q-card-actions>
-            </q-card>
-          </div>
-          <div v-else>
-            <q-card flat bordered class="templateCard bg-grey-1">
-              <q-card-section>
-                <div class="text-h6">There is nothing here.</div>
-              </q-card-section>
+                      <q-fab-action style="left: -30px" class="fabButton" flat color="accent" @click="deleteTemplate"
+                        icon="bi-check" />
+                    </q-fab>
+                  </div>
+                </q-card-actions>
+              </q-card>
 
-              <q-card-section class="templateTextContainer">
-                You have no saved templates yet.
-              </q-card-section>
-              <q-separator />
-            </q-card>
-          </div>
 
-          <br />
-          <div v-if="isHelpShown" class="text">
-            <div class="q-pa-sm q-ml-md">
-              <q-icon
-                class="q-px-sm"
-                name="bi-bookmark-star"
-                size="15px"
-              ></q-icon>
-              Make default: Every new entry will start with this template.
             </div>
-            <div class="q-pa-sm q-ml-md">
-              <q-icon
-                class="q-px-sm"
-                name="bi-journal-plus"
-                size="15px"
-              ></q-icon>
-              Paste template.
+            <div v-else>
+              <q-card flat bordered class="templateCard bg-grey-1">
+                <q-card-section>
+                  <div class="text-h6">There is nothing here.</div>
+                </q-card-section>
+
+                <q-card-section class="templateTextContainer">
+                  You have no saved templates yet.
+                </q-card-section>
+                <q-separator />
+              </q-card>
             </div>
-            <div class="q-pa-sm q-ml-md">
-              <q-icon class="q-px-sm" name="bi-trash" size="15px"></q-icon>
-              Delete template.
+
+            <br />
+            <div v-if="isHelpShown" class="text">
+              <div class="q-pa-sm q-ml-md">
+                <q-icon class="q-px-sm" name="bi-bookmark-star" size="15px"></q-icon>
+                Make default: Every new entry will start with this template.
+              </div>
+              <div class="q-pa-sm q-ml-md">
+                <q-icon class="q-px-sm" name="bi-journal-plus" size="15px"></q-icon>
+                Paste template.
+              </div>
+              <div class="q-pa-sm q-ml-md">
+                <q-icon class="q-px-sm" name="bi-trash" size="15px"></q-icon>
+                Delete template.
+              </div>
             </div>
           </div>
+
+
         </div>
+
       </div>
+
     </template>
   </baseDialog>
 </template>
@@ -233,7 +210,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogViewTemplates"
+          "dialogViewTemplates"
         ) {
           return true;
         } else {
@@ -256,8 +233,13 @@ export default {
 </script>
 
 <style scoped>
-.templateCard {
-  width: 200px;
+.containerForHeaderOfTemplateViewer {
+  background-color: pink;
+}
+
+
+.fixedHeight {
+  height: 600px;
 }
 
 .templateTextContainer {
@@ -265,9 +247,7 @@ export default {
   max-height: 300px;
 }
 
-.btnDropdown {
-  width: 200px;
-}
+
 
 .cardButton {
   font-size: 11px;

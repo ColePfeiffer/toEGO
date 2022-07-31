@@ -21,18 +21,11 @@
           <slot name="footer">
             <div class="col-1 q-pa-sm">
               <div class="row">
-                <q-btn
-                  class="button col-3 col-md-2 offset-5 offset-md-7 q-mx-xs"
-                  flat
-                  @click="closeDialog"
-                >
+                <q-btn class="button col-3 col-md-2 offset-5 offset-md-7 q-mx-xs" flat @click="closeDialog">
                   <slot name="close-button"> Cancel </slot>
                 </q-btn>
 
-                <q-btn
-                  class="button col-3 col-md-2 q-mx-xs"
-                  @click="saveChanges"
-                >
+                <q-btn class="button col-3 col-md-2 q-mx-xs" @click="saveChanges">
                   <slot name="confirm-button"> Save </slot>
                 </q-btn>
               </div>
