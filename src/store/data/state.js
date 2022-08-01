@@ -1,6 +1,31 @@
 import { date } from "quasar";
 export default function () {
   return {
+    quickListForDiary: {
+      id: 0,
+      name: "Quick List",
+      templatesById: [],
+    },
+    foldersForDiary: [
+      { id: 1, name: "Help for bad days", categoriesByID: [3, 4] },
+    ],
+    categoriesForDiary: [
+      {
+        id: 1,
+        name: "Daytimes",
+        templatesByID: [],
+        isInFolder: false,
+      },
+      {
+        id: 2,
+        name: "Writing prompts",
+        templatesByID: [],
+        isInFolder: false,
+      },
+      { id: 3, name: "Journaling", templatesByID: [], isInFolder: true },
+      { id: 4, name: "Methods", templatesByID: [], isInFolder: true },
+    ],
+    categoriesForNewEvent: [],
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,

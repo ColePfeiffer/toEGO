@@ -54,3 +54,16 @@ export const getMethodById2 = (state) => {
     return state.eventData.methods.find((method) => method.id === id);
   };
 };
+
+export const getFolderContent = (state) => {
+  return (folder) => {
+    console.log("FOLDER: ", folder);
+    let array = [];
+    folder.categoriesByID.forEach((ID) => {
+      array.push(
+        state.categoriesForDiary.find((category) => category.id === ID)
+      );
+    });
+    return array;
+  };
+};

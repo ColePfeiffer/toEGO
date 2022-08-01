@@ -37,6 +37,7 @@
                       </q-item-section>
                     </q-item>
                   </q-virtual-scroll>
+
                 </q-btn-dropdown>
               </div>
 
@@ -64,12 +65,83 @@
                 <q-separator />
 
                 <q-card-actions class="row justify-center items-center">
-                  <q-btn class="cardButton" icon="bi-tags" @click="openSetCategoryMenu" flat>
+                  <q-btn class="cardButton" icon="bi-tags" @click="openSetCategoryMenu" flat :ripple="false">
+                    <q-menu dense anchor="top middle" self="bottom middle">
+                      <q-list dense style="min-width: 100px">
+
+
+
+
+                        <q-item clickable @click="openSetCategoryMenu">
+                          <q-item-section avatar>
+                            <q-icon color="primary" name="bi-plus" />
+                          </q-item-section>
+                          <q-item-section>New category</q-item-section>
+                        </q-item>
+
+                        <q-item clickable v-close-popup @click="openSetCategoryMenu">
+                          <q-item-section avatar>
+                            <q-icon color="primary" name="bi-gear" />
+                          </q-item-section>
+                          <q-item-section>Settings</q-item-section>
+                        </q-item>
+
+                        <q-item clickable v-close-popup @click="openSetCategoryMenu">
+                          <q-item-section avatar>
+                            <q-icon color="primary" name="bi-x" />
+                          </q-item-section>
+                          <q-item-section>Unset all</q-item-section>
+                        </q-item>
+                        <q-separator />
+
+                        <!-- For Folders -->
+                        <q-item dense clickable v-for="folder in $store.state.data.foldersForDiary" :key="folder">
+                          <q-item-section>{{ folder.name }}</q-item-section>
+                          <q-item-section side>
+                            <q-icon name="keyboard_arrow_right" />
+                          </q-item-section>
+                          <!-- Submenu -->
+                          <q-menu anchor="top end" self="top start" auto-close>
+                            <q-list>
+
+                              <q-item class="row align-center items-center" v-for="n in $store.getters['data/getFolderContent'](
+                                folder
+                              )" :key="n" dense clickable>
+                                <q-item-section>{{ n.name }}</q-item-section>
+                                <q-item-section side top>
+                                  <q-badge color="teal" label="10k" />
+                                </q-item-section>
+                              </q-item>
+                            </q-list>
+                          </q-menu>
+                        </q-item>
+
+
+                        <q-separator />
+
+
+                        <q-item dense clickable v-for="category in getFolderlessCategories" :key="category">
+                          <div v-if="category.isInFolder === false">
+                            <q-item-section>{{ category.name }}</q-item-section>
+                          </div>
+                        </q-item>
+
+
+                      </q-list>
+                    </q-menu>
                   </q-btn>
+
                   <q-btn class="cardButton" :icon="defaultTemplateIcon" @click="setDefaultStatus" flat>
+                    <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Set as default
+                      template
+                    </q-tooltip>
                   </q-btn>
-                  <q-btn class="cardButton" icon="bi-clipboard-plus" @click="pasteTemplate(currentTemplate.text)"
-                    flat />
+                  <q-btn class="cardButton" icon="bi-clipboard-plus" @click="pasteTemplate(currentTemplate.text)" flat>
+                    <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Paste template
+                    </q-tooltip>
+                  </q-btn>
+
+
                   <div>
                     <q-fab flat direction="right" padding="md">
                       <template v-slot:icon="{ opened }">
@@ -80,6 +152,7 @@
 
                       <q-fab-action style="left: -30px" class="fabButton" flat color="accent" @click="deleteTemplate"
                         icon="bi-check" />
+
                     </q-fab>
                   </div>
                 </q-card-actions>
@@ -155,6 +228,9 @@ export default {
     },
   },
   methods: {
+    openSetCategoryMenu() {
+      console.log("MEHEHE")
+    },
     setDefaultStatus() {
       let payload = {
         id: this.currentTemplate.id,
@@ -185,6 +261,10 @@ export default {
     },
   },
   computed: {
+
+    getFolderlessCategories() {
+      return this.$store.state.data.categoriesForDiary.filter(category => { return category.isInFolder === false });
+    },
     isAtLeastOneTemplateCreated() {
       if (this.lengthOfTemplates != 0) {
         return true;
@@ -234,7 +314,7 @@ export default {
 
 <style scoped>
 .containerForHeaderOfTemplateViewer {
-  background-color: pink;
+  background-color: var(--q-secondary);
 }
 
 
