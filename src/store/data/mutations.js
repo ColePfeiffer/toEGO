@@ -5,6 +5,25 @@ import shared from "../../shared.js";
 import { date } from "quasar";
 import getters from "./getters";
 
+// payload consists of category and templateID
+export const addTemplateToDiaryCategory = (state, payload) => {
+  payload.category.templatesByID.push(payload.templateID);
+};
+
+export const removeTemplateFromDiaryCategory = (state, payload) => {
+  // Remove template from array
+  console.log(payload.category.templatesByID);
+
+  var filteredArray = payload.category.templatesByID.filter(function (
+    templateID
+  ) {
+    return templateID != payload.templateID;
+  });
+
+  payload.category.templatesByID = filteredArray;
+  console.log(payload.category.templatesByID);
+};
+
 export const updateDrawerState = (state, opened) => {
   state.drawerState = opened;
 };
