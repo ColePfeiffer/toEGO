@@ -5,15 +5,54 @@ import shared from "../../shared.js";
 import { date } from "quasar";
 import getters from "./getters";
 
+// payload consists of categoryName and type; type can be "DIARY" or "EVENT"
+export const addNewCategory = (state, payload) => {
+  let categories;
+  if (payload.type === "DIARY") {
+    categories = state.categoriesForDiary;
+  } else {
+    categories = state.categoriesForEvent;
+  }
+  let newCategory = {
+    id: uid(),
+    name: payload.categoryName,
+    templatesByID: [],
+    isInFolder: false,
+  };
+  categories.push(newCategory);
+};
+
+export const resetCategorySettingsForTemplate = (state, templateID) => {
+  state.categoriesForDiary.forEach((category) => {
+    // if template id exists in category, delete it
+    if (category.templatesByID.includes(templateID)) {
+      category.templatesByID.splice(
+        category.templatesByID.indexOf(templateID),
+        1
+      );
+    }
+  });
+};
+
+export const manageQuicklistStatusOfTemplate = (state, templateID) => {
+  if (state.quickListForDiary.templatesById.includes(templateID)) {
+    state.quickListForDiary.templatesById.splice(
+      state.quickListForDiary.templatesById.indexOf(templateID),
+      1
+    ); //deleting
+  } else {
+    state.quickListForDiary.templatesById.push(templateID);
+  }
+};
+
 // payload consists of category and templateID
 export const addTemplateToDiaryCategory = (state, payload) => {
+  console.log("addTemplateToDiaryCategory");
   payload.category.templatesByID.push(payload.templateID);
 };
 
 export const removeTemplateFromDiaryCategory = (state, payload) => {
   // Remove template from array
-  console.log(payload.category.templatesByID);
-
   var filteredArray = payload.category.templatesByID.filter(function (
     templateID
   ) {
@@ -21,7 +60,6 @@ export const removeTemplateFromDiaryCategory = (state, payload) => {
   });
 
   payload.category.templatesByID = filteredArray;
-  console.log(payload.category.templatesByID);
 };
 
 export const updateDrawerState = (state, opened) => {

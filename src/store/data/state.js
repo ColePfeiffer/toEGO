@@ -9,6 +9,14 @@ export default function () {
     foldersForDiary: [
       { id: 1, name: "Help for bad days", categoriesByID: [3, 4] },
     ],
+    categoriesForEvent: [
+      {
+        id: 1,
+        name: "Daytimes",
+        templatesByID: [],
+        isInFolder: false,
+      },
+    ],
     categoriesForDiary: [
       {
         id: 1,
