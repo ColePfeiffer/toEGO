@@ -34,24 +34,32 @@ export const resetCategorySettingsForTemplate = (state, templateID) => {
   });
 };
 
-export const manageQuicklistStatusOfTemplate = (state, templateID) => {
-  if (state.quickListForDiary.templatesById.includes(templateID)) {
-    state.quickListForDiary.templatesById.splice(
-      state.quickListForDiary.templatesById.indexOf(templateID),
-      1
-    ); //deleting
+//payload consists of templateID and either diary's or event's quicklist
+export const manageQuicklistStatusOfTemplate = (state, payload) => {
+  let templateID = payload.templateID;
+  let type = payload.type;
+
+  if (type === "DIARY") {
+    if (state.quicklistForDiary.templatesById.includes(templateID)) {
+      state.quicklistForDiary.templatesById.splice(
+        state.quicklistForDiary.templatesById.indexOf(templateID),
+        1
+      ); //deleting
+    } else {
+      state.quicklistForDiary.templatesById.push(templateID);
+    }
   } else {
-    state.quickListForDiary.templatesById.push(templateID);
+    // ...
   }
 };
 
 // payload consists of category and templateID
-export const addTemplateToDiaryCategory = (state, payload) => {
-  console.log("addTemplateToDiaryCategory");
+export const addTemplateToCategory = (state, payload) => {
   payload.category.templatesByID.push(payload.templateID);
 };
 
-export const removeTemplateFromDiaryCategory = (state, payload) => {
+// payload consists of category, templateID
+export const removeTemplateFromCategory = (state, payload) => {
   // Remove template from array
   var filteredArray = payload.category.templatesByID.filter(function (
     templateID

@@ -56,13 +56,11 @@ export const getMethodById2 = (state) => {
 };
 
 export const getFolderContent = (state) => {
-  return (folder) => {
-    console.log("FOLDER: ", folder);
+  return (folder, categories) => {
     let array = [];
+
     folder.categoriesByID.forEach((ID) => {
-      array.push(
-        state.categoriesForDiary.find((category) => category.id === ID)
-      );
+      array.push(categories.find((category) => category.id === ID));
     });
     return array;
   };
@@ -70,7 +68,7 @@ export const getFolderContent = (state) => {
 
 export const getQuickListContent = (state) => {
   let array = [];
-  state.quickListForDiary.templatesById.forEach((templateID) => {
+  state.quicklistForDiary.templatesById.forEach((templateID) => {
     array.push(
       state.diaryTemplates.find((template) => template.id === templateID)
     );

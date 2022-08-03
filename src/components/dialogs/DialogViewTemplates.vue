@@ -108,6 +108,10 @@
                   <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
                     <CategoryOrTagQuickMenuVue
                       :currentTemplate="currentTemplate"
+                      :folders="$store.state.data.foldersForDiary"
+                      :categories="$store.state.data.categoriesForDiary"
+                      :type="'DIARY'"
+                      :quicklist="$store.state.data.quicklistForDiary"
                     >
                     </CategoryOrTagQuickMenuVue>
                   </q-btn>

@@ -1,7 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
-    quickListForDiary: {
+    quicklistForDiary: {
       id: 0,
       name: "Quick List",
       templatesById: [],

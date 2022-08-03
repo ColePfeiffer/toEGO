@@ -84,119 +84,31 @@
         </q-item-section>
       </q-item>
       <q-separator />
-
-      <!-- categories that are in folders -->
-      <q-item
-        dense
-        clickable
-        v-for="folder in $store.state.data.foldersForDiary"
-        :key="folder"
+      <FolderCategoryStructure
+        :currentTemplate="currentTemplate"
+        :folders="folders"
+        :categories="categories"
       >
-        <q-item-section avatar>
-          <q-icon dense size="xs" color="secondary" name="bi-folder" />
-        </q-item-section>
-        <q-item-section>{{ folder.name }}</q-item-section>
-        <q-item-section side>
-          <q-icon name="keyboard_arrow_right" />
-        </q-item-section>
-        <!-- Submenu -->
-        <!-- screen.lt Tells if current screen width is lower than breakpoint-name -->
-        <q-menu
-          :cover="$q.screen.lt.sm"
-          anchor="top end"
-          self="top start"
-          separate-close-popup
-        >
-          <q-list>
-            <div v-if="$q.screen.lt.sm">
-              <q-item dense clickable v-close-popup>
-                <q-item-section avatar>
-                  <q-icon dense size="xs" name="keyboard_arrow_left" />
-                </q-item-section>
-                <q-item-section>Back</q-item-section>
-              </q-item>
-              <q-separator />
-            </div>
-
-            <q-item
-              class="row align-center items-center"
-              v-for="category in $store.getters['data/getFolderContent'](
-                folder
-              )"
-              :key="category"
-              dense
-              clickable
-              @click="manageCategoryForTemplate(category)"
-              :style="getTextColorForCategory(category)"
-            >
-              <q-item-section avatar>
-                <q-icon color="secondary" size="xs" name="bi-collection" />
-              </q-item-section>
-              <q-item-section>{{ category.name }}</q-item-section>
-              <q-item-section side top>
-                <q-btn
-                  dense
-                  :color="
-                    isTemplateSetToThisCategory(category) === 'bi-dash'
-                      ? 'orange'
-                      : 'teal'
-                  "
-                  round
-                  flat
-                  :icon="isTemplateSetToThisCategory(category)"
-                >
-                </q-btn>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
-      </q-item>
-
-      <q-separator />
-      <!-- categories that aren't in folders -->
-      <q-item
-        dense
-        clickable
-        v-for="category in getFolderlessCategories"
-        :key="category"
-        @click="manageCategoryForTemplate(category)"
-        :style="getTextColorForCategory(category)"
-      >
-        <div
-          class="row align-center items-center"
-          v-if="category.isInFolder === false"
-        >
-          <q-item-section avatar>
-            <q-icon color="secondary" size="xs" name="bi-collection" />
-          </q-item-section>
-          <q-item-section>{{ category.name }}</q-item-section>
-          <q-item-section side top>
-            <q-btn
-              dense
-              :color="
-                isTemplateSetToThisCategory(category) === 'bi-dash'
-                  ? 'orange'
-                  : 'teal'
-              "
-              round
-              flat
-              :icon="isTemplateSetToThisCategory(category)"
-            >
-            </q-btn>
-          </q-item-section>
-        </div>
-      </q-item>
+      </FolderCategoryStructure>
     </q-list>
   </q-menu>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
+import FolderCategoryStructure from "./FolderCategoryStructure.vue";
 
 export default {
   name: "CategoryOrTagQuickMenu",
   emits: [],
-  props: { currentTemplate: Object },
+  props: {
+    currentTemplate: Object,
+    folders: Array,
+    categories: Array,
+    type: String,
+    quicklist: Object,
+  },
+  components: { FolderCategoryStructure },
   data() {
     return {
       newCategoryName: "",
@@ -214,7 +126,7 @@ export default {
     createNewCategory() {
       let payload = {
         categoryName: this.newCategoryName,
-        type: "DIARY",
+        type: this.type,
       };
       this.$store.commit("data/addNewCategory", payload);
       this.closeAndResetNewCategoryCreation();
@@ -227,59 +139,19 @@ export default {
     },
     openDialogForSettings() {},
     isTemplateInQuicklist() {
-      if (
-        this.$store.state.data.quickListForDiary.templatesById.includes(
-          this.currentTemplate.id
-        )
-      ) {
+      if (this.quicklist.templatesById.includes(this.currentTemplate.id)) {
         return "bi-dash";
       } else {
         return "bi-plus";
       }
     },
     manageQuicklistStatus() {
-      this.$store.commit(
-        "data/manageQuicklistStatusOfTemplate",
-        this.currentTemplate.id
-      );
-    },
-    isTemplateSetToThisCategory(category) {
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
-        return "bi-dash";
-      } else {
-        return "bi-plus";
-      }
-    },
-    getTextColorForCategory(category) {
-      if (this.isTemplateSetToThisCategory(category) === "bi-dash") {
-        return {
-          color: "var(--q-primary)",
-        };
-      } else {
-        return {
-          color: "#d3d3d3 ",
-        };
-      }
-    },
-
-    manageCategoryForTemplate(category) {
       let payload = {
-        category: category,
         templateID: this.currentTemplate.id,
+        quicklist: this.quicklist,
+        type: this.type,
       };
-
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
-        this.$store.commit("data/removeTemplateFromDiaryCategory", payload);
-      } else {
-        this.$store.commit("data/addTemplateToDiaryCategory", payload);
-      }
-    },
-  },
-  computed: {
-    getFolderlessCategories() {
-      return this.$store.state.data.categoriesForDiary.filter((category) => {
-        return category.isInFolder === false;
-      });
+      this.$store.commit("data/manageQuicklistStatusOfTemplate", payload);
     },
   },
 };
