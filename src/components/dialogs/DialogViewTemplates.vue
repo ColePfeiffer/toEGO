@@ -16,7 +16,8 @@
     </template>
     <template v-slot:content>
       <!-- v-for list of templates, kommt später weg -->
-      <div class="row items-center justify-center q-pa-md fixedHeight">
+      <!-- class fixedHeight-->
+      <div class="row items-center justify-center q-pa-md">
         <div class="column items-center justify-center">
           <div class="row no-wrap justify-center items-center">
             <div
@@ -82,11 +83,11 @@
               </div>
 
               <q-card flat bordered square class="bg-grey-1">
-                <q-card-section>
+                <q-card-section class="q-pb-xs">
                   <div class="text-h6">{{ currentTemplate.name }}</div>
                 </q-card-section>
 
-                <q-card-section class="templateTextContainer">
+                <q-card-section class="templateTextContainer q-pb-xs">
                   <q-scroll-area :style="StyleTmplateTextScrollArea">
                     <div
                       v-if="
@@ -435,6 +436,7 @@
 
 <script>
 import baseDialog from "../ui/BaseDialog2.vue";
+import { useQuasar } from "quasar";
 
 export default {
   name: "dialogViewTemplates",

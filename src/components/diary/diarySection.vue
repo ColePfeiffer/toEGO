@@ -173,6 +173,7 @@
                   v-model="changeData.editor"
                   @openDialogCreateTemplate="showTemplateCreator"
                   @openDialogViewTemplates="showTemplateViewer"
+                  @pasteTemplate="pasteTemplate"
                   minHeight="300px"
                 />
               </div>

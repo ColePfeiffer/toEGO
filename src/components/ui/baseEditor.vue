@@ -98,7 +98,9 @@
               <q-menu anchor="top end" self="top start" auto-close>
                 <q-list>
                   <div
-                    v-if="$store.getters['data/getQuickListContent'].length > 0"
+                    v-if="
+                      $store.getters['data/getQuickListContent'].length >= 1
+                    "
                   >
                     <q-item
                       v-for="template in $store.getters[
@@ -107,6 +109,7 @@
                       :key="template"
                       dense
                       clickable
+                      @click="pasteTemplate(template)"
                     >
                       <q-item-section avatar>
                         <q-icon
@@ -121,14 +124,7 @@
                     </q-item>
                   </div>
                   <div v-else>
-                    <q-item
-                      v-for="template in $store.getters[
-                        'data/getQuickListContent'
-                      ]"
-                      :key="template"
-                      dense
-                      clickable
-                    >
+                    <q-item dense>
                       <q-item-section avatar>
                         <q-icon
                           dense
@@ -138,7 +134,10 @@
                         />
                       </q-item-section>
 
-                      <q-item-section>Nothing here yet!</q-item-section>
+                      <q-item-section
+                        >You haven't added any templates to the quick-list
+                        yet.</q-item-section
+                      >
                     </q-item>
                   </div>
                 </q-list>
@@ -148,23 +147,20 @@
         </q-menu>
       </q-btn>
     </template>
-
-    <dialogCreateTemplate
-      @closeDialog="closeDialog"
-      @createTemplate="createTemplate"
-    ></dialogCreateTemplate>
   </q-editor>
 </template>
 
 <script>
-import dialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
 export default {
   name: "baseEditor",
-  emits: ["openDialogCreateTemplate", "openDialogViewTemplates"],
+  emits: [
+    "openDialogCreateTemplate",
+    "openDialogViewTemplates",
+    "pasteTemplate",
+  ],
   props: {
     minHeight: String,
   },
-  components: { dialogCreateTemplate },
   data() {
     return {
       styleForToolbarDark: { background: "black" },
@@ -274,11 +270,7 @@ export default {
     },
 
     pasteTemplate(template) {
-      /*
-let editorRef = this.$refs.editorRef;
-      editorRef.runCmd("insertHTML", template.text);
-      editorRef.focus();
- */
+      this.$emit("pasteTemplate", template);
     },
   },
 

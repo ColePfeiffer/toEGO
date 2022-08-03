@@ -2,9 +2,9 @@
   <!-- whole thing -->
   <q-dialog class="baseDialog" full-width persistent>
     <!-- row -->
-    <div class="row  justify-center " :style="boxShadowStyle">
-      <div class="col-12 col-sm-7 col-md-3 col-xl-3 ">
-        <div class="window dialogBox column  " :style="getStyleForDialog">
+    <div class="row justify-center" :style="boxShadowStyle">
+      <div class="col-12 col-sm-7 col-md-4 col-xl-3">
+        <div class="window dialogBox column" :style="getStyleForDialog">
           <div class="col-1">
             <!-- Title Bar -->
             <div class="title-bar row" :style="getStyleForDialogTitleBar">
@@ -12,7 +12,11 @@
                 <slot name="dialogTitle"></slot>
               </div>
               <div class="title-bar-controls">
-                <button v-if="hasHelpOption" aria-label="Help" @click="showHelp"></button>
+                <button
+                  v-if="hasHelpOption"
+                  aria-label="Help"
+                  @click="showHelp"
+                ></button>
                 <button aria-label="Close" @click="closeDialog"></button>
               </div>
             </div>
@@ -22,19 +26,33 @@
             <slot name="footer">
               <div class="col-1 q-pa-sm q-pb-md q-mt-md">
                 <div class="row justify-end">
-                  <q-btn v-if="hasExtraButton" class="button extraButton col-3 col-md-2 q-mx-xs" flat
-                    :style="$store.state.data.buttonFlatStyleAccentColor" :icon="extraButtonIcon"
-                    @click="clickExtraButton">
+                  <q-btn
+                    v-if="hasExtraButton"
+                    class="button extraButton col-3 col-md-2 q-mx-xs"
+                    flat
+                    :style="$store.state.data.buttonFlatStyleAccentColor"
+                    :icon="extraButtonIcon"
+                    @click="clickExtraButton"
+                  >
                     <slot name="extra-button"> </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
-                    @click="closeDialog">
+                  <q-btn
+                    class="button col-3 col-md-2 q-mx-xs"
+                    :style="$store.state.data.buttonFlatStyle"
+                    flat
+                    @click="closeDialog"
+                  >
                     <slot name="close-button"> Cancel </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
-                    :disabled="isSaveButtonDisabled" @click="saveChanges">
+                  <q-btn
+                    class="button col-3 col-md-2 q-mx-xs"
+                    :style="$store.state.data.buttonFlatStyle"
+                    flat
+                    :disabled="isSaveButtonDisabled"
+                    @click="saveChanges"
+                  >
                     <slot name="confirm-button"> Save </slot>
                   </q-btn>
                 </div>
@@ -44,7 +62,6 @@
         </div>
       </div>
     </div>
-
   </q-dialog>
 </template>
 
@@ -86,17 +103,6 @@ export default {
         "box-shadow": "none",
       },
 
-      styleDark: {
-        //width: this.widthOfDialog + "px",
-        "background-color": "rgb(0 0 0 / 77%)",
-        color: "white",
-      },
-      styleLight: {
-        //width: this.widthOfDialog + "px",
-
-        "background-color": "rgb(255 255 255 )",
-        color: "black",
-      },
       accentBackground: {
         //"background-color": "var(--q-accent)",
         color: "var(--q-primary)",
@@ -126,6 +132,13 @@ export default {
     },
   },
   computed: {
+    getHeight() {
+      let height = this.$q.screen.height;
+      return {
+        height,
+      };
+    },
+
     getStyleForDialogTitleBar() {
       if (this.$store.getters["data/isDarkModeActive"]) {
         return this.styleForDialogTitleBarDark;
@@ -134,11 +147,36 @@ export default {
       }
     },
     getStyleForDialog() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.styleDark;
+      let style = {};
+      let currentMaxHeight;
+      let screenHeightAsNumber = this.getHeight.height;
+      if (screenHeightAsNumber >= 650) {
+        console.log("big");
+        currentMaxHeight = "650px";
       } else {
-        return this.styleLight;
+        console.log("small");
+        currentMaxHeight = screenHeightAsNumber + "px";
       }
+      console.log("heightAsString", currentMaxHeight);
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        style = {
+          //width: this.widthOfDialog + "px",
+          "background-color": "rgb(0 0 0 / 77%)",
+          height: currentMaxHeight,
+          color: "white",
+        };
+      } else {
+        style = {
+          //width: this.widthOfDialog + "px",
+          "background-color": "rgb(255 255 255 )",
+          // max-height
+          // min-height
+          height: currentMaxHeight,
+          color: "black",
+        };
+      }
+      console.log("STYLE: ", style);
+      return style;
     },
   },
 };
