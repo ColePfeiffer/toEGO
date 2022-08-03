@@ -22,8 +22,11 @@ export const addNewCategory = (state, payload) => {
   categories.push(newCategory);
 };
 
-export const resetCategorySettingsForTemplate = (state, templateID) => {
-  state.categoriesForDiary.forEach((category) => {
+export const resetCategorySettingsForTemplate = (state, payload) => {
+  let templateID = payload.templateID;
+  let categories = payload.categories;
+
+  categories.forEach((category) => {
     // if template id exists in category, delete it
     if (category.templatesByID.includes(templateID)) {
       category.templatesByID.splice(
@@ -49,7 +52,14 @@ export const manageQuicklistStatusOfTemplate = (state, payload) => {
       state.quicklistForDiary.templatesById.push(templateID);
     }
   } else {
-    // ...
+    if (state.quicklistForEvents.templatesById.includes(templateID)) {
+      state.quicklistForEvents.templatesById.splice(
+        state.quicklistForEvents.templatesById.indexOf(templateID),
+        1
+      ); //deleting
+    } else {
+      state.quicklistForEvents.templatesById.push(templateID);
+    }
   }
 };
 

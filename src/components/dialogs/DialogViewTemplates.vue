@@ -108,10 +108,10 @@
                   <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
                     <CategoryOrTagQuickMenuVue
                       :currentTemplate="currentTemplate"
-                      :folders="$store.state.data.foldersForDiary"
-                      :categories="$store.state.data.categoriesForDiary"
+                      :folders="folders"
+                      :categories="categories"
                       :type="type"
-                      :quicklist="$store.state.data.quicklistForDiary"
+                      :quicklist="quicklist"
                     >
                     </CategoryOrTagQuickMenuVue>
                   </q-btn>
@@ -291,6 +291,35 @@ export default {
     },
   },
   computed: {
+    isTypeSetToDiary() {
+      if (this.type === "DIARY") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    folders() {
+      if (this.isTypeSetToDiary) {
+        return this.$store.state.data.foldersForDiary;
+      } else {
+        return this.$store.state.data.foldersForEvents;
+      }
+    },
+    categories() {
+      if (this.isTypeSetToDiary) {
+        return this.$store.state.data.categoriesForDiary;
+      } else {
+        return this.$store.state.data.categoriesForEvents;
+      }
+    },
+    quicklist() {
+      if (this.isTypeSetToDiary) {
+        return this.$store.state.data.quicklistForDiary;
+      } else {
+        return this.$store.state.data.quicklistForEvents;
+      }
+    },
+
     isAtLeastOneTemplateCreated() {
       if (this.lengthOfTemplates != 0) {
         return true;

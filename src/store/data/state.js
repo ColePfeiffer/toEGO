@@ -6,13 +6,29 @@ export default function () {
       name: "Quick List",
       templatesById: [],
     },
+    quicklistForEvents: {
+      id: 0,
+      name: "Quick List",
+      templatesById: [],
+    },
     foldersForDiary: [
       { id: 1, name: "Help for bad days", categoriesByID: [3, 4] },
     ],
-    categoriesForEvent: [
+    foldersForEvents: [
+      { id: 1, name: "Some folder I made", categoriesByID: [1] },
+    ],
+    categoriesForEvents: [
       {
         id: 1,
-        name: "Daytimes",
+        name: "MUH!!!",
+        templatesByID: [],
+        isInFolder: true,
+      },
+      { id: 2, name: "Tracker", templatesByID: [], isInFolder: false },
+      { id: 3, name: "Other", templatesByID: [], isInFolder: false },
+      {
+        id: 4,
+        name: "Grounding Methods",
         templatesByID: [],
         isInFolder: false,
       },
@@ -33,7 +49,6 @@ export default function () {
       { id: 3, name: "Journaling", templatesByID: [], isInFolder: true },
       { id: 4, name: "Methods", templatesByID: [], isInFolder: true },
     ],
-    categoriesForNewEvent: [],
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,

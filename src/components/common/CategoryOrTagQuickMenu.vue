@@ -132,10 +132,11 @@ export default {
       this.closeAndResetNewCategoryCreation();
     },
     unsetAllCategories() {
-      this.$store.commit(
-        "data/resetCategorySettingsForTemplate",
-        this.currentTemplate.id
-      );
+      let payload = {
+        templateID: this.currentTemplate.id,
+        categories: this.categories,
+      };
+      this.$store.commit("data/resetCategorySettingsForTemplate", payload);
     },
     openDialogForSettings() {},
     isTemplateInQuicklist() {

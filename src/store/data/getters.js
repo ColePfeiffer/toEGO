@@ -67,13 +67,24 @@ export const getFolderContent = (state) => {
 };
 
 export const getQuickListContent = (state) => {
-  let array = [];
-  state.quicklistForDiary.templatesById.forEach((templateID) => {
-    array.push(
-      state.diaryTemplates.find((template) => template.id === templateID)
-    );
-  });
-  return array;
+  return (type) => {
+    let array = [];
+    if (type === "DIARY") {
+      state.quicklistForDiary.templatesById.forEach((templateID) => {
+        array.push(
+          state.diaryTemplates.find((template) => template.id === templateID)
+        );
+      });
+    } else {
+      state.quicklistForEvents.templatesById.forEach((templateID) => {
+        array.push(
+          state.eventTemplates.find((template) => template.id === templateID)
+        );
+      });
+    }
+
+    return array;
+  };
 };
 
 export const isTemplateInCategory = (state) => {
