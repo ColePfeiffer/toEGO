@@ -17,13 +17,10 @@
     <template v-slot:content>
       <!-- v-for list of templates, kommt später weg -->
       <!-- class fixedHeight-->
-      <div class="row items-center justify-center q-pa-md">
+      <div class="row items-center justify-center q-px-md q-pt-md">
         <div class="column items-center justify-center">
           <div class="row no-wrap justify-center items-center">
-            <div
-              v-if="isAtLeastOneTemplateCreated === true"
-              :style="'width: 300px'"
-            >
+            <div v-if="isAtLeastOneTemplateCreated === true">
               <!-- Template and Filter Dropdown Buttons -->
               <div
                 class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer"

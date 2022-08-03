@@ -66,12 +66,6 @@
 </template>
 
 <script>
-/*
-for main container
-color: white; background-color: black
-*/
-import shared from "../../shared";
-
 export default {
   name: "baseDialog",
   emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
@@ -97,22 +91,9 @@ export default {
   },
   data() {
     return {
-      maximizedToggle: true,
-      test: true,
       boxShadowStyle: {
         "box-shadow": "none",
       },
-
-      accentBackground: {
-        //"background-color": "var(--q-accent)",
-        color: "var(--q-primary)",
-        border: "1px solid var(--q-accent)",
-      },
-
-      mobileModeActive: true,
-      // inline css style with variables
-      classSmall: { "full-width": true },
-      classBig: { "max-width": "80%", width: "70%" },
       styleForDialogTitleBar: { background: "var(--q-secondary)" },
       styleForDialogTitleBarDark: { background: "var(--q-secondary)" },
     };
@@ -162,7 +143,7 @@ export default {
         style = {
           //width: this.widthOfDialog + "px",
           "background-color": "rgb(0 0 0 / 77%)",
-          height: currentMaxHeight,
+          "max-height": currentMaxHeight,
           color: "white",
         };
       } else {
@@ -171,7 +152,8 @@ export default {
           "background-color": "rgb(255 255 255 )",
           // max-height
           // min-height
-          height: currentMaxHeight,
+          "min-height": "300px",
+          "max-height": currentMaxHeight,
           color: "black",
         };
       }
