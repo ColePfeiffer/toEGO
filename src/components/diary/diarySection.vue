@@ -4,13 +4,11 @@
       @createTemplate="createTemplate"
       @closeDialog="closeDialog"
     ></DialogCreateTemplate>
-    <DialogViewTemplates
+    <DialogViewDiaryTemplates
       :templateList="$store.state.data.diaryTemplates"
       @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate"
-      @closeDialog="closeDialog"
     >
-    </DialogViewTemplates>
+    </DialogViewDiaryTemplates>
 
     <!-- Title, Buttons -->
     <div class="q-px-md q-pt-lg">
@@ -248,14 +246,14 @@
 <script>
 import BaseEditor from "../ui/BaseEditor.vue";
 import DialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
-import DialogViewTemplates from "../dialogs/DialogViewTemplates.vue";
+import DialogViewDiaryTemplates from "../dialogs/DialogViewDiaryTemplates.vue";
 
 export default {
   name: "TheDiaryPanels",
   components: {
     BaseEditor,
     DialogCreateTemplate,
-    DialogViewTemplates,
+    DialogViewDiaryTemplates,
   },
   emits: [
     "scroll",
@@ -398,11 +396,12 @@ export default {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogViewTemplates",
+        nameOfCurrentDialog: "dialogViewDiaryTemplates",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
     pasteTemplate(template) {
+      console.log("pasting...... WHOOOOO INSIDE diary section");
       if (this.changeData.editor != "") {
         this.changeData.editor =
           this.changeData.editor + "<br>" + template.text;
@@ -410,14 +409,6 @@ export default {
         this.changeData.editor = template.text;
       }
     },
-    deleteTemplate(template) {
-      let payload = {
-        template: template,
-        templateListType: "DIARY",
-      };
-      this.$store.commit("data/deleteTemplate", payload);
-    },
-
     // Template Creator
     showTemplateCreator() {
       let payload = {

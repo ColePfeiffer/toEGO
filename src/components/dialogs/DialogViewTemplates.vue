@@ -110,7 +110,7 @@
                       :currentTemplate="currentTemplate"
                       :folders="$store.state.data.foldersForDiary"
                       :categories="$store.state.data.categoriesForDiary"
-                      :type="'DIARY'"
+                      :type="type"
                       :quicklist="$store.state.data.quicklistForDiary"
                     >
                     </CategoryOrTagQuickMenuVue>
@@ -134,7 +134,7 @@
                   <q-btn
                     class="cardButton"
                     icon="bi-clipboard-plus"
-                    @click="pasteTemplate(currentTemplate.text)"
+                    @click="pasteTemplate()"
                     flat
                   >
                     <q-tooltip
@@ -163,7 +163,7 @@
                         class="fabButton"
                         flat
                         color="accent"
-                        @click="deleteTemplate"
+                        @click="deleteTemplate()"
                         icon="bi-check"
                       />
                     </q-fab>
@@ -222,12 +222,12 @@ import { useQuasar } from "quasar";
 
 export default {
   name: "dialogViewTemplates",
-  emits: ["pasteTemplate", "deleteTemplate", "closeDialog"],
+  emits: ["pasteTemplate"],
   components: {
     baseDialog,
     CategoryOrTagQuickMenuVue,
   },
-  props: { templateList: Array },
+  props: { templateList: Array, type: String },
   data() {
     return {
       icon: true,
@@ -245,8 +245,28 @@ export default {
     lengthOfTemplates(newLength) {
       this.currentTemplate = this.templateList[0];
     },
+    isDialogVisible(newState) {
+      console.log("isDialogVisible changed to :", newState, " for ", this.type);
+    },
   },
   methods: {
+    deleteTemplate() {
+      let payload = {
+        template: this.currentTemplate,
+        templateListType: this.type,
+      };
+      this.$store.commit("data/deleteTemplate", payload);
+    },
+    closeDialog() {
+      let payload = {
+        isVisible: false,
+        isBackgroundVisible:
+          this.$store.state.data.dialogSettings.isBackgroundVisible,
+        nameOfCurrentDialog:
+          this.$store.state.data.dialogSettings.nameOfCurrentDialog,
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
     setDefaultStatus() {
       let payload = {
         id: this.currentTemplate.id,
@@ -258,15 +278,9 @@ export default {
       this.currentTemplate = this.templates[index];
       this.$refs.btnDropdown.hide();
     },
-    deleteTemplate() {
-      this.$emit("deleteTemplate", this.currentTemplate);
-    },
     // for baseDialog
     showHelp() {
       this.isHelpShown = !this.isHelpShown;
-    },
-    closeDialog() {
-      this.$emit("closeDialog");
     },
     pasteTemplate() {
       this.$emit("pasteTemplate", this.currentTemplate);
@@ -299,10 +313,17 @@ export default {
     },
     isDialogVisible: {
       get() {
+        let nameOfDialog;
+        if (this.type === "DIARY") {
+          nameOfDialog = "dialogViewDiaryTemplates";
+        } else {
+          nameOfDialog = "dialogViewEventTemplates";
+        }
+
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogViewTemplates"
+            nameOfDialog
         ) {
           return true;
         } else {

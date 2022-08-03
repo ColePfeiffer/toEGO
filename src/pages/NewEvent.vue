@@ -301,7 +301,12 @@ export default {
       this.$emit("openDialogCreateTemplate");
     },
     openDialogViewTemplates() {
-      this.$emit("openDialogViewTemplates");
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogViewEventTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
     },
     toggleVisibilityOfEventText() {
       this.isShowingEventText = !this.isShowingEventText;
