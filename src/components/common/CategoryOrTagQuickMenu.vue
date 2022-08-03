@@ -62,11 +62,7 @@
       <q-item
         clickable
         @click="manageQuicklistStatus"
-        :style="
-          isTemplateInQuicklist() === 'bi-dash'
-            ? 'color: #d3d3d3'
-            : 'color: var(--q-primary)'
-        "
+        :style="getTextColorForQuicklist"
       >
         <q-item-section avatar>
           <q-icon color="secondary" name="bi-star" />
@@ -115,6 +111,21 @@ export default {
       isCreatingNewCategory: false,
     };
   },
+  computed: {
+    getTextColorForQuicklist() {
+      if (this.isTemplateInQuicklist() === "bi-dash") {
+        console.log("black");
+        return {
+          color: "var(--q-primary)",
+        };
+      } else {
+        console.log("gray");
+        return {
+          color: "#d3d3d3 ",
+        };
+      }
+    },
+  },
   methods: {
     toggleNewCategoryCreation() {
       this.isCreatingNewCategory = !this.isCreatingNewCategory;
@@ -135,6 +146,7 @@ export default {
       let payload = {
         templateID: this.currentTemplate.id,
         categories: this.categories,
+        quicklist: this.quicklist,
       };
       this.$store.commit("data/resetCategorySettingsForTemplate", payload);
     },

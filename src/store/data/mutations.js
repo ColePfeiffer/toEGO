@@ -25,6 +25,7 @@ export const addNewCategory = (state, payload) => {
 export const resetCategorySettingsForTemplate = (state, payload) => {
   let templateID = payload.templateID;
   let categories = payload.categories;
+  let quicklist = payload.quicklist;
 
   categories.forEach((category) => {
     // if template id exists in category, delete it
@@ -35,6 +36,13 @@ export const resetCategorySettingsForTemplate = (state, payload) => {
       );
     }
   });
+
+  if (quicklist.templatesById.includes(templateID)) {
+    quicklist.templatesById.splice(
+      quicklist.templatesById.indexOf(templateID),
+      1
+    );
+  }
 };
 
 //payload consists of templateID and either diary's or event's quicklist
