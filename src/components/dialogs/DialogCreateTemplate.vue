@@ -46,6 +46,9 @@ import baseDialog from "../ui/BaseDialog2.vue";
 
 export default {
   name: "DialogCreateTemplate",
+  props: {
+    type: String,
+  },
   emits: ["createTemplate", "closeDialog"],
   components: {
     baseDialog,
@@ -80,10 +83,17 @@ export default {
     },
     isDialogVisible: {
       get() {
+        let nameOfDialog;
+        if (this.type === "DIARY") {
+          nameOfDialog = "dialogCreateDiaryTemplate";
+        } else {
+          nameOfDialog = "dialogCreateEventTemplate";
+        }
+
         if (
           (this.$store.state.data.dialogSettings.isVisible === true) &
           (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogCreateTemplate")
+            nameOfDialog)
         ) {
           return true;
         } else {

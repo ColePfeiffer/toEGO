@@ -218,14 +218,6 @@ export default {
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
-    openDialogCreateTemplate() {
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogCreateTemplate",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
-    },
     toggleLeftDialog() {
       this.drawer = !this.drawer;
     },

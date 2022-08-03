@@ -1,6 +1,7 @@
 <template>
   <div>
     <DialogCreateTemplate
+      :type="'DIARY'"
       @createTemplate="createTemplate"
       @closeDialog="closeDialog"
     ></DialogCreateTemplate>
@@ -414,7 +415,7 @@ export default {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogCreateTemplate",
+        nameOfCurrentDialog: "dialogCreateDiaryTemplate",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
