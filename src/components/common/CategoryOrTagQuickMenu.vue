@@ -14,11 +14,14 @@
       </q-item>
       <q-item v-else>
         <q-input
+          ref="nameRef"
           bottom-slots
           v-model="newCategoryName"
           counter
           maxlength="12"
           dense
+          lazy-rules
+          :rules="nameRules"
         >
           <template v-slot:before>
             <q-btn
@@ -33,13 +36,7 @@
           <template v-slot:hint> Name of category </template>
 
           <template v-slot:append>
-            <q-btn
-              round
-              dense
-              flat
-              icon="bi-check"
-              @click="createNewCategory"
-            />
+            <q-btn round dense flat icon="bi-check" @click="onSubmit" />
           </template>
         </q-input>
       </q-item>
@@ -109,6 +106,9 @@ export default {
     return {
       newCategoryName: "",
       isCreatingNewCategory: false,
+      nameRules: [
+        (val) => (val && val.length > 0) || "Please name the category.",
+      ],
     };
   },
   computed: {
@@ -127,10 +127,28 @@ export default {
     },
   },
   methods: {
+    onSubmit() {
+      let nameInput = this.$refs.nameRef;
+      console.log(nameInput);
+      nameInput.validate();
+
+      // form has error
+      if (nameInput.hasError) {
+      } else {
+        this.$q.notify({
+          icon: "done",
+          color: "secondary",
+          textColor: "black",
+          message: "Category created.",
+        });
+        this.createNewCategory();
+      }
+    },
     toggleNewCategoryCreation() {
       this.isCreatingNewCategory = !this.isCreatingNewCategory;
     },
     closeAndResetNewCategoryCreation() {
+      this.$refs.nameRef.resetValidation();
       this.isCreatingNewCategory = false;
       this.newCategoryName = "";
     },

@@ -11,7 +11,7 @@ export const addNewCategory = (state, payload) => {
   if (payload.type === "DIARY") {
     categories = state.categoriesForDiary;
   } else {
-    categories = state.categoriesForEvent;
+    categories = state.categoriesForEvents;
   }
   let newCategory = {
     id: uid(),
