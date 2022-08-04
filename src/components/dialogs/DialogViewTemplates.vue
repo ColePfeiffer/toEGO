@@ -53,7 +53,7 @@
                 </q-btn-dropdown>
                 <!-- Filter Dropdown Button -->
                 <q-btn-dropdown
-                  ref="btnDropdown "
+                  ref="btnFilterDropdown "
                   class="col-4"
                   :ripple="false"
                   flat
@@ -62,20 +62,7 @@
                   text-color="black"
                   label="Filter"
                 >
-                  <q-virtual-scroll
-                    style="max-height: 300px"
-                    :items="templates"
-                    separator
-                    v-slot="{ item, index }"
-                  >
-                    <q-item :key="index" dense clickable>
-                      <q-item-section>
-                        <q-btn flat @click="setTemplate(index)"
-                          >#{{ index }} - {{ item.name }}</q-btn
-                        >
-                      </q-item-section>
-                    </q-item>
-                  </q-virtual-scroll>
+                  <FilterCategoryMenu :categories="categories" :currentTemplate="currentTemplate" :folders="folders" :type="type"/>
                 </q-btn-dropdown>
               </div>
 
@@ -217,6 +204,7 @@
 <script>
 import baseDialog from "../ui/BaseDialog2.vue";
 import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
+import FilterCategoryMenu from "../common/FilterCategoryMenu.vue";
 
 import { useQuasar } from "quasar";
 
@@ -226,6 +214,7 @@ export default {
   components: {
     baseDialog,
     CategoryOrTagQuickMenuVue,
+    FilterCategoryMenu,
   },
   props: { templateList: Array, type: String },
   data() {

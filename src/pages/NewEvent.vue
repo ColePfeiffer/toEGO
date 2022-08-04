@@ -182,6 +182,7 @@
                     ref="editorRef1"
                     v-model="editor"
                     minHeight="535px"
+                    type="EVENT"
                     @openDialogCreateTemplate="openDialogCreateTemplate"
                     @openDialogViewTemplates="openDialogViewTemplates"
                     @pasteTemplate="pasteTemplate"

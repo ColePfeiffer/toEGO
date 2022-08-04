@@ -174,6 +174,7 @@
                   @openDialogViewTemplates="showTemplateViewer"
                   @pasteTemplate="pasteTemplate"
                   minHeight="300px"
+                  type="DIARY"
                 />
               </div>
             </q-scroll-area>

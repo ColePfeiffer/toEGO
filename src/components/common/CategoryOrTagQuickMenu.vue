@@ -65,7 +65,7 @@
           <q-icon color="secondary" name="bi-star" />
         </q-item-section>
         <q-item-section>Add to quick-list</q-item-section>
-        <q-item-section side>
+        <q-item-section avatar>
           <q-btn
             dense
             :color="isTemplateInQuicklist() === 'bi-dash' ? 'orange' : 'teal'"
@@ -76,13 +76,15 @@
           </q-btn>
         </q-item-section>
       </q-item>
-      <q-separator />
-      <FolderCategoryStructure
-        :currentTemplate="currentTemplate"
-        :folders="folders"
-        :categories="categories"
-      >
-      </FolderCategoryStructure>
+      <q-separator color="secondary" />
+      <q-scroll-area style="height: 120px">
+        <FolderCategoryStructure
+          :currentTemplate="currentTemplate"
+          :folders="folders"
+          :categories="categories"
+        >
+        </FolderCategoryStructure>
+      </q-scroll-area>
     </q-list>
   </q-menu>
 </template>
@@ -104,6 +106,10 @@ export default {
   components: { FolderCategoryStructure },
   data() {
     return {
+      heightForScrollArea: {
+        height: "120px",
+        "max-width": "300px",
+      },
       newCategoryName: "",
       isCreatingNewCategory: false,
       nameRules: [

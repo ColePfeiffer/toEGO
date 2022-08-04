@@ -89,7 +89,11 @@
             </q-item>
             <q-separator />
 
-            <q-item clickable>
+            <q-item
+              clickable
+              :style="pasteQuicklistTextStyle"
+              :disable="isQuicklistDisabled"
+            >
               <q-item-section>Paste Quick-List</q-item-section>
               <q-item-section side>
                 <q-icon name="keyboard_arrow_right" />
@@ -97,49 +101,26 @@
               <!-- Submenu -->
               <q-menu anchor="top end" self="top start" auto-close>
                 <q-list>
-                  <div
-                    v-if="
-                      $store.getters['data/getQuickListContent'].length >= 1
-                    "
+                  <q-item
+                    v-for="template in $store.getters[
+                      'data/getQuickListContent'
+                    ](type)"
+                    :key="template"
+                    dense
+                    clickable
+                    @click="pasteTemplate(template)"
                   >
-                    <q-item
-                      v-for="template in $store.getters[
-                        'data/getQuickListContent'
-                      ]"
-                      :key="template"
-                      dense
-                      clickable
-                      @click="pasteTemplate(template)"
-                    >
-                      <q-item-section avatar>
-                        <q-icon
-                          dense
-                          size="xs"
-                          name="bi-file-font"
-                          color="secondary"
-                        />
-                      </q-item-section>
+                    <q-item-section avatar>
+                      <q-icon
+                        dense
+                        size="xs"
+                        name="bi-file-font"
+                        color="secondary"
+                      />
+                    </q-item-section>
 
-                      <q-item-section>{{ template.name }}</q-item-section>
-                    </q-item>
-                  </div>
-                  <div v-else>
-                    <q-item dense>
-                      <q-item-section avatar>
-                        <q-icon
-                          dense
-                          size="xs"
-                          name="bi-file"
-                          color="secondary"
-                        />
-                      </q-item-section>
-
-                      <q-item-section
-                        >You haven't added any templates to the quick-list
-                        yet.</q-item-section
-                      >
-                    </q-item>
-                  </div>
+                    <q-item-section>{{ template.name }}</q-item-section>
+                  </q-item>
                 </q-list>
               </q-menu>
             </q-item>
@@ -160,6 +141,7 @@ export default {
   ],
   props: {
     minHeight: String,
+    type: String,
   },
   data() {
     return {
@@ -275,6 +257,28 @@ export default {
   },
 
   computed: {
+    pasteQuicklistTextStyle() {
+      if (this.isQuicklistDisabled) {
+        return {
+          color: "#d3d3d3 ",
+        };
+      } else {
+        return {
+          color: "var(--q-primary)",
+        };
+      }
+    },
+    isQuicklistDisabled() {
+      let templates = this.$store.getters["data/getQuickListContent"](
+        this.type
+      );
+
+      if (templates.length < 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     getToolbarIconColor() {
       if (this.$store.getters["data/isDarkModeActive"]) {
         return "secondary";
