@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    dialogWidth: "width: 300px;",
     quicklistForDiary: {
       id: 0,
       name: "Quick List",

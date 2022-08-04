@@ -132,13 +132,11 @@ export default {
       let currentMaxHeight;
       let screenHeightAsNumber = this.getHeight.height;
       if (screenHeightAsNumber >= 650) {
-        console.log("big");
         currentMaxHeight = "650px";
       } else {
-        console.log("small");
         currentMaxHeight = screenHeightAsNumber + "px";
       }
-      console.log("heightAsString", currentMaxHeight);
+      //console.log("heightAsString", currentMaxHeight);
       if (this.$store.getters["data/isDarkModeActive"]) {
         style = {
           //width: this.widthOfDialog + "px",
@@ -157,7 +155,7 @@ export default {
           color: "black",
         };
       }
-      console.log("STYLE: ", style);
+      console.log("STYLE for baseDialog2: ", style);
       return style;
     },
   },
