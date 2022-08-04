@@ -5,8 +5,9 @@
       <q-icon dense size="xs" color="secondary" name="bi-folder" />
     </q-item-section>
     <q-item-section>{{ folder.name }}</q-item-section>
-    <q-item-section side>
-      <q-icon name="keyboard_arrow_right" />
+
+    <q-item-section side top>
+      <q-btn dense round flat icon="keyboard_arrow_right"> </q-btn>
     </q-item-section>
     <!-- Submenu -->
     <!-- screen.lt Tells if current screen width is lower than breakpoint-name -->
@@ -20,9 +21,17 @@
         <div v-if="$q.screen.lt.sm">
           <q-item dense clickable v-close-popup>
             <q-item-section avatar>
-              <q-icon dense size="xs" name="keyboard_arrow_left" />
+              <q-btn
+                size="xs"
+                dense
+                round
+                flat
+                color="secondary"
+                icon="keyboard_arrow_left"
+              >
+              </q-btn>
             </q-item-section>
-            <q-item-section>Back</q-item-section>
+            <q-item-section>Close Folder</q-item-section>
           </q-item>
           <q-separator />
         </div>
@@ -65,36 +74,32 @@
   <q-separator />
   <!-- categories that aren't in folders -->
   <q-item
-    dense
-    clickable
+    class="row align-center items-center"
+    @click="manageCategoryForTemplate(category)"
     v-for="category in getFolderlessCategories"
     :key="category"
-    @click="manageCategoryForTemplate(category)"
+    dense
+    clickable
     :style="getTextColorForCategory(category)"
   >
-    <div
-      class="row align-center items-center"
-      v-if="category.isInFolder === false"
-    >
-      <q-item-section avatar>
-        <q-icon color="secondary" size="xs" name="bi-collection" />
-      </q-item-section>
-      <q-item-section>{{ category.name }}</q-item-section>
-      <q-item-section side top>
-        <q-btn
-          dense
-          :color="
-            isTemplateSetToThisCategory(category) === 'bi-dash'
-              ? 'orange'
-              : 'teal'
-          "
-          round
-          flat
-          :icon="isTemplateSetToThisCategory(category)"
-        >
-        </q-btn>
-      </q-item-section>
-    </div>
+    <q-item-section avatar>
+      <q-icon color="secondary" size="xs" name="bi-collection" />
+    </q-item-section>
+    <q-item-section>{{ category.name }}</q-item-section>
+    <q-item-section side top>
+      <q-btn
+        dense
+        :color="
+          isTemplateSetToThisCategory(category) === 'bi-dash'
+            ? 'orange'
+            : 'teal'
+        "
+        round
+        flat
+        :icon="isTemplateSetToThisCategory(category)"
+      >
+      </q-btn>
+    </q-item-section>
   </q-item>
 </template>
 

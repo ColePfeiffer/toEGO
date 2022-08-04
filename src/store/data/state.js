@@ -36,7 +36,7 @@ export default function () {
     categoriesForDiary: [
       {
         id: 1,
-        name: "Daytimes",
+        name: "Methods",
         templatesByID: [],
         isInFolder: false,
       },
@@ -47,7 +47,7 @@ export default function () {
         isInFolder: false,
       },
       { id: 3, name: "Journaling", templatesByID: [], isInFolder: true },
-      { id: 4, name: "Methods", templatesByID: [], isInFolder: true },
+      { id: 4, name: "Meh", templatesByID: [], isInFolder: true },
     ],
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,

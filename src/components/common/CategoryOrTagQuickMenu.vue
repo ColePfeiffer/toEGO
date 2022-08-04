@@ -8,50 +8,60 @@
         @click="toggleNewCategoryCreation"
       >
         <q-item-section avatar>
-          <q-icon color="secondary" name="bi-plus" />
+          <q-icon color="secondary" size="xs" name="bi-plus" />
         </q-item-section>
         <q-item-section>New category</q-item-section>
       </q-item>
       <q-item v-else>
-        <q-input
-          ref="nameRef"
-          bottom-slots
-          v-model="newCategoryName"
-          counter
-          maxlength="12"
-          dense
-          lazy-rules
-          :rules="nameRules"
+        <q-item-section avatar>
+          <q-btn
+            size="10px"
+            dense
+            round
+            flat
+            color="secondary"
+            icon="keyboard_arrow_left"
+            @click="closeAndResetNewCategoryCreation"
+          >
+          </q-btn>
+        </q-item-section>
+        <q-item-section
+          ><q-input
+            ref="nameRef"
+            bottom-slots
+            v-model="newCategoryName"
+            counter
+            maxlength="20"
+            dense
+            lazy-rules
+            :rules="nameRules"
+          >
+            <template v-slot:hint> Name of category </template>
+          </q-input></q-item-section
         >
-          <template v-slot:before>
-            <q-btn
-              round
-              dense
-              flat
-              icon="keyboard_arrow_left"
-              @click="closeAndResetNewCategoryCreation"
-            />
-          </template>
-
-          <template v-slot:hint> Name of category </template>
-
-          <template v-slot:append>
-            <q-btn round dense flat icon="bi-check" @click="onSubmit" />
-          </template>
-        </q-input>
+        <q-item-section side>
+          <q-btn
+            round
+            dense
+            flat
+            icon="bi-check"
+            color="teal"
+            @click="onSubmit"
+          />
+        </q-item-section>
       </q-item>
 
       <!-- Settings button -->
       <q-item clickable v-close-popup @click="openDialogForSettings">
         <q-item-section avatar>
-          <q-icon color="secondary" name="bi-gear" />
+          <q-icon color="secondary" size="xs" name="bi-gear" />
         </q-item-section>
         <q-item-section>Settings</q-item-section>
       </q-item>
       <!-- Unset all button -->
       <q-item clickable @click="unsetAllCategories">
         <q-item-section avatar>
-          <q-icon color="secondary" name="bi-x" />
+          <q-icon color="secondary" size="xs" name="bi-x" />
         </q-item-section>
         <q-item-section>Unset all</q-item-section>
       </q-item>
@@ -62,7 +72,7 @@
         :style="getTextColorForQuicklist"
       >
         <q-item-section avatar>
-          <q-icon color="secondary" name="bi-star" />
+          <q-icon color="secondary" size="xs" name="bi-star" />
         </q-item-section>
         <q-item-section>Add to quick-list</q-item-section>
         <q-item-section avatar>
