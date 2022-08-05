@@ -1,115 +1,86 @@
 <template>
-  <!-- categories that are in folders -->
-  <q-item dense clickable v-for="folder in folders" :key="folder">
-    <q-item-section avatar>
-      <q-icon dense size="xs" color="secondary" name="bi-folder" />
-    </q-item-section>
-    <q-item-section>{{ folder.name }}</q-item-section>
-
-    <q-item-section side top>
-      <q-btn dense round flat icon="keyboard_arrow_right"> </q-btn>
-    </q-item-section>
-    <!-- Submenu -->
-    <!-- screen.lt Tells if current screen width is lower than breakpoint-name -->
-    <q-menu
-      :cover="$q.screen.lt.sm"
-      anchor="top end"
-      self="top start"
-      separate-close-popup
-    >
-      <q-list>
-        <div v-if="$q.screen.lt.sm">
-          <q-item dense clickable v-close-popup>
-            <q-item-section avatar>
-              <q-btn
-                size="xs"
-                dense
-                round
-                flat
-                color="secondary"
-                icon="keyboard_arrow_left"
-              >
-              </q-btn>
-            </q-item-section>
-            <q-item-section>Close Folder</q-item-section>
-          </q-item>
-          <q-separator />
-        </div>
-
-        <q-item
-          class="row align-center items-center"
-          v-for="category in $store.getters['data/getFolderContent'](
-            folder,
-            categories
-          )"
-          :key="category"
-          dense
-          clickable
-          @click="manageCategoryForTemplate(category)"
-          :style="getTextColorForCategory(category)"
-        >
-          <q-item-section avatar>
-            <q-icon color="secondary" size="xs" name="bi-collection" />
-          </q-item-section>
-          <q-item-section>{{ category.name }}</q-item-section>
-          <q-item-section side top>
-            <q-btn
-              dense
-              :color="
-                isTemplateSetToThisCategory(category) === 'bi-dash'
-                  ? 'orange'
-                  : 'teal'
-              "
-              round
-              flat
-              :icon="isTemplateSetToThisCategory(category)"
-            >
-            </q-btn>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-menu>
-  </q-item>
-
-  <q-separator />
-  <!-- categories that aren't in folders -->
-  <q-item
-    class="row align-center items-center"
-    @click="manageCategoryForTemplate(category)"
-    v-for="category in getFolderlessCategories"
-    :key="category"
-    dense
-    clickable
-    :style="getTextColorForCategory(category)"
+  <div
+    v-if="isShowingTemplates === true"
+    class="row items-center justify-between"
   >
-    <q-item-section avatar>
-      <q-icon color="secondary" size="xs" name="bi-collection" />
-    </q-item-section>
-    <q-item-section>{{ category.name }}</q-item-section>
-    <q-item-section side top>
-      <q-btn
+    <q-list>
+      <!-- categories that are in folders -->
+      <q-item dense clickable v-for="folder in folders" :key="folder">
+        <FolderItem
+          :folder="folder"
+          :currentTemplate="currentTemplate"
+          :categories="categories"
+        ></FolderItem>
+      </q-item>
+      <q-separator />
+      <!-- folderless categories -->
+      <q-item
         dense
-        :color="
-          isTemplateSetToThisCategory(category) === 'bi-dash'
-            ? 'orange'
-            : 'teal'
-        "
-        round
-        flat
-        :icon="isTemplateSetToThisCategory(category)"
+        clickable
+        v-for="category in getFolderlessCategories"
+        :key="category"
+        @click="manageCategoryForTemplate(category)"
+        :style="getTextColorForCategory(category)"
       >
-      </q-btn>
-    </q-item-section>
-  </q-item>
+        <CategoryItem
+          :category="category"
+          :currentTemplate="currentTemplate"
+          :categories="categories"
+          :isShowingTemplates="true"
+        >
+        </CategoryItem>
+      </q-item>
+    </q-list>
+  </div>
+  <div v-else class="row items-center justify-between">
+    <!-- categories that are in folders -->
+    <q-list>
+      <q-item dense clickable v-for="folder in folders" :key="folder">
+        <FolderItem
+          :folder="folder"
+          :currentTemplate="currentTemplate"
+          :categories="categories"
+        ></FolderItem>
+      </q-item>
+
+      <q-separator />
+
+      <q-item
+        class="row align-center items-center"
+        @click="manageCategoryForTemplate(category)"
+        v-for="category in getFolderlessCategories"
+        :key="category"
+        dense
+        clickable
+        :style="getTextColorForCategory(category)"
+      >
+        <CategoryItem
+          :category="category"
+          :currentTemplate="currentTemplate"
+          :isShowingTemplates="false"
+        ></CategoryItem>
+      </q-item>
+    </q-list>
+  </div>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
+import CategoryItem from "./categoryItem.vue";
+import FolderItem from "./folderItem.vue";
 
 export default {
   name: "CategoryOrTagQuickMenu",
   emits: [],
-  props: { currentTemplate: Object, folders: Array, categories: Array },
+  props: {
+    currentTemplate: Object,
+    folders: Array,
+    categories: Array,
+    isShowingTemplates: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       newCategoryName: "",
@@ -140,7 +111,6 @@ export default {
         category: category,
         templateID: this.currentTemplate.id,
       };
-
       if (category.templatesByID.includes(this.currentTemplate.id)) {
         this.$store.commit("data/removeTemplateFromCategory", payload);
       } else {
@@ -156,5 +126,6 @@ export default {
       });
     },
   },
+  components: { CategoryItem, FolderItem },
 };
 </script>

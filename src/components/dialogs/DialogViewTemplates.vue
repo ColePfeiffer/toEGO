@@ -25,18 +25,20 @@
             <q-btn-dropdown
               ref="btnDropdown"
               class="col-12"
+              align="between"
               :ripple="false"
               flat
               no-caps
+              square
               color="transparent"
               text-color="black"
               label="Pick Template"
             >
-              <FilterCategoryMenu
-                :categories="categories"
+              <FolderCategoryStructure
                 :currentTemplate="currentTemplate"
                 :folders="folders"
-                :type="type"
+                :categories="categories"
+                :isShowingTemplates="true"
               />
             </q-btn-dropdown>
           </div>
@@ -189,6 +191,7 @@ import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
 import FilterCategoryMenu from "../common/FilterCategoryMenu.vue";
 
 import { useQuasar } from "quasar";
+import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -196,7 +199,7 @@ export default {
   components: {
     baseDialog,
     CategoryOrTagQuickMenuVue,
-    FilterCategoryMenu,
+    FolderCategoryStructure,
   },
   props: { templateList: Array, type: String },
   data() {
