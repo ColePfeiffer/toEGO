@@ -24,11 +24,10 @@
             <!-- Pick template Dropdown Button  -->
             <q-btn-dropdown
               ref="btnDropdown"
-              class="col-12"
-              align="between"
               :ripple="false"
               flat
               no-caps
+              class="col-10"
               square
               color="transparent"
               text-color="black"
