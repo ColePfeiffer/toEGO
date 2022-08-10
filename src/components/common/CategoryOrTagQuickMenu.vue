@@ -2,11 +2,7 @@
   <q-menu dense anchor="top middle" self="bottom middle">
     <q-list dense style="min-width: 100px">
       <!-- new category button -->
-      <q-item
-        v-if="!isCreatingNewCategory"
-        clickable
-        @click="toggleNewCategoryCreation"
-      >
+      <q-item v-if="!isCreatingNewCategory" clickable @click="toggleNewCategoryCreation">
         <q-item-section avatar>
           <q-icon color="secondary" size="xs" name="bi-plus" />
         </q-item-section>
@@ -14,40 +10,18 @@
       </q-item>
       <q-item v-else>
         <q-item-section avatar>
-          <q-btn
-            size="10px"
-            dense
-            round
-            flat
-            color="secondary"
-            icon="keyboard_arrow_left"
-            @click="closeAndResetNewCategoryCreation"
-          >
+          <q-btn size="10px" dense round flat color="secondary" icon="keyboard_arrow_left"
+            @click="closeAndResetNewCategoryCreation">
           </q-btn>
         </q-item-section>
-        <q-item-section
-          ><q-input
-            ref="nameRef"
-            bottom-slots
-            v-model="newCategoryName"
-            counter
-            maxlength="20"
-            dense
-            lazy-rules
-            :rules="nameRules"
-          >
+        <q-item-section>
+          <q-input ref="nameRef" bottom-slots v-model="newCategoryName" counter maxlength="20" dense lazy-rules
+            :rules="nameRules">
             <template v-slot:hint> Name of category </template>
-          </q-input></q-item-section
-        >
+          </q-input>
+        </q-item-section>
         <q-item-section side>
-          <q-btn
-            round
-            dense
-            flat
-            icon="bi-check"
-            color="teal"
-            @click="onSubmit"
-          />
+          <q-btn round dense flat icon="bi-check" color="teal" @click="onSubmit" />
         </q-item-section>
       </q-item>
 
@@ -66,33 +40,20 @@
         <q-item-section>Unset all</q-item-section>
       </q-item>
       <!-- Add to/Remove from QuickList Button -->
-      <q-item
-        clickable
-        @click="manageQuicklistStatus"
-        :style="getTextColorForQuicklist"
-      >
-        <q-item-section avatar>
+      <q-item clickable @click="manageQuicklistStatus" :style="getTextColorForQuicklist">
+        <q-item-section avatar style="background: greenyellow">
           <q-icon color="secondary" size="xs" name="bi-star" />
         </q-item-section>
-        <q-item-section>Add to quick-list</q-item-section>
-        <q-item-section avatar>
-          <q-btn
-            dense
-            :color="isTemplateInQuicklist() === 'bi-dash' ? 'orange' : 'teal'"
-            round
-            flat
-            :icon="isTemplateInQuicklist()"
-          >
+        <q-item-section style="background: blueviolet">Add to quick-list</q-item-section>
+        <q-item-section avatar style="background: red">
+          <q-btn dense :color="isTemplateInQuicklist() === 'bi-dash' ? 'orange' : 'teal'" round flat
+            :icon="isTemplateInQuicklist()">
           </q-btn>
         </q-item-section>
       </q-item>
       <q-separator color="secondary" />
       <q-scroll-area style="height: 120px">
-        <FolderCategoryStructure
-          :currentTemplate="currentTemplate"
-          :folders="folders"
-          :categories="categories"
-        >
+        <FolderCategoryStructure :currentTemplate="currentTemplate" :folders="folders" :categories="categories">
         </FolderCategoryStructure>
       </q-scroll-area>
     </q-list>
@@ -184,7 +145,7 @@ export default {
       };
       this.$store.commit("data/resetCategorySettingsForTemplate", payload);
     },
-    openDialogForSettings() {},
+    openDialogForSettings() { },
     isTemplateInQuicklist() {
       if (this.quicklist.templatesById.includes(this.currentTemplate.id)) {
         return "bi-dash";
@@ -204,4 +165,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

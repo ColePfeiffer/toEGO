@@ -1,13 +1,6 @@
 <template>
-  <baseDialog
-    v-model="isDialogVisible"
-    @closeDialog="closeDialog"
-    @save="pasteTemplateAndClose"
-    @showHelp="showHelp"
-    :widthOfDialog="315"
-    :hasHelpOption="true"
-    :isSaveButtonDisabled="!isAtLeastOneTemplateCreated"
-  >
+  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplateAndClose" @showHelp="showHelp"
+    :widthOfDialog="315" :hasHelpOption="true" :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
     <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
@@ -18,27 +11,12 @@
       <div class="row full-width items-center justify-center q-px-md q-pt-md">
         <div class="col-10" v-if="isAtLeastOneTemplateCreated === true">
           <!-- Template and Filter Dropdown Buttons -->
-          <div
-            class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer"
-          >
+          <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
             <!-- Pick template Dropdown Button  -->
-            <q-btn-dropdown
-              ref="btnDropdown"
-              :ripple="false"
-              flat
-              no-caps
-              class="col-10"
-              square
-              color="transparent"
-              text-color="black"
-              label="Pick Template"
-            >
-              <FolderCategoryStructure
-                :currentTemplate="currentTemplate"
-                :folders="folders"
-                :categories="categories"
-                :isShowingTemplates="true"
-              />
+            <q-btn-dropdown ref="btnDropdown" :ripple="false" flat no-caps class="col-10" square color="transparent"
+              text-color="black" label="Pick Template">
+              <FolderCategoryStructure :currentTemplate="currentTemplate" :folders="folders" :categories="categories"
+                :isShowingTemplates="true" />
             </q-btn-dropdown>
           </div>
 
@@ -49,19 +27,15 @@
 
             <q-card-section class="templateTextContainer q-pb-xs">
               <q-scroll-area :style="StyleTmplateTextScrollArea">
-                <div
-                  v-if="
-                    currentTemplate.text.length >= maxNumberOfDisplayedChars
-                  "
-                >
-                  <div
-                    v-html="
-                      currentTemplate.text.substring(
-                        0,
-                        maxNumberOfDisplayedChars
-                      ) + ' [...]'
-                    "
-                  ></div>
+                <div v-if="
+                  currentTemplate.text.length >= maxNumberOfDisplayedChars
+                ">
+                  <div v-html="
+                    currentTemplate.text.substring(
+                      0,
+                      maxNumberOfDisplayedChars
+                    ) + ' [...]'
+                  "></div>
                 </div>
                 <div v-else v-html="currentTemplate.text"></div>
               </q-scroll-area>
@@ -69,66 +43,33 @@
 
             <q-card-actions class="row justify-center items-center">
               <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
-                <CategoryOrTagQuickMenuVue
-                  :currentTemplate="currentTemplate"
-                  :folders="folders"
-                  :categories="categories"
-                  :type="type"
-                  :quicklist="quicklist"
-                >
+                <CategoryOrTagQuickMenuVue :currentTemplate="currentTemplate" :folders="folders"
+                  :categories="categories" :type="type" :quicklist="quicklist">
                 </CategoryOrTagQuickMenuVue>
               </q-btn>
 
               <!-- Set default status button -->
-              <q-btn
-                class="cardButton"
-                :icon="defaultTemplateIcon"
-                @click="setDefaultStatus"
-                flat
-              >
-                <q-tooltip
-                  class="bg-secondary text-body2 text-black"
-                  :offset="[10, 10]"
-                  :delay="300"
-                  >Set as default template
+              <q-btn class="cardButton" :icon="defaultTemplateIcon" @click="setDefaultStatus" flat>
+                <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Set as default
+                  template
                 </q-tooltip>
               </q-btn>
               <!-- Paste Template button -->
-              <q-btn
-                class="cardButton"
-                icon="bi-clipboard-plus"
-                @click="pasteTemplate()"
-                flat
-              >
-                <q-tooltip
-                  class="bg-secondary text-body2 text-black"
-                  :offset="[10, 10]"
-                  :delay="300"
-                  >Paste template
+              <q-btn class="cardButton" icon="bi-clipboard-plus" @click="pasteTemplate()" flat>
+                <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Paste template
                 </q-tooltip>
               </q-btn>
               <!--Delete Templates button -->
               <div>
                 <q-fab flat direction="right" padding="md">
                   <template v-slot:icon="{ opened }">
-                    <q-icon
-                      :class="{
-                        'example-fab-animate--hover': opened !== true,
-                      }"
-                      name="bi-trash"
-                      size="20px"
-                      style="top: -1px"
-                    />
+                    <q-icon :class="{
+                      'example-fab-animate--hover': opened !== true,
+                    }" name="bi-trash" size="20px" style="top: -1px" />
                   </template>
 
-                  <q-fab-action
-                    style="left: -30px"
-                    class="fabButton"
-                    flat
-                    color="accent"
-                    @click="deleteTemplate()"
-                    icon="bi-check"
-                  />
+                  <q-fab-action style="left: -30px" class="fabButton" flat color="accent" @click="deleteTemplate()"
+                    icon="bi-check" />
                 </q-fab>
               </div>
             </q-card-actions>
@@ -146,12 +87,8 @@
 
               <q-card-section class="row justify-center items-center">
                 <div class="col-4"></div>
-                <q-img
-                  class="col-7"
-                  :src="'/images/ghostcat_m.png'"
-                  style="height: 150px; max-width: 128px; opacity: 0.5"
-                  spinner-color="white"
-                />
+                <q-img class="col-7" :src="'/images/ghostcat_m.png'"
+                  style="height: 150px; max-width: 128px; opacity: 0.5" spinner-color="white" />
               </q-card-section>
             </div>
           </q-card>
@@ -161,11 +98,7 @@
         <!-- make it so, that hoverups show up beneath the buttons or something instead of current's solution-->
         <div v-if="isHelpShown" class="col-12 text q-py-md">
           <div class="q-pa-sm q-ml-md">
-            <q-icon
-              class="q-px-sm"
-              name="bi-bookmark-star"
-              size="15px"
-            ></q-icon>
+            <q-icon class="q-px-sm" name="bi-bookmark-star" size="15px"></q-icon>
             Make default: Every new entry will start with this template.
           </div>
           <div class="q-pa-sm q-ml-md">
@@ -185,11 +118,9 @@
 </template>
 
 <script>
+import { useQuasar } from "quasar";
 import baseDialog from "../ui/BaseDialog2.vue";
 import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
-import FilterCategoryMenu from "../common/FilterCategoryMenu.vue";
-
-import { useQuasar } from "quasar";
 import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
 
 export default {
@@ -346,7 +277,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            nameOfDialog
+          nameOfDialog
         ) {
           return true;
         } else {
@@ -372,6 +303,7 @@ export default {
 .buttonDummy {
   min-width: 95px !important;
 }
+
 .containerForHeaderOfTemplateViewer {
   background-color: var(--q-secondary);
 }
