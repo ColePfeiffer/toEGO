@@ -1,24 +1,12 @@
 <template>
-  <div v-if="isShowingTemplates === true" class="row justify-between items-center" style="background: pink">
-    <q-item-section avatar>
-      <q-icon dense size="xs" color="secondary" name="bi-collection" />
-    </q-item-section>
-    <q-item-section>{{ category.name }}</q-item-section>
-    <q-item-section side top>
-      <q-btn dense round flat :color="color" :icon="isTemplateIDInCategory">
-      </q-btn>
-    </q-item-section>
-  </div>
-  <div class="row justify-between items-center" v-else>
-    <q-item-section class="col-3" avatar style="background: greenyellow">
-      <q-icon color="secondary" size="xs" name="bi-collection" />
-    </q-item-section>
-    <q-item-section class="col-6" style="background: blueviolet">{{ category.name }}</q-item-section>
-    <q-item-section class="col-3" avatar style="background: red">
-      <q-btn dense :color="color" round flat :icon="isTemplateIDInCategory">
-      </q-btn>
-    </q-item-section>
-  </div>
+  <q-item-section avatar>
+    <q-icon color="secondary" size="xs" name="bi-collection" />
+  </q-item-section>
+  <q-item-section>{{ category.name }}</q-item-section>
+  <q-item-section avatar>
+    <q-btn dense :color="color" round flat :icon="isTemplateIDInCategory">
+    </q-btn>
+  </q-item-section>
 </template>
 
 <script>

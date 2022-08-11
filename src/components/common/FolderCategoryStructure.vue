@@ -1,38 +1,51 @@
 <template>
-  <div class="row items-center justify-center" style="background: green">
-    <!-- Folders, Categories, Templates -->
-    <div class="q-pa-md" style="max-width: 350px" v-if="isShowingTemplates === true">
+  <div class="row items-center justify-center">
+    <div style="max-width: 350px">
       <!-- categories that are in folders -->
       <q-item dense clickable v-for="folder in folders" :key="folder">
-        <FolderItem :folder="folder" :currentTemplate="currentTemplate" :categories="categories"></FolderItem>
+        <FolderItem
+          :folder="folder"
+          :currentTemplate="currentTemplate"
+          :categories="categories"
+        ></FolderItem>
       </q-item>
       <q-separator />
       <!-- folderless categories -->
-      <q-item dense clickable v-for="category in getFolderlessCategories" :key="category"
-        @click="manageCategoryForTemplate(category)" :style="getTextColorForCategory(category)">
-        <CategoryItem :category="category" :currentTemplate="currentTemplate" :categories="categories"
-          :isShowingTemplates="true">
-        </CategoryItem>
-      </q-item>
-    </div>
-    <!-- No Templates, just folders and categories -->
-    <div class="q-pa-md" style="max-width: 350px" v-else>
-      <!-- categories that are in folders -->
-      <q-item dense clickable v-for="folder in folders" :key="folder">
-        <FolderItem :folder="folder" :currentTemplate="currentTemplate" :categories="categories"></FolderItem>
-      </q-item>
-
-      <q-separator />
-
-      <q-item style="background: orange" @click="manageCategoryForTemplate(category)"
-        v-for="category in getFolderlessCategories" :key="category" dense clickable
-        :style="getTextColorForCategory(category)">
-        <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="false">
-        </CategoryItem>
-      </q-item>
+      <div v-for="category in getFolderlessCategories" :key="category">
+        <!-- is showing templates -->
+        <q-item
+          dense
+          clickable
+          v-if="isShowingTemplates === true"
+          @click="manageCategoryForTemplate(category)"
+          :style="getTextColorForCategory(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :categories="categories"
+            :isShowingTemplates="true"
+          >
+          </CategoryItem>
+        </q-item>
+        <!-- is not showing templates -->
+        <q-item
+          v-else
+          @click="manageCategoryForTemplate(category)"
+          dense
+          clickable
+          :style="getTextColorForCategory(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :isShowingTemplates="false"
+          >
+          </CategoryItem>
+        </q-item>
+      </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -88,7 +101,7 @@ export default {
         this.$store.commit("data/addTemplateToCategory", payload);
       }
     },
-    manageCategoryForTag() { },
+    manageCategoryForTag() {},
   },
   computed: {
     getFolderlessCategories() {

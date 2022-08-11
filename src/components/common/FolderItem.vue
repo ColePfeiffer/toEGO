@@ -36,7 +36,6 @@
 
       <!-- Categories inside folder -->
       <q-item
-        class="row align-center items-center"
         v-for="category in $store.getters['data/getFolderContent'](
           folder,
           categories
