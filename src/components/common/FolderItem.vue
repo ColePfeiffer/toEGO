@@ -34,24 +34,47 @@
       </div>
 
       <!-- Categories inside folder -->
-      <q-item
-        v-for="category in $store.getters['data/getFolderContent'](
-          folder,
-          categories
-        )"
-        :key="category"
-        dense
-        clickable
-        @click="categoryClicked(category)"
-        :style="getTextColorForCategory(category)"
-      >
-        <CategoryItem
-          :category="category"
-          :currentTemplate="currentTemplate"
-          :isShowingTemplates="isShowingTemplates"
-          :templates="templates"
-        ></CategoryItem>
-      </q-item>
+      <div v-if="isShowingTemplates" style="background: purple">
+        <q-item
+          v-for="category in $store.getters['data/getFolderContent'](
+            folder,
+            categories
+          )"
+          :key="category"
+          dense
+          clickable
+          @click="categoryClicked(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :isShowingTemplates="true"
+            :templates="templates"
+            @templateClicked="templateClicked(template)"
+          ></CategoryItem>
+        </q-item>
+      </div>
+      <div v-else>
+        <q-item
+          v-for="category in $store.getters['data/getFolderContent'](
+            folder,
+            categories
+          )"
+          :key="category"
+          dense
+          clickable
+          @click="categoryClicked(category)"
+          :style="getTextColorForCategory(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :isShowingTemplates="isShowingTemplates"
+            :templates="templates"
+            @templateClicked="templateClicked(template)"
+          ></CategoryItem>
+        </q-item>
+      </div>
     </q-list>
   </q-menu>
 </template>
@@ -65,7 +88,7 @@ export default {
   components: {
     CategoryItem,
   },
-  emits: ["categoryClicked"],
+  emits: ["categoryClicked", "templateClicked"],
   props: {
     folder: Object,
     currentTemplate: Object,
@@ -77,9 +100,14 @@ export default {
     return {};
   },
   methods: {
-    categoryClicked() {
-      this.$emit("categoryClicked", this.category);
+    categoryClicked(category) {
+      this.$emit("categoryClicked", category);
     },
+    templateClicked(template) {
+      console.log("template clicked triggered in FolderItem: ", template);
+      this.$emit("templateClicked", template);
+    },
+
     isTemplateIDInCategory(category) {
       if (category.templatesByID.includes(this.currentTemplate.id)) {
         return "bi-dash";

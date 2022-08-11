@@ -52,6 +52,7 @@
                   :categories="categories"
                   :isShowingTemplates="true"
                   :templates="templateList"
+                  @templateClicked="pickTemplate"
                 />
               </q-btn-dropdown>
             </div>
@@ -253,6 +254,14 @@ export default {
     },
   },
   methods: {
+    pickTemplate(template) {
+      console.log(
+        "template clicked triggered in dialogViewTemplates: ",
+        template
+      );
+      console.log("picktemplate", template);
+      this.currentTemplate = template;
+    },
     showTemplate(type) {
       if (type === "previous") {
         if (!this.isIndexAtZero) {

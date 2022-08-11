@@ -173,14 +173,18 @@ export const checkIfTemplateIsInCategory = (state) => {
     let template = payload.template;
     let isEmpty;
 
-    categories.forEach((category) => {
-      if (category.templatesByID.includes(template.id)) {
-        isEmpty = true;
+    console.log("#####checkIfTemplateIsInCategory for", payload.template.name);
+    for (let i = 0; i < categories.length; i++) {
+      if (categories[i].templatesByID.includes(template.id)) {
+        console.log(categories[i].name, "does include id");
+        console.log("SKIPPING!!!!");
+        isEmpty = false;
         return isEmpty;
       } else {
-        isEmpty = false;
+        console.log(categories[i].name, "doesn't include id");
+        isEmpty = true;
       }
-    });
+    }
     return isEmpty;
   };
 };

@@ -30,7 +30,7 @@
             >
             </q-btn>
           </q-item-section>
-          <q-item-section>Close Folder</q-item-section>
+          <q-item-section color="secondary">Close Folder</q-item-section>
         </q-item>
         <q-separator />
       </div>
@@ -43,6 +43,7 @@
         )"
         :key="template"
         dense
+        v-close-popup="2"
         clickable
         @click="templateClicked(template)"
       >
@@ -76,7 +77,8 @@ export default {
   },
   methods: {
     templateClicked(template) {
-      this.$emit("templateClicked", this.template);
+      console.log("template clicked triggered in categoryItem: ", template);
+      this.$emit("templateClicked", template);
     },
   },
   computed: {

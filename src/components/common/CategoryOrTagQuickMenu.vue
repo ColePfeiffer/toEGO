@@ -93,6 +93,7 @@
           :folders="folders"
           :categories="categories"
           :templates="templates"
+          @templateClicked="templateClicked"
         >
         </FolderCategoryStructure>
       </q-scroll-area>
@@ -145,6 +146,13 @@ export default {
     },
   },
   methods: {
+    templateClicked(template) {
+      console.log(
+        "template clicked triggered in categoryTagQuickMenu: ",
+        template
+      );
+      console.log("template clicked!!!", template);
+    },
     onSubmit() {
       let nameInput = this.$refs.nameRef;
       console.log(nameInput);

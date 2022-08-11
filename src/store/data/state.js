@@ -1,6 +1,60 @@
 import { date } from "quasar";
 export default function () {
   return {
+    // all templates for events are in here
+    eventTemplates: [],
+    diaryTemplates: [
+      {
+        id: 0,
+        name: "Evening",
+        text: "<div><b>Evening</b></div><div>What are you grateful for?<br></div><div>2. Something I accomplished</div><div>3. lesson I learned</div><div>4. Who did I help or connect with?</div>",
+        icon: "",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+      {
+        id: 1,
+        name: "Planning",
+        text: "<div><b>Imagining/Planning</b></div><div><div>Imagine you are having a great day. Describe in detail how you feel...</div></div><div>What are you scared of today and&nbsp;</div><div>Why is today an opportunity instead of another day to get through?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+      {
+        id: 2,
+        name: "Reflecting",
+        text: "<div><b>Reflecting</b></div><div>How are my thoughts lately? Are they serving me or holding me back?<br></div><div>Are all of your obligations today real or are some imagined?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+      {
+        id: 3,
+        name: "Venting",
+        text: "<div><b>Venting</b></div><div>Is there anything you need to get off your chest?<br></div><div>What are the words you need to hear?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+      {
+        id: 4,
+        name: "Morning Prompts",
+        text: "<b>Morning</b><br><div>Intention of the day:<br></div><div>What do you need to get done today?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+    ],
+    eventTemplates: [
+      {
+        id: 0,
+        name: "Grounding: 5-to-1",
+        text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(255, 102, 99);'>five</strong><span style='text-align: left;'> things you can see around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(254, 177, 68);'>four</strong><span style='text-align: left;'> things you can touch around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 224, 158);'>three</strong><span style='text-align: left;'> things you can hear right now.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 193, 207);'>two</strong><span style='text-align: left;'> things you can smell.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(204, 153, 201);'>one</strong><span style='text-align: left;'> thing you can taste.</span><br></li></ol>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+    ],
     dialogWidth: "width: 300px;",
     quicklistForDiary: {
       id: 0,
@@ -12,7 +66,17 @@ export default function () {
       name: "Quick List",
       templatesById: [],
     },
-    foldersForDiary: [{ id: 1, name: "Help for bad days", categoriesByID: [] }],
+    categoriesForDiary: [
+      {
+        id: 1,
+        name: "Methods & Reminders",
+        templatesByID: [],
+        isInFolder: false,
+      },
+      { id: 2, name: "@Daytime", templatesByID: [0, 4], isInFolder: true },
+      { id: 3, name: "@Topic", templatesByID: [1, 2, 3], isInFolder: true },
+    ],
+    foldersForDiary: [{ id: 1, name: "Journaling", categoriesByID: [2, 3] }],
     foldersForEvents: [
       { id: 1, name: "Some folder I made", categoriesByID: [1] },
     ],
@@ -32,22 +96,7 @@ export default function () {
         isInFolder: false,
       },
     ],
-    categoriesForDiary: [
-      {
-        id: 1,
-        name: "Methods",
-        templatesByID: [],
-        isInFolder: false,
-      },
-      {
-        id: 2,
-        name: "Writing prompts",
-        templatesByID: [0, 1],
-        isInFolder: false,
-      },
-      { id: 3, name: "Journaling", templatesByID: [], isInFolder: true },
-      { id: 4, name: "Meh", templatesByID: [], isInFolder: true },
-    ],
+
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
@@ -206,36 +255,6 @@ export default function () {
         content: {},
         // user input gets loaded from here
         UserInputs: [{ id: 1, value: "false" }],
-      },
-    ],
-    // all templates for events are in here
-    eventTemplates: [],
-    diaryTemplates: [
-      {
-        id: 0,
-        name: "default",
-        text: "<b>Morning</b><br><div>Intention of the day:<br></div><div>What do you need to get done today?<br></div><div><br></div><div><b>Venting</b></div><div>Is there anything you need to get off your chest?<br></div><div>What are the words you need to hear?<br></div><div><br></div><div><b>Reflecting</b></div><div>How are my thoughts lately? Are they serving me or holding me back?<br></div><div>Are all of your obligations today real or are some imagined?<br></div><div><br></div><div><b>Imagining/Planning</b></div><div><div>Imagine you are having a great day. Describe in detail how you feel...</div></div><div>What are you scared of today and&nbsp;</div><div>Why is today an opportunity instead of another day to get through?<br></div><div><br></div><div><b>Evening</b></div><div>What are you grateful for?<br></div><div><div>2. Something I accomplished</div><div>3. lesson I learned</div><div>4. Who did I help or connect with?</div></div><div><br></div></div></div>",
-        icon: "",
-        isSetToDefault: false,
-        isInCategory: false,
-      },
-      {
-        id: 1,
-        name: "morning",
-        text: "HALLO, GUDN MORGEN!!!!",
-        icon: "fas fa-sun",
-        isSetToDefault: false,
-        isInCategory: false,
-      },
-    ],
-    eventTemplates: [
-      {
-        id: 0,
-        name: "Grounding: 5-to-1",
-        text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(255, 102, 99);'>five</strong><span style='text-align: left;'> things you can see around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(254, 177, 68);'>four</strong><span style='text-align: left;'> things you can touch around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 224, 158);'>three</strong><span style='text-align: left;'> things you can hear right now.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 193, 207);'>two</strong><span style='text-align: left;'> things you can smell.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(204, 153, 201);'>one</strong><span style='text-align: left;'> thing you can taste.</span><br></li></ol>",
-        icon: "fas fa-sun",
-        isSetToDefault: false,
-        isInCategory: false,
       },
     ],
   };
