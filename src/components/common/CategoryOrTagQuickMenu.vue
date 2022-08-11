@@ -92,6 +92,7 @@
           :currentTemplate="currentTemplate"
           :folders="folders"
           :categories="categories"
+          :templates="templates"
         >
         </FolderCategoryStructure>
       </q-scroll-area>
@@ -112,6 +113,7 @@ export default {
     categories: Array,
     type: String,
     quicklist: Object,
+    templates: Array,
   },
   components: { FolderCategoryStructure },
   data() {

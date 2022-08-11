@@ -1,6 +1,13 @@
 <template>
-  <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplateAndClose" @showHelp="showHelp"
-    :widthOfDialog="315" :hasHelpOption="true" :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
+  <baseDialog
+    v-model="isDialogVisible"
+    @closeDialog="closeDialog"
+    @save="pasteTemplateAndClose"
+    @showHelp="showHelp"
+    :widthOfDialog="315"
+    :hasHelpOption="true"
+    :isSaveButtonDisabled="!isAtLeastOneTemplateCreated"
+  >
     <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
@@ -8,97 +15,189 @@
       Template Viewer
     </template>
     <template v-slot:content>
-      <div class="row full-width items-center justify-center q-px-md q-pt-md">
-        <div class="col-10" v-if="isAtLeastOneTemplateCreated === true">
-          <!-- Template and Filter Dropdown Buttons -->
-          <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
-            <!-- Pick template Dropdown Button  -->
-            <q-btn-dropdown ref="btnDropdown" :ripple="false" flat no-caps class="col-10" square color="transparent"
-              text-color="black" label="Pick Template">
-              <FolderCategoryStructure :currentTemplate="currentTemplate" :folders="folders" :categories="categories"
-                :isShowingTemplates="true" />
-            </q-btn-dropdown>
-          </div>
-
-          <q-card flat bordered square class="bg-grey-1">
-            <q-card-section class="q-pb-xs">
-              <div class="text-h6">{{ currentTemplate.name }}</div>
-            </q-card-section>
-
-            <q-card-section class="templateTextContainer q-pb-xs">
-              <q-scroll-area :style="StyleTmplateTextScrollArea">
-                <div v-if="
-                  currentTemplate.text.length >= maxNumberOfDisplayedChars
-                ">
-                  <div v-html="
-                    currentTemplate.text.substring(
-                      0,
-                      maxNumberOfDisplayedChars
-                    ) + ' [...]'
-                  "></div>
-                </div>
-                <div v-else v-html="currentTemplate.text"></div>
-              </q-scroll-area>
-            </q-card-section>
-
-            <q-card-actions class="row justify-center items-center">
-              <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
-                <CategoryOrTagQuickMenuVue :currentTemplate="currentTemplate" :folders="folders"
-                  :categories="categories" :type="type" :quicklist="quicklist">
-                </CategoryOrTagQuickMenuVue>
-              </q-btn>
-
-              <!-- Set default status button -->
-              <q-btn class="cardButton" :icon="defaultTemplateIcon" @click="setDefaultStatus" flat>
-                <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Set as default
-                  template
-                </q-tooltip>
-              </q-btn>
-              <!-- Paste Template button -->
-              <q-btn class="cardButton" icon="bi-clipboard-plus" @click="pasteTemplate()" flat>
-                <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">Paste template
-                </q-tooltip>
-              </q-btn>
-              <!--Delete Templates button -->
-              <div>
-                <q-fab flat direction="right" padding="md">
-                  <template v-slot:icon="{ opened }">
-                    <q-icon :class="{
-                      'example-fab-animate--hover': opened !== true,
-                    }" name="bi-trash" size="20px" style="top: -1px" />
-                  </template>
-
-                  <q-fab-action style="left: -30px" class="fabButton" flat color="accent" @click="deleteTemplate()"
-                    icon="bi-check" />
-                </q-fab>
-              </div>
-            </q-card-actions>
-          </q-card>
-        </div>
-        <div class="col-10 q-pt-md q-px-md" v-else>
-          <q-card flat bordered class="templateCard bg-grey-1">
-            <q-card-section>
-              <div class="text-h6">There is nothing here.</div>
-            </q-card-section>
-            <div class="templateTextContainer">
-              <q-card-section class="q-pa-md">
-                You have no saved templates.
-              </q-card-section>
-
-              <q-card-section class="row justify-center items-center">
-                <div class="col-4"></div>
-                <q-img class="col-7" :src="'/images/ghostcat_m.png'"
-                  style="height: 150px; max-width: 128px; opacity: 0.5" spinner-color="white" />
-              </q-card-section>
+      <div>
+        <div
+          v-if="isAtLeastOneTemplateCreated === true"
+          class="row full-width items-center justify-center q-pt-md"
+        >
+          <q-btn
+            class="col-2"
+            flat
+            icon="keyboard_arrow_left"
+            :style="$store.state.data.buttonFlatOnlyIcon"
+            :disable="isIndexAtZero"
+            :color="isIndexAtZero ? 'grey-3' : 'accent'"
+            @click="showTemplate('previous')"
+          ></q-btn>
+          <div class="col-8">
+            <!-- Template and Filter Dropdown Buttons -->
+            <div
+              class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer"
+            >
+              <!-- Pick template Dropdown Button  -->
+              <q-btn-dropdown
+                ref="btnDropdown"
+                :ripple="false"
+                flat
+                no-caps
+                class="col-10"
+                square
+                color="transparent"
+                text-color="black"
+                label="Pick Template"
+              >
+                <FolderCategoryStructure
+                  :currentTemplate="currentTemplate"
+                  :folders="folders"
+                  :categories="categories"
+                  :isShowingTemplates="true"
+                  :templates="templateList"
+                />
+              </q-btn-dropdown>
             </div>
-          </q-card>
+
+            <q-card flat bordered square class="bg-grey-1">
+              <q-card-section class="q-pb-xs">
+                <div class="text-h6">{{ currentTemplate.name }}</div>
+              </q-card-section>
+
+              <q-card-section class="templateTextContainer q-pb-xs">
+                <q-scroll-area :style="StyleTmplateTextScrollArea">
+                  <div
+                    v-if="
+                      currentTemplate.text.length >= maxNumberOfDisplayedChars
+                    "
+                  >
+                    <div
+                      v-html="
+                        currentTemplate.text.substring(
+                          0,
+                          maxNumberOfDisplayedChars
+                        ) + ' [...]'
+                      "
+                    ></div>
+                  </div>
+                  <div v-else v-html="currentTemplate.text"></div>
+                </q-scroll-area>
+              </q-card-section>
+
+              <q-card-actions class="row justify-center items-center">
+                <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
+                  <CategoryOrTagQuickMenuVue
+                    :currentTemplate="currentTemplate"
+                    :folders="folders"
+                    :categories="categories"
+                    :type="type"
+                    :quicklist="quicklist"
+                    :templates="templateList"
+                  >
+                  </CategoryOrTagQuickMenuVue>
+                </q-btn>
+
+                <!-- Set default status button -->
+                <q-btn
+                  class="cardButton"
+                  :icon="defaultTemplateIcon"
+                  @click="setDefaultStatus"
+                  flat
+                >
+                  <q-tooltip
+                    class="bg-secondary text-body2 text-black"
+                    :offset="[10, 10]"
+                    :delay="300"
+                    >Set as default template
+                  </q-tooltip>
+                </q-btn>
+                <!-- Paste Template button -->
+                <q-btn
+                  class="cardButton"
+                  icon="bi-clipboard-plus"
+                  @click="pasteTemplate()"
+                  flat
+                >
+                  <q-tooltip
+                    class="bg-secondary text-body2 text-black"
+                    :offset="[10, 10]"
+                    :delay="300"
+                    >Paste template
+                  </q-tooltip>
+                </q-btn>
+                <!--Delete Templates button -->
+                <div>
+                  <q-fab flat direction="right" padding="md">
+                    <template v-slot:icon="{ opened }">
+                      <q-icon
+                        :class="{
+                          'example-fab-animate--hover': opened !== true,
+                        }"
+                        name="bi-trash"
+                        size="20px"
+                        style="top: -1px"
+                      />
+                    </template>
+
+                    <q-fab-action
+                      style="left: -30px"
+                      class="fabButton"
+                      flat
+                      color="accent"
+                      @click="deleteTemplate()"
+                      icon="bi-check"
+                    />
+                  </q-fab>
+                </div>
+              </q-card-actions>
+            </q-card>
+          </div>
+          <q-btn
+            class="col-2"
+            flat
+            icon="keyboard_arrow_right"
+            :style="$store.state.data.buttonFlatOnlyIcon"
+            :disable="isIndexAtMaxLength"
+            :color="isIndexAtMaxLength ? 'grey-3' : 'accent'"
+            @click="showTemplate('next')"
+          >
+          </q-btn>
+        </div>
+
+        <div
+          v-else
+          class="row full-width items-center justify-center q-px-md q-pt-md"
+        >
+          <div class="col-10 q-pt-md q-px-md">
+            <q-card flat bordered class="templateCard bg-grey-1">
+              <q-card-section>
+                <div class="text-h6">There is nothing here.</div>
+              </q-card-section>
+              <div class="templateTextContainer">
+                <q-card-section class="q-pa-md">
+                  You have no saved templates.
+                </q-card-section>
+
+                <q-card-section class="row justify-center items-center">
+                  <div class="col-4"></div>
+                  <q-img
+                    class="col-7"
+                    :src="'/images/ghostcat_m.png'"
+                    style="height: 150px; max-width: 128px; opacity: 0.5"
+                    spinner-color="white"
+                  />
+                </q-card-section>
+              </div>
+            </q-card>
+          </div>
         </div>
 
         <br />
         <!-- make it so, that hoverups show up beneath the buttons or something instead of current's solution-->
         <div v-if="isHelpShown" class="col-12 text q-py-md">
           <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm" name="bi-bookmark-star" size="15px"></q-icon>
+            <q-icon
+              class="q-px-sm"
+              name="bi-bookmark-star"
+              size="15px"
+            ></q-icon>
             Make default: Every new entry will start with this template.
           </div>
           <div class="q-pa-sm q-ml-md">
@@ -154,6 +253,21 @@ export default {
     },
   },
   methods: {
+    showTemplate(type) {
+      if (type === "previous") {
+        if (!this.isIndexAtZero) {
+          let currentIndex = this.getIndexOfCurrentTemplate;
+          currentIndex -= 1;
+          this.currentTemplate = this.templateList[currentIndex];
+        }
+      } else {
+        if (!this.isIndexAtMaxLength) {
+          let currentIndex = this.getIndexOfCurrentTemplate;
+          currentIndex += 1;
+          this.currentTemplate = this.templateList[currentIndex];
+        }
+      }
+    },
     deleteTemplate() {
       let payload = {
         template: this.currentTemplate,
@@ -208,6 +322,23 @@ export default {
     },
   },
   computed: {
+    getIndexOfCurrentTemplate() {
+      return this.templateList.indexOf(this.currentTemplate);
+    },
+    isIndexAtZero() {
+      if (this.getIndexOfCurrentTemplate === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isIndexAtMaxLength() {
+      if (this.getIndexOfCurrentTemplate === this.templateList.length - 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     getScreenWidth() {
       // return this.$store.state.data.dialogWidth;
       let width = this.$q.screen.height;
@@ -277,7 +408,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-          nameOfDialog
+            nameOfDialog
         ) {
           return true;
         } else {

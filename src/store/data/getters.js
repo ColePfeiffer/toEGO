@@ -66,6 +66,76 @@ export const getFolderContent = (state) => {
   };
 };
 
+export const getTemplatesFromCategory = (state) => {
+  console.log("getTemplatesFromCategory");
+  return (category, templates) => {
+    console.log("cat, temps: ", category, templates);
+    let array = [];
+
+    category.templatesByID.forEach((ID) => {
+      array.push(templates.find((template) => template.id === ID));
+    });
+
+    console.log("array: ", array);
+    return array;
+  };
+};
+
+export const isCategoryEmpty = (state) => {
+  return (category) => {
+    console.log("iscategoryempty?", category);
+    if (
+      typeof category !== "undefined" &&
+      category.templatesByID.length === 0
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+};
+
+export const areCategoriesInFolderEmpty = (state, getters) => {
+  return (folder, categories) => {
+    let folderIsEmpty;
+    // if folder doesn't have any categories, return true
+    if (folder.categoriesByID.length === 0) {
+      folderIsEmpty = true;
+      // if folder has categories, check if they are empty
+    } else {
+      folder.categoriesByID.forEach((categoryIDInFolder) => {
+        // get the category by using the id stored in the folder
+        console.log("categoryIDInFolder: ", categoryIDInFolder);
+        let category = categories.find(
+          (category) => category.id === categoryIDInFolder
+        );
+        console.log("found category ", category);
+        // if the category is empty, return true
+        if (getters.isCategoryEmpty(category)) {
+          folderIsEmpty = true;
+        } else {
+          folderIsEmpty = false;
+        }
+      });
+    }
+    console.log("folderIsEmpty: ", folderIsEmpty);
+    return folderIsEmpty;
+  };
+};
+
+export const getFoldersWithTemplates = (state, getters) => {
+  return (folders, categories) => {
+    let array = [];
+    folders.forEach((folder) => {
+      if (!getters.areCategoriesInFolderEmpty(folder, categories)) {
+        array.push(folder);
+      }
+    }),
+      console.log("array: ", array);
+    return array;
+  };
+};
+
 export const getQuickListContent = (state) => {
   return (type) => {
     let array = [];
@@ -94,5 +164,23 @@ export const isTemplateInCategory = (state) => {
     } else {
       return false;
     }
+  };
+};
+
+export const checkIfTemplateIsInCategory = (state) => {
+  return (payload) => {
+    let categories = payload.categories;
+    let template = payload.template;
+    let isEmpty;
+
+    categories.forEach((category) => {
+      if (category.templatesByID.includes(template.id)) {
+        isEmpty = true;
+        return isEmpty;
+      } else {
+        isEmpty = false;
+      }
+    });
+    return isEmpty;
   };
 };

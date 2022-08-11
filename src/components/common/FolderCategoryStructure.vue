@@ -2,47 +2,79 @@
   <div class="row items-center justify-center">
     <div style="max-width: 350px">
       <!-- categories that are in folders -->
-      <q-item dense clickable v-for="folder in folders" :key="folder">
-        <FolderItem
-          :folder="folder"
-          :currentTemplate="currentTemplate"
-          :categories="categories"
-        ></FolderItem>
-      </q-item>
-      <q-separator />
-      <!-- folderless categories -->
-      <div v-for="category in getFolderlessCategories" :key="category">
-        <!-- is showing templates -->
-        <q-item
-          dense
-          clickable
-          v-if="isShowingTemplates === true"
-          @click="manageCategoryForTemplate(category)"
-          :style="getTextColorForCategory(category)"
-        >
-          <CategoryItem
-            :category="category"
+      <!-- -->
+      <div v-if="!isShowingTemplates">
+        <q-item dense clickable v-for="folder in folders" :key="folder">
+          <FolderItem
+            :folder="folder"
             :currentTemplate="currentTemplate"
             :categories="categories"
-            :isShowingTemplates="true"
-          >
-          </CategoryItem>
+            :templates="templates"
+            @categoryClicked="manageCategoryForTemplate(category)"
+          ></FolderItem>
         </q-item>
-        <!-- is not showing templates -->
+      </div>
+
+      <!-- -->
+      <div v-else>
         <q-item
-          v-else
-          @click="manageCategoryForTemplate(category)"
           dense
           clickable
-          :style="getTextColorForCategory(category)"
+          v-for="folder in getNonEmptyFolders"
+          :key="folder"
         >
-          <CategoryItem
-            :category="category"
+          <FolderItem
+            :folder="folder"
             :currentTemplate="currentTemplate"
-            :isShowingTemplates="false"
-          >
-          </CategoryItem>
+            :categories="categories"
+            :templates="templates"
+          ></FolderItem>
         </q-item>
+      </div>
+
+      <q-separator />
+      <!-- folderless categories -->
+      <div v-if="isShowingTemplates === true">
+        <div
+          v-for="category in getNonEmptyFolderlessCategories"
+          :key="category"
+        >
+          <!-- is showing templates -->
+          <q-item dense clickable>
+            <CategoryItem
+              :category="category"
+              :currentTemplate="currentTemplate"
+              :isShowingTemplates="true"
+              :templates="templates"
+            >
+            </CategoryItem>
+          </q-item>
+        </div>
+        <div v-for="template in getTemplates" :key="template">
+          <!-- is not showing templates -->
+          <q-item dense clickable>
+            <TemplateItem :template="template"></TemplateItem>
+          </q-item>
+        </div>
+      </div>
+      <div v-else>
+        <div v-for="category in getFolderlessCategories" :key="category">
+          <!-- is not showing templates -->
+          <q-item
+            dense
+            clickable
+            @click="manageCategoryForTemplate(category)"
+            :style="getTextColorForCategory(category)"
+          >
+            <CategoryItem
+              :category="category"
+              :currentTemplate="currentTemplate"
+              :isShowingTemplates="false"
+              :templates="templates"
+            >
+            </CategoryItem>
+          </q-item>
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +84,7 @@
 import { useQuasar } from "quasar";
 import CategoryItem from "./categoryItem.vue";
 import FolderItem from "./folderItem.vue";
+import TemplateItem from "./TemplateItem.vue";
 
 export default {
   name: "CategoryOrTagQuickMenu",
@@ -64,6 +97,7 @@ export default {
       type: Boolean,
       default: false,
     },
+    templates: Array,
   },
   data() {
     return {
@@ -93,7 +127,7 @@ export default {
     manageCategoryForTemplate(category) {
       let payload = {
         category: category,
-        templateID: this.currentTemplate.id,
+        template: this.currentTemplate,
       };
       if (category.templatesByID.includes(this.currentTemplate.id)) {
         this.$store.commit("data/removeTemplateFromCategory", payload);
@@ -104,12 +138,29 @@ export default {
     manageCategoryForTag() {},
   },
   computed: {
+    // get templates that aren't in folders or categories
+    getTemplates() {
+      return this.templates.filter((template) => {
+        return template.isInCategory === false;
+      });
+    },
+    getNonEmptyFolders() {
+      return this.$store.getters["data/getFoldersWithTemplates"](
+        this.folders,
+        this.categories
+      );
+    },
+    getNonEmptyFolderlessCategories() {
+      return this.categories.filter((category) => {
+        return category.templatesByID.length != 0;
+      });
+    },
     getFolderlessCategories() {
       return this.categories.filter((category) => {
         return category.isInFolder === false;
       });
     },
   },
-  components: { CategoryItem, FolderItem },
+  components: { CategoryItem, FolderItem, TemplateItem },
 };
 </script>

@@ -1,5 +1,4 @@
 <template>
-  <!-- WITHOUT TEMPLATES -->
   <q-item-section avatar>
     <q-icon dense size="xs" color="secondary" name="bi-folder" />
   </q-item-section>
@@ -43,13 +42,14 @@
         :key="category"
         dense
         clickable
-        @click="manageCategoryForTemplate(category)"
+        @click="categoryClicked(category)"
         :style="getTextColorForCategory(category)"
       >
         <CategoryItem
           :category="category"
           :currentTemplate="currentTemplate"
           :isShowingTemplates="isShowingTemplates"
+          :templates="templates"
         ></CategoryItem>
       </q-item>
     </q-list>
@@ -65,17 +65,21 @@ export default {
   components: {
     CategoryItem,
   },
-  emits: [],
+  emits: ["categoryClicked"],
   props: {
     folder: Object,
     currentTemplate: Object,
     categories: Array,
     isShowingTemplates: Boolean,
+    templates: Array,
   },
   data() {
     return {};
   },
   methods: {
+    categoryClicked() {
+      this.$emit("categoryClicked", this.category);
+    },
     isTemplateIDInCategory(category) {
       if (category.templatesByID.includes(this.currentTemplate.id)) {
         return "bi-dash";
@@ -92,17 +96,6 @@ export default {
         return {
           color: "#d3d3d3 ",
         };
-      }
-    },
-    manageCategoryForTemplate(category) {
-      let payload = {
-        category: category,
-        templateID: this.currentTemplate.id,
-      };
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
-        this.$store.commit("data/removeTemplateFromCategory", payload);
-      } else {
-        this.$store.commit("data/addTemplateToCategory", payload);
       }
     },
   },

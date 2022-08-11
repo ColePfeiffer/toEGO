@@ -73,19 +73,26 @@ export const manageQuicklistStatusOfTemplate = (state, payload) => {
 
 // payload consists of category and templateID
 export const addTemplateToCategory = (state, payload) => {
-  payload.category.templatesByID.push(payload.templateID);
+  let category = payload.category;
+  let template = payload.template;
+  template.isInCategory = true;
+  category.templatesByID.push(template.id);
 };
 
 // payload consists of category, templateID
 export const removeTemplateFromCategory = (state, payload) => {
+  let category = payload.category;
+  let template = payload.template;
+
   // Remove template from array
-  var filteredArray = payload.category.templatesByID.filter(function (
-    templateID
-  ) {
-    return templateID != payload.templateID;
+  console.log(category, template);
+  var filteredArray = category.templatesByID.filter(function (templateID) {
+    return templateID != template.id;
   });
 
-  payload.category.templatesByID = filteredArray;
+  category.templatesByID = filteredArray;
+
+  // if template isnt in any other category, set isInCategory to false
 };
 
 export const updateDrawerState = (state, opened) => {
