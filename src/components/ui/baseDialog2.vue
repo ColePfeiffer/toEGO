@@ -155,7 +155,6 @@ export default {
           color: "black",
         };
       }
-      console.log("STYLE for baseDialog2: ", style);
       return style;
     },
   },

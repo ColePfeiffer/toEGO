@@ -327,7 +327,6 @@ export default {
         console.log("small");
         width = totalWidthAsNumber + "px";
       }
-      console.log("STYLE for dialogviewTemplates: ", style);
     },
   },
   computed: {

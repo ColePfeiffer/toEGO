@@ -6,13 +6,20 @@
         :folders="folders"
         :categories="categories"
         :templates="templates"
-        :isShowingTemplates="false"
+        :isShowingTemplates="isShowingTemplates"
         @templateClicked="templateClicked"
       ></CategoriesWithFolders>
 
       <q-separator />
       <!-- folderless categories -->
-      <CategoriesWithoutFolders></CategoriesWithoutFolders>
+      <CategoriesWithoutFolders
+        :currentTemplate="currentTemplate"
+        :folders="folders"
+        :categories="categories"
+        :templates="templates"
+        :isShowingTemplates="isShowingTemplates"
+        @templateClicked="templateClicked"
+      ></CategoriesWithoutFolders>
     </div>
   </div>
 </template>
@@ -49,50 +56,6 @@ export default {
         template
       );
       this.$emit("templateClicked", template);
-    },
-    isTemplateSetToThisCategory(category) {
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
-        return "bi-dash";
-      } else {
-        return "bi-plus";
-      }
-    },
-    getTextColorForCategory(category) {
-      if (this.isTemplateSetToThisCategory(category) === "bi-dash") {
-        return {
-          color: "var(--q-primary)",
-        };
-      } else {
-        return {
-          color: "#d3d3d3 ",
-        };
-      }
-    },
-    manageCategoryForTemplate(category) {
-      let payload = {
-        category: category,
-        template: this.currentTemplate,
-      };
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
-        this.$store.commit("data/removeTemplateFromCategory", payload);
-      } else {
-        this.$store.commit("data/addTemplateToCategory", payload);
-      }
-    },
-    manageCategoryForTag() {},
-  },
-  computed: {
-    getNonEmptyFolders() {
-      return this.$store.getters["data/getFoldersWithTemplates"](
-        this.folders,
-        this.categories
-      );
-    },
-
-    getFolderlessCategories() {
-      return this.categories.filter((category) => {
-        return category.isInFolder === false;
-      });
     },
   },
 };

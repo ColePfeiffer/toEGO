@@ -47,7 +47,7 @@ import CategoryItem from "./CategoryItem.vue";
 import TemplateItem from "./TemplateItem.vue";
 
 export default {
-  name: "CategoriesWithFolders",
+  name: "CategoriesWithoutFolders",
   emits: ["templateClicked"],
   components: { CategoryItem, TemplateItem },
   props: {
@@ -64,6 +64,25 @@ export default {
     return {};
   },
   methods: {
+    isTemplateSetToThisCategory(category) {
+      if (category.templatesByID.includes(this.currentTemplate.id)) {
+        return "bi-dash";
+      } else {
+        return "bi-plus";
+      }
+    },
+    getTextColorForCategory(category) {
+      if (this.isTemplateSetToThisCategory(category) === "bi-dash") {
+        return {
+          color: "var(--q-primary)",
+        };
+      } else {
+        return {
+          color: "#d3d3d3 ",
+        };
+      }
+    },
+    // kann evtl weg
     templateClicked(template) {
       this.$emit("templateClicked", template);
     },
@@ -81,11 +100,17 @@ export default {
     manageCategoryForTag() {},
   },
   computed: {
+    getFolderlessCategories() {
+      return this.categories.filter((category) => {
+        return category.isInFolder === false;
+      });
+    },
+
+    // kann evtl weg
     // get templates that aren't in folders or categories
     getTemplates() {
       let array = [];
 
-      console.log("getTemplates looking through all templates");
       this.templates.forEach((template) => {
         let payload = {
           template: template,
@@ -99,14 +124,13 @@ export default {
           array.push(template);
         }
       });
-      console.log("getTemplates", array);
       return array;
     },
     getNonEmptyFolderlessCategories() {
-      console.log("getNonEmptyFolderlessCategories");
       return this.categories.filter((category) => {
-        console.log(category, "is being checked");
-        return category.templatesByID.length != 0;
+        return (
+          category.templatesByID.length > 0 && category.isInFolder === false
+        );
       });
     },
   },

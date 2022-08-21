@@ -46,6 +46,7 @@
         v-close-popup="2"
         clickable
         @click="templateClicked(template)"
+        style="background: purple"
       >
         <TemplateItem :template="template"> </TemplateItem>
       </q-item>

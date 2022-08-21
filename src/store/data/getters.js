@@ -75,15 +75,12 @@ export const getTemplatesFromCategory = (state) => {
     category.templatesByID.forEach((ID) => {
       array.push(templates.find((template) => template.id === ID));
     });
-
-    console.log("array: ", array);
     return array;
   };
 };
 
 export const isCategoryEmpty = (state) => {
   return (category) => {
-    console.log("iscategoryempty?", category);
     if (
       typeof category !== "undefined" &&
       category.templatesByID.length === 0
@@ -105,11 +102,9 @@ export const areCategoriesInFolderEmpty = (state, getters) => {
     } else {
       folder.categoriesByID.forEach((categoryIDInFolder) => {
         // get the category by using the id stored in the folder
-        console.log("categoryIDInFolder: ", categoryIDInFolder);
         let category = categories.find(
           (category) => category.id === categoryIDInFolder
         );
-        console.log("found category ", category);
         // if the category is empty, return true
         if (getters.isCategoryEmpty(category)) {
           folderIsEmpty = true;
@@ -118,20 +113,18 @@ export const areCategoriesInFolderEmpty = (state, getters) => {
         }
       });
     }
-    console.log("folderIsEmpty: ", folderIsEmpty);
     return folderIsEmpty;
   };
 };
 
-export const getFoldersWithTemplates = (state, getters) => {
+export const getNonEmptyFolders = (state, getters) => {
   return (folders, categories) => {
     let array = [];
     folders.forEach((folder) => {
       if (!getters.areCategoriesInFolderEmpty(folder, categories)) {
         array.push(folder);
       }
-    }),
-      console.log("array: ", array);
+    });
     return array;
   };
 };
@@ -172,16 +165,11 @@ export const checkIfTemplateIsInCategory = (state) => {
     let categories = payload.categories;
     let template = payload.template;
     let isEmpty;
-
-    console.log("#####checkIfTemplateIsInCategory for", payload.template.name);
     for (let i = 0; i < categories.length; i++) {
       if (categories[i].templatesByID.includes(template.id)) {
-        console.log(categories[i].name, "does include id");
-        console.log("SKIPPING!!!!");
         isEmpty = false;
         return isEmpty;
       } else {
-        console.log(categories[i].name, "doesn't include id");
         isEmpty = true;
       }
     }

@@ -1,5 +1,4 @@
 <template>
-  <!-- categories that are in folders -->
   <div v-if="isShowingTemplates === false">
     <q-item dense clickable v-for="folder in folders" :key="folder">
       <FolderItem
@@ -13,7 +12,6 @@
       ></FolderItem>
     </q-item>
   </div>
-  <!-- is showing templates -->
   <div v-else>
     <q-item dense clickable v-for="folder in getNonEmptyFolders" :key="folder">
       <FolderItem
@@ -21,7 +19,7 @@
         :currentTemplate="currentTemplate"
         :categories="categories"
         :templates="templates"
-        :isShowingTemplates="false"
+        :isShowingTemplates="true"
         @categoryClicked="manageCategoryForTemplate"
         @templateClicked="templateClicked"
       ></FolderItem>
@@ -67,7 +65,7 @@ export default {
   },
   computed: {
     getNonEmptyFolders() {
-      return this.$store.getters["data/getFoldersWithTemplates"](
+      return this.$store.getters["data/getNonEmptyFolders"](
         this.folders,
         this.categories
       );

@@ -76,7 +76,10 @@ export default function () {
       { id: 2, name: "@Daytime", templatesByID: [0, 4], isInFolder: true },
       { id: 3, name: "@Topic", templatesByID: [1, 2, 3], isInFolder: true },
     ],
-    foldersForDiary: [{ id: 1, name: "Journaling", categoriesByID: [2, 3] }],
+    foldersForDiary: [
+      { id: 1, name: "Journaling", categoriesByID: [2, 3] },
+      { id: 2, name: "Baby", categoriesByID: [] },
+    ],
     foldersForEvents: [
       { id: 1, name: "Some folder I made", categoriesByID: [1] },
     ],

@@ -34,7 +34,7 @@
       </div>
 
       <!-- Categories inside folder -->
-      <div v-if="isShowingTemplates" style="background: purple">
+      <div v-if="isShowingTemplates">
         <q-item
           v-for="category in $store.getters['data/getFolderContent'](
             folder,
@@ -50,7 +50,7 @@
             :currentTemplate="currentTemplate"
             :isShowingTemplates="true"
             :templates="templates"
-            @templateClicked="templateClicked(template)"
+            @templateClicked="templateClicked"
           ></CategoryItem>
         </q-item>
       </div>
@@ -71,7 +71,7 @@
             :currentTemplate="currentTemplate"
             :isShowingTemplates="isShowingTemplates"
             :templates="templates"
-            @templateClicked="templateClicked(template)"
+            @templateClicked="templateClicked"
           ></CategoryItem>
         </q-item>
       </div>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import CategoryItem from "./categoryItem.vue";
+import CategoryItem from "./CategoryItem.vue";
 // q screen
 
 export default {
