@@ -20,7 +20,6 @@
         :categories="categories"
         :templates="templates"
         :isShowingTemplates="true"
-        @categoryClicked="manageCategoryForTemplate"
         @templateClicked="templateClicked"
       ></FolderItem>
     </q-item>
