@@ -2,7 +2,7 @@
   <q-item-section avatar>
     <q-icon color="secondary" size="xs" name="bi-collection" />
   </q-item-section>
-  <q-item-section>{{ category.name }}</q-item-section>
+  <q-item-section :style="getColorForLabel">{{ category.name }}</q-item-section>
   <!-- is showing templates -->
   <q-item-section v-if="isShowingTemplates" side top>
     <q-btn dense round flat :icon="expandIcon"> </q-btn>
@@ -45,6 +45,9 @@ export default {
   data() {
     return {
       expandIcon: "expand_more",
+      getColorForLabel: {
+        color: 'black'
+      },
       qMenuModel: false,
     };
   },
@@ -52,8 +55,14 @@ export default {
     qMenuModel(newValue) {
       if (newValue === true) {
         this.expandIcon = "expand_less";
+        this.getColorForLabel = {
+          color: 'lightgray'
+        };
       } else {
         this.expandIcon = "expand_more";
+        this.getColorForLabel = {
+          color: 'black'
+        };
       }
     },
   },

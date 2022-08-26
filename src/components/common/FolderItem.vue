@@ -2,7 +2,7 @@
   <q-item-section avatar>
     <q-icon dense size="xs" color="secondary" name="bi-folder" />
   </q-item-section>
-  <q-item-section>{{ folder.name }}</q-item-section>
+  <q-item-section :style="getColorForLabel">{{ folder.name }}</q-item-section>
   <q-item-section side top>
     <q-btn dense round flat :icon="expandIcon"> </q-btn>
   </q-item-section>
@@ -56,16 +56,25 @@ export default {
   data() {
     return {
       isClicked: false,
-      expandIcon: "expand_more",
       qMenuModel: false,
+      expandIcon: "expand_more",
+      getColorForLabel: {
+        color: 'black'
+      },
     };
   },
   watch: {
     qMenuModel(newValue) {
       if (newValue === true) {
         this.expandIcon = "expand_less";
+        this.getColorForLabel = {
+          color: 'lightgray'
+        };
       } else {
         this.expandIcon = "expand_more";
+        this.getColorForLabel = {
+          color: 'black'
+        };
       }
     },
   },

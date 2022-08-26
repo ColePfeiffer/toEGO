@@ -18,7 +18,7 @@
             <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
               <!-- Pick template Dropdown Button  -->
               <q-btn :icon-right="expandIcon" :ripple="false" flat no-caps class="col-12 q-pa-none" square
-                color="transparent" text-color="black" label="Pick Template" @click="openPickTemplateMenu">
+                color="transparent" text-color="black" label="Pick Template">
                 <q-menu fit class="no-border-radius" v-model="qMenuModel">
                   <q-list>
                     <FolderCategoryStructure :currentTemplate="currentTemplate" :folders="folders"
@@ -157,7 +157,6 @@ export default {
     return {
       qMenuModel: false,
       expandIcon: "expand_more",
-      isPickTemplateMenuOpen: false,
       icon: true,
       menuIcon: "bi-file-earmark-font",
       isHelpShown: false,
@@ -185,10 +184,6 @@ export default {
     },
   },
   methods: {
-    openPickTemplateMenu() {
-      console.log("bleeeh");
-      this.isPickTemplateMenuOpen = true;
-    },
     pickTemplate(template) {
       console.log(
         "template clicked triggered in dialogViewTemplates: ",
@@ -196,6 +191,7 @@ export default {
       );
       console.log("picktemplate", template);
       this.currentTemplate = template;
+      this.qMenuModel = false;
     },
     showTemplate(type) {
       if (type === "previous") {
@@ -238,7 +234,6 @@ export default {
     },
     setTemplate(index) {
       this.currentTemplate = this.templates[index];
-      this.isPickTemplateMenuOpen = false;
     },
     // for baseDialog
     showHelp() {
@@ -265,13 +260,6 @@ export default {
     },
   },
   computed: {
-    getIconBasedOnExpandStatus() {
-      if (this.isPickTemplateMenuOpen) {
-        return 'expand_more';
-      } else {
-        return 'expand_less';
-      }
-    },
     getIndexOfCurrentTemplate() {
       return this.templateList.indexOf(this.currentTemplate);
     },
