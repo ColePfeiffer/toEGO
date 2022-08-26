@@ -5,49 +5,18 @@
   <q-item-section>{{ category.name }}</q-item-section>
   <!-- is showing templates -->
   <q-item-section v-if="isShowingTemplates" side top>
-    <q-btn dense round flat icon="keyboard_arrow_right"> </q-btn>
+    <q-btn dense round flat :icon="expandIcon"> </q-btn>
   </q-item-section>
   <!-- Submenu -->
-  <q-menu
-    v-if="isShowingTemplates"
-    :cover="$q.screen.lt.sm"
-    anchor="top end"
-    self="top start"
-    separate-close-popup
-  >
-    <q-list>
-      <!-- Closing Option for small devices -->
-      <div v-if="$q.screen.lt.sm">
-        <q-item dense clickable v-close-popup>
-          <q-item-section avatar>
-            <q-btn
-              size="xs"
-              dense
-              round
-              flat
-              color="secondary"
-              icon="keyboard_arrow_left"
-            >
-            </q-btn>
-          </q-item-section>
-          <q-item-section color="secondary">Close Folder</q-item-section>
-        </q-item>
-        <q-separator />
-      </div>
+  <q-menu v-if="isShowingTemplates" fit dense separate-close-popup class="no-border-radius" v-model="qMenuModel">
+    <q-list dense>
+
 
       <!-- Templates inside Category -->
-      <q-item
-        v-for="template in $store.getters['data/getTemplatesFromCategory'](
-          category,
-          templates
-        )"
-        :key="template"
-        dense
-        v-close-popup="2"
-        clickable
-        @click="templateClicked(template)"
-        style="background: purple"
-      >
+      <q-item style="max-width: 350px" v-for="template in $store.getters['data/getTemplatesFromCategory'](
+        category,
+        templates
+      )" :key="template" dense v-close-popup="2" clickable @click="templateClicked(template)">
         <TemplateItem :template="template"> </TemplateItem>
       </q-item>
     </q-list>
@@ -74,7 +43,19 @@ export default {
     templates: Array,
   },
   data() {
-    return {};
+    return {
+      expandIcon: "expand_more",
+      qMenuModel: false,
+    };
+  },
+  watch: {
+    qMenuModel(newValue) {
+      if (newValue === true) {
+        this.expandIcon = "expand_less";
+      } else {
+        this.expandIcon = "expand_more";
+      }
+    },
   },
   methods: {
     templateClicked(template) {

@@ -4,75 +4,32 @@
   </q-item-section>
   <q-item-section>{{ folder.name }}</q-item-section>
   <q-item-section side top>
-    <q-btn dense round flat icon="keyboard_arrow_right"> </q-btn>
+    <q-btn dense round flat :icon="expandIcon"> </q-btn>
   </q-item-section>
   <!-- Submenu -->
-  <q-menu
-    :cover="$q.screen.lt.sm"
-    anchor="top end"
-    self="top start"
-    separate-close-popup
-  >
+  <q-menu fit dense separate-close-popup class="no-border-radius" v-model="qMenuModel">
     <q-list>
       <!-- Closing Option for small devices -->
-      <div v-if="$q.screen.lt.sm">
-        <q-item dense clickable v-close-popup>
-          <q-item-section avatar>
-            <q-btn
-              size="xs"
-              dense
-              round
-              flat
-              color="secondary"
-              icon="keyboard_arrow_left"
-            >
-            </q-btn>
-          </q-item-section>
-          <q-item-section>Close Folder</q-item-section>
-        </q-item>
-        <q-separator />
-      </div>
+
 
       <!-- Categories inside folder -->
       <div v-if="isShowingTemplates">
-        <q-item
-          v-for="category in $store.getters['data/getFolderContent'](
-            folder,
-            categories
-          )"
-          :key="category"
-          dense
-          clickable
-          @click="categoryClicked(category)"
-        >
-          <CategoryItem
-            :category="category"
-            :currentTemplate="currentTemplate"
-            :isShowingTemplates="true"
-            :templates="templates"
-            @templateClicked="templateClicked"
-          ></CategoryItem>
+        <q-item v-for="category in $store.getters['data/getFolderContent'](
+          folder,
+          categories
+        )" :key="category" dense clickable @click="categoryClicked(category)">
+          <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="true"
+            :templates="templates" @templateClicked="templateClicked"></CategoryItem>
         </q-item>
       </div>
       <div v-else>
-        <q-item
-          v-for="category in $store.getters['data/getFolderContent'](
-            folder,
-            categories
-          )"
-          :key="category"
-          dense
-          clickable
-          @click="categoryClicked(category)"
-          :style="getTextColorForCategory(category)"
-        >
-          <CategoryItem
-            :category="category"
-            :currentTemplate="currentTemplate"
-            :isShowingTemplates="isShowingTemplates"
-            :templates="templates"
-            @templateClicked="templateClicked"
-          ></CategoryItem>
+        <q-item v-for="category in $store.getters['data/getFolderContent'](
+          folder,
+          categories
+        )" :key="category" dense clickable @click="categoryClicked(category)"
+          :style="getTextColorForCategory(category)">
+          <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="isShowingTemplates"
+            :templates="templates" @templateClicked="templateClicked"></CategoryItem>
         </q-item>
       </div>
     </q-list>
@@ -97,7 +54,20 @@ export default {
     templates: Array,
   },
   data() {
-    return {};
+    return {
+      isClicked: false,
+      expandIcon: "expand_more",
+      qMenuModel: false,
+    };
+  },
+  watch: {
+    qMenuModel(newValue) {
+      if (newValue === true) {
+        this.expandIcon = "expand_less";
+      } else {
+        this.expandIcon = "expand_more";
+      }
+    },
   },
   methods: {
     categoryClicked(category) {
@@ -127,6 +97,14 @@ export default {
       }
     },
   },
-  computed: {},
+  computed: {
+    getIconBasedOnExpandStatus() {
+      if (this.isClicked) {
+        return 'expand_more'
+      } else {
+        return 'expand_less'
+      }
+    }
+  },
 };
 </script>

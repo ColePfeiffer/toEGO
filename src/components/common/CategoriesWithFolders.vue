@@ -1,27 +1,15 @@
 <template>
   <div v-if="isShowingTemplates === false">
     <q-item dense clickable v-for="folder in folders" :key="folder">
-      <FolderItem
-        :folder="folder"
-        :currentTemplate="currentTemplate"
-        :categories="categories"
-        :templates="templates"
-        :isShowingTemplates="false"
-        @categoryClicked="manageCategoryForTemplate"
-        @templateClicked="templateClicked"
-      ></FolderItem>
+      <FolderItem :folder="folder" :currentTemplate="currentTemplate" :categories="categories" :templates="templates"
+        :isShowingTemplates="false" @categoryClicked="manageCategoryForTemplate" @templateClicked="templateClicked">
+      </FolderItem>
     </q-item>
   </div>
   <div v-else>
     <q-item dense clickable v-for="folder in getNonEmptyFolders" :key="folder">
-      <FolderItem
-        :folder="folder"
-        :currentTemplate="currentTemplate"
-        :categories="categories"
-        :templates="templates"
-        :isShowingTemplates="true"
-        @templateClicked="templateClicked"
-      ></FolderItem>
+      <FolderItem :folder="folder" :currentTemplate="currentTemplate" :categories="categories" :templates="templates"
+        :isShowingTemplates="true" @templateClicked="templateClicked"></FolderItem>
     </q-item>
   </div>
 </template>
@@ -60,7 +48,7 @@ export default {
         this.$store.commit("data/addTemplateToCategory", payload);
       }
     },
-    manageCategoryForTag() {},
+    manageCategoryForTag() { },
   },
   computed: {
     getNonEmptyFolders() {

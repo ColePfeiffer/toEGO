@@ -1,26 +1,14 @@
 <template>
-  <div class="row items-center justify-center">
-    <div style="max-width: 350px">
-      <CategoriesWithFolders
-        :currentTemplate="currentTemplate"
-        :folders="folders"
-        :categories="categories"
-        :templates="templates"
-        :isShowingTemplates="isShowingTemplates"
-        @templateClicked="templateClicked"
-      ></CategoriesWithFolders>
+  <div style="max-width: 350px">
+    <CategoriesWithFolders :currentTemplate="currentTemplate" :folders="folders" :categories="categories"
+      :templates="templates" :isShowingTemplates="isShowingTemplates" @templateClicked="templateClicked">
+    </CategoriesWithFolders>
 
-      <q-separator />
-      <!-- folderless categories -->
-      <CategoriesWithoutFolders
-        :currentTemplate="currentTemplate"
-        :folders="folders"
-        :categories="categories"
-        :templates="templates"
-        :isShowingTemplates="isShowingTemplates"
-        @templateClicked="templateClicked"
-      ></CategoriesWithoutFolders>
-    </div>
+    <q-separator />
+    <!-- folderless categories -->
+    <CategoriesWithoutFolders :currentTemplate="currentTemplate" :folders="folders" :categories="categories"
+      :templates="templates" :isShowingTemplates="isShowingTemplates" @templateClicked="templateClicked">
+    </CategoriesWithoutFolders>
   </div>
 </template>
 
