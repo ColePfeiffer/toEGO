@@ -1,9 +1,5 @@
 <template>
-  <DialogViewTemplates
-    :type="'EVENT'"
-    :templateList="$store.state.data.eventTemplates"
-    @pasteTemplate="pasteTemplate"
-  >
+  <DialogViewTemplates :type="'EVENT'" :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate">
   </DialogViewTemplates>
 </template>
 
@@ -12,13 +8,11 @@ import DialogViewTemplates from "./DialogViewTemplates.vue";
 
 export default {
   name: "DialogViewEventTemplates",
-  emits: ["pasteTemplate"],
+  emits: ["pasteTemplate", "closeDialog", "deleteTemplate"],
   props: { templateList: Array, type: String },
   components: {
     DialogViewTemplates,
   },
-
-  emits: ["pasteTemplate"],
   data() {
     return {
       icon: true,
@@ -32,4 +26,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

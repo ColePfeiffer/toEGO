@@ -1,4 +1,8 @@
 <template>
+  <!-- muss später eventuell gesondert behandelt werden, dunno yet.... also mit type -->
+  <DialogCategorySettings :isDialogCategorySettingsVisible="isDialogCategorySettingsVisible" type="DIARY"
+    @closeDialog="setDialogVisibilty(false)" @saveChanges="saveChanges" @setDialogVisibilty="setDialogVisibilty">
+  </DialogCategorySettings>
   <baseDialog v-model="isDialogVisible" @closeDialog="closeDialog" @save="pasteTemplateAndClose" @showHelp="showHelp"
     :widthOfDialog="315" :hasHelpOption="true" :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
     <template v-slot:confirm-button>Paste</template>
@@ -9,11 +13,13 @@
     </template>
     <template v-slot:content>
       <div>
-        <div v-if="isAtLeastOneTemplateCreated === true" class="row full-width items-center justify-center q-pt-md">
-          <q-btn class="col-2" flat icon="keyboard_arrow_left" :style="$store.state.data.buttonFlatOnlyIcon"
-            :disable="isIndexAtZero" :color="isIndexAtZero ? 'grey-3' : 'accent'" @click="showTemplate('previous')">
+        <div v-if="isAtLeastOneTemplateCreated === true"
+          class="row no-wrap full-width items-center justify-center q-pt-md ">
+          <q-btn class="col-md-2 col-xs-1 " flat icon="keyboard_arrow_left"
+            :style="$store.state.data.buttonFlatOnlyIcon" :disable="isIndexAtZero"
+            :color="isIndexAtZero ? 'grey-3' : 'accent'" @click="showTemplate('previous')">
           </q-btn>
-          <div class="col-8">
+          <div class="col-md-8 col-xs-9">
             <!-- Template and Filter Dropdown Buttons -->
             <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
               <!-- Pick template Dropdown Button  -->
@@ -35,7 +41,7 @@
 
             <q-card flat bordered square class="bg-grey-1">
               <q-card-section class="q-pb-xs">
-                <div class="text-h6">{{ currentTemplate.name }}</div>
+                <div class="text-h6">{{  currentTemplate.name  }}</div>
               </q-card-section>
 
               <q-card-section class="templateTextContainer q-pb-xs">
@@ -56,8 +62,9 @@
 
               <q-card-actions class="row justify-center items-center">
                 <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
-                  <CategoryOrTagQuickMenuVue :currentTemplate="currentTemplate" :folders="folders"
-                    :categories="categories" :type="type" :quicklist="quicklist" :templates="templateList">
+                  <CategoryOrTagQuickMenuVue @openDialogCategorySettings="openDialogCategorySettings"
+                    :currentTemplate="currentTemplate" :folders="folders" :categories="categories" :type="type"
+                    :quicklist="quicklist" :templates="templateList">
                   </CategoryOrTagQuickMenuVue>
                 </q-btn>
 
@@ -88,14 +95,14 @@
               </q-card-actions>
             </q-card>
           </div>
-          <q-btn class="col-2" flat icon="keyboard_arrow_right" :style="$store.state.data.buttonFlatOnlyIcon"
-            :disable="isIndexAtMaxLength" :color="isIndexAtMaxLength ? 'grey-3' : 'accent'"
-            @click="showTemplate('next')">
+          <q-btn class="col-md-2 col-xs-1 " flat icon="keyboard_arrow_right"
+            :style="$store.state.data.buttonFlatOnlyIcon" :disable="isIndexAtMaxLength"
+            :color="isIndexAtMaxLength ? 'grey-3' : 'accent'" @click="showTemplate('next')">
           </q-btn>
         </div>
 
         <div v-else class="row full-width items-center justify-center q-px-md q-pt-md">
-          <div class="col-10 q-pt-md q-px-md">
+          <div class="col-10 col-xs-12 q-pt-md q-px-md">
             <q-card flat bordered class="templateCard bg-grey-1">
               <q-card-section>
                 <div class="text-h6">There is nothing here.</div>
@@ -143,18 +150,21 @@ import { useQuasar } from "quasar";
 import baseDialog from "../ui/BaseDialog2.vue";
 import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
 import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
+import DialogCategorySettings from "./DialogCategorySettings.vue";
 
 export default {
   name: "dialogViewTemplates",
-  emits: ["pasteTemplate"],
+  emits: ["pasteTemplate", "closeDialog"],
   components: {
     baseDialog,
     CategoryOrTagQuickMenuVue,
     FolderCategoryStructure,
+    DialogCategorySettings
   },
   props: { templateList: Array, type: String },
   data() {
     return {
+      isDialogCategorySettingsVisible: false,
       qMenuModel: false,
       expandIcon: "expand_more",
       icon: true,
@@ -179,11 +189,17 @@ export default {
     lengthOfTemplates(newLength) {
       this.currentTemplate = this.templateList[0];
     },
-    isDialogVisible(newState) {
-      console.log("isDialogVisible changed to :", newState, " for ", this.type);
-    },
   },
   methods: {
+    setDialogVisibilty(newValue) {
+      this.isDialogCategorySettingsVisible = newValue;
+    },
+    saveChanges() {
+
+    },
+    openDialogCategorySettings() {
+      this.setDialogVisibilty(true);
+    },
     pickTemplate(template) {
       console.log(
         "template clicked triggered in dialogViewTemplates: ",

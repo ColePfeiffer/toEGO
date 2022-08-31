@@ -26,7 +26,7 @@
       </q-item>
 
       <!-- Settings button -->
-      <q-item clickable v-close-popup @click="openDialogForSettings">
+      <q-item clickable v-close-popup @click="openDialogCategorySettings">
         <q-item-section avatar>
           <q-icon color="secondary" size="xs" name="bi-gear" />
         </q-item-section>
@@ -67,7 +67,7 @@ import FolderCategoryStructure from "./FolderCategoryStructure.vue";
 
 export default {
   name: "CategoryOrTagQuickMenu",
-  emits: [],
+  emits: ["openDialogCategorySettings"],
   props: {
     currentTemplate: Object,
     folders: Array,
@@ -106,6 +106,10 @@ export default {
     },
   },
   methods: {
+    openDialogCategorySettings() {
+      // maybe emit type too
+      this.$emit("openDialogCategorySettings");
+    },
     templateClicked(template) {
       console.log(
         "template clicked triggered in categoryTagQuickMenu: ",
@@ -118,7 +122,7 @@ export default {
       console.log(nameInput);
       nameInput.validate();
 
-      // form has error
+      // if form has error
       if (nameInput.hasError) {
       } else {
         this.$q.notify({
@@ -154,7 +158,6 @@ export default {
       };
       this.$store.commit("data/resetCategorySettingsForTemplate", payload);
     },
-    openDialogForSettings() { },
     isTemplateInQuicklist() {
       if (this.quicklist.templatesById.includes(this.currentTemplate.id)) {
         return "bi-dash";
