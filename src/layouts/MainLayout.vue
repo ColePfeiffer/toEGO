@@ -200,7 +200,7 @@ export default {
 .pageView
   font-family: 'PressStart'
   background: url(/images/background_wide2.jpg) no-repeat center center fixed
-  background-size: cover
+  background: url('https://64.media.tumblr.com/9e45fc59f535b1a82eace3dd4a62449a/tumblr_inline_nater8MFLq1qak244.gif') repeat  center
   margin: auto
   padding: auto
 

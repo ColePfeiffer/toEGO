@@ -1,6 +1,14 @@
 import { date } from "quasar";
 export default function () {
   return {
+    backgrounds: [
+      "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
+      "https://64.media.tumblr.com/73966b6acfd978cc2ae90639bd803d73/tumblr_inline_mydbkloJQm1qak244.gif",
+      "https://64.media.tumblr.com/1f53852736e2f58f84d1c06f4fa4d17d/tumblr_inline_mkjlph6wcQ1qz4rgp.png",
+      "https://64.media.tumblr.com/42e248b655ff41e98e501f2bc475214b/tumblr_inline_nateoe8C4C1qak244.gif",
+      "https://64.media.tumblr.com/9c181a9f3f01baa1cdbf45e4f9a279e5/tumblr_inline_natenvWAWX1qak244.gif",
+      "https://64.media.tumblr.com/8b250bb0b90cbb3667071d88f3555c70/tumblr_inline_n9qgx3Si4l1qak244.png",
+    ],
     // all templates for events are in here
     eventTemplates: [],
     diaryTemplates: [
@@ -193,7 +201,7 @@ export default function () {
     },
     debug: true,
     phone: false,
-    intentionText: "today's message to myself",
+    intentionText: "Today's message to myself",
     //dialogs
     eventDialogSettings: { isOpen: false, editMode: false },
     dialogSettings: {
