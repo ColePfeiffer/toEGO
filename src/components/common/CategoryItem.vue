@@ -83,6 +83,7 @@ export default {
       }
     },
     color() {
+      console.log("LOLOLOL COLOR?")
       if (this.isTemplateIDInCategory === "bi-dash") {
         // is included
         return "orange";

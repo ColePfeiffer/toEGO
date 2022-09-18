@@ -2,158 +2,84 @@
   <q-page class="q-pa-sm">
     <div class="bookmark" v-if="viewingMode === 'view' && false"></div>
     <!-- DAY SELECTION -->
-    <div class="row justify-center text-center q-py-md maxHeight">
-      <q-btn
-        v-if="viewingMode === 'view'"
-        class="col-3"
-        flat
-        icon="keyboard_arrow_left"
-        color="white"
-        :style="$store.state.data.sTextBasicShadowDarkWhiteFont"
-        @click="subtractFromDate(1)"
-      ></q-btn>
-      <div class="col-6">
-        <div class="row justify-center items-center">
-          <!-- Calendar -->
-          <q-btn
-            class="datePickerButton col-12"
-            no-wrap
-            flat
-            icon-right="event"
-            :style="$store.state.data.sTextAccentShadow"
-            :label="formatDate(getDate)"
-          >
-            <q-popup-proxy
-              cover
-              transition-show="scale"
-              transition-hide="scale"
-            >
-              <q-date v-model="formattedDate">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                  <q-btn
-                    label="today"
-                    color="primary"
-                    flat
-                    @click="setDateToToday"
-                  />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
-          <div
-            class="col-12 text-white smallText q-pb-lg"
-            :style="$store.state.data.sTextAccentShadow"
-          >
-            {{ getDay }}
-          </div>
-        </div>
+    <div class="row justify-between items-center text-center q-py-md q-pb-xl maxHeight">
+      <!-- Date + Calendar Button -->
+      <div class="col-12">
+        <q-btn class="datePickerButton" no-wrap flat icon-right="event"
+          :style="$store.state.data.sTextBasicShadowDarkWhiteFont" :label="formatDate(getDate)">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-date v-model="formattedDate">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" flat />
+                <q-btn label="today" color="primary" flat @click="setDateToToday()" />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-btn>
       </div>
-      <q-btn
-        v-if="viewingMode === 'view'"
-        class="col-3"
-        flat
-        icon="keyboard_arrow_right"
-        color="white"
-        :style="$store.state.data.sTextBasicShadowDarkWhiteFont"
-        @click="addToDate(1)"
-      ></q-btn>
+      <!-- go back button -->
+      <div class="col-3 text-left">
+        <q-btn v-if="viewingMode === 'view'" class="text-white" flat icon="bi-chevron-left" size="12px"
+          :style="$store.state.data.sTextAccentShadow" @click="subtractFromDate(1)"></q-btn>
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0" class="text-white q-pl-none" size="12px"
+          flat icon="bi-chevron-double-left" :style="$store.state.data.sTextAccentShadow" @click="setDateToToday()">
+        </q-btn>
+      </div>
+      <!-- today, yesterday, x days ago, x days ahead... -->
+      <div class="col-6">
+        <div class="text-white smallText " :style="$store.state.data.sTextAccentShadow">{{ getDay }}</div>
+      </div>
+      <!-- go forward button -->
+      <div class="col-3 text-right">
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0" class="text-white q-pr-none" size="12px"
+          flat icon="bi-chevron-double-right" :style="$store.state.data.sTextAccentShadow" @click="setDateToToday()">
+        </q-btn>
+        <q-btn v-if="viewingMode === 'view'" class="text-white " flat icon="bi-chevron-right" size="12px"
+          :style="$store.state.data.sTextAccentShadow" @click="addToDate(1)"></q-btn>
+      </div>
     </div>
-
+    <br />
     <!-- EVENT SELECTION -->
-    <div
-      class="q-px-md q-pt-lg"
-      v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-    >
+    <div class="q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
       <!-- Title, Button Row -->
       <div class="row justify-center items-center no-wrap">
         <!-- Title -->
-        <div
-          class="col-10 smallText text-left text-white"
-          :style="$store.state.data.sTextAccentShadow"
-        >
+        <div class="col-10 smallText text-left text-white" :style="$store.state.data.sTextAccentShadow">
           {{ getTextForFirstHeadline }}
         </div>
         <!-- Buttons -->
-        <div
-          v-if="hasEvents || isDiarySectionVisible === false"
-          class="smallText col-1 text-right"
-        >
+        <div v-if="hasEvents || isDiarySectionVisible === false" class="smallText col-1 text-right">
           <!-- Open Fullscreen Button -->
-          <q-btn
-            v-if="!areEventsShownInFullscreen"
-            class="col-auto"
-            flat
-            dense
-            icon="bi-eye"
-            color="accent"
-            @click="expandMore"
-            :style="$store.state.data.sTextAccentShadow"
-            size="14px"
-          ></q-btn>
-          <q-btn
-            v-else
-            class="col-auto"
-            flat
-            dense
-            :style="$store.state.data.sTextAccentShadow"
-            icon="bi-arrow-left"
-            color="white"
-            @click="expandLess"
-            size="14px"
-          ></q-btn>
+          <q-btn v-if="!areEventsShownInFullscreen" class="col-auto" flat dense icon="bi-eye" color="accent"
+            @click="expandMore" :style="$store.state.data.sTextAccentShadow" size="14px"></q-btn>
+          <q-btn v-else class="col-auto" flat dense :style="$store.state.data.sTextAccentShadow" icon="bi-arrow-left"
+            color="white" @click="expandLess" size="14px"></q-btn>
         </div>
         <div v-else class="smallText col-1 text-right"></div>
-        <q-btn
-          class="smallText col-1 dense text-right"
-          flat
-          icon="bi-plus-lg"
-          color="accent"
-          @click="goToPageNewEventSetToCreationMode"
-          :style="$store.state.data.sTextAccentShadow"
-          size="14px"
-        >
+        <q-btn class="smallText col-1 dense text-right" flat icon="bi-plus-lg" color="accent"
+          @click="goToPageNewEventSetToCreationMode" :style="$store.state.data.sTextAccentShadow" size="14px">
         </q-btn>
       </div>
-      <q-separator color="secondary" />
       <!-- Events Container -->
       <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-        <EventViewer
-          :diaryEntry="getDiaryEntry"
-          :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :showMessageIfThereAreNoEvents="false"
-        >
+        <EventViewer :diaryEntry="getDiaryEntry" :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
+          :showMessageIfThereAreNoEvents="false">
         </EventViewer>
       </q-scroll-area>
     </div>
-
     <!-- DIARY SELECTION -->
-    <diarySection
-      v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
-      :class="getDiarySectionClass"
-      :diaryEntry="getDiaryEntry"
-      :viewingMode="viewingMode"
-      @change-view="changeViewMode"
-      @save-changes="saveChangesToEntry"
-      @openEntryInFullscreen="openEntryInFullscreen"
-      @showDialogForNewEvent="goToPageNewEventSetToCreationMode"
-    >
+    <diarySection v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen" :class="getDiarySectionClass"
+      :diaryEntry="getDiaryEntry" :viewingMode="viewingMode" @change-view="changeViewMode"
+      @save-changes="saveChangesToEntry" @openEntryInFullscreen="openEntryInFullscreen"
+      @showDialogForNewEvent="goToPageNewEventSetToCreationMode">
     </diarySection>
 
     <!-- DIARY SELECTION FULLSCREEN -->
     <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
       <div class="row justify-end">
         <div class="col-4 smallText text-right"></div>
-        <q-btn
-          class="smallText text-right"
-          flat
-          dense
-          icon="bi-arrow-left"
-          label="back"
-          color="white"
-          @click="exitFullscreen"
-          :style="$store.state.data.sTextAccentShadow"
-        ></q-btn>
+        <q-btn class="smallText text-right" flat dense icon="bi-arrow-left" label="back" color="white"
+          @click="exitFullscreen" :style="$store.state.data.sTextAccentShadow"></q-btn>
       </div>
 
       <q-card class="editorCard shadow-3 text-justify">
@@ -182,10 +108,8 @@ export default {
       isDiaryEntryShownInFullscreen: false,
       isDiarySectionVisible: true, //if false, status section is shown
       editorHTMLContent: "",
-
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
-
       heightForScrollArea: "height: 175px",
     };
   },
@@ -266,6 +190,13 @@ export default {
       ](this.getDate);
       return diaryEntryRefForDate;
     },
+    getCountOfDaysAwayFromToday() {
+      // returns the number of days away from today... minus means its in the future, positive number means its in the past. zero means today.
+      let unit = "day";
+      let diff = date.getDateDiff(this.getDate, Date.now(), unit);
+      diff = diff * -1;
+      return diff;
+    },
     getDay() {
       //const date1 = new Date(2017, 2, 5);
       let today = Date.now();
@@ -273,8 +204,7 @@ export default {
       let tomorrow = date.addToDate(Date.now(), { days: 1 });
       let unit = "day";
 
-      let diff = date.getDateDiff(this.getDate, Date.now(), unit);
-      diff = diff * -1;
+      let diff = this.getCountOfDaysAwayFromToday;
       // date.isSameDate returns true when date1 and date2 are on the same day
       if (date.isSameDate(this.getDate, today, unit)) {
         return "today";

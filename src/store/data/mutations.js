@@ -71,6 +71,26 @@ export const manageQuicklistStatusOfTemplate = (state, payload) => {
   }
 };
 
+// TODO
+// payload consists of folder and category
+export const addCategoryToFolder = (state, payload) => {
+  let category = payload.category;
+  let folder = payload.folder;
+  folder.categoriesByID.push(category.id);
+};
+
+// TODO
+// payload consists of folder and category
+export const removeCategoryFromFolder = (state, payload) => {
+  let category = payload.category;
+  let folder = payload.folder;
+
+  var filteredArray = folder.categoriesByID.filter(function (categoryID) {
+    return categoryID != category.id;
+  });
+  folder.categoriesByID = filteredArray;
+};
+
 // payload consists of category and templateID
 export const addTemplateToCategory = (state, payload) => {
   let category = payload.category;

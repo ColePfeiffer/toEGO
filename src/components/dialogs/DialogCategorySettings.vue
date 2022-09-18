@@ -8,18 +8,20 @@
       Folder and Category Settings
     </template>
     <template v-slot:content>
-      <div class="row full-width items-center justify-center q-pt-md q-pa-md">
-        <div class="col-md-10 col-xs-12">
-          <q-list bordered padding style="max-width: 350px">
+      <div class="row items-center justify-center q-pt-md q-pa-xl">
+        <div class="col-9 col-md-9 col-xs-12">
+          <q-list bordered padding>
             <q-item-label header>Folders</q-item-label>
             <div v-for="folder in folders" :key="folder.id">
-              <BaseItemForCategorySettingsDialog type="folder" :folderOrCategory="folder">
+              <BaseItemForCategorySettingsDialog :type="type" itemType="folder" :folderOrCategory="folder"
+                :categories="categories">
               </BaseItemForCategorySettingsDialog>
             </div>
             <q-separator spaced />
             <q-item-label header>Categories</q-item-label>
             <div v-for="category in categories" :key="category.id">
-              <BaseItemForCategorySettingsDialog type="category" :folderOrCategory="category">
+              <BaseItemForCategorySettingsDialog :type="type" itemType="category" :folderOrCategory="category"
+                :categories="categories">
               </BaseItemForCategorySettingsDialog>
             </div>
           </q-list>
