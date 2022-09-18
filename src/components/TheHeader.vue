@@ -1,9 +1,9 @@
 <template>
   <div class="q-pa-md">
-    <q-expansion-item v-model="expanded" icon="bi-eye-fill" icon-size="xs" :label="getIntentionText"
-      class="smallText q-pa-xs text-center" :style="$store.state.data.sTextBasicShadowDarkWhiteFont"
-      expand-icon-class="text-accent">
-      <q-card class="my-card  shadow-3 q-py-md q-mt-md" :style="getStyleForTransparentCard">
+    <q-expansion-item v-model="expanded" dense icon="bi-eye-fill" size="12px" icon-size="xs" :label="getIntentionText"
+      class="smallText q-pa-xs text-center text-white" :style="$store.state.data.sTextAccentShadow"
+      expand-icon="bi-chevron-down" expanded-icon="bi-chevron-up" expand-icon-class="text-accent">
+      <q-card class="my-card  shadow-3 q-py-md q-mt-xs" :style="getStyleForTransparentCard">
         <q-card-section>
           <div class="cursor-pointer smallText" :style="getStyleForText">
             {{ text }}
@@ -93,6 +93,10 @@ export default {
 </script>
 
 <style scoped>
+.smallIcon {
+  font-size: 5px !important;
+}
+
 .card-input {
   color: white;
   border-left: 1px solid black;

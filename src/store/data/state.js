@@ -103,6 +103,13 @@ export default function () {
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
+    headlineStyle: {
+      "text-decoration": "underline",
+      color: "white",
+      "text-decoration-style": "solid",
+      "text-decoration-color": "var(--q-accent)",
+      "text-shadow": "var(--q-info) 2px 2px 2px",
+    },
     buttonFlatStyleTransparent: {
       "box-shadow": "none",
       "background-color": "transparent",

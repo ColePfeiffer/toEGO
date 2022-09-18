@@ -52,6 +52,10 @@ export default {
   name: "baseDialog",
   emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
   props: {
+    minHeight: {
+      type: Number,
+      default: 300,
+    },
     widthOfDialog: Number,
     hasHelpOption: Boolean,
     hasExtraButton: {
@@ -132,7 +136,7 @@ export default {
           "background-color": "rgb(255 255 255 )",
           // max-height
           // min-height
-          "min-height": "300px",
+          "min-height": this.minHeight,
           "max-height": currentMaxHeight,
           color: "black",
         };

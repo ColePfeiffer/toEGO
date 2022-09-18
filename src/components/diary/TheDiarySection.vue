@@ -11,37 +11,39 @@
       <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
         class="row justify-center items-center no-wrap">
         <!-- Title -->
-        <div class="col-10 smallText text-left">
-          <q-btn class="col-auto smallText text-left" dense flat :style="headlineDiary"
-            @click="isShowingDiarySection = true">DIARY</q-btn>
+        <div class="col-8 smallText text-left">
+          <q-btn class="col-auto smallText text-left" dense flat :style="$store.state.data.headlineStyle"
+            @click="isShowingDiarySection = true"> {{ getTitle }}</q-btn>
           <q-btn class="col-1 smallText" flat :icon="getSectionIcon" color="accent" @click="switchSection">
           </q-btn>
-          <q-btn class="col-auto smallText" dense flat :style="headlineStatus" @click="isShowingDiarySection = false">
-            STATUS</q-btn>
         </div>
 
         <!-- Buttons -->
-        <!-- Go back / Cancel editing Button -->
-        <q-btn v-if="viewingMode === 'edit'" class="col-1 smallText dense" flat icon="bi-arrow-left" color="white"
-          @click="changeView('view')" :style="textStyleAccent" size="10px">
-        </q-btn>
-        <!-- Open Fullscreen Button -->
-        <q-btn v-else-if="
-          viewingMode === 'view' && editor != undefined && editor != ''
-        " class="col-1 smallText" flat dense icon="bi-eye" color="accent" @click="openEntryInFullscreen"
-          :style="textStyleAccent" size="10px"></q-btn>
-        <div v-else class="col-1"></div>
+        <!-- Left-Side Buttons -->
+        <div class="smallText col-2 text-right">
+          <!-- Button: Back -->
+          <q-btn v-if="viewingMode === 'edit'" class="col-2 smallText  text-right" dense flat icon="bi-chevron-left"
+            color="white" @click="changeView('view')" :style="$store.state.data.sTextAccentShadow" size="10px"
+            :label="$q.screen.lt.sm?'':'back'">
+          </q-btn>
+          <!-- Button: Enter Fullscreen Button -->
+          <q-btn v-else-if="
+            viewingMode === 'view' && editor != undefined && editor != ''
+          " class="col-2 smallText" flat dense icon="bi-eye" color="white" @click="openEntryInFullscreen"
+            :label="$q.screen.lt.sm?'':'view'" :style="$store.state.data.sTextAccentShadow" size="10px"></q-btn>
+        </div>
 
+        <!-- Right-Side Buttons -->
         <!-- Save Button -->
-        <q-btn v-if="viewingMode === 'edit'" class="col-1 smallText dense" flat icon="fas fa-save" color="accent"
-          @click="saveChanges" :style="textStyleAccent" size="10px">
+        <q-btn v-if="viewingMode === 'edit'" class="col-2 smallText " flat dense icon="fas fa-save" color="accent"
+          :label="$q.screen.lt.sm?'':'save'" @click="saveChanges" :style="textStyleAccent" size="10px">
         </q-btn>
         <!-- Edit Button -->
         <q-btn v-else-if="
           viewingMode === 'view' && editor != undefined && editor != ''
-        " class="col-1 smallText text-right" flat dense icon="bi-pencil-fill" color="accent" @click="editDiaryEntry"
-          :style="textStyleAccent" size="9px"></q-btn>
-        <div v-else class="col-1"></div>
+        " class="col-2 smallText text-right" flat dense icon="bi-pencil-fill" color="accent" @click="editDiaryEntry"
+          :style="textStyleAccent" size="9.5px" :label="$q.screen.lt.sm?'':'edit'"></q-btn>
+        <div v-else class="col-2"></div>
       </div>
 
     </div>
@@ -52,7 +54,7 @@
         <q-card class="my-card shadow-3 text-justify">
           <q-card-section class="card-text text-center">
             Nothing here yet. Add an event
-            <q-btn color="accent" flat dense icon="add" @click="showDialogForNewEvent" />
+            <q-btn color="accent" flat dense icon="bi-plus" @click="showDialogForNewEvent" />
             <br />
             or create an entry.
             <q-btn color="accent" flat dense icon="bi-journal-plus" @click="createDiaryEntry" />
@@ -79,7 +81,7 @@
                 <!-- If there is no entry yet for that day. -->
                 <q-card v-else class="editorCard shadow-3 text-justify">
                   <q-card-section class="card-text text-center">
-                    <q-btn color="accent" flat dense icon="add" @click="createDiaryEntry" />
+                    <q-btn color="accent" flat dense icon="bi-plus" @click="createDiaryEntry" />
                   </q-card-section>
                 </q-card>
               </div>
@@ -129,7 +131,7 @@
           <div class="col">
             <q-card class="editorCard shadow-3 text-justify">
               <q-card-section class="card-text text-center">
-                <q-btn color="accent" flat dense icon="add" @click="createDiaryEntry" />
+                <q-btn color="accent" flat dense icon="bi-plus" @click="createDiaryEntry" />
               </q-card-section>
             </q-card>
           </div>
@@ -189,6 +191,7 @@ export default {
       names: ["Diary", "Status"],
       hideBordersOnInit: false,
       showNames: false,
+
       simplifiedStyle: {
         "background-color": "var(--q-accent)",
 
@@ -206,41 +209,6 @@ export default {
   },
 
   computed: {
-    headlineDiary() {
-      if (this.isShowingDiarySection === true) {
-        return {
-          "text-decoration": "underline",
-          color: "white",
-          "text-decoration-style": "solid",
-          "text-decoration-color": "var(--q-accent)",
-          "text-shadow": "var(--q-info) 2px 2px 2px",
-        };
-      } else {
-        return {
-          "text-decoration": "none",
-          color: "white",
-          "text-shadow": "var(--q-info) 2px 2px 2px",
-        };
-      }
-    },
-    headlineStatus() {
-      if (this.isShowingDiarySection === false) {
-        return {
-          "text-decoration": "underline",
-          color: "white",
-          "text-decoration-style": "solid",
-          "text-decoration-color": "var(--q-accent)",
-          "text-shadow": "var(--q-info) 2px 2px 2px",
-        };
-      } else {
-        return {
-          "text-decoration": "none",
-          color: "white",
-          "text-shadow": "var(--q-info) 2px 2px 2px",
-        };
-      }
-    },
-
     getTitle() {
       if (this.isShowingDiarySection === true) {
         return "DIARY";
@@ -253,13 +221,6 @@ export default {
         return "bi-toggle2-off";
       } else {
         return "bi-toggle2-on";
-      }
-    },
-    editBtnText() {
-      if ((this.diaryEntry === undefined) | (this.editor === "")) {
-        return "create";
-      } else {
-        return "edit";
       }
     },
     editor() {

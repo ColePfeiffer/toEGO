@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-pa-sm">
     <infoHeader></infoHeader>
-    <q-separator color="secondary" class="q-mb-sm" />
     <EventViewer :diaryEntry="getDiaryEntry" class="col"></EventViewer>
     <!-- Player Character -->
   </q-page>
@@ -34,4 +33,5 @@ export default {
 </script>
 
 <style>
+
 </style>

@@ -5,8 +5,8 @@
     <div class="row justify-between items-center text-center q-py-md q-pb-xl maxHeight">
       <!-- Date + Calendar Button -->
       <div class="col-12">
-        <q-btn class="datePickerButton" no-wrap flat icon-right="event"
-          :style="$store.state.data.sTextBasicShadowDarkWhiteFont" :label="formatDate(getDate)">
+        <q-btn class="datePickerButton text-white" no-wrap flat icon-right="event"
+          :style="$store.state.data.sTextAccentShadow" :label="formatDate(getDate)">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
             <q-date v-model="formattedDate">
               <div class="row items-center justify-end">
@@ -39,46 +39,24 @@
       </div>
     </div>
     <br />
-    <!-- EVENT SELECTION -->
-    <div class="q-px-md q-pt-lg" v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined">
-      <!-- Title, Button Row -->
-      <div class="row justify-center items-center no-wrap">
-        <!-- Title -->
-        <div class="col-10 smallText text-left text-white" :style="$store.state.data.sTextAccentShadow">
-          {{ getTextForFirstHeadline }}
-        </div>
-        <!-- Buttons -->
-        <div v-if="hasEvents || isDiarySectionVisible === false" class="smallText col-1 text-right">
-          <!-- Open Fullscreen Button -->
-          <q-btn v-if="!areEventsShownInFullscreen" class="col-auto" flat dense icon="bi-eye" color="accent"
-            @click="expandMore" :style="$store.state.data.sTextAccentShadow" size="14px"></q-btn>
-          <q-btn v-else class="col-auto" flat dense :style="$store.state.data.sTextAccentShadow" icon="bi-arrow-left"
-            color="white" @click="expandLess" size="14px"></q-btn>
-        </div>
-        <div v-else class="smallText col-1 text-right"></div>
-        <q-btn class="smallText col-1 dense text-right" flat icon="bi-plus-lg" color="accent"
-          @click="goToPageNewEventSetToCreationMode" :style="$store.state.data.sTextAccentShadow" size="14px">
-        </q-btn>
-      </div>
-      <!-- Events Container -->
-      <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-        <EventViewer :diaryEntry="getDiaryEntry" :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :showMessageIfThereAreNoEvents="false">
-        </EventViewer>
-      </q-scroll-area>
-    </div>
+    <TheEventSection v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined" :diaryEntry="getDiaryEntry"
+      :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard" :showMessageIfThereAreNoEvents="false"
+      :isDiarySectionVisible="isDiarySectionVisible"
+      @goToPageNewEventSetToCreationMode="goToPageNewEventSetToCreationMode"
+      @setVisibilityOfDiarySection="setVisibilityOfDiarySection">
+    </TheEventSection>
     <!-- DIARY SELECTION -->
-    <diarySection v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen" :class="getDiarySectionClass"
+    <TheDiarySection v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen" :class="getDiarySectionClass"
       :diaryEntry="getDiaryEntry" :viewingMode="viewingMode" @change-view="changeViewMode"
       @save-changes="saveChangesToEntry" @openEntryInFullscreen="openEntryInFullscreen"
       @showDialogForNewEvent="goToPageNewEventSetToCreationMode">
-    </diarySection>
+    </TheDiarySection>
 
     <!-- DIARY SELECTION FULLSCREEN -->
-    <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-xl">
-      <div class="row justify-end">
+    <div v-if="isDiaryEntryShownInFullscreen" class="q-pa-md">
+      <div class="row justify-end q-pb-md">
         <div class="col-4 smallText text-right"></div>
-        <q-btn class="smallText text-right" flat dense icon="bi-arrow-left" label="back" color="white"
+        <q-btn class="smallText text-right" flat dense icon="bi-chevron-left" label="back" color="white" size="10px"
           @click="exitFullscreen" :style="$store.state.data.sTextAccentShadow"></q-btn>
       </div>
 
@@ -92,15 +70,15 @@
 </template>
 
 <script>
-import EventViewer from "../../components/common/EventViewer.vue";
-import diarySection from "../../components/diary/diarySection.vue";
+import TheDiarySection from "../../components/diary/TheDiarySection.vue";
 import { date } from "quasar";
+import TheEventSection from "src/components/diary/TheEventSection.vue";
 
 export default {
   name: "diary",
   components: {
-    EventViewer,
-    diarySection,
+    TheDiarySection,
+    TheEventSection
   },
   data() {
     return {
@@ -110,7 +88,7 @@ export default {
       editorHTMLContent: "",
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
-      heightForScrollArea: "height: 175px",
+
     };
   },
   watch: {
@@ -143,6 +121,22 @@ export default {
       return this.$store.state.data.eventsOnDiaryPageAreExpanded;
     },
     // adjusts the top padding
+    getEventSectionClass() {
+      if (this.getDiaryEntry === undefined) {
+        return {
+          "padding-top": "20px",
+          "margin-top": "16px",
+          "padding-bottom": "16px",
+        };
+      } else {
+        return {
+          "padding-top": "48px",
+          "margin-top": "16px",
+          "padding-bottom": "16px",
+        };
+      }
+    },
+    // adjusts the top padding
     getDiarySectionClass() {
       if (this.getDiaryEntry === undefined) {
         return {
@@ -158,21 +152,8 @@ export default {
         };
       }
     },
-    getTextForFirstHeadline() {
-      if (this.getDiaryEntry != undefined) {
-        return "EVENTS";
-      } else {
-        return "";
-      }
-    },
-    hasEvents() {
-      if (this.getDiaryEntry != undefined) {
-        if (this.getDiaryEntry.events.length > 0) {
-          return true;
-        }
-      }
-      return false;
-    },
+
+
     formattedDate: {
       get() {
         return date.formatDate(this.getDate, "YYYY/MM/DD");
@@ -221,6 +202,9 @@ export default {
     },
   },
   methods: {
+    setVisibilityOfDiarySection(newValue) {
+      this.isDiarySectionVisible = newValue;
+    },
     setDateToToday() {
       this.getDate = Date.now();
     },
@@ -279,26 +263,6 @@ export default {
 
     changeViewMode(mode) {
       this.viewingMode = mode;
-    },
-    expandMore() {
-      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
-      this.toggleExpansedStatusOfAllEvents(true);
-      this.isDiarySectionVisible = false;
-      this.heightForScrollArea = "height: 650px";
-    },
-    expandLess() {
-      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
-      this.heightForScrollArea = "height: 175px";
-      this.toggleExpansedStatusOfAllEvents(false);
-      this.isDiarySectionVisible = true;
-    },
-    toggleExpansedStatusOfAllEvents(isExpanded) {
-      let payload = {
-        diaryEntryRef: this.getDiaryEntry,
-        isExpanded: isExpanded,
-      };
-      console.log(payload);
-      this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
     },
   },
 };

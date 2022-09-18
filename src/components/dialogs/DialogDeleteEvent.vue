@@ -1,11 +1,6 @@
 <template>
-  <baseDialog
-    v-model="isDialogVisible"
-    :widthOfDialog="315"
-    :hasHelpOption="false"
-    @closeDialog="closeDialog"
-    @save="deleteEvent"
-  >
+  <baseDialog :minHeight="200" v-model="isDialogVisible" :widthOfDialog="315" :hasHelpOption="false"
+    @closeDialog="closeDialog" @save="deleteEvent">
     <template v-slot:confirm-button> Yes </template>
     <template v-slot:close-button> No </template>
     <template v-slot:dialogTitle>
@@ -19,9 +14,7 @@
             <q-avatar icon="delete" color="primary" text-color="white" />
           </div>
           <div class="col">
-            <span class="q-ml-sm"
-              >Do you really want to delete this event?</span
-            >
+            <span class="q-ml-sm">Do you really want to delete this event?</span>
           </div>
         </q-card-section>
       </q-card>
@@ -58,7 +51,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogDeleteEvent"
+          "dialogDeleteEvent"
         ) {
           return true;
         } else {

@@ -2,10 +2,7 @@
   <q-page class="q-pa-sm">
     <div class="outerContainer row justify-center items-center q-pa-md q-pt-xl">
       <!-- Header / Titlebar-->
-      <div
-        class="title-bar col-md-11 col-12 row"
-        :style="getStyleForDialogTitleBar"
-      >
+      <div class="title-bar col-md-11 col-12 row" :style="getStyleForDialogTitleBar">
         <div class="title-bar-text">
           <div>
             <q-icon name="theater_comedy" size="25px" />
@@ -13,22 +10,13 @@
           </div>
         </div>
         <div class="title-bar-controls">
-          <q-btn
-            v-if="isShowingEditor"
-            :style="$store.state.data.buttonFlatStyleTransparent"
-            flat
-            icon="bi-blockquote-right"
-            @click="toggleVisibilityOfEventText"
-            color="$store.state.data.sFontColor"
-          >
+          <q-btn v-if="isShowingEditor" :style="$store.state.data.buttonFlatStyleTransparent" flat
+            icon="bi-blockquote-right" @click="toggleVisibilityOfEventText" color="$store.state.data.sFontColor">
           </q-btn>
         </div>
       </div>
       <!-- Content -->
-      <div
-        class="col-md-11 col-12 container q-mt-sm"
-        :style="outerContainerStyle"
-      >
+      <div class="col-md-11 col-12 container q-mt-sm" :style="outerContainerStyle">
         <!-- Content: Emoji, Title, What happened? -->
         <q-card v-if="isShowingEditor === false" class="transparent no-shadow">
           <q-card-section class="row items-center justify-center">
@@ -36,80 +24,44 @@
             <div class="promptContainer col-12 q-mx-md q-pa-md">
               <!-- Title -->
               <div class="row justify-center items-center">
-                <div
-                  class="col-12 underlined promptTitle"
-                  :style="getStyleForHeadline"
-                >
+                <div class="col-12 underlined promptTitle" :style="getStyleForHeadline">
                   How are you feeling?
                 </div>
               </div>
               <!-- Emoji Selection via Button Toggle -->
-              <div
-                class="emojiSelection q-mt-md row justify-center items-center"
-              >
+              <div class="emojiSelection q-mt-md row justify-center items-center">
                 <div class="col-12">
                   <div class="align-center">
-                    <q-btn-toggle
-                      v-model="mood"
-                      toggle-color="accent"
-                      padding="none"
-                      flat
-                      :options="[
-                        { value: 'las la-angry', slot: 'angry' },
-                        { value: 'las la-sad-tear', slot: 'sad' },
-                        { value: 'las la-meh', slot: 'meh' },
-                        { value: 'las la-smile', slot: 'content' },
-                        { value: 'las la-grin-alt', slot: 'happy' },
-                      ]"
-                    >
+                    <q-btn-toggle v-model="mood" toggle-color="accent" padding="none" flat :options="[
+                      { value: 'las la-angry', slot: 'angry' },
+                      { value: 'las la-sad-tear', slot: 'sad' },
+                      { value: 'las la-meh', slot: 'meh' },
+                      { value: 'las la-smile', slot: 'content' },
+                      { value: 'las la-grin-alt', slot: 'happy' },
+                    ]">
                       <template v-slot:angry>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-angry"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-angry" />
                       </template>
 
                       <template v-slot:sad>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-sad-tear"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-sad-tear" />
                       </template>
 
                       <template v-slot:meh>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-meh"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-meh" />
                       </template>
 
                       <template v-slot:content>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-smile"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-smile" />
                       </template>
 
                       <template v-slot:happy>
-                        <q-btn
-                          padding="xs"
-                          :style="$store.state.data.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-grin-alt"
-                        />
+                        <q-btn padding="xs" :style="$store.state.data.buttonFlatStyleTransparent" flat size="15px"
+                          icon="las la-grin-alt" />
                       </template>
                     </q-btn-toggle>
                   </div>
@@ -124,35 +76,18 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input
-                    class="input"
-                    color="primary"
-                    v-model="title"
-                    stack-label
-                    filled
-                    square
-                    label="Title"
-                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px"
-                    :rules="[
+                  <q-input class="input" color="primary" v-model="title" stack-label filled square label="Title"
+                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px" :rules="[
                       (val) =>
                         val.length <= 50 || 'Please use maximum 50 characters',
-                    ]"
-                  />
+                    ]" />
                 </div>
               </div>
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input
-                    class="input"
-                    v-model="text"
-                    label="What happened?"
-                    stack-label
-                    filled
-                    square
-                    autogrow
-                    input-style="max-height: 335px; min-height: 220px; font-size: 12.5px"
-                  />
+                  <q-input class="input" v-model="text" label="What happened?" stack-label filled square autogrow
+                    input-style="max-height: 335px; min-height: 220px; font-size: 12.5px" />
                 </div>
               </div>
             </div>
@@ -161,15 +96,11 @@
         <!-- Content: Editor -->
         <div v-else class="column">
           <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-            <div
-              v-if="isShowingEventText"
-              class="defaultFont smallText"
-              :style="getStyleForQuotedEventText"
-            >
+            <div v-if="isShowingEventText" class="defaultFont smallText" :style="getStyleForQuotedEventText">
               <q-scroll-area :style="styleEventTextScrollArea">
                 <span class="bold">You wrote:</span> <br />
                 <span class="text-justify keep-whitespace">{{
-                  quotedText
+                quotedText
                 }}</span>
               </q-scroll-area>
             </div>
@@ -177,16 +108,9 @@
             <div class="row justify-center">
               <div class="col-12">
                 <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-                  <BaseEditor
-                    class="no-border-radius no-box-shadow"
-                    ref="editorRef1"
-                    v-model="editor"
-                    minHeight="535px"
-                    type="EVENT"
-                    @openDialogCreateTemplate="openDialogCreateTemplate"
-                    @openDialogViewTemplates="openDialogViewTemplates"
-                    @pasteTemplate="pasteTemplate"
-                  />
+                  <BaseEditor class="no-border-radius no-box-shadow" ref="editorRef1" v-model="editor" minHeight="535px"
+                    type="EVENT" @openDialogCreateTemplate="openDialogCreateTemplate"
+                    @openDialogViewTemplates="openDialogViewTemplates" @pasteTemplate="pasteTemplate" />
                 </q-scroll-area>
               </div>
             </div>
@@ -196,43 +120,22 @@
       <!-- Footer / Buttons -->
       <div class="col-md-11 col-12 q-mt-md">
         <div class="row justify-end items-center no-wrap">
-          <q-btn
-            no-caps
-            no-wrap
-            class="button col-2 q-mr-xs"
-            flat
-            :style="$store.state.data.buttonFlatStyleAccentColor"
-            @click="showEditor"
-          >
+          <q-btn no-caps no-wrap class="button col-2 q-mr-xs" flat :style="$store.state.data.buttonFlatStyleAccentColor"
+            @click="showEditor">
             <div class="row items-center no-wrap">
-              <q-icon
-                size="15px"
-                color="black"
-                left
-                :name="getIconForEditorButton"
-              />
+              <q-icon size="15px" color="black" left :name="getIconForEditorButton" />
               <div class="text-center text-black">
                 {{ getLabelForEditorButton }}
               </div>
             </div>
           </q-btn>
-          <q-btn
-            no-caps
-            class="button col-2 q-mx-xs"
-            :style="$store.state.data.buttonFlatStyle"
-            flat
-            @click="closeDialog"
-          >
+          <q-btn no-caps class="button col-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+            @click="closeDialog">
             <div class="text-center text-black">Discard</div>
           </q-btn>
 
-          <q-btn
-            no-caps
-            class="button col-2 q-ml-xs"
-            :style="$store.state.data.buttonFlatStyle"
-            flat
-            @click="saveChanges"
-          >
+          <q-btn no-caps class="button col-2 q-ml-xs" :style="$store.state.data.buttonFlatStyle" flat
+            @click="saveChanges">
             <div class="text-center text-black">Create</div>
           </q-btn>
         </div>
@@ -362,6 +265,13 @@ export default {
     },
   },
   computed: {
+    editBtnText() {
+      if ((this.diaryEntry === undefined) | (this.editor === "")) {
+        return "Create";
+      } else {
+        return "Save changes";
+      }
+    },
     outerContainerStyle() {
       let currentStyle;
       let styleDark = {
@@ -429,30 +339,7 @@ export default {
         return "Editor";
       }
     },
-    isDialogVisible: {
-      get() {
-        if (
-          (this.$store.state.data.dialogSettings.isVisible === true) &
-          ((this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogNewEvent") |
-            (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-              "dialogEditEvent"))
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      },
-      set(value) {
-        let payload = {
-          isVisible: value,
-          isBackgroundVisible: false,
-          nameOfCurrentDialog:
-            this.$store.state.data.dialogSettings.nameOfCurrentDialog,
-        };
-        this.$store.commit("data/setDialogVisibility", payload);
-      },
-    },
+
     editor: {
       get() {
         return this.$store.state.data.eventData.editor;
