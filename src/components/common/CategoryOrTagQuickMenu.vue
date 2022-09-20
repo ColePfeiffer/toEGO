@@ -147,7 +147,7 @@ export default {
         categoryName: this.newCategoryName,
         type: this.type,
       };
-      this.$store.commit("data/addNewCategory", payload);
+      this.$store.commit("data/createCategory", payload);
       this.closeAndResetNewCategoryCreation();
     },
     unsetAllCategories() {
@@ -178,4 +178,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

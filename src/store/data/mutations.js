@@ -6,7 +6,7 @@ import { date } from "quasar";
 import getters from "./getters";
 
 // payload consists of categoryName and type; type can be "DIARY" or "EVENT"
-export const addNewCategory = (state, payload) => {
+export const createCategory = (state, payload) => {
   let categories;
   if (payload.type === "DIARY") {
     categories = state.categoriesForDiary;
@@ -20,6 +20,25 @@ export const addNewCategory = (state, payload) => {
     isInFolder: false,
   };
   categories.push(newCategory);
+};
+
+// renames a folder
+export const renameCategory = (state, payload) => {
+  let category = payload.item;
+  let newName = payload.newName;
+  category.name = newName;
+};
+
+export const deleteCategory = (state, payload) => {
+  let category = payload.categoryToDelete;
+  let type = payload.type;
+  if (type === "DIARY") {
+    let indexOfCategory = state.categoriesForDiary.indexOf(category);
+    state.categoriesForDiary.splice(indexOfCategory, 1);
+  } else {
+    let indexOfCategory = state.categoriesForEvents.indexOf(category);
+    state.categoriesForEvents.splice(indexOfCategory, 1);
+  }
 };
 
 export const resetCategorySettingsForTemplate = (state, payload) => {
@@ -90,6 +109,22 @@ export const deleteFolder = (state, payload) => {
     state.foldersForEvents.splice(indexOfFolder, 1);
   }
 };
+
+export const createFolder = (state, payload) => {
+  let folders;
+  if (payload.type === "DIARY") {
+    folders = state.foldersForDiary;
+  } else {
+    folders = state.foldersForEvents;
+  }
+  let newFolder = {
+    id: uid(),
+    name: payload.name,
+    categoriesByID: [],
+  };
+  folders.push(newFolder);
+};
+
 // TODO
 // payload consists of folder and category
 export const addCategoryToFolder = (state, payload) => {

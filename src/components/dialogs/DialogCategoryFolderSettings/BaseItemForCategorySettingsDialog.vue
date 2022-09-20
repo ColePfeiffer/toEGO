@@ -14,7 +14,7 @@
             <div class="row justify-center items-center">
               <!-- Name -->
               <div class="col-8 name">
-                {{folderOrCategory.name}}
+                {{item.name}}
               </div>
               <!-- Button: Edit-->
               <q-btn v-if="!isDeleting" class="col-2" color="primary" dense round flat icon="bi-pencil" size="10px"
@@ -55,7 +55,7 @@
           </q-item-section>
         </q-item>
         <q-separator></q-separator>
-        <SelectableCategoriesForFolderManagement :categories="categories" :folder="folderOrCategory" />
+        <SelectableCategoriesForFolderManagement :categories="categories" :folder="item" />
       </q-list>
     </q-menu>
 
@@ -64,7 +64,7 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label lines="1">{{ folderOrCategory.name }}</q-item-label>
+      <q-item-label lines="1">{{ item.name }}</q-item-label>
       <q-item-label caption>Categories: {{ getAmount() }}</q-item-label>
     </q-item-section>
 
@@ -81,50 +81,27 @@
 
   <!-- CATEGORY -->
   <q-item v-else clickable v-ripple>
-    <q-menu fit square class="no-border-radius" v-model="qMenuModel2">
-      <q-list>
-        <SelectableTemplatesForCategoryManagement :itemType="itemType" :type="type"
-          :folderOrCategory="folderOrCategory">
-        </SelectableTemplatesForCategoryManagement>
-      </q-list>
-    </q-menu>
-    <q-item-section avatar top>
-      <q-avatar icon="bi-collection" color="transparent" text-color="secondary" />
-    </q-item-section>
-
-    <q-item-section>
-      <q-item-label lines="1">{{ folderOrCategory.name }}</q-item-label>
-      <q-item-label caption>Templates: {{ getAmount() }} </q-item-label>
-    </q-item-section>
+    <SelectableTemplatesForCategoryManagement :itemType="itemType" :type="type" :item="item">
+    </SelectableTemplatesForCategoryManagement>
+    <q-avatar icon="bi-collection" color="transparent" text-color="secondary" />
+    <q-item-label caption>Templates: {{ getAmount() }} </q-item-label>
 
 
 
-
-    <q-item-section avatar>
-      <div class="row">
-        <div class="col-6 q-pr-md">
-          <q-btn dense round flat icon="bi-trash" size="10px">
-          </q-btn>
-        </div>
-        <div class="col-6 ">
-          <q-btn dense round flat icon="expand_more" size="10px">
-          </q-btn>
-        </div>
-      </div>
-    </q-item-section>
   </q-item>
+
 </template>
 
 
 <script>
-import SelectableCategoriesForFolderManagement from '../common/SelectableCategoriesForFolderManagement.vue';
-import SelectableTemplatesForCategoryManagement from '../common/selectableTemplatesForCategoryManagement.vue';
+import SelectableCategoriesForFolderManagement from 'src/components/common/SelectableCategoriesForFolderManagement.vue';
+import SelectableTemplatesForCategoryManagement from 'src/components/common/SelectableTemplatesForCategoryManagement.vue';
 export default {
   name: "BaseItemForCategorySettingsDialog",
   props: {
     type: String, // DIARY / STATUS
     itemType: String, // folder, category
-    folderOrCategory: Object,
+    item: Object,
     categories: Array,
   },
   emits: ["deleteItem", "renameItem"],
@@ -139,7 +116,7 @@ export default {
       qMenuModel2: false,
       isDeleting: false,
       isRenaming: false,
-      newName: this.folderOrCategory.name,
+      newName: this.item.name,
       nameRules: [
         (val) => (val && val.length > 0) || "Please enter a name",
       ],
@@ -155,12 +132,17 @@ export default {
     },
   },
   methods: {
-    // TODO
-    submitNewName() {
-      let payload = { item: this.folderOrCategory, newName: this.newName }
-      this.$emit("renameItem", payload)
-      this.isRenaming = false;
+    // looks up how many items are stored inside this one
+    getAmount() {
+      let amount;
+      if (this.item.templatesByID != undefined) {
+        amount = this.item.templatesByID.length;
+      } else {
+        amount = this.item.categoriesByID.length;
+      }
+      return amount;
     },
+
     initiateDeletion() {
       this.isDeleting = true;
     },
@@ -168,7 +150,7 @@ export default {
       this.isDeleting = false;
     },
     deleteItem() {
-      this.$emit("deleteItem", this.folderOrCategory)
+      this.$emit("deleteItem", this.item)
     },
     initiateRenaming() {
       this.isRenaming = !this.isRenaming;
@@ -177,16 +159,13 @@ export default {
     cancelRenaming() {
       this.$refs.nameRef.resetValidation();
       this.isRenaming = false;
-      this.newName = this.folderOrCategory.name;
+      this.newName = this.item.name;
     },
-
-    createNewCategory() {
-      let payload = {
-        categoryName: this.newName,
-        type: this.type,
-      };
-      this.$store.commit("data/addNewCategory", payload);
-      this.closeAndResetNewCategoryCreation();
+    // TODO
+    submitNewName() {
+      let payload = { item: this.item, newName: this.newName }
+      this.$emit("renameItem", payload)
+      this.isRenaming = false;
     },
     showQMenu() {
       this.$refs.qMenuModelRef.show;
@@ -194,15 +173,6 @@ export default {
     toggleMenu() {
       this.qMenuModel = !this.qMenuModel;
     },
-    getAmount() {
-      let amount;
-      if (this.folderOrCategory.templatesByID != undefined) {
-        amount = this.folderOrCategory.templatesByID.length;
-      } else {
-        amount = this.folderOrCategory.categoriesByID.length;
-      }
-      return amount;
-    }
   },
 };
 
