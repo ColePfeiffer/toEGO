@@ -28,12 +28,12 @@
                     <slot name="extra-button"> </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
                     @click="closeDialog">
                     <slot name="close-button"> Cancel </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" :style="$store.state.data.buttonFlatStyle" flat
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
                     :disabled="isSaveButtonDisabled" @click="saveChanges">
                     <slot name="confirm-button"> Save </slot>
                   </q-btn>

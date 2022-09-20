@@ -71,6 +71,25 @@ export const manageQuicklistStatusOfTemplate = (state, payload) => {
   }
 };
 
+// renames a folder
+export const renameFolder = (state, payload) => {
+  let folder = payload.item;
+  let newName = payload.newName;
+  folder.name = newName;
+};
+
+// deletes a folder, uses "type" to differ between foldertypes
+export const deleteFolder = (state, payload) => {
+  let folder = payload.folderToDelete;
+  let type = payload.type;
+  if (type === "DIARY") {
+    let indexOfFolder = state.foldersForDiary.indexOf(folder);
+    state.foldersForDiary.splice(indexOfFolder, 1);
+  } else {
+    let indexOfFolder = state.foldersForEvents.indexOf(folder);
+    state.foldersForEvents.splice(indexOfFolder, 1);
+  }
+};
 // TODO
 // payload consists of folder and category
 export const addCategoryToFolder = (state, payload) => {

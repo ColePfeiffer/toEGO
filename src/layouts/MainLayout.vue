@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- Dialogs -->
-    <DialogCreateTemplate @createTemplate="eventCreateTemplate" @closeDialog="closeDialog">
-    </DialogCreateTemplate>
+    <DialogNameAndCreate @create="eventCreateTemplate" @closeDialog="closeDialog">
+    </DialogNameAndCreate>
     <dialogViewEventTemplates :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate"
       @deleteTemplate="deleteTemplate" @closeDialog="closeDialog">
     </dialogViewEventTemplates>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import DialogCreateTemplate from "../components/dialogs/DialogCreateTemplate.vue";
+import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
 import DialogViewEventTemplates from "../components/dialogs/DialogViewEventTemplates.vue";
 import { date } from "quasar";
 /*
@@ -103,7 +103,7 @@ export default {
     };
   },
   components: {
-    DialogCreateTemplate,
+    DialogNameAndCreate,
     DialogViewEventTemplates,
   },
   mounted() {

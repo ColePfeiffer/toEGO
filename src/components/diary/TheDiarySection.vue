@@ -1,7 +1,7 @@
 <template>
   <div>
-    <DialogCreateTemplate :type="'DIARY'" @createTemplate="createTemplate" @closeDialog="closeDialog">
-    </DialogCreateTemplate>
+    <DialogNameAndCreate :type="'DIARY'" @create="createTemplate" @closeDialog="closeDialog">
+    </DialogNameAndCreate>
     <DialogViewDiaryTemplates :templateList="$store.state.data.diaryTemplates" @pasteTemplate="pasteTemplate">
     </DialogViewDiaryTemplates>
 
@@ -143,14 +143,14 @@
 
 <script>
 import BaseEditor from "../ui/BaseEditor.vue";
-import DialogCreateTemplate from "../dialogs/DialogCreateTemplate.vue";
+import DialogNameAndCreate from "../dialogs/DialogNameAndCreate.vue";
 import DialogViewDiaryTemplates from "../dialogs/DialogViewDiaryTemplates.vue";
 
 export default {
   name: "TheDiaryPanels",
   components: {
     BaseEditor,
-    DialogCreateTemplate,
+    DialogNameAndCreate,
     DialogViewDiaryTemplates,
   },
   emits: [

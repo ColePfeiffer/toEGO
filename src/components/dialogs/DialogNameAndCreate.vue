@@ -1,11 +1,11 @@
 <template>
   <BaseDialog v-model="isDialogVisible" :widthOfDialog="315" :isSaveButtonDisabled="!isNameValid"
-    @closeDialog="closeDialog" @save="createTemplate">
+    @closeDialog="closeDialog" @save="create">
     <template v-slot:confirm-button> Create </template>
     <template v-slot:close-button> Cancel </template>
     <template v-slot:dialogTitle>
       <q-icon :name="menuIcon" size="22px" />
-      Template Creator
+      {{ dialogName }}
     </template>
     <template v-slot:content>
       <q-card class="transparent no-shadow">
@@ -14,8 +14,8 @@
             <q-avatar icon="bi-journal-plus" color="primary" text-color="white" />
           </div>
           <div class="col">
-            <span class="q-ml-sm">Name your template...</span>
-            <q-input filled square v-model="templateName" :rules="[
+            <span class="q-ml-sm">{{ text }}</span>
+            <q-input filled square v-model="name" :rules="[
               (val) => !!val || '* Required',
               (val) => val.length >= 2 || 'Please use minimum 2 characters',
               (val) => val.length <= 20 || 'Please use maximum 25 characters',
@@ -34,9 +34,22 @@ import BaseDialog from "../ui/BaseDialog2.vue";
 export default {
   name: "DialogCreateTemplate",
   props: {
+    // can be 'DIARY', 'EVENT', 'CATEGORY', 'TEMPLATE'
     type: String,
+    menuIcon: {
+      type: String,
+      default: "bi-file-earmark-font",
+    },
+    text: {
+      type: String,
+      default: "Name your template...",
+    },
+    dialogName: {
+      type: String,
+      default: "Template Creator"
+    }
   },
-  emits: ["createTemplate", "closeDialog"],
+  emits: ["create", "closeDialog"],
   components: {
     BaseDialog,
 
@@ -44,8 +57,7 @@ export default {
   data() {
     return {
       icon: true,
-      menuIcon: "bi-file-earmark-font",
-      templateName: "",
+      name: "",
     };
   },
   methods: {
@@ -53,17 +65,17 @@ export default {
       this.reset();
       this.$emit("closeDialog");
     },
-    createTemplate() {
-      this.$emit("createTemplate", this.templateName);
+    create() {
+      this.$emit("create", this.name);
       this.reset();
     },
     reset() {
-      this.templateName = "";
+      this.name = "";
     },
   },
   computed: {
     isNameValid() {
-      if (this.templateName.length >= 2 && this.templateName.length <= 25) {
+      if (this.name.length >= 2 && this.name.length <= 25) {
         return true;
       } else {
         return false;
@@ -74,8 +86,10 @@ export default {
         let nameOfDialog;
         if (this.type === "DIARY") {
           nameOfDialog = "dialogCreateDiaryTemplate";
-        } else {
+        } else if (this.type === "EVENT") {
           nameOfDialog = "dialogCreateEventTemplate";
+        } else if (this.type === "FOLDER") {
+          nameOfDialog = 'dialogCreateFolder'
         }
 
         if (
