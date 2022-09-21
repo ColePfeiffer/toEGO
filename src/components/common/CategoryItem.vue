@@ -74,7 +74,7 @@ export default {
   },
   computed: {
     isTemplateIDInCategory() {
-      if (this.category.templatesByID.includes(this.currentTemplate.id)) {
+      if (this.category.storedIDs.includes(this.currentTemplate.id)) {
         // is included
         return "bi-dash";
       } else {

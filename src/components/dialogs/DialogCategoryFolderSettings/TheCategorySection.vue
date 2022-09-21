@@ -1,30 +1,70 @@
 <template>
-  <BaseSection :type="type" :itemType="itemType" :itemsToDisplay="itemsToDisplay" @create-new-item="createCategory"
-    @rename-item="renameCategory" @delete-item="deleteCategory">
+  <BaseSection @create-new-item="createCategory">
     <template v-slot:headername>Categories</template>
+    <template v-slot:itemsToDisplay>
+      <div v-for="category in itemsToDisplay" :key="category">
+        <BaseMenuForFolderManagement
+          childAsText="Templates: "
+          :item="category"
+          icon="bi-collection"
+          @rename-item="renameCategory"
+          @delete-item="deleteCategory"
+        >
+          <template v-slot:children>
+            <div v-for="template in templates" :key="template">
+              <BaseItemForFolderManagement
+                :item="template"
+                icon="bi-file-earmark-font"
+                :parent="category"
+              >
+              </BaseItemForFolderManagement>
+            </div>
+          </template>
+        </BaseMenuForFolderManagement>
+      </div>
+    </template>
   </BaseSection>
 </template>
 
 <script>
 import BaseSection from "./BaseSection.vue";
+import BaseItemForFolderManagement from "./BaseItemForFolderManagement.vue";
+import BaseMenuForFolderManagement from "./BaseMenuForFolderManagement.vue";
 
 export default {
   name: "TheCategorySection",
   props: {
     type: String,
-    itemType: String, // FOLDER, CATEGORY
     itemsToDisplay: Array,
   },
   components: {
     BaseSection,
+    BaseItemForFolderManagement,
+    BaseMenuForFolderManagement,
   },
   data() {
-    return {
-    };
+    return {};
   },
+  computed: {
+    isTypeSetToDiary() {
+      if (this.type === "DIARY") {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    templates() {
+      if (this.isTypeSetToDiary) {
+        return this.$store.state.data.diaryTemplates;
+      } else {
+        return this.$store.state.data.eventTemplates;
+      }
+    },
+  },
+
   methods: {
     createCategory(name) {
-      let payload = { categoryName: name, type: this.type }
+      let payload = { categoryName: name, type: this.type };
       this.$store.commit("data/createCategory", payload);
     },
     // renames an existing folder
@@ -32,9 +72,10 @@ export default {
       this.$store.commit("data/renameCategory", payload);
     },
     deleteCategory(categoryToDelete) {
-      let payload = { categoryToDelete: categoryToDelete, type: this.type }
+      let payload = { categoryToDelete: categoryToDelete, type: this.type };
       this.$store.commit("data/deleteCategory", payload);
+      // remove child from parent
     },
-  }
-}
+  },
+};
 </script>

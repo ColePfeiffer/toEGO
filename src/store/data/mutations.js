@@ -16,7 +16,7 @@ export const createCategory = (state, payload) => {
   let newCategory = {
     id: uid(),
     name: payload.categoryName,
-    templatesByID: [],
+    storedIDs: [],
     isInFolder: false,
   };
   categories.push(newCategory);
@@ -48,19 +48,13 @@ export const resetCategorySettingsForTemplate = (state, payload) => {
 
   categories.forEach((category) => {
     // if template id exists in category, delete it
-    if (category.templatesByID.includes(templateID)) {
-      category.templatesByID.splice(
-        category.templatesByID.indexOf(templateID),
-        1
-      );
+    if (category.storedIDs.includes(templateID)) {
+      category.storedIDs.splice(category.storedIDs.indexOf(templateID), 1);
     }
   });
 
-  if (quicklist.templatesById.includes(templateID)) {
-    quicklist.templatesById.splice(
-      quicklist.templatesById.indexOf(templateID),
-      1
-    );
+  if (quicklist.storedIDs.includes(templateID)) {
+    quicklist.storedIDs.splice(quicklist.storedIDs.indexOf(templateID), 1);
   }
 };
 
@@ -70,22 +64,22 @@ export const manageQuicklistStatusOfTemplate = (state, payload) => {
   let type = payload.type;
 
   if (type === "DIARY") {
-    if (state.quicklistForDiary.templatesById.includes(templateID)) {
-      state.quicklistForDiary.templatesById.splice(
-        state.quicklistForDiary.templatesById.indexOf(templateID),
+    if (state.quicklistForDiary.storedIDs.includes(templateID)) {
+      state.quicklistForDiary.storedIDs.splice(
+        state.quicklistForDiary.storedIDs.indexOf(templateID),
         1
       ); //deleting
     } else {
-      state.quicklistForDiary.templatesById.push(templateID);
+      state.quicklistForDiary.storedIDs.push(templateID);
     }
   } else {
-    if (state.quicklistForEvents.templatesById.includes(templateID)) {
-      state.quicklistForEvents.templatesById.splice(
-        state.quicklistForEvents.templatesById.indexOf(templateID),
+    if (state.quicklistForEvents.storedIDs.includes(templateID)) {
+      state.quicklistForEvents.storedIDs.splice(
+        state.quicklistForEvents.storedIDs.indexOf(templateID),
         1
       ); //deleting
     } else {
-      state.quicklistForEvents.templatesById.push(templateID);
+      state.quicklistForEvents.storedIDs.push(templateID);
     }
   }
 };
@@ -120,29 +114,25 @@ export const createFolder = (state, payload) => {
   let newFolder = {
     id: uid(),
     name: payload.name,
-    categoriesByID: [],
+    storedIDs: [],
   };
   folders.push(newFolder);
 };
 
-// TODO
-// payload consists of folder and category
-export const addCategoryToFolder = (state, payload) => {
-  let category = payload.category;
-  let folder = payload.folder;
-  folder.categoriesByID.push(category.id);
+export const addChildToParent = (state, payload) => {
+  let parent = payload.parent;
+  let child = payload.child;
+  parent.storedIDs.push(child.id);
 };
 
-// TODO
-// payload consists of folder and category
-export const removeCategoryFromFolder = (state, payload) => {
-  let category = payload.category;
-  let folder = payload.folder;
+export const removeChildFromParent = (state, payload) => {
+  let parent = payload.parent;
+  let child = payload.child;
 
-  var filteredArray = folder.categoriesByID.filter(function (categoryID) {
-    return categoryID != category.id;
+  var filteredArray = parent.storedIDs.filter(function (categoryID) {
+    return categoryID != child.id;
   });
-  folder.categoriesByID = filteredArray;
+  parent.storedIDs = filteredArray;
 };
 
 // payload consists of category and templateID
@@ -150,7 +140,7 @@ export const addTemplateToCategory = (state, payload) => {
   let category = payload.category;
   let template = payload.template;
   template.isInCategory = true;
-  category.templatesByID.push(template.id);
+  category.storedIDs.push(template.id);
 };
 
 // payload consists of category, templateID
@@ -160,11 +150,11 @@ export const removeTemplateFromCategory = (state, payload) => {
 
   // Remove template from array
   console.log(category, template);
-  var filteredArray = category.templatesByID.filter(function (templateID) {
+  var filteredArray = category.storedIDs.filter(function (templateID) {
     return templateID != template.id;
   });
 
-  category.templatesByID = filteredArray;
+  category.storedIDs = filteredArray;
 
   // if template isnt in any other category, set isInCategory to false
 };

@@ -39,30 +39,18 @@
     </div>
   </q-item-label>
 
+  <!-- Content -->
   <q-scroll-area style="height: 158px">
-    <div v-for="item in itemsToDisplay" :key="item.id">
-
-      <BaseItemForCategorySettingsDialog :type="type" itemType="folder" :item="item" :categories="categories"
-        @deleteItem="deleteItem" @renameItem="renameItem">
-      </BaseItemForCategorySettingsDialog>
-    </div>
+    <slot name="itemsToDisplay"></slot>
   </q-scroll-area>
 </template>
 
 <script>
-import BaseItemForCategorySettingsDialog from './BaseItemForCategorySettingsDialog.vue';
 
 export default {
   name: "BaseSection",
-  props: {
-    type: String, // DIARY, EVENT, ...
-    itemType: String, // FOLDER, CATEGORY
-    itemsToDisplay: Array,
-  },
-  emits: ["create-new-item", "rename-item", "delete-item"],
+  emits: ["create-new-item"],
   components: {
-    BaseItemForCategorySettingsDialog,
-    BaseItemForCategorySettingsDialog
   },
   data() {
     return {
@@ -85,7 +73,6 @@ export default {
     submitName() {
       let nameInput = this.$refs.nameRef;
       nameInput.validate();
-
       // if form has error
       if (nameInput.hasError) {
       } else {
@@ -102,32 +89,7 @@ export default {
       this.$emit("create-new-item", this.newItemName);
       this.cancelCreatingNewItem();
     },
-    renameItem(payload) {
-      this.$emit("rename-item", payload);
-    },
-    deleteItem(itemToDelete) {
-      this.$emit("delete-item", itemToDelete);
-    }
-  },
-  computed: {
-    isTypeSetToDiary() {
-      if (this.type === "DIARY") {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    categories() {
-      if (this.isTypeSetToDiary) {
-        return this.$store.state.data.categoriesForDiary;
-      } else {
-        return this.$store.state.data.categoriesForEvents;
-      }
-    },
   },
 };
 
 </script>
-<style>
-
-</style>

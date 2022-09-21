@@ -3,15 +3,16 @@
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
 
-   // ESLint
-   "editor.formatOnSave": true,
-   "editor.codeActionsOnSave": [
-     "source.fixAll.eslint"
-   ],
-   "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+  // ESLint
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": ["source.fixAll.eslint"],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
 
-     // With Prettier
-     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // With Prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
 
 /* what used to be here...

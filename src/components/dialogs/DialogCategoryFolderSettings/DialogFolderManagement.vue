@@ -1,6 +1,11 @@
 <template>
-  <BaseDialog v-model="isDialogVisible" :hasHelpOption="true" :widthOfDialog="315" @closeDialog="closeDialog"
-    @save="createTemplate">
+  <BaseDialog
+    v-model="isDialogVisible"
+    :hasHelpOption="true"
+    :widthOfDialog="315"
+    @closeDialog="closeDialog"
+    @save="createTemplate"
+  >
     <template v-slot:confirm-button> Create </template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
@@ -12,35 +17,38 @@
         <!-- Outer Container -->
         <div class="col-9 col-md-9 col-xs-12">
           <q-list bordered padding>
-            <TheFolderSection :type="type" itemType="FOLDER" :itemsToDisplay="folders"></TheFolderSection>
+            <TheFolderSection
+              :type="type"
+              :itemsToDisplay="folders"
+            ></TheFolderSection>
             <q-separator spaced />
-            <TheCategorySection :type="type" itemType="CATEGORY" :itemsToDisplay="categories"></TheCategorySection>
+            <TheCategorySection
+              :type="type"
+              :itemsToDisplay="categories"
+            ></TheCategorySection>
           </q-list>
         </div>
       </div>
-
-
     </template>
-  </baseDialog>
-
+  </BaseDialog>
 </template>
 
 <script>
-import BaseDialog from "../ui/BaseDialog2.vue";
-import TheFolderSection from "./DialogCategoryFolderSettings/TheFolderSection.vue";
-import TheCategorySection from "./DialogCategoryFolderSettings/TheCategorySection.vue";
+import BaseDialog from "../../ui/BaseDialog2.vue";
+import TheFolderSection from "./TheFolderSection.vue";
+import TheCategorySection from "./TheCategorySection.vue";
 
 export default {
-  name: "openDialogCategorySettings",
+  name: "openDialogFolderManagement",
   props: {
     type: String,
-    isDialogCategorySettingsVisible: Boolean,
+    isDialogFolderManagementVisible: Boolean,
   },
   emits: ["closeDialog", "setDialogVisibilty"],
   components: {
     BaseDialog,
     TheFolderSection,
-    TheCategorySection
+    TheCategorySection,
   },
   data() {
     return {
@@ -63,9 +71,7 @@ export default {
     initiateCreatingNewFolder() {
       this.isCreatingNewFolder = true;
     },
-    createNewFolder() {
-
-    },
+    createNewFolder() {},
 
     showNamingDialog() {
       let payload = {
@@ -130,8 +136,8 @@ export default {
     },
     isDialogVisible: {
       get() {
-        if (this.isDialogCategorySettingsVisible) {
-          return true
+        if (this.isDialogFolderManagementVisible) {
+          return true;
         } else {
           return false;
         }
@@ -142,9 +148,7 @@ export default {
     },
   },
 };
-
 </script>
-
 
 <style scoped>
 .header {

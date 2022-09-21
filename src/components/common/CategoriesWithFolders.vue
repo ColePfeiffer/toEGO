@@ -42,7 +42,7 @@ export default {
         category: category,
         template: this.currentTemplate,
       };
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
+      if (category.storedIDs.includes(this.currentTemplate.id)) {
         this.$store.commit("data/removeTemplateFromCategory", payload);
       } else {
         this.$store.commit("data/addTemplateToCategory", payload);

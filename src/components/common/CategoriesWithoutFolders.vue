@@ -3,13 +3,8 @@
     <div v-for="category in getNonEmptyFolderlessCategories" :key="category">
       <!-- is showing templates -->
       <q-item dense clickable>
-        <CategoryItem
-          :category="category"
-          :currentTemplate="currentTemplate"
-          :isShowingTemplates="true"
-          :templates="templates"
-          @templateClicked="templateClicked"
-        >
+        <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="true"
+          :templates="templates" @templateClicked="templateClicked">
         </CategoryItem>
       </q-item>
     </div>
@@ -24,18 +19,9 @@
   <div v-else>
     <div v-for="category in getFolderlessCategories" :key="category">
       <!-- is not showing templates -->
-      <q-item
-        dense
-        clickable
-        @click="manageCategoryForTemplate(category)"
-        :style="getTextColorForCategory(category)"
-      >
-        <CategoryItem
-          :category="category"
-          :currentTemplate="currentTemplate"
-          :isShowingTemplates="false"
-          :templates="templates"
-        >
+      <q-item dense clickable @click="manageCategoryForTemplate(category)" :style="getTextColorForCategory(category)">
+        <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="false"
+          :templates="templates">
         </CategoryItem>
       </q-item>
     </div>
@@ -65,7 +51,7 @@ export default {
   },
   methods: {
     isTemplateSetToThisCategory(category) {
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
+      if (category.storedIDs.includes(this.currentTemplate.id)) {
         return "bi-dash";
       } else {
         return "bi-plus";
@@ -91,13 +77,13 @@ export default {
         category: category,
         template: this.currentTemplate,
       };
-      if (category.templatesByID.includes(this.currentTemplate.id)) {
+      if (category.storedIDs.includes(this.currentTemplate.id)) {
         this.$store.commit("data/removeTemplateFromCategory", payload);
       } else {
         this.$store.commit("data/addTemplateToCategory", payload);
       }
     },
-    manageCategoryForTag() {},
+    manageCategoryForTag() { },
   },
   computed: {
     getFolderlessCategories() {
@@ -129,7 +115,7 @@ export default {
     getNonEmptyFolderlessCategories() {
       return this.categories.filter((category) => {
         return (
-          category.templatesByID.length > 0 && category.isInFolder === false
+          category.storedIDs.length > 0 && category.isInFolder === false
         );
       });
     },

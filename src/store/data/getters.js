@@ -59,7 +59,7 @@ export const getFolderContent = (state) => {
   return (folder, categories) => {
     let array = [];
 
-    folder.categoriesByID.forEach((ID) => {
+    folder.storedIDs.forEach((ID) => {
       array.push(categories.find((category) => category.id === ID));
     });
     return array;
@@ -72,7 +72,7 @@ export const getTemplatesFromCategory = (state) => {
     console.log("cat, temps: ", category, templates);
     let array = [];
 
-    category.templatesByID.forEach((ID) => {
+    category.storedIDs.forEach((ID) => {
       array.push(templates.find((template) => template.id === ID));
     });
     return array;
@@ -81,10 +81,7 @@ export const getTemplatesFromCategory = (state) => {
 
 export const isCategoryEmpty = (state) => {
   return (category) => {
-    if (
-      typeof category !== "undefined" &&
-      category.templatesByID.length === 0
-    ) {
+    if (typeof category !== "undefined" && category.storedIDs.length === 0) {
       return true;
     } else {
       return false;
@@ -96,11 +93,11 @@ export const areCategoriesInFolderEmpty = (state, getters) => {
   return (folder, categories) => {
     let folderIsEmpty;
     // if folder doesn't have any categories, return true
-    if (folder.categoriesByID.length === 0) {
+    if (folder.storedIDs.length === 0) {
       folderIsEmpty = true;
       // if folder has categories, check if they are empty
     } else {
-      folder.categoriesByID.forEach((categoryIDInFolder) => {
+      folder.storedIDs.forEach((categoryIDInFolder) => {
         // get the category by using the id stored in the folder
         let category = categories.find(
           (category) => category.id === categoryIDInFolder
@@ -133,13 +130,13 @@ export const getQuickListContent = (state) => {
   return (type) => {
     let array = [];
     if (type === "DIARY") {
-      state.quicklistForDiary.templatesById.forEach((templateID) => {
+      state.quicklistForDiary.storedIDs.forEach((templateID) => {
         array.push(
           state.diaryTemplates.find((template) => template.id === templateID)
         );
       });
     } else {
-      state.quicklistForEvents.templatesById.forEach((templateID) => {
+      state.quicklistForEvents.storedIDs.forEach((templateID) => {
         array.push(
           state.eventTemplates.find((template) => template.id === templateID)
         );
@@ -152,7 +149,7 @@ export const getQuickListContent = (state) => {
 
 export const isTemplateInCategory = (state) => {
   return (payload) => {
-    if (payload.category.templatesByID.includes(payload.templateID)) {
+    if (payload.category.storedIDs.includes(payload.templateID)) {
       return true;
     } else {
       return false;
@@ -166,7 +163,7 @@ export const checkIfTemplateIsInCategory = (state) => {
     let template = payload.template;
     let isEmpty;
     for (let i = 0; i < categories.length; i++) {
-      if (categories[i].templatesByID.includes(template.id)) {
+      if (categories[i].storedIDs.includes(template.id)) {
         isEmpty = false;
         return isEmpty;
       } else {
