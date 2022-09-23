@@ -10,7 +10,6 @@ export default function () {
       "https://64.media.tumblr.com/8b250bb0b90cbb3667071d88f3555c70/tumblr_inline_n9qgx3Si4l1qak244.png",
     ],
     // all templates for events are in here
-    eventTemplates: [],
     diaryTemplates: [
       {
         id: 0,
@@ -59,6 +58,14 @@ export default function () {
         name: "Grounding: 5-to-1",
         text: "<div><u>Grounding Technique: 5-to-1</u></div><div></div><div><br></div><div style='text-align: left;'>This technique can be used when feeling anxious or overwhelmed. Before you start, become mindful to your breathing. Take a couple of deep breaths. Then pay attention to your surroundings.</div><ol><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(255, 102, 99);'>five</strong><span style='text-align: left;'> things you can see around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(254, 177, 68);'>four</strong><span style='text-align: left;'> things you can touch around you.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 224, 158);'>three</strong><span style='text-align: left;'> things you can hear right now.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(158, 193, 207);'>two</strong><span style='text-align: left;'> things you can smell.</span><br></li><li><span style='text-align: left;'>Acknowledge </span><strong style='text-align: left; color: rgb(204, 153, 201);'>one</strong><span style='text-align: left;'> thing you can taste.</span><br></li></ol>",
         icon: "fas fa-sun",
+        isSetToDefault: false,
+        isInCategory: false,
+      },
+      {
+        id: 1,
+        name: "Todo",
+        text: "<div>✔️❌&nbsp;<b>Todo</b><br></div><div><ul><li><br></li></ul></div>",
+        icon: "",
         isSetToDefault: false,
         isInCategory: false,
       },
