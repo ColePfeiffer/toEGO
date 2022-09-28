@@ -1,10 +1,17 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- Dialogs -->
-    <DialogNameAndCreate @create="eventCreateTemplate" @closeDialog="closeDialog">
+    <DialogNameAndCreate
+      @create="eventCreateTemplate"
+      @closeDialog="closeDialog"
+    >
     </DialogNameAndCreate>
-    <dialogViewEventTemplates :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate" @closeDialog="closeDialog">
+    <dialogViewEventTemplates
+      :templateList="$store.state.data.eventTemplates"
+      @pasteTemplate="pasteTemplate"
+      @deleteTemplate="deleteTemplate"
+      @closeDialog="closeDialog"
+    >
     </dialogViewEventTemplates>
 
     <!-- Router-view -->
@@ -12,11 +19,14 @@
       <q-page class="pageView">
         <div class="row justify-center" :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-4 col-xl-3 q-pt-xs">
-            <router-view v-slot="{ Component }" v-if="
-              $store.state.data.dialogSettings.isVisible == false ||
-              ($store.state.data.dialogSettings.isVisible == true &&
-                $store.state.data.dialogSettings.isBackgroundVisible == true)
-            ">
+            <router-view
+              v-slot="{ Component }"
+              v-if="
+                $store.state.data.dialogSettings.isVisible == false ||
+                ($store.state.data.dialogSettings.isVisible == true &&
+                  $store.state.data.dialogSettings.isBackgroundVisible == true)
+              "
+            >
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -26,15 +36,25 @@
       </q-page>
     </q-page-container>
     <!-- Bottom Navigation bar -->
-    <q-footer v-if="
-      ($store.state.data.dialogSettings.isVisible == false) |
-      (($store.state.data.dialogSettings.isVisible == true) &
-        ($store.state.data.dialogSettings.isBackgroundVisible == true))
-    " elevated class="primary">
+    <q-footer
+      v-if="
+        ($store.state.data.dialogSettings.isVisible == false) |
+          (($store.state.data.dialogSettings.isVisible == true) &
+            ($store.state.data.dialogSettings.isBackgroundVisible == true))
+      "
+      elevated
+      class="primary"
+    >
       <q-toolbar>
         <q-space />
-        <q-btn-toggle v-model="navButtonToggleModel" flat stretch padding="ml" toggle-color="secondary"
-          @update:model-value="goToPage" :options="[
+        <q-btn-toggle
+          v-model="navButtonToggleModel"
+          flat
+          stretch
+          padding="ml"
+          toggle-color="secondary"
+          @update:model-value="goToPage"
+          :options="[
             { label: '', value: 'home', icon: 'bi-eye', slot: 'home' },
             {
               label: '',
@@ -51,22 +71,47 @@
             },
             { label: '', value: 'items', icon: 'bi-calendar', slot: 'items' },
             { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings' },
-          ]">
+          ]"
+        >
           <template v-slot:home>
-            <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">home</q-tooltip>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >home</q-tooltip
+            >
           </template>
           <template v-slot:diary>
-            <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">diary</q-tooltip>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >diary</q-tooltip
+            >
           </template>
           <template v-slot:NewEvent>
-            <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">create new event
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >create new event
             </q-tooltip>
           </template>
           <template v-slot:items>
-            <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">calendar</q-tooltip>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >calendar</q-tooltip
+            >
           </template>
           <template v-slot:settings>
-            <q-tooltip class="bg-secondary text-body2 text-black" :offset="[10, 10]" :delay="300">settings</q-tooltip>
+            <q-tooltip
+              class="bg-secondary text-body2 text-black"
+              :offset="[10, 10]"
+              :delay="300"
+              >settings</q-tooltip
+            >
           </template>
         </q-btn-toggle>
         <q-space />
@@ -159,10 +204,14 @@ export default {
     },
     deleteTemplate(template) {
       let payload = {
-        template: template,
-        templateListType: "EVENT",
+        parents: this.categories,
+        child: template,
+        type: "EVENT",
       };
-      this.$store.commit("data/deleteTemplate", payload);
+      this.$store.dispatch(
+        "data/removeTemplateFromParentsAndDeleteIt",
+        payload
+      );
     },
     eventCreateTemplate(templateName) {
       let newTemplate = {

@@ -1,17 +1,21 @@
 <template>
-  <DialogViewTemplates :type="'EVENT'" :templateList="$store.state.data.eventTemplates" @pasteTemplate="pasteTemplate">
-  </DialogViewTemplates>
+  <BaseDialogTemplateViewer
+    :type="'EVENT'"
+    :templateList="$store.state.data.eventTemplates"
+    @pasteTemplate="pasteTemplate"
+  >
+  </BaseDialogTemplateViewer>
 </template>
 
 <script>
-import DialogViewTemplates from "./DialogViewTemplates.vue";
+import BaseDialogTemplateViewer from "./BaseDialogTemplateViewer.vue";
 
 export default {
   name: "DialogViewEventTemplates",
   emits: ["pasteTemplate", "closeDialog", "deleteTemplate"],
   props: { templateList: Array, type: String },
   components: {
-    DialogViewTemplates,
+    BaseDialogTemplateViewer,
   },
   data() {
     return {
@@ -26,5 +30,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

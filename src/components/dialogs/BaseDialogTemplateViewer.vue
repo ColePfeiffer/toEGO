@@ -98,7 +98,7 @@
 
               <q-card-actions class="row justify-center items-center">
                 <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
-                  <CategoryOrTagQuickMenuVue
+                  <CategoryOrTagQuickMenu
                     @openDialogFolderManagement="openDialogFolderManagement"
                     :currentTemplate="currentTemplate"
                     :folders="folders"
@@ -107,7 +107,7 @@
                     :quicklist="quicklist"
                     :templates="templateList"
                   >
-                  </CategoryOrTagQuickMenuVue>
+                  </CategoryOrTagQuickMenu>
                 </q-btn>
 
                 <!-- Set default status button -->
@@ -235,7 +235,7 @@
 <script>
 import { useQuasar } from "quasar";
 import baseDialog from "../ui/BaseDialog2.vue";
-import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
+import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
 import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
 import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
 
@@ -244,7 +244,7 @@ export default {
   emits: ["pasteTemplate", "closeDialog"],
   components: {
     baseDialog,
-    CategoryOrTagQuickMenuVue,
+    CategoryOrTagQuickMenu,
     FolderCategoryStructure,
     DialogFolderManagement,
   },
@@ -286,11 +286,6 @@ export default {
       this.setDialogVisibilty(true);
     },
     pickTemplate(template) {
-      console.log(
-        "template clicked triggered in dialogViewTemplates: ",
-        template
-      );
-      console.log("picktemplate", template);
       this.currentTemplate = template;
       this.qMenuModel = false;
     },
@@ -311,10 +306,14 @@ export default {
     },
     deleteTemplate() {
       let payload = {
-        template: this.currentTemplate,
-        templateListType: this.type,
+        parents: this.categories,
+        child: this.currentTemplate,
+        type: this.type,
       };
-      this.$store.commit("data/deleteTemplate", payload);
+      this.$store.dispatch(
+        "data/removeTemplateFromParentsAndDeleteIt",
+        payload
+      );
     },
     closeDialog() {
       let payload = {
@@ -346,18 +345,6 @@ export default {
     pasteTemplateAndClose() {
       this.$emit("pasteTemplate", this.currentTemplate);
       this.closeDialog();
-    },
-    calculateWidth() {
-      let style = {};
-      let width;
-      let totalWidthAsNumber = this.getScreenWidth.width;
-      if (totalWidthAsNumber >= 300) {
-        console.log("big");
-        width = "300px";
-      } else {
-        console.log("small");
-        width = totalWidthAsNumber + "px";
-      }
     },
   },
   computed: {

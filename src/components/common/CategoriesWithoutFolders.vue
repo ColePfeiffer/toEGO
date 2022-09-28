@@ -1,6 +1,9 @@
 <template>
   <div v-if="isShowingTemplates === true">
-    <div v-for="category in getNonEmptyFolderlessCategories" :key="category">
+    <div
+      v-for="category in getCategoriesWithoutFoldersButWithTemplates"
+      :key="category"
+    >
       <!-- is showing templates -->
       <q-item dense clickable>
         <CategoryItem
@@ -15,14 +18,14 @@
     </div>
     <!-- show templates that aren't in categories -->
     <q-separator />
-    <div v-for="template in getTemplates" :key="template">
+    <div v-for="template in getTemplatesWithoutCategories" :key="template">
       <q-item @click="templateClicked(template)" v-close-popup dense clickable>
         <TemplateItem :template="template"></TemplateItem>
       </q-item>
     </div>
   </div>
   <div v-else>
-    <div v-for="category in getFolderlessCategories" :key="category">
+    <div v-for="category in getCategoriesWithoutFolders" :key="category">
       <!-- is not showing templates -->
       <q-item
         dense
@@ -100,36 +103,23 @@ export default {
     manageCategoryForTag() {},
   },
   computed: {
-    getFolderlessCategories() {
-      return this.$store.getters["data/getFolderlessCategories"]({
+    getCategoriesWithoutFolders() {
+      return this.$store.getters["data/getCategoriesWithoutFolders"]({
         folders: this.folders,
         categories: this.categories,
-        type: this.type,
       });
     },
-    // kann evtl weg
-    // get templates that aren't in folders or categories
-    getTemplates() {
-      let array = [];
-
-      this.templates.forEach((template) => {
-        let payload = {
-          template: template,
-          categories: this.categories,
-        };
-
-        if (
-          this.$store.getters["data/checkIfTemplateIsInCategory"](payload) ===
-          true
-        ) {
-          array.push(template);
-        }
+    getTemplatesWithoutCategories() {
+      return this.$store.getters["data/getTemplatesWithoutCategories"]({
+        templates: this.templates,
+        categories: this.categories,
       });
-      return array;
     },
-    getNonEmptyFolderlessCategories() {
-      return this.categories.filter((category) => {
-        return category.storedIDs.length > 0 && category.isInFolder === false;
+    // only returns category-items that are not stored in any folder and hold at least one template-item
+    getCategoriesWithoutFoldersButWithTemplates() {
+      return this.getCategoriesWithoutFolders.filter((category) => {
+        console.log(category.name, category.storedIDs.length);
+        category.storedIDs.length > 0;
       });
     },
   },

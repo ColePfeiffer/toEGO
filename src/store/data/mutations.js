@@ -28,19 +28,6 @@ export const renameCategory = (state, payload) => {
   category.name = newName;
 };
 
-export const deleteCategory = (state, payload) => {
-  let category = payload.categoryToDelete;
-
-  let type = payload.type;
-  if (type === "DIARY") {
-    let indexOfCategory = state.categoriesForDiary.indexOf(category);
-    state.categoriesForDiary.splice(indexOfCategory, 1);
-  } else {
-    let indexOfCategory = state.categoriesForEvents.indexOf(category);
-    state.categoriesForEvents.splice(indexOfCategory, 1);
-  }
-};
-
 export const resetCategorySettingsForTemplate = (state, payload) => {
   let templateID = payload.templateID;
   let categories = payload.categories;
@@ -166,7 +153,6 @@ export const removeChildFromAllParents = (state, payload) => {
 export const addTemplateToCategory = (state, payload) => {
   let category = payload.category;
   let template = payload.template;
-  template.isInCategory = true;
   category.storedIDs.push(template.id);
 };
 
@@ -182,8 +168,6 @@ export const removeTemplateFromCategory = (state, payload) => {
   });
 
   category.storedIDs = filteredArray;
-
-  // if template isnt in any other category, set isInCategory to false
 };
 
 export const updateDrawerState = (state, opened) => {
@@ -347,16 +331,22 @@ export const createTemplateAndAddToList = (state, payload) => {
   }
 };
 
+// * deletes a template
 export const deleteTemplate = (state, payload) => {
-  let templateList;
-  if (payload.templateListType === "DIARY") {
-    templateList = state.diaryTemplates;
-  } else {
-    templateList = state.eventTemplates;
-  }
-  let indexOfTemplate = templateList.indexOf(payload.template);
-  console.log("index OF Template: ", indexOfTemplate, " deleted");
-  templateList.splice(indexOfTemplate, 1);
+  let template = payload.templateToDelete;
+  let templates = payload.templates;
+
+  let indexOfTemplate = templates.indexOf(template);
+  templates.splice(indexOfTemplate, 1);
+};
+
+// * deletes a category
+export const deleteCategory = (state, payload) => {
+  let category = payload.categoryToDelete;
+  let categories = payload.categories;
+
+  let indexOfCategory = categories.indexOf(category);
+  categories.splice(indexOfCategory, 1);
 };
 
 export const setDefaultStatusOfTemplate = (state, payload) => {

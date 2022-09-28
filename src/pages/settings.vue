@@ -1,6 +1,8 @@
 <template>
   <q-page class="q-pa-md">
+    <q-btn color="secondary" label="TEST ME" @click="testme"></q-btn>
     <div>SETTINGS</div>
+
     <div>
       <q-option-group
         v-model="group"
@@ -74,6 +76,9 @@ export default {
     },
     toggleExpandButtonForEventsOnDiaryPage() {
       this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
+    },
+    testme() {
+      //this.$store.dispatch("data/deleteTemplate");
     },
   },
 };

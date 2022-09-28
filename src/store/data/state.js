@@ -94,8 +94,8 @@ export default function () {
         name: "MUH!!!",
         storedIDs: [],
       },
-      { id: 2, name: "Tracker", storedIDs: [], isInFolder: false },
-      { id: 3, name: "Other", storedIDs: [], isInFolder: false },
+      { id: 2, name: "Tracker", storedIDs: [] },
+      { id: 3, name: "Other", storedIDs: [] },
       {
         id: 4,
         name: "Grounding Methods",

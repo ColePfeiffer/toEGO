@@ -79,6 +79,97 @@ export const getTemplatesFromCategory = (state) => {
   };
 };
 
+export const getQuickListContent = (state) => {
+  return (type) => {
+    let array = [];
+    if (type === "DIARY") {
+      state.quicklistForDiary.storedIDs.forEach((templateID) => {
+        array.push(
+          state.diaryTemplates.find((template) => template.id === templateID)
+        );
+      });
+    } else {
+      state.quicklistForEvents.storedIDs.forEach((templateID) => {
+        array.push(
+          state.eventTemplates.find((template) => template.id === templateID)
+        );
+      });
+    }
+
+    return array;
+  };
+};
+
+// checks if the provided item is any child of any parent of the parents-array and returns true if so
+export const isItemChildToParent = (state) => {
+  return (payload) => {
+    let parents = payload.parents;
+    let child = payload.child;
+    let isChildFromParent;
+
+    for (let i = 0; i < parents.length; i++) {
+      // if we find a parent to our item, we leave the loop early.
+      if (parents[i].storedIDs.includes(child.id)) {
+        isChildFromParent = true;
+        return isChildFromParent;
+      } else {
+        isChildFromParent = false;
+      }
+    }
+    return isChildFromParent;
+  };
+};
+
+export const getCategoriesWithoutFolders = (state, getters) => {
+  return (payload) => {
+    let categories = payload.categories;
+    let folders = payload.folders;
+
+    /* we only want to get folderless categories,
+    the following filtering process only returns those category-items, that meet the condition
+    ("isItemChildToParent" returning false) as that means it's folderless */
+
+    return categories.filter((category) => {
+      let data = { parents: folders, child: category };
+      return getters.isItemChildToParent(data) === false;
+    });
+  };
+};
+
+export const getTemplatesWithoutCategories = (state, getters) => {
+  return (payload) => {
+    let categories = payload.categories;
+    let templates = payload.templates;
+
+    return templates.filter((template) => {
+      let data = { parents: categories, child: template };
+      return getters.isItemChildToParent(data) === false;
+    });
+  };
+};
+
+export const getTemplatesByType = (state) => {
+  return (type) => {
+    if (type === "DIARY") {
+      return state.diaryTemplates;
+    } else {
+      return state.eventTemplates;
+    }
+  };
+};
+
+export const getCategoryByType = (state) => {
+  return (type) => {
+    if (type === "DIARY") {
+      return state.categoriesForDiary;
+    } else {
+      return state.categoriesForEvent;
+    }
+  };
+};
+
+// TODO:
+// check these below again!
 export const isCategoryEmpty = (state) => {
   return (category) => {
     if (typeof category !== "undefined" && category.storedIDs.length === 0) {
@@ -123,89 +214,5 @@ export const getNonEmptyFolders = (state, getters) => {
       }
     });
     return array;
-  };
-};
-
-export const getQuickListContent = (state) => {
-  return (type) => {
-    let array = [];
-    if (type === "DIARY") {
-      state.quicklistForDiary.storedIDs.forEach((templateID) => {
-        array.push(
-          state.diaryTemplates.find((template) => template.id === templateID)
-        );
-      });
-    } else {
-      state.quicklistForEvents.storedIDs.forEach((templateID) => {
-        array.push(
-          state.eventTemplates.find((template) => template.id === templateID)
-        );
-      });
-    }
-
-    return array;
-  };
-};
-
-export const isTemplateInCategory = (state) => {
-  return (payload) => {
-    if (payload.category.storedIDs.includes(payload.templateID)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-};
-
-export const checkIfTemplateIsInCategory = (state) => {
-  return (payload) => {
-    let categories = payload.categories;
-    let template = payload.template;
-    let isEmpty;
-    for (let i = 0; i < categories.length; i++) {
-      if (categories[i].storedIDs.includes(template.id)) {
-        isEmpty = false;
-        return isEmpty;
-      } else {
-        isEmpty = true;
-      }
-    }
-    return isEmpty;
-  };
-};
-
-// checks if the provided item is any child of any parent of the parents-array and returns true if so
-export const isItemChildToParent = (state) => {
-  return (payload) => {
-    let parents = payload.parents;
-    let child = payload.child;
-    let isChildFromParent;
-
-    for (let i = 0; i < parents.length; i++) {
-      // if we find a parent to our item, we leave the loop early.
-      if (parents[i].storedIDs.includes(child.id)) {
-        isChildFromParent = true;
-        return isChildFromParent;
-      } else {
-        isChildFromParent = false;
-      }
-    }
-    return isChildFromParent;
-  };
-};
-
-export const getFolderlessCategories = (state, getters) => {
-  return (payload) => {
-    let categories = payload.categories;
-    let folders = payload.folders;
-
-    /* we only want to get folderless categories,
-    the following filtering process only returns those category-items, that meet the condition
-    ("isItemChildToParent" returning false) as that means it's folderless */
-
-    return categories.filter((category) => {
-      let data = { parents: folders, child: category };
-      return getters.isItemChildToParent(data) === false;
-    });
   };
 };

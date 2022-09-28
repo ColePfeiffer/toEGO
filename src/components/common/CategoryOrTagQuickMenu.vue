@@ -5,7 +5,7 @@
     self="bottom middle"
     class="no-border-radius"
   >
-    <q-list dense style="min-width: 100px">
+    <q-list dense>
       <!-- new category button -->
       <q-item
         v-if="!isCreatingNewCategory"
@@ -92,7 +92,8 @@
         </q-item-section>
       </q-item>
       <q-separator color="secondary" />
-      <q-scroll-area style="height: 120px">
+      <q-scroll-area :style="styleForScrollArea">
+        <q-resize-observer @resize="onResize" />
         <FolderCategoryStructure
           :currentTemplate="currentTemplate"
           :folders="folders"
@@ -124,10 +125,7 @@ export default {
   components: { FolderCategoryStructure },
   data() {
     return {
-      heightForScrollArea: {
-        height: "120px",
-        "max-width": "300px",
-      },
+      styleForScrollArea: { height: "20px" },
       newCategoryName: "",
       isCreatingNewCategory: false,
       nameRules: [
@@ -151,6 +149,16 @@ export default {
     },
   },
   methods: {
+    onResize(size) {
+      console.log("new size: ", size);
+      console.log("new size: ", size.height, size.width);
+      this.styleForScrollArea = {
+        height: size.height + "px",
+        width: size.width + "px",
+        "max-height": "120px",
+      };
+      //report.value = size;
+    },
     openDialogFolderManagement() {
       // maybe emit type too
       this.$emit("openDialogFolderManagement");
