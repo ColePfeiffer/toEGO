@@ -1,35 +1,76 @@
 <template>
   <q-item-section avatar>
-    <q-icon dense size="xs" color="secondary" name="bi-folder" />
+    <q-icon
+      dense
+      size="xs"
+      color="secondary"
+      name="bi-folder"
+    />
   </q-item-section>
   <q-item-section :style="getColorForLabel">{{ folder.name }}</q-item-section>
-  <q-item-section side top>
-    <q-btn dense round flat :icon="expandIcon"> </q-btn>
+  <q-item-section
+    side
+    top
+  >
+    <q-btn
+      dense
+      round
+      flat
+      :icon="expandIcon"
+    > </q-btn>
   </q-item-section>
   <!-- Submenu -->
-  <q-menu fit dense separate-close-popup class="no-border-radius" v-model="qMenuModel">
+  <q-menu
+    fit
+    dense
+    separate-close-popup
+    class="no-border-radius"
+    v-model="qMenuModel"
+  >
     <q-list>
       <!-- Closing Option for small devices -->
 
 
       <!-- Categories inside folder -->
       <div v-if="isShowingTemplates">
-        <q-item v-for="category in $store.getters['data/getFolderContent'](
-          folder,
-          categories
-        )" :key="category" dense clickable @click="categoryClicked(category)">
-          <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="true"
-            :templates="templates" @templateClicked="templateClicked"></CategoryItem>
+        <q-item
+          v-for="category in $store.getters['data/getFolderContent'](
+            folder,
+            categories
+          )"
+          :key="category"
+          dense
+          clickable
+          @click="categoryClicked(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :isShowingTemplates="true"
+            :templates="templates"
+            @templateClicked="templateClicked"
+          ></CategoryItem>
         </q-item>
       </div>
       <div v-else>
-        <q-item v-for="category in $store.getters['data/getFolderContent'](
-          folder,
-          categories
-        )" :key="category" dense clickable @click="categoryClicked(category)"
-          :style="getTextColorForCategory(category)">
-          <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="isShowingTemplates"
-            :templates="templates" @templateClicked="templateClicked"></CategoryItem>
+        <q-item
+          v-for="category in $store.getters['data/getFolderContent'](
+            folder,
+            categories
+          )"
+          :key="category"
+          dense
+          clickable
+          @click="categoryClicked(category)"
+          :style="getTextColorForCategory(category)"
+        >
+          <CategoryItem
+            :category="category"
+            :currentTemplate="currentTemplate"
+            :isShowingTemplates="isShowingTemplates"
+            :templates="templates"
+            @templateClicked="templateClicked"
+          ></CategoryItem>
         </q-item>
       </div>
     </q-list>

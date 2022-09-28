@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import BaseDialog from "../../ui/BaseDialog2.vue";
+import BaseDialog from "../../ui/baseDialog.vue";
 import TheFolderSection from "./TheFolderSection.vue";
 import TheCategorySection from "./TheCategorySection.vue";
 

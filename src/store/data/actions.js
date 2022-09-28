@@ -15,7 +15,6 @@ export const removeCategoryFromParentsAndDeleteIt = (context, payload) => {
 };
 
 export function removeTemplateFromParentsAndDeleteIt(context, payload) {
-  console.log("calling action");
   // remove template from all categories
   let data = { parents: payload.parents, child: payload.child };
   context.commit("removeChildFromAllParents", data);

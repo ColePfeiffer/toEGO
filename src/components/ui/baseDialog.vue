@@ -1,36 +1,46 @@
 <template>
-  <q-dialog class="baseDialog" full-height full-width persistent>
-    <div class="test row justify-center" :style="boxShadowStyle">
-      <div class="col-12 col-sm-7 col-md-3 col-xl-3">
-        <div class="window dialogBox column full-height" :style="styleB">
-          <!-- Title Bar -->
+  <!-- whole thing -->
+  <q-dialog class="baseDialog" full-width persistent>
+    <!-- row -->
+    <div class="row justify-center" :style="boxShadowStyle">
+      <div class="col-12 col-sm-7 col-md-4 col-xl-3">
+        <div class="window dialogBox column" :style="getStyleForDialog">
           <div class="col-1">
-            <div class="title-bar row" style="background: #dfd4f5">
+            <!-- Title Bar -->
+            <div class="title-bar row" :style="getStyleForDialogTitleBar">
               <div class="title-bar-text">
                 <slot name="dialogTitle"></slot>
               </div>
               <div class="title-bar-controls">
-                <button aria-label="Help"></button>
-                <button aria-label="Close"></button>
+                <button v-if="hasHelpOption" aria-label="Help" @click="showHelp"></button>
+                <button aria-label="Close" @click="closeDialog"></button>
               </div>
             </div>
-          </div>
-          <!-- Content Slot -->
-          <slot name="content"></slot>
-          <!-- Footer Slot | Option to hide buttons -->
-          <slot name="footer">
-            <div class="col-1 q-pa-sm">
-              <div class="row">
-                <q-btn class="button col-3 col-md-2 offset-5 offset-md-7 q-mx-xs" flat @click="closeDialog">
-                  <slot name="close-button"> Cancel </slot>
-                </q-btn>
+            <!-- Content Slot -->
+            <slot name="content" :style="getStyleForDialog"></slot>
+            <!-- Footer Slot | Option to hide buttons -->
+            <slot name="footer">
+              <div class="col-1 q-pa-sm q-pb-md q-mt-md">
+                <div class="row justify-end">
+                  <q-btn v-if="hasExtraButton" class="button extraButton col-3 col-md-2 q-mx-xs" flat
+                    :style="$store.state.data.buttonFlatStyleAccentColor" :icon="extraButtonIcon"
+                    @click="clickExtraButton">
+                    <slot name="extra-button"> </slot>
+                  </q-btn>
 
-                <q-btn class="button col-3 col-md-2 q-mx-xs" @click="saveChanges">
-                  <slot name="confirm-button"> Save </slot>
-                </q-btn>
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
+                    @click="closeDialog">
+                    <slot name="close-button"> Cancel </slot>
+                  </q-btn>
+
+                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
+                    :disabled="isSaveButtonDisabled" @click="saveChanges">
+                    <slot name="confirm-button"> Save </slot>
+                  </q-btn>
+                </div>
               </div>
-            </div>
-          </slot>
+            </slot>
+          </div>
         </div>
       </div>
     </div>
@@ -38,60 +48,99 @@
 </template>
 
 <script>
-/*
-for main container
-color: white; background-color: black
-*/
-
 export default {
   name: "baseDialog",
-  emits: ["closeDialog", "save"],
-
+  emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
+  props: {
+    minHeight: {
+      type: Number,
+      default: 300,
+    },
+    widthOfDialog: Number,
+    hasHelpOption: Boolean,
+    hasExtraButton: {
+      type: Boolean,
+      default: false,
+    },
+    extraButtonLabel: {
+      type: String,
+      default: "",
+    },
+    extraButtonIcon: {
+      type: String,
+      default: "",
+    },
+    isSaveButtonDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      test: true,
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      styleA: {
-        "background-color": "#121212 ",
-        color: "white",
-        opacity: "0.8",
-      },
-      styleB: {
-        "background-color": "#989898 ",
-        color: "black",
-      },
-
-      mobileModeActive: true,
-      // inline css style with variables
-      classSmall: { "full-width": true },
-      classBig: { "max-width": "80%", width: "70%" },
+      styleForDialogTitleBar: { background: "var(--q-secondary)" },
+      styleForDialogTitleBarDark: { background: "var(--q-secondary)" },
     };
   },
   methods: {
+    clickExtraButton() {
+      this.$emit("clickExtraButton");
+    },
     closeDialog() {
       this.$emit("closeDialog");
     },
     saveChanges() {
       this.$emit("save");
     },
+    showHelp() {
+      this.$emit("showHelp");
+    },
   },
   computed: {
-    // a computed getter
-    setStyle() {
-      var style = {};
-      console.log("display mode changed");
+    getHeight() {
+      let height = this.$q.screen.height;
+      return {
+        height,
+      };
+    },
 
-      if (this.mobileModeActive) {
-        console.log("mobile");
-        // `this` points to the vm instance
-        style = this.styleA;
+    getStyleForDialogTitleBar() {
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        return this.styleForDialogTitleBarDark;
       } else {
-        console.log("desktop view");
-        style = this.styleB;
+        return this.styleForDialogTitleBar;
       }
-
+    },
+    getStyleForDialog() {
+      let style = {};
+      let currentMaxHeight;
+      let screenHeightAsNumber = this.getHeight.height;
+      if (screenHeightAsNumber >= 650) {
+        currentMaxHeight = "650px";
+      } else {
+        currentMaxHeight = screenHeightAsNumber + "px";
+      }
+      //console.log("heightAsString", currentMaxHeight);
+      if (this.$store.getters["data/isDarkModeActive"]) {
+        style = {
+          //width: this.widthOfDialog + "px",
+          "background-color": "rgb(0 0 0 / 77%)",
+          "max-height": currentMaxHeight,
+          color: "white",
+        };
+      } else {
+        style = {
+          //width: this.widthOfDialog + "px",
+          "background-color": "rgb(255 255 255 )",
+          // max-height
+          // min-height
+          "min-height": this.minHeight,
+          "max-height": currentMaxHeight,
+          color: "black",
+        };
+      }
       return style;
     },
   },
@@ -99,6 +148,10 @@ export default {
 </script>
 
 <style scoped src="98.css">
+.defaultFont {
+  font-family: "PressStart";
+}
+
 .baseDialog :deep(.window) {
   color: #fff;
 }

@@ -1,29 +1,69 @@
+<BaseItemExpandable v-else>
+
+</BaseItemExpandable>
 <template>
   <q-item-section avatar>
-    <q-icon color="secondary" size="xs" name="bi-collection" />
+    <q-icon
+      color="secondary"
+      size="xs"
+      name="bi-collection"
+    />
   </q-item-section>
   <q-item-section :style="getColorForLabel">{{ category.name }}</q-item-section>
   <!-- is showing templates -->
-  <q-item-section v-if="isShowingTemplates" side top>
-    <q-btn dense round flat :icon="expandIcon"> </q-btn>
+  <q-item-section
+    v-if="isShowingTemplates"
+    side
+    top
+  >
+    <q-btn
+      dense
+      round
+      flat
+      :icon="expandIcon"
+    > </q-btn>
   </q-item-section>
   <!-- Submenu -->
-  <q-menu v-if="isShowingTemplates" fit dense separate-close-popup class="no-border-radius" v-model="qMenuModel">
+  <q-menu
+    v-if="isShowingTemplates"
+    fit
+    dense
+    separate-close-popup
+    class="no-border-radius"
+    v-model="qMenuModel"
+  >
     <q-list dense>
 
 
       <!-- Templates inside Category -->
-      <q-item style="max-width: 350px" v-for="template in $store.getters['data/getTemplatesFromCategory'](
-        category,
-        templates
-      )" :key="template" dense v-close-popup="2" clickable @click="templateClicked(template)">
+      <q-item
+        style="max-width: 350px"
+        v-for="template in $store.getters['data/getTemplatesFromCategory'](
+          category,
+          templates
+        )"
+        :key="template"
+        dense
+        v-close-popup="2"
+        clickable
+        @click="templateClicked(template)"
+      >
         <TemplateItem :template="template"> </TemplateItem>
       </q-item>
     </q-list>
   </q-menu>
   <!-- isn't showing templates -->
-  <q-item-section v-else avatar>
-    <q-btn dense :color="color" round flat :icon="isTemplateIDInCategory">
+  <q-item-section
+    v-else
+    avatar
+  >
+    <q-btn
+      dense
+      :color="color"
+      round
+      flat
+      :icon="isTemplateIDInCategory"
+    >
     </q-btn>
   </q-item-section>
 </template>
@@ -83,7 +123,6 @@ export default {
       }
     },
     color() {
-      console.log("LOLOLOL COLOR?")
       if (this.isTemplateIDInCategory === "bi-dash") {
         // is included
         return "orange";

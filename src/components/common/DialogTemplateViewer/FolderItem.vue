@@ -1,0 +1,90 @@
+<template>
+    <div>
+        <BaseItemExpandable
+            :currentTemplate="currentTemplate"
+            :item="folder"
+            icon="bi-folder"
+            :isExpanded="menuModel"
+            @click-item="clickFolder"
+        >
+        </BaseItemExpandable>
+        <!-- Submenu -->
+        <BaseMenu
+            :menuModel="menuModel"
+            :items="$store.getters['data/getFolderContent'](
+              folder,
+              categories
+            )"
+            @changed-menu-state="changedMenuState"
+        >
+            <template v-slot:itemsInsideList>
+                <!-- Templates inside Category -->
+                <!-- TODO: -->
+                <!-- TODO: ADD PROPS -->
+                <CategoryItem
+                    v-for="category in $store.getters['data/getFolderContent'](
+                      folder,
+                      categories
+                    )"
+                    :key="category"
+                    clickable
+                    :currentTemplate="currentTemplate"
+                    :isShowingClickableVariant="false"
+                    :isShowingTemplates="isShowingTemplates"
+                    :templateVariantIsSetToClickable="templateVariantIsSetToClickable"
+                    :category="category"
+                    :templates="templates"
+                    :parent="folder"
+                    @click-category="clickCategory"
+                    @click-template="clickTemplate"
+                >
+                </CategoryItem>
+            </template>
+        </BaseMenu>
+    </div>
+
+</template>
+
+<script>
+import BaseItemExpandable from 'src/components/ui/BaseItemExpandable.vue';
+import BaseMenu from './BaseMenu.vue';
+import CategoryItem from './CategoryItem.vue';
+export default {
+    name: "FolderItem",
+    emits: ["click-folder", "click-category", "click-template"],
+    components: { BaseItemExpandable, BaseMenu, CategoryItem },
+    props: {
+        // TODO: I only need one of these probably
+        isShowingTemplates: Boolean,
+        folder: Object,
+        categories: Array,
+        templates: Array,
+        currentTemplate: Object,
+        // needs to be set to true for Template Picker
+        templateVariantIsSetToClickable: Boolean,
+    },
+    data() {
+        return {
+            menuModel: false,
+        };
+    },
+    methods: {
+        clickFolder() {
+            this.$emit("click-folder", this.folder);
+        },
+        clickCategory(category) {
+            this.$emit("click-category", category);
+        },
+        clickTemplate(template) {
+            this.$emit("click-template", template);
+
+        },
+        changedMenuState(newValue) {
+            this.menuModel = newValue;
+        }
+    },
+    computed: {
+    },
+};
+</script>
+    

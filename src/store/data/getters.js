@@ -48,9 +48,7 @@ export const getDefaultTemplate = (state) => {
 // takes the method's ID as an argument and returns the matching method
 export const getMethodById2 = (state) => {
   return (id) => {
-    console.log("trying my best", id);
     let bla = state.eventData.methods.find((method) => method.id === id);
-    console.log("found: ", bla);
     return state.eventData.methods.find((method) => method.id === id);
   };
 };
@@ -67,11 +65,8 @@ export const getFolderContent = (state) => {
 };
 
 export const getTemplatesFromCategory = (state) => {
-  console.log("getTemplatesFromCategory");
   return (category, templates) => {
-    console.log("cat, temps: ", category, templates);
     let array = [];
-
     category.storedIDs.forEach((ID) => {
       array.push(templates.find((template) => template.id === ID));
     });
@@ -100,8 +95,8 @@ export const getQuickListContent = (state) => {
   };
 };
 
-// checks if the provided item is any child of any parent of the parents-array and returns true if so
-export const isItemChildToParent = (state) => {
+// checks if the provided item is a child of any parent of the parents-array and returns true if so
+export const isItemChildToAnyParent = (state) => {
   return (payload) => {
     let parents = payload.parents;
     let child = payload.child;
@@ -127,11 +122,11 @@ export const getCategoriesWithoutFolders = (state, getters) => {
 
     /* we only want to get folderless categories,
     the following filtering process only returns those category-items, that meet the condition
-    ("isItemChildToParent" returning false) as that means it's folderless */
+    ("isItemChildToAnyParent" returning false) as that means it's folderless */
 
     return categories.filter((category) => {
       let data = { parents: folders, child: category };
-      return getters.isItemChildToParent(data) === false;
+      return getters.isItemChildToAnyParent(data) === false;
     });
   };
 };
@@ -143,7 +138,7 @@ export const getTemplatesWithoutCategories = (state, getters) => {
 
     return templates.filter((template) => {
       let data = { parents: categories, child: template };
-      return getters.isItemChildToParent(data) === false;
+      return getters.isItemChildToAnyParent(data) === false;
     });
   };
 };

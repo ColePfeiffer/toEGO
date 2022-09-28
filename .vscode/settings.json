@@ -2,7 +2,6 @@
   // Common Configuration
   "editor.bracketPairColorization.enabled": true,
   "editor.guides.bracketPairs": true,
-
   // ESLint
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": ["source.fixAll.eslint"],
@@ -11,8 +10,17 @@
   // With Prettier
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[vue]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+    "editor.defaultFormatter": "Vue.volar"
+  },
+
+  // added this for formatting with volar
+  // Wrap attributes.
+  //  - auto: Wrap attributes only when line length is exceeded.
+  //  - force: Wrap each attribute except first.
+  //  - force-aligned: Wrap each attribute except first and keep aligned.
+  //  - force-expand-multiline: Wrap each attribute.
+  //  - aligned-multiple: Wrap when line length is exceeded, align attributes vertically.
+  "html.format.wrapAttributes": "force-expand-multiline"
 }
 
 /* what used to be here...

@@ -234,7 +234,7 @@
 
 <script>
 import { useQuasar } from "quasar";
-import baseDialog from "../ui/BaseDialog2.vue";
+import baseDialog from "../ui/baseDialog.vue";
 import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
 import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
 import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";

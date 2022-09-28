@@ -1,6 +1,11 @@
 <template>
-  <BaseDialog v-model="isDialogVisible" :widthOfDialog="315" :isSaveButtonDisabled="!isNameValid"
-    @closeDialog="closeDialog" @save="create">
+  <BaseDialog
+    v-model="isDialogVisible"
+    :widthOfDialog="315"
+    :isSaveButtonDisabled="!isNameValid"
+    @closeDialog="closeDialog"
+    @save="create"
+  >
     <template v-slot:confirm-button> Create </template>
     <template v-slot:close-button> Cancel </template>
     <template v-slot:dialogTitle>
@@ -11,15 +16,24 @@
       <q-card class="transparent no-shadow">
         <q-card-section class="row items-center">
           <div class="col-3">
-            <q-avatar icon="bi-journal-plus" color="primary" text-color="white" />
+            <q-avatar
+              icon="bi-journal-plus"
+              color="primary"
+              text-color="white"
+            />
           </div>
           <div class="col">
             <span class="q-ml-sm">{{ text }}</span>
-            <q-input filled square v-model="name" :rules="[
-              (val) => !!val || '* Required',
-              (val) => val.length >= 2 || 'Please use minimum 2 characters',
-              (val) => val.length <= 20 || 'Please use maximum 25 characters',
-            ]" />
+            <q-input
+              filled
+              square
+              v-model="name"
+              :rules="[
+                (val) => !!val || '* Required',
+                (val) => val.length >= 2 || 'Please use minimum 2 characters',
+                (val) => val.length <= 20 || 'Please use maximum 25 characters',
+              ]"
+            />
           </div>
         </q-card-section>
       </q-card>
@@ -28,8 +42,7 @@
 </template>
 
 <script>
-import BaseDialog from "../ui/BaseDialog2.vue";
-
+import BaseDialog from "../ui/baseDialog.vue";
 
 export default {
   name: "DialogCreateTemplate",
@@ -46,13 +59,12 @@ export default {
     },
     dialogName: {
       type: String,
-      default: "Template Creator"
-    }
+      default: "Template Creator",
+    },
   },
   emits: ["create", "closeDialog"],
   components: {
     BaseDialog,
-
   },
   data() {
     return {
@@ -89,7 +101,7 @@ export default {
         } else if (this.type === "EVENT") {
           nameOfDialog = "dialogCreateEventTemplate";
         } else if (this.type === "FOLDER") {
-          nameOfDialog = 'dialogCreateFolder'
+          nameOfDialog = "dialogCreateFolder";
         }
 
         if (

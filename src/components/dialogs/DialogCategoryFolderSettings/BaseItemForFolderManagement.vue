@@ -6,8 +6,15 @@
     :style="getTextColor"
   >
     <!-- Category/Template Icon -->
-    <q-item-section avatar class="q-pl-sm">
-      <q-icon color="secondary" size="xs" :name="icon" />
+    <q-item-section
+      avatar
+      class="q-pl-sm"
+    >
+      <q-icon
+        color="secondary"
+        size="xs"
+        :name="icon"
+      />
     </q-item-section>
     <!-- Name of Category or Template -->
     <q-item-section>
@@ -15,7 +22,13 @@
     </q-item-section>
     <!-- Button to add child to parent or to remove it -->
     <q-item-section side>
-      <q-btn dense round flat :color="getIconColor" :icon="getIcon"> </q-btn>
+      <q-btn
+        dense
+        round
+        flat
+        :color="getIconColor"
+        :icon="getIcon"
+      > </q-btn>
     </q-item-section>
   </q-item>
 </template>
