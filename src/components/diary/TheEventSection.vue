@@ -4,32 +4,78 @@
       <!-- Title, Button Row -->
       <div class="row justify-center items-center no-wrap">
         <!-- Title -->
-        <div class="col-8 smallText text-left text-white" :style="$store.state.data.headlineStyle">
+        <div
+          class="col-8 smallText text-left text-white"
+          :style="$store.state.data.headlineStyle"
+        >
           {{ getTextForFirstHeadline }}
         </div>
         <!-- Left-Side Buttons -->
-        <div v-if="hasEvents || isDiarySectionVisible === false" class="smallText col-2 text-right">
+        <div
+          v-if="hasEvents || isDiarySectionVisible === false"
+          class="smallText col-2 text-right"
+        >
           <!-- Button: Enter Viewing Mode -->
-          <q-btn v-if="!$store.state.data.eventsOnDiaryPageAreExpanded" class="col-1 smallText" flat dense icon="bi-eye"
-            color="white" :label="$q.screen.lt.sm?'':'view'" @click="expandMore"
-            :style="$store.state.data.sTextAccentShadow" size="10px">
+          <q-btn
+            v-if="!$store.state.data.eventsOnDiaryPageAreExpanded"
+            class="col-1 smallText"
+            flat
+            dense
+            icon="bi-eye"
+            color="white"
+            :label="$q.screen.lt.sm?'':'view'"
+            @click="expandMore"
+            :style="$store.state.data.sTextAccentShadow"
+            size="10px"
+          >
           </q-btn>
           <!-- Button: Leaving Viewing Mode -->
-          <q-btn v-else class="col-1" flat dense :style="$store.state.data.sTextAccentShadow" icon="bi-chevron-left"
-            :label="$q.screen.lt.sm?'':'back'" color="white" @click="expandLess" size="10px"></q-btn>
+          <q-btn
+            v-else
+            class="col-1"
+            flat
+            dense
+            :style="$store.state.data.sTextAccentShadow"
+            icon="bi-chevron-left"
+            :label="$q.screen.lt.sm?'':'back'"
+            color="white"
+            @click="expandLess"
+            size="10px"
+          ></q-btn>
         </div>
-        <div v-else class="smallText col-2 text-right"></div>
+        <div
+          v-else
+          class="smallText col-2 text-right"
+        ></div>
         <!-- Right-Side Button -->
         <!-- Button: Create new event -->
-        <q-btn v-if="hasEvents" class="col-2 smallText" flat dense icon="bi-plus-lg" color="accent"
-          @click="goToPageNewEventSetToCreationMode" :label="$q.screen.lt.sm?'':'new '"
-          :style="$store.state.data.sTextAccentShadow" size="10px"></q-btn>
-        <div v-else class="smallText col-2 text-right"></div>
+        <q-btn
+          v-if="hasEvents"
+          class="col-2 smallText"
+          flat
+          dense
+          icon="bi-plus-lg"
+          color="accent"
+          @click="goToPageNewEventSetToCreationMode"
+          :label="$q.screen.lt.sm?'':'new '"
+          :style="$store.state.data.sTextAccentShadow"
+          size="10px"
+        ></q-btn>
+        <div
+          v-else
+          class="smallText col-2 text-right"
+        ></div>
       </div>
       <!-- Events Container -->
-      <q-scroll-area :style="heightForScrollArea" ref="scrollArea">
-        <EventViewer :diaryEntry="diaryEntry" :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :showMessageIfThereAreNoEvents="false">
+      <q-scroll-area
+        :style="heightForScrollArea"
+        ref="scrollArea"
+      >
+        <EventViewer
+          :diaryEntry="diaryEntry"
+          :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
+          :showMessageIfThereAreNoEvents="false"
+        >
         </EventViewer>
       </q-scroll-area>
     </div>
@@ -37,7 +83,7 @@
 </template>
 
 <script>
-import EventViewer from '../common/EventViewer.vue';
+import EventViewer from '../common/TheEventViewer.vue';
 
 export default {
   name: "TheEventSection",

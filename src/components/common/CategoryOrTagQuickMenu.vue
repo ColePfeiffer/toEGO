@@ -13,7 +13,11 @@
         @click="toggleNewCategoryCreation"
       >
         <q-item-section avatar>
-          <q-icon color="secondary" size="xs" name="bi-plus" />
+          <q-icon
+            color="secondary"
+            size="xs"
+            name="bi-plus"
+          />
         </q-item-section>
         <q-item-section>New category</q-item-section>
       </q-item>
@@ -57,16 +61,31 @@
       </q-item>
 
       <!-- Settings button -->
-      <q-item clickable v-close-popup @click="openDialogFolderManagement">
+      <q-item
+        clickable
+        v-close-popup
+        @click="openDialogFolderManagement"
+      >
         <q-item-section avatar>
-          <q-icon color="secondary" size="xs" name="bi-gear" />
+          <q-icon
+            color="secondary"
+            size="xs"
+            name="bi-gear"
+          />
         </q-item-section>
         <q-item-section>Settings</q-item-section>
       </q-item>
       <!-- Unset all button -->
-      <q-item clickable @click="unsetAllCategories">
+      <q-item
+        clickable
+        @click="unsetAllCategories"
+      >
         <q-item-section avatar>
-          <q-icon color="secondary" size="xs" name="bi-x" />
+          <q-icon
+            color="secondary"
+            size="xs"
+            name="bi-x"
+          />
         </q-item-section>
         <q-item-section>Unset all</q-item-section>
       </q-item>
@@ -77,7 +96,11 @@
         :style="getTextColorForQuicklist"
       >
         <q-item-section avatar>
-          <q-icon color="secondary" size="xs" name="bi-star" />
+          <q-icon
+            color="secondary"
+            size="xs"
+            name="bi-star"
+          />
         </q-item-section>
         <q-item-section>Add to quick-list</q-item-section>
         <q-item-section avatar>
@@ -94,14 +117,15 @@
       <q-separator color="secondary" />
       <q-scroll-area :style="styleForScrollArea">
         <q-resize-observer @resize="onResize" />
-        <FolderCategoryStructure
+        <!-- FIXME: this has to be adjusted to the new format -->
+        <FolderCategoryTemplateStructure
           :currentTemplate="currentTemplate"
           :folders="folders"
           :categories="categories"
           :templates="templates"
           @templateClicked="templateClicked"
         >
-        </FolderCategoryStructure>
+        </FolderCategoryTemplateStructure>
       </q-scroll-area>
     </q-list>
   </q-menu>
@@ -109,7 +133,7 @@
 
 <script>
 import { useQuasar } from "quasar";
-import FolderCategoryStructure from "./FolderCategoryStructure.vue";
+import FolderCategoryTemplateStructure from "../dialogs/DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 
 export default {
   name: "CategoryOrTagQuickMenu",
@@ -122,7 +146,7 @@ export default {
     quicklist: Object,
     templates: Array,
   },
-  components: { FolderCategoryStructure },
+  components: { FolderCategoryTemplateStructure },
   data() {
     return {
       styleForScrollArea: { height: "20px" },
@@ -230,4 +254,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

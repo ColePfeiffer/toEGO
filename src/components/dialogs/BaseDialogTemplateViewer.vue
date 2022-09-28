@@ -20,7 +20,10 @@
     <template v-slot:confirm-button>Paste</template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
-      <q-icon :name="menuIcon" size="22px" />
+      <q-icon
+        :name="menuIcon"
+        size="22px"
+      />
       Template Viewer
     </template>
     <template v-slot:content>
@@ -41,9 +44,7 @@
           </q-btn>
           <div class="col-md-8 col-xs-9">
             <!-- Template and Filter Dropdown Buttons -->
-            <div
-              class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer"
-            >
+            <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
               <!-- Pick template Dropdown Button  -->
               <q-btn
                 :icon-right="expandIcon"
@@ -56,9 +57,14 @@
                 text-color="black"
                 label="Pick Template"
               >
-                <q-menu fit class="no-border-radius" v-model="qMenuModel">
+                <q-menu
+                  fit
+                  class="no-border-radius"
+                  v-model="qMenuModel"
+                >
                   <q-list>
-                    <FolderCategoryStructure
+                    <!-- FIXME: this needs adjustment to new version, old props... -->
+                    <FolderCategoryTemplateStructure
                       :currentTemplate="currentTemplate"
                       :folders="folders"
                       :categories="categories"
@@ -71,33 +77,42 @@
               </q-btn>
             </div>
 
-            <q-card flat bordered square class="bg-grey-1">
+            <q-card
+              flat
+              bordered
+              square
+              class="bg-grey-1"
+            >
               <q-card-section class="q-pb-xs">
                 <div class="text-h6">{{ currentTemplate.name }}</div>
               </q-card-section>
 
               <q-card-section class="templateTextContainer q-pb-xs">
                 <q-scroll-area :style="StyleTmplateTextScrollArea">
-                  <div
-                    v-if="
-                      currentTemplate.text.length >= maxNumberOfDisplayedChars
-                    "
-                  >
-                    <div
-                      v-html="
-                        currentTemplate.text.substring(
-                          0,
-                          maxNumberOfDisplayedChars
-                        ) + ' [...]'
-                      "
-                    ></div>
+                  <div v-if="
+                    currentTemplate.text.length >= maxNumberOfDisplayedChars
+                  ">
+                    <div v-html="
+                      currentTemplate.text.substring(
+                        0,
+                        maxNumberOfDisplayedChars
+                      ) + ' [...]'
+                    "></div>
                   </div>
-                  <div v-else v-html="currentTemplate.text"></div>
+                  <div
+                    v-else
+                    v-html="currentTemplate.text"
+                  ></div>
                 </q-scroll-area>
               </q-card-section>
 
               <q-card-actions class="row justify-center items-center">
-                <q-btn class="cardButton" icon="bi-tags" flat :ripple="false">
+                <q-btn
+                  class="cardButton"
+                  icon="bi-tags"
+                  flat
+                  :ripple="false"
+                >
                   <CategoryOrTagQuickMenu
                     @openDialogFolderManagement="openDialogFolderManagement"
                     :currentTemplate="currentTemplate"
@@ -121,7 +136,7 @@
                     class="bg-secondary text-body2 text-black"
                     :offset="[10, 10]"
                     :delay="300"
-                    >Set as default template
+                  >Set as default template
                   </q-tooltip>
                 </q-btn>
                 <!-- Paste Template button -->
@@ -135,12 +150,16 @@
                     class="bg-secondary text-body2 text-black"
                     :offset="[10, 10]"
                     :delay="300"
-                    >Paste template
+                  >Paste template
                   </q-tooltip>
                 </q-btn>
                 <!--Delete Templates button -->
                 <div>
-                  <q-fab flat direction="right" padding="md">
+                  <q-fab
+                    flat
+                    direction="right"
+                    padding="md"
+                  >
                     <template v-slot:icon="{ opened }">
                       <q-icon
                         :class="{
@@ -182,7 +201,11 @@
           class="row full-width items-center justify-center q-px-md q-pt-md"
         >
           <div class="col-10 col-xs-12 q-pt-md q-px-md">
-            <q-card flat bordered class="templateCard bg-grey-1">
+            <q-card
+              flat
+              bordered
+              class="templateCard bg-grey-1"
+            >
               <q-card-section>
                 <div class="text-h6">There is nothing here.</div>
               </q-card-section>
@@ -207,7 +230,10 @@
 
         <br />
         <!-- make it so, that hoverups show up beneath the buttons or something instead of current's solution-->
-        <div v-if="isHelpShown" class="col-12 text q-py-md">
+        <div
+          v-if="isHelpShown"
+          class="col-12 text q-py-md"
+        >
           <div class="q-pa-sm q-ml-md">
             <q-icon
               class="q-px-sm"
@@ -217,11 +243,19 @@
             Make default: Every new entry will start with this template.
           </div>
           <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm" name="bi-journal-plus" size="15px"></q-icon>
+            <q-icon
+              class="q-px-sm"
+              name="bi-journal-plus"
+              size="15px"
+            ></q-icon>
             Paste template.
           </div>
           <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm" name="bi-trash" size="15px"></q-icon>
+            <q-icon
+              class="q-px-sm"
+              name="bi-trash"
+              size="15px"
+            ></q-icon>
             Delete template.
           </div>
         </div>
@@ -236,8 +270,8 @@
 import { useQuasar } from "quasar";
 import baseDialog from "../ui/baseDialog.vue";
 import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
-import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
 import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
+import FolderCategoryTemplateStructure from "./DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -245,8 +279,8 @@ export default {
   components: {
     baseDialog,
     CategoryOrTagQuickMenu,
-    FolderCategoryStructure,
     DialogFolderManagement,
+    FolderCategoryTemplateStructure
   },
   props: { templateList: Array, type: String },
   data() {
@@ -281,7 +315,7 @@ export default {
     setDialogVisibilty(newValue) {
       this.isDialogFolderManagementVisible = newValue;
     },
-    saveChanges() {},
+    saveChanges() { },
     openDialogFolderManagement() {
       this.setDialogVisibilty(true);
     },
@@ -434,7 +468,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            nameOfDialog
+          nameOfDialog
         ) {
           return true;
         } else {

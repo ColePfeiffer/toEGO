@@ -107,7 +107,6 @@
 
           <q-item-section>Dark-Mode</q-item-section>
         </q-item>
-
         <q-item
           clickable
           v-ripple
@@ -125,10 +124,10 @@
 
 <script>
 import { mapMutations } from "vuex";
-import FolderCategoryTemplateStructure from "src/components/common/DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
+import FolderCategoryTemplateStructure from "src/components/dialogs/DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 
 export default {
-  components: { FolderCategoryTemplateStructure },
+  components: { FolderCategoryTemplateStructure, FolderCategoryTemplateStructure },
   data() {
     return {
       qMenuModel: false, // remove later
