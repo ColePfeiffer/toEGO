@@ -91,7 +91,7 @@ export default {
     },
     data() {
         return {
-            maxWidth: { "width": "250px" }
+            maxWidth: { width: "250px" }
         };
     },
     methods: {

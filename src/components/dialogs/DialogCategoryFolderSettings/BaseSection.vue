@@ -4,21 +4,45 @@
   <q-item-label header>
     <div class="row justify-between items-center no-wrap">
       <!-- Header -->
-      <div v-if="!isCreatingNewItem" class="header col-10">
+      <div
+        v-if="!isCreatingNewItem"
+        class="header col-10"
+      >
         <slot name="headername">Headername</slot>
       </div>
       <!-- Creating new folder mode: Input field -->
-      <div v-else class="col-10">
+      <div
+        v-else
+        class="col-10"
+      >
         <div class="row justify-between items-center">
           <div class="col-1">
             <!-- Button: Cancel Creation of new folder -->
-            <q-btn dense round flat color="secondary" icon="bi-chevron-left" size="10px" :ripple="false"
-              @click="cancelCreatingNewItem">
+            <q-btn
+              dense
+              round
+              flat
+              color="secondary"
+              icon="bi-chevron-left"
+              size="10px"
+              :ripple="false"
+              @click="cancelCreatingNewItem"
+            >
             </q-btn>
           </div>
           <!-- Input field -->
-          <q-input class="col-9" input-class="inputField" ref="nameRef" bottom-slots v-model="newItemName" counter
-            maxlength="20" dense lazy-rules :rules="nameRules">
+          <q-input
+            class="col-9"
+            input-class="inputField"
+            ref="nameRef"
+            bottom-slots
+            v-model="newItemName"
+            counter
+            maxlength="20"
+            dense
+            lazy-rules
+            :rules="nameRules"
+          >
             <template v-slot:hint>Enter a name</template>
           </q-input>
         </div>
@@ -27,21 +51,44 @@
       <div class="col-2 row justify-end no-wrap">
         <div class="col-2 q-pr-lg">
           <!-- Button: Initiate Creation of new folder -->
-          <q-btn v-if="!isCreatingNewItem" class="col-2 q-px-md" color="accent" dense round flat icon="bi-plus-lg"
-            size="10px" :ripple="false" @click="initiateCreatingNewItem">
+          <q-btn
+            v-if="!isCreatingNewItem"
+            class="col-2 q-px-md"
+            color="accent"
+            dense
+            round
+            flat
+            icon="bi-plus-lg"
+            size="10px"
+            :ripple="false"
+            @click="initiateCreatingNewItem"
+          >
           </q-btn>
           <!-- Button: Confirm Creation of new folder -->
-          <q-btn v-else class="col-2 q-px-md" dense round flat color="teal" icon="bi-check" size="10px" :ripple="false"
-            @click="submitName">
+          <q-btn
+            v-else
+            class="col-2 q-px-md"
+            dense
+            round
+            flat
+            color="teal"
+            icon="bi-check"
+            size="10px"
+            :ripple="false"
+            @click="submitName"
+          >
           </q-btn>
         </div>
       </div>
     </div>
   </q-item-label>
+  <q-resize-observer @resize="onResize" />
 
   <!-- Content -->
   <q-scroll-area style="height: 158px">
-    <slot name="itemsToDisplay"></slot>
+    <div :style="styleForContent">
+      <slot name="itemsToDisplay"></slot>
+    </div>
   </q-scroll-area>
 </template>
 
@@ -54,6 +101,7 @@ export default {
   },
   data() {
     return {
+      styleForContent: { width: "200px" },
       isCreatingNewItem: false,
       newItemName: "",
       nameRules: [
@@ -62,6 +110,16 @@ export default {
     };
   },
   methods: {
+    onResize(size) {
+      console.log("new size: ", size);
+      console.log("new size: ", size.height, size.width);
+      this.styleForContent = {
+        height: size.height + "px",
+        width: size.width + "px",
+        "max-height": "120px",
+      };
+      //report.value = size;
+    },
     cancelCreatingNewItem() {
       this.isCreatingNewItem = false;
       this.$refs.nameRef.resetValidation();

@@ -2,6 +2,7 @@
     <!-- Submenu -->
     <q-menu
         dense
+        fit
         separate-close-popup
         class="no-border-radius"
         v-model="qMenuModel"

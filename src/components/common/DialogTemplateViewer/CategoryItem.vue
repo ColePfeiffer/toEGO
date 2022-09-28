@@ -3,7 +3,6 @@
         <BaseItemClickable
             v-if="!isShowingTemplates"
             :item="category"
-            :parent="parent"
             :currentTemplate="currentTemplate"
             icon="bi-collection"
             @click-item="clickCategory"

@@ -33,7 +33,10 @@ export default {
             default: null,
         },
         icon: String,
-        currentTemplate: Object,
+        currentTemplate: {
+            type: Object,
+            default: null,
+        },
     },
     data() {
         return {};
@@ -42,6 +45,8 @@ export default {
         clickItem() {
             if (this.parent === null) {
                 console.log("bleh")
+                // TODO: 
+
             } else {
                 console.log("okidoki")
                 this.manageChildParentRelationship();

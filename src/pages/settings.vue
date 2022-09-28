@@ -21,6 +21,7 @@
         >
           <q-menu
             fit
+            style="width: 250px"
             class="no-border-radius"
             v-model="qMenuModel"
           >
@@ -48,6 +49,7 @@
           label="Pick Template"
         >
           <q-menu
+            style="width: 250px"
             fit
             class="no-border-radius"
             v-model="qMenuModel2"
@@ -65,36 +67,6 @@
         </q-btn>
 
         <br />
-        <TemplateItem
-          :isShowingButtonSectionWithButtons="false"
-          :template="$store.state.data.diaryTemplates[0]"
-          :parent="$store.state.data.categoriesForDiary[0]"
-          @click-item="testme"
-        >
-        </TemplateItem>
-
-        <CategoryItem
-          :isShowingClickableVariant="true"
-          :isShowingTemplates="false"
-          :templateVariantIsSetToClickable="false"
-          :category="$store.state.data.categoriesForDiary[1]"
-          :templates="$store.state.data.diaryTemplates"
-          :parent="$store.state.data.foldersForDiary[0]"
-          @click-item="testme"
-        >
-        </CategoryItem>
-
-        <FolderItem
-          :isShowingTemplates="true"
-          :templateVariantIsSetToClickable="false"
-          :folder="$store.state.data.foldersForDiary[0]"
-          :templates="$store.state.data.diaryTemplates"
-          :categories="$store.state.data.categoriesForDiary"
-          @click-item="testme"
-        >
-
-        </FolderItem>
-
       </div>
 
 
@@ -153,13 +125,10 @@
 
 <script>
 import { mapMutations } from "vuex";
-import FolderItem from "src/components/common/DialogTemplateViewer/FolderItem.vue";
-import TemplateItem from "src/components/common/DialogTemplateViewer/TemplateItem.vue";
-import CategoryItem from "src/components/common/DialogTemplateViewer/CategoryItem.vue";
 import FolderCategoryTemplateStructure from "src/components/common/DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 
 export default {
-  components: { TemplateItem, CategoryItem, FolderItem, FolderCategoryTemplateStructure },
+  components: { FolderCategoryTemplateStructure },
   data() {
     return {
       qMenuModel: false, // remove later
