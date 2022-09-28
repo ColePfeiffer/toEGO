@@ -20,11 +20,13 @@
             <TheFolderSection
               :type="type"
               :itemsToDisplay="folders"
+              @delete-folder="deleteFolder"
             ></TheFolderSection>
             <q-separator spaced />
             <TheCategorySection
               :type="type"
               :itemsToDisplay="categories"
+              @delete-category="deleteCategory"
             ></TheCategorySection>
           </q-list>
         </div>
@@ -65,6 +67,20 @@ export default {
     };
   },
   methods: {
+    deleteCategory(categoryToDelete) {
+      // child is in folder or category, that gets checked before comitting
+
+      // remove item from all categories
+      let payload = { parents: this.folders, child: categoryToDelete };
+      this.$store.commit("data/removeChildFromAllParents", payload);
+
+      // delete
+      payload = { categoryToDelete: categoryToDelete, type: this.type };
+      this.$store.commit("data/deleteCategory", payload);
+    },
+    deleteFolder() {
+      console.log("delete folder");
+    },
     cancelCreatingNewFolder() {
       this.isCreatingNewFolder = false;
     },

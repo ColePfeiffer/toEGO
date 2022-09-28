@@ -33,6 +33,7 @@ import BaseMenuForFolderManagement from "./BaseMenuForFolderManagement.vue";
 
 export default {
   name: "TheCategorySection",
+  emits: ["delete-category"],
   props: {
     type: String,
     itemsToDisplay: Array,
@@ -72,9 +73,7 @@ export default {
       this.$store.commit("data/renameCategory", payload);
     },
     deleteCategory(categoryToDelete) {
-      let payload = { categoryToDelete: categoryToDelete, type: this.type };
-      this.$store.commit("data/deleteCategory", payload);
-      // remove child from parent
+      this.$emit("delete-category", categoryToDelete);
     },
   },
 };

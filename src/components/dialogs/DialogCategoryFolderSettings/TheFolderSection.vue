@@ -71,7 +71,8 @@ export default {
       this.$store.commit("data/renameFolder", payload);
     },
     deleteFolder(folderToDelete) {
-      let payload = { folderToDelete: folderToDelete, type: this.type };
+      // delete item
+      payload = { folderToDelete: folderToDelete, type: this.type };
       this.$store.commit("data/deleteFolder", payload);
     },
   },

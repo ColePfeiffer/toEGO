@@ -17,7 +17,6 @@ export const createCategory = (state, payload) => {
     id: uid(),
     name: payload.categoryName,
     storedIDs: [],
-    isInFolder: false,
   };
   categories.push(newCategory);
 };
@@ -31,6 +30,7 @@ export const renameCategory = (state, payload) => {
 
 export const deleteCategory = (state, payload) => {
   let category = payload.categoryToDelete;
+
   let type = payload.type;
   if (type === "DIARY") {
     let indexOfCategory = state.categoriesForDiary.indexOf(category);
@@ -95,6 +95,8 @@ export const renameFolder = (state, payload) => {
 export const deleteFolder = (state, payload) => {
   let folder = payload.folderToDelete;
   let type = payload.type;
+
+  // remove folder from array
   if (type === "DIARY") {
     let indexOfFolder = state.foldersForDiary.indexOf(folder);
     state.foldersForDiary.splice(indexOfFolder, 1);
@@ -133,6 +135,31 @@ export const removeChildFromParent = (state, payload) => {
     return categoryID != child.id;
   });
   parent.storedIDs = filteredArray;
+};
+
+export const testAuto = (state, payload) => {
+  let child = payload.child; // for example category item, template item ...
+  let parents = payload.parents; // for example categories or  folders
+
+  // child is in folder or category, that gets checked before comitting
+  // !currentParent.storedIDs.includes(child.id)
+
+  parents = parents.filter((parent) => !parent.storedIDs.includes(child.id));
+
+  console.log(parents);
+};
+
+export const removeChildFromAllParents = (state, payload) => {
+  let child = payload.child; // can be category item or template item ...
+  let parents = payload.parents; // can be folders or categories
+
+  parents.forEach((parent) => {
+    // looks through every parent and filters out child's id from the parent's "storedIDs"-property by creating a new array without these filtered out items
+    // then updates storedIds to the newly created array
+    parent.storedIDs = parent.storedIDs.filter(function (storedIDs) {
+      return storedIDs != child.id;
+    });
+  });
 };
 
 // payload consists of category and templateID

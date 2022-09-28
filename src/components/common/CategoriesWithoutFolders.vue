@@ -3,8 +3,13 @@
     <div v-for="category in getNonEmptyFolderlessCategories" :key="category">
       <!-- is showing templates -->
       <q-item dense clickable>
-        <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="true"
-          :templates="templates" @templateClicked="templateClicked">
+        <CategoryItem
+          :category="category"
+          :currentTemplate="currentTemplate"
+          :isShowingTemplates="true"
+          :templates="templates"
+          @templateClicked="templateClicked"
+        >
         </CategoryItem>
       </q-item>
     </div>
@@ -19,9 +24,18 @@
   <div v-else>
     <div v-for="category in getFolderlessCategories" :key="category">
       <!-- is not showing templates -->
-      <q-item dense clickable @click="manageCategoryForTemplate(category)" :style="getTextColorForCategory(category)">
-        <CategoryItem :category="category" :currentTemplate="currentTemplate" :isShowingTemplates="false"
-          :templates="templates">
+      <q-item
+        dense
+        clickable
+        @click="manageCategoryForTemplate(category)"
+        :style="getTextColorForCategory(category)"
+      >
+        <CategoryItem
+          :category="category"
+          :currentTemplate="currentTemplate"
+          :isShowingTemplates="false"
+          :templates="templates"
+        >
         </CategoryItem>
       </q-item>
     </div>
@@ -83,15 +97,16 @@ export default {
         this.$store.commit("data/addTemplateToCategory", payload);
       }
     },
-    manageCategoryForTag() { },
+    manageCategoryForTag() {},
   },
   computed: {
     getFolderlessCategories() {
-      return this.categories.filter((category) => {
-        return category.isInFolder === false;
+      return this.$store.getters["data/getFolderlessCategories"]({
+        folders: this.folders,
+        categories: this.categories,
+        type: this.type,
       });
     },
-
     // kann evtl weg
     // get templates that aren't in folders or categories
     getTemplates() {
@@ -114,9 +129,7 @@ export default {
     },
     getNonEmptyFolderlessCategories() {
       return this.categories.filter((category) => {
-        return (
-          category.storedIDs.length > 0 && category.isInFolder === false
-        );
+        return category.storedIDs.length > 0 && category.isInFolder === false;
       });
     },
   },

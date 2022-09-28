@@ -237,7 +237,7 @@ import { useQuasar } from "quasar";
 import baseDialog from "../ui/BaseDialog2.vue";
 import CategoryOrTagQuickMenuVue from "../common/CategoryOrTagQuickMenu.vue";
 import FolderCategoryStructure from "../common/FolderCategoryStructure.vue";
-import DialogFolderManagement from "./DialogCategoryFolderSettings/DialogFolderManagement.vue";
+import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
 
 export default {
   name: "dialogViewTemplates",
