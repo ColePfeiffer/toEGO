@@ -163,7 +163,7 @@ export const getCategoryByType = (state) => {
   };
 };
 
-// TODO:
+// TODO: L
 // check these below again!
 export const isCategoryEmpty = (state) => {
   return (category) => {

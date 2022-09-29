@@ -9,14 +9,20 @@
     <template v-slot:confirm-button> Create </template>
     <template v-slot:close-button> Back </template>
     <template v-slot:dialogTitle>
-      <q-icon :name="menuIcon" size="22px" />
+      <q-icon
+        :name="menuIcon"
+        size="22px"
+      />
       Folder and Category Settings
     </template>
     <template v-slot:content>
       <div class="row items-center justify-center q-pt-md q-pa-xl">
         <!-- Outer Container -->
-        <div class="col-9 col-md-9 col-xs-12">
-          <q-list bordered padding>
+        <div class="col-10 col-md-11 col-xs-12 col-sm-11">
+          <q-list
+            bordered
+            padding
+          >
             <TheFolderSection
               :type="type"
               :itemsToDisplay="folders"
@@ -83,7 +89,7 @@ export default {
     initiateCreatingNewFolder() {
       this.isCreatingNewFolder = true;
     },
-    createNewFolder() {},
+    createNewFolder() { },
 
     showNamingDialog() {
       let payload = {

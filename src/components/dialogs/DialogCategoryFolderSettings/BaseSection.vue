@@ -114,8 +114,8 @@ export default {
       console.log("new size: ", size);
       console.log("new size: ", size.height, size.width);
       this.styleForContent = {
-        height: size.height + "px",
-        width: size.width + "px",
+        height: size.height - 2 + "px",
+        width: size.width - 2 + "px",
         "max-height": "120px",
       };
       //report.value = size;
