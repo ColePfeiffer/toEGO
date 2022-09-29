@@ -1,6 +1,5 @@
 <template>
   <q-item
-    class="baseItem"
     dense
     clickable
     @click="clickItem"

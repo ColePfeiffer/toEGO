@@ -39,34 +39,6 @@
 
         <br />
         <br />
-        <h6>BIEPBOP TEMPLATE PICKER</h6>
-        <q-btn
-          :ripple="false"
-          no-caps
-          square
-          color="secondary"
-          text-color="black"
-          label="Pick Template"
-        >
-          <q-menu
-            style="width: 250px"
-            fit
-            class="no-border-radius"
-            v-model="qMenuModel2"
-          >
-            <FolderCategoryTemplateStructure
-              :currentTemplate="$store.state.data.diaryTemplates[0]"
-              :isShowingTemplates="true"
-              :templateVariantIsSetToClickable="true"
-              :isShowingClickableVariant="true"
-              :templates="$store.state.data.diaryTemplates"
-              :categories="$store.state.data.categoriesForDiary"
-              :folders="$store.state.data.foldersForDiary"
-            ></FolderCategoryTemplateStructure>
-          </q-menu>
-        </q-btn>
-
-        <br />
       </div>
 
 

@@ -1,17 +1,15 @@
 <template>
-    <div :style="maxWidth">
+    <div>
         <!-- Non-Empty-Folders -->
         <div>
             <FolderItem
                 v-for="folder in getNonEmptyFolders"
                 :key="folder"
-                style="width: 250px"
                 :isShowingTemplates="isShowingTemplates"
-                :templateVariantIsSetToClickable="isShowingTemplates"
-                :currentTemplate="currentTemplate"
                 :folder="folder"
-                :templates="templates"
                 :categories="categories"
+                :templates="templates"
+                :currentTemplate="currentTemplate"
                 @click-folder="clickFolder"
                 @click-category="clickCategoryInsideFolder"
                 @click-template="clickTemplateInsideCategoryInsideFolder"
@@ -20,36 +18,18 @@
         <q-separator />
         <!-- Categories -->
         <div>
-            <!-- Categories which aren't stored in Folders, but hold templates inside -->
-            <div v-if="isShowingTemplates">
-                <CategoryItem
-                    v-for="category in getCategoriesWithoutFoldersButWithTemplates"
-                    :key="category"
-                    :currentTemplate="currentTemplate"
-                    :isShowingTemplates="isShowingTemplates"
-                    :templateVariantIsSetToClickable="isShowingTemplates"
-                    :isShowingClickableVariant="!isShowingTemplates"
-                    :category="category"
-                    :templates="templates"
-                    @click-category="clickCategory"
-                    @click-template="clickTemplateInsideCategory"
-                ></CategoryItem>
-            </div>
             <!-- Categories which aren't stored in Folders -->
-            <div v-else>
-                <CategoryItem
-                    v-for="category in getCategoriesWithoutFolders"
-                    :key="category"
-                    :currentTemplate="currentTemplate"
-                    :isShowingTemplates="isShowingTemplates"
-                    :templateVariantIsSetToClickable="isShowingTemplates"
-                    :isShowingClickableVariant="!isShowingTemplates"
-                    :category="category"
-                    :templates="templates"
-                    @click-category="clickCategory"
-                    @click-template="clickTemplateInsideCategory"
-                ></CategoryItem>
-            </div>
+            <CategoryItem
+                v-for="category in displayedCategories"
+                :key="category"
+                :categoryMode="categoryMode"
+                :isShowingTemplates="isShowingTemplates"
+                :category="category"
+                :currentTemplate="currentTemplate"
+                :templates="templates"
+                @click-category="clickCategory"
+                @click-template="clickTemplateInsideCategory"
+            ></CategoryItem>
         </div>
 
         <!-- templates which are not in categories -->
@@ -58,9 +38,9 @@
             <TemplateItem
                 v-for="template in getTemplatesWithoutCategories"
                 :key="template"
-                :currentTemplate="currentTemplate"
-                :isShowingButtonSectionWithButtons="isShowingTemplates"
+                :isShowingTemplates="isShowingTemplates"
                 :template="template"
+                :currentTemplate="currentTemplate"
                 @click-template="clickTemplate"
             ></TemplateItem>
         </div>
@@ -82,16 +62,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        categoryMode: String,
         currentTemplate: Object,
-        templateVariantIsSetToClickable: Boolean,
-        isShowingClickableVariant: Boolean, // kann maybe weg???? later
         categories: Array,
         templates: Array,
         folders: Array,
     },
     data() {
         return {
-            maxWidth: { width: "250px" }
         };
     },
     methods: {
@@ -117,6 +95,13 @@ export default {
         },
     },
     computed: {
+        displayedCategories() {
+            if (this.isShowingTemplates) {
+                return this.getCategoriesWithoutFoldersButWithTemplates
+            } else {
+                return this.getCategoriesWithoutFolders;
+            }
+        },
         getCategoriesWithoutFolders() {
             return this.$store.getters["data/getCategoriesWithoutFolders"]({
                 folders: this.folders,

@@ -59,18 +59,19 @@
               >
                 <q-menu
                   fit
-                  class="no-border-radius"
+                  full-width
+                  class="no-border-radius "
                   v-model="qMenuModel"
                 >
                   <q-list>
-                    <!-- FIXME: this needs adjustment to new version, old props... -->
                     <FolderCategoryTemplateStructure
+                      :isShowingTemplates="true"
+                      categoryMode="EXPAND"
                       :currentTemplate="currentTemplate"
                       :folders="folders"
                       :categories="categories"
-                      :isShowingTemplates="true"
                       :templates="templateList"
-                      @templateClicked="pickTemplate"
+                      @click-template="pickTemplate"
                     />
                   </q-list>
                 </q-menu>
@@ -285,6 +286,7 @@ export default {
   props: { templateList: Array, type: String },
   data() {
     return {
+
       isDialogFolderManagementVisible: false,
       qMenuModel: false,
       expandIcon: "expand_more",

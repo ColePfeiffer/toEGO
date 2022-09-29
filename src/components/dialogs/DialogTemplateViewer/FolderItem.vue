@@ -1,10 +1,10 @@
 <template>
     <div>
         <BaseItemExpandable
-            :currentTemplate="currentTemplate"
             :item="folder"
             icon="bi-folder"
             :isExpanded="menuModel"
+            :currentTemplate="currentTemplate"
             @click-item="clickFolder"
         >
         </BaseItemExpandable>
@@ -28,13 +28,11 @@
                     )"
                     :key="category"
                     clickable
-                    :currentTemplate="currentTemplate"
-                    :isShowingClickableVariant="false"
                     :isShowingTemplates="isShowingTemplates"
-                    :templateVariantIsSetToClickable="templateVariantIsSetToClickable"
                     :category="category"
-                    :templates="templates"
                     :parent="folder"
+                    :currentTemplate="currentTemplate"
+                    :templates="templates"
                     @click-category="clickCategory"
                     @click-template="clickTemplate"
                 >
@@ -60,8 +58,6 @@ export default {
         categories: Array,
         templates: Array,
         currentTemplate: Object,
-        // needs to be set to true for Template Picker
-        templateVariantIsSetToClickable: Boolean,
     },
     data() {
         return {

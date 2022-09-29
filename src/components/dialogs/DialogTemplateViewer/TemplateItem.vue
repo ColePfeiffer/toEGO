@@ -1,21 +1,18 @@
 <template>
     <div>
         <BaseItemClickable
-            v-if="isShowingButtonSectionWithButtons"
-            :currentTemplate="currentTemplate"
-            :isShowingTemplates="isShowingTemplates"
+            v-if="!isShowingTemplates"
             :item="template"
             :parent="parent"
             icon="bi-file-earmark"
+            :currentTemplate="currentTemplate"
             @click-item="clickTemplate"
         ></BaseItemClickable>
         <BaseItem
             v-else
-            :isShowingTemplates="isShowingTemplates"
             :item="template"
-            :parent="parent"
-            :textColorStyle="textColorStyle"
             icon="bi-file-earmark"
+            :textColorStyle="textColorStyle"
             @click-item="clickTemplate"
         >
             <template v-slot:buttonSection>
@@ -38,10 +35,11 @@ export default {
     props: {
         isShowingTemplates: Boolean,
         template: Object,
-        parent: Object,
-        icon: String,
+        parent: {
+            type: Object,
+            default: null,
+        },
         currentTemplate: Object,
-        isShowingButtonSectionWithButtons: Boolean,
     },
     data() {
         return {

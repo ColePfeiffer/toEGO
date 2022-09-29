@@ -1,51 +1,53 @@
 <template>
     <div>
-        <BaseItemClickable
-            v-if="!isShowingTemplates"
-            :item="category"
-            :currentTemplate="currentTemplate"
-            icon="bi-collection"
-            @click-item="clickCategory"
-        ></BaseItemClickable>
+        <div v-if="isShowingTemplates">
+            <BaseItemExpandable
+                :item="category"
+                :currentTemplate="currentTemplate"
+                icon="bi-collection"
+                :isExpanded="menuModel"
+                @click-item="clickCategory"
+            >
+            </BaseItemExpandable>
+            <!-- Submenu -->
+            <BaseMenu
+                v-if="isShowingTemplates"
+                :menuModel="menuModel"
+                :items="$store.getters['data/getTemplatesFromCategory'](
+                  category,
+                  templates
+                )"
+                @changed-menu-state="changedMenuState"
+            >
+                <template v-slot:itemsInsideList>
+                    <!-- Templates inside Category -->
+                    <TemplateItem
+                        v-for="template in $store.getters['data/getTemplatesFromCategory'](
+                          category,
+                          templates
+                        )"
+                        :key="template"
+                        v-close-popup="2"
+                        :isShowingTemplates="isShowingTemplates"
+                        :template="template"
+                        :parent="category"
+                        :currentTemplate="currentTemplate"
+                        @click-template="clickTemplate"
+                    >
+                    </TemplateItem>
+                </template>
+            </BaseMenu>
+        </div>
+        <div v-else>
+            <BaseItemClickable
+                :item="category"
+                :currentTemplate="currentTemplate"
+                icon="bi-collection"
+                @click-item="clickCategory"
+            ></BaseItemClickable>
+        </div>
 
-        <BaseItemExpandable
-            v-else
-            :item="category"
-            :currentTemplate="currentTemplate"
-            icon="bi-collection"
-            :isExpanded="menuModel"
-            @click-item="clickCategory"
-        >
 
-        </BaseItemExpandable>
-        <!-- Submenu -->
-        <BaseMenu
-            v-if="isShowingTemplates"
-            :menuModel="menuModel"
-            :items="$store.getters['data/getTemplatesFromCategory'](
-              category,
-              templates
-            )"
-            @changed-menu-state="changedMenuState"
-        >
-            <template v-slot:itemsInsideList>
-                <!-- Templates inside Category -->
-                <TemplateItem
-                    v-for="template in $store.getters['data/getTemplatesFromCategory'](
-                      category,
-                      templates
-                    )"
-                    :key="template"
-                    v-close-popup="2"
-                    :currentTemplate="currentTemplate"
-                    :buttonSectionState="templateVariantIsSetToClickable"
-                    :template="template"
-                    :parent="category"
-                    @click-template="clickTemplate"
-                >
-                </TemplateItem>
-            </template>
-        </BaseMenu>
     </div>
 
 </template>
@@ -61,21 +63,22 @@ export default {
     emits: ["click-category", "click-template"],
     components: { BaseItemClickable, BaseItemExpandable, BaseMenu, TemplateItem },
     props: {
-        // TODO: I only need one of these probably
         isShowingTemplates: {
             type: Boolean,
             default: false,
         },
-        isShowingClickableVariant: Boolean,
         category: Object,
-        // shows a different section depending on the use case
-        templateVariantIsSetToClickable: Boolean,
         parent: {
             type: Object,
             default: null,
         },
-        templates: Array, // add default
+        // EXPAND, CLICKABLE
+        categoryMode: {
+            type: String,
+            default: "EXPAND",
+        },
         currentTemplate: Object,
+        templates: Array, // add default
 
     },
     data() {
