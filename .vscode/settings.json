@@ -20,7 +20,7 @@
   //  - force-aligned: Wrap each attribute except first and keep aligned.
   //  - force-expand-multiline: Wrap each attribute.
   //  - aligned-multiple: Wrap when line length is exceeded, align attributes vertically.
-  "html.format.wrapAttributes": "force-expand-multiline"
+  "html.format.wrapAttributes": "force"
 }
 
 /* what used to be here...

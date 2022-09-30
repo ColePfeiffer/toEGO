@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div>
     <q-card class="my-card shadow-3 text-justify">
       <!-- Mood, Title, Expand Button -->
       <q-item>

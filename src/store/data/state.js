@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    isShowingLabelsForDiarySection: false,
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
       "https://64.media.tumblr.com/73966b6acfd978cc2ae90639bd803d73/tumblr_inline_mydbkloJQm1qak244.gif",

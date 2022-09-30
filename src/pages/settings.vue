@@ -2,40 +2,16 @@
   <q-page class="q-pa-md">
     <!-- TESTING AREA -->
     <div>
-      <q-btn
-        color="secondary"
+      <q-btn color="secondary"
         label="TEST ME"
-        @click="testme"
-      ></q-btn>
+        @click="testme"></q-btn>
       <div>
 
-        <br />
-        <h5>Quick-Menu Structure</h5>
-        <q-btn
-          :ripple="false"
-          no-caps
-          square
-          color="secondary"
-          text-color="black"
-          label="Pick Template"
-        >
-          <q-menu
-            fit
-            style="width: 250px"
-            class="no-border-radius"
-            v-model="qMenuModel"
-          >
-            <FolderCategoryTemplateStructure
-              :currentTemplate="$store.state.data.diaryTemplates[0]"
-              :isShowingTemplates="false"
-              :templateVariantIsSetToClickable="true"
-              :isShowingClickableVariant="true"
-              :templates="$store.state.data.diaryTemplates"
-              :categories="$store.state.data.categoriesForDiary"
-              :folders="$store.state.data.foldersForDiary"
-            ></FolderCategoryTemplateStructure>
-          </q-menu>
-        </q-btn>
+        <div>
+          <TheSectionForEvents :diaryEntry="$store.state.data.diaryEntries[0]">
+
+          </TheSectionForEvents>
+        </div>
 
         <br />
         <br />
@@ -47,43 +23,33 @@
     <div>SETTINGS</div>
 
     <div>
-      <q-option-group
-        v-model="group"
+      <q-option-group v-model="group"
         :options="options"
         color="accent"
-        type="toggle"
-      >
+        type="toggle">
         <template v-slot:label="isDarkModeOn">
           <div class="row items-center">
             <span>{{ isDarkModeOn.label }}</span>
-            <q-icon
-              :name="isDarkModeOn.icon"
+            <q-icon :name="isDarkModeOn.icon"
               size="1.5em"
-              class="q-ml-sm"
-            />
+              class="q-ml-sm" />
           </div>
         </template>
       </q-option-group>
-      <q-list
-        padding
-        class="menu-list"
-      >
-        <q-item
-          clickable
+      <q-list padding
+        class="menu-list">
+        <q-item clickable
           v-ripple
-          @click="setDarkMode()"
-        >
+          @click="setDarkMode()">
           <q-item-section avatar>
             <q-icon name="fas fa-moon" />
           </q-item-section>
 
           <q-item-section>Dark-Mode</q-item-section>
         </q-item>
-        <q-item
-          clickable
+        <q-item clickable
           v-ripple
-          @click="toggleExpandButtonForEventsOnDiaryPage()"
-        >
+          @click="toggleExpandButtonForEventsOnDiaryPage()">
           <q-item-section avatar>
             <q-icon name="drafts" />
           </q-item-section>
@@ -96,10 +62,10 @@
 
 <script>
 import { mapMutations } from "vuex";
-import FolderCategoryTemplateStructure from "src/components/dialogs/DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
+import TheSectionForEvents from "src/components/diary/TheSectionForEvents.vue";
 
 export default {
-  components: { FolderCategoryTemplateStructure, FolderCategoryTemplateStructure },
+  components: { TheSectionForEvents },
   data() {
     return {
       qMenuModel: false, // remove later
