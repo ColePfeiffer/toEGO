@@ -10,8 +10,12 @@
         <div>
           <TheSectionForEvents :diaryEntry="$store.state.data.diaryEntries[0]">
           </TheSectionForEvents>
-        </div>
 
+        </div>
+        <div>
+          <TheSectionForDiary :diaryEntry="$store.state.data.diaryEntries[0]"
+            viewingMode="view"></TheSectionForDiary>
+        </div>
         <br />
         <br />
       </div>
@@ -62,9 +66,10 @@
 <script>
 import { mapMutations } from "vuex";
 import TheSectionForEvents from "src/components/diary/TheSectionForEvents.vue";
+import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
 
 export default {
-  components: { TheSectionForEvents },
+  components: { TheSectionForEvents, TheSectionForDiary },
   data() {
     return {
       qMenuModel: false, // remove later

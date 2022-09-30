@@ -4,46 +4,41 @@
       @closeDialog="closeDialog"></DialogDeleteEvent>
 
     <!-- Case 1: There is no diary entry for the selected day. -->
-    <div v-if="diaryEntry === undefined">
-      <!-- Case 1A: Show +, if showMessageIfThereAreNoEvents is set to true. This is used by the home page. -->
-      <div v-if="showMessageIfThereAreNoEvents"
-        class="q-pa-md">
-        <q-card class="my-card shadow-3 text-justify">
-          <q-card-section class="card-text text-center">
-            There is nothing here yet.
-            <q-btn color="accent"
-              flat
-              dense
-              icon="bi-plus"
-              @click="goToPageNewEventSetToCreationMode" />
-          </q-card-section>
-        </q-card>
-      </div>
-    </div>
-    <!-- Case 2: Entry exists, but no events have been created yet. -->
-    <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1"
-      class="q-pt-md">
-      <q-card class="my-card shadow-3 text-justify">
-        <q-card-section class="card-text text-center">
+    <div v-if="diaryEntry === undefined && showMessageIfThereAreNoEvents">
+      <BaseCard class="q-pa-md">
+        <template v-slot:content>
+          There is nothing here yet.
           <q-btn color="accent"
             flat
             dense
             icon="bi-plus"
             @click="goToPageNewEventSetToCreationMode" />
-        </q-card-section>
-      </q-card>
+        </template>
+      </BaseCard>
+    </div>
+    <!-- Case 2: Entry exists, but no events have been created yet. -->
+    <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1"
+      class="q-pt-md">
+      <BaseCard class="q-pa-md">
+        <template v-slot:content>
+          <q-btn color="accent"
+            flat
+            dense
+            icon="bi-plus"
+            @click="goToPageNewEventSetToCreationMode" />
+        </template>
+      </BaseCard>
     </div>
     <!-- Case 3: Entry and events exist. -->
     <div v-else
-      class="q-pt-md"
+      class="q-pt-md q-px-md q-pb-md"
       v-for="event in events"
       :key="event.id">
       <EventCard :eventData="event"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
         @editEvent="goToPageNewEventSetToEditingMode"
-        @deleteEvent="showConfirmDeleteDialog"
-        class="col-12" />
+        @deleteEvent="showConfirmDeleteDialog" />
     </div>
   </div>
 </template>
@@ -51,6 +46,7 @@
 <script>
 import EventCard from "./EventCard.vue";
 import DialogDeleteEvent from "../dialogs/DialogDeleteEvent.vue";
+import BaseCard from "../ui/BaseCard.vue";
 
 export default {
   name: "TheEventViewer",
@@ -73,6 +69,7 @@ export default {
   components: {
     EventCard,
     DialogDeleteEvent,
+    BaseCard
   },
   methods: {
     changeEventData(eventData) {

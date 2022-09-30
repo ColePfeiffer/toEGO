@@ -1,6 +1,5 @@
 <template>
-  <BaseSectionForDiary ref="baseSection"
-    :heightForScrollArea="heightForScrollArea">
+  <BaseSectionForDiary :heightForScrollArea="heightForScrollArea">
     <template v-slot:nameOfTitle>
       {{ getTextForFirstHeadline }}
     </template>
@@ -33,11 +32,11 @@
     </template>
 
     <template v-slot:content>
-      <TheEventViewer class="q-pa-xs"
+      <TheBetterEventViewer class="q-pa-xs"
         :diaryEntry="diaryEntry"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         :showMessageIfThereAreNoEvents="false">
-      </TheEventViewer>
+      </TheBetterEventViewer>
     </template>
   </BaseSectionForDiary>
 </template>
@@ -46,13 +45,13 @@
 <script>
 import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
 import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
-import TheEventViewer from '../common/TheEventViewer.vue';
+import TheBetterEventViewer from '../common/TheBetterEventViewer.vue';
 export default {
   name: "TheSectionForEvents",
   components: {
     BaseSectionForDiary,
     ButtonForDiarySection,
-    TheEventViewer
+    TheBetterEventViewer
   },
   emits: ["go-to-new-event-in-creation-mode", "set-visibility-of-diarysection"],
   props: {
