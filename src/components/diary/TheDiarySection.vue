@@ -1,45 +1,33 @@
 <template>
   <div>
-    <DialogNameAndCreate
-      :type="'DIARY'"
+    <DialogNameAndCreate :type="'DIARY'"
       @create="createTemplate"
-      @closeDialog="closeDialog"
-    >
+      @closeDialog="closeDialog">
     </DialogNameAndCreate>
-    <DialogViewDiaryTemplates
-      :templateList="$store.state.data.diaryTemplates"
-      @pasteTemplate="pasteTemplate"
-    >
+    <DialogViewDiaryTemplates :templateList="$store.state.data.diaryTemplates"
+      @pasteTemplate="pasteTemplate">
     </DialogViewDiaryTemplates>
 
-    <div
-      class="q-px-md
+    <div class="q-px-md
       q-pt-lg"
-      :style="getWidth"
-    >
+      :style="getWidth">
       <!-- Title, Buttons -->
       <div class="q-pt-md">
         <!-- Title, Button Row -->
-        <div
-          v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
-          class="row justify-center items-center no-wrap"
-        >
+        <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true"
+          class="row justify-center items-center no-wrap">
           <!-- Title -->
           <div class="col-8 smallText text-left">
-            <q-btn
-              class="col-auto smallText text-left"
+            <q-btn class="col-auto smallText text-left"
               dense
               flat
               :style="$store.state.data.headlineStyle"
-              @click="isShowingDiarySection = true"
-            > {{ getTitle }}</q-btn>
-            <q-btn
-              class="col-1 smallText"
+              @click="isShowingDiarySection = true"> {{ getTitle }}</q-btn>
+            <q-btn class="col-1 smallText"
               flat
               :icon="getSectionIcon"
               color="accent"
-              @click="switchSection"
-            >
+              @click="switchSection">
             </q-btn>
           </div>
 
@@ -47,8 +35,7 @@
           <!-- Left-Side Buttons -->
           <div class="smallText col-2 text-right">
             <!-- Button: Back -->
-            <q-btn
-              v-if="viewingMode === 'edit'"
+            <q-btn v-if="viewingMode === 'edit'"
               class="col-2 smallText  text-right"
               dense
               flat
@@ -57,14 +44,12 @@
               @click="changeView('view')"
               :style="$store.state.data.sTextAccentShadow"
               size="10px"
-              :label="$q.screen.lt.sm?'':'back'"
-            >
+              :label="$q.screen.lt.sm?'':'back'">
             </q-btn>
             <!-- Button: Enter Fullscreen Button -->
-            <q-btn
-              v-else-if="
-                viewingMode === 'view' && editor != undefined && editor != ''
-              "
+            <q-btn v-else-if="
+              viewingMode === 'view' && editor != undefined && editor != ''
+            "
               class="col-2 smallText"
               flat
               dense
@@ -73,14 +58,12 @@
               @click="openEntryInFullscreen"
               :label="$q.screen.lt.sm?'':'view'"
               :style="$store.state.data.sTextAccentShadow"
-              size="10px"
-            ></q-btn>
+              size="10px"></q-btn>
           </div>
 
           <!-- Right-Side Buttons -->
           <!-- Save Button -->
-          <q-btn
-            v-if="viewingMode === 'edit'"
+          <q-btn v-if="viewingMode === 'edit'"
             class="col-2 smallText "
             flat
             dense
@@ -89,14 +72,12 @@
             :label="$q.screen.lt.sm?'':'save'"
             @click="saveChanges"
             :style="textStyleAccent"
-            size="10px"
-          >
+            size="10px">
           </q-btn>
           <!-- Edit Button -->
-          <q-btn
-            v-else-if="
-              viewingMode === 'view' && editor != undefined && editor != ''
-            "
+          <q-btn v-else-if="
+            viewingMode === 'view' && editor != undefined && editor != ''
+          "
             class="col-2 smallText text-right"
             flat
             dense
@@ -105,41 +86,32 @@
             @click="editDiaryEntry"
             :style="textStyleAccent"
             size="9.5px"
-            :label="$q.screen.lt.sm?'':'edit'"
-          ></q-btn>
-          <div
-            v-else
-            class="col-2"
-          ></div>
+            :label="$q.screen.lt.sm?'':'edit'"></q-btn>
+          <div v-else
+            class="col-2"></div>
         </div>
 
       </div>
 
       <!-- Case 1: There is no diary entry for the selected day. -->
-      <div
-        :style="getWidth"
-        v-if="diaryEntry === undefined && isCreatingNewDiaryEntry === false"
-      >
+      <div :style="getWidth"
+        v-if="diaryEntry === undefined && isCreatingNewDiaryEntry === false">
         <div class="q-pa-md q-mx-xs">
           <q-card class="my-card shadow-3 text-justify">
             <q-card-section class="card-text text-center">
               Nothing here yet. Add an event
-              <q-btn
-                color="accent"
+              <q-btn color="accent"
                 flat
                 dense
                 icon="bi-plus"
-                @click="showDialogForNewEvent"
-              />
+                @click="showDialogForNewEvent" />
               <br />
               or create an entry.
-              <q-btn
-                color="accent"
+              <q-btn color="accent"
                 flat
                 dense
                 icon="bi-journal-plus"
-                @click="createDiaryEntry"
-              />
+                @click="createDiaryEntry" />
             </q-card-section>
           </q-card>
         </div>
@@ -148,73 +120,53 @@
       <div v-else>
         <!-- Case 2A: Showing entry. -->
         <div v-if="diaryEntry != undefined || isCreatingNewDiaryEntry === true">
-          <div
-            class="row justify-center items-center q-py-md"
-            :style="getWidth"
-          >
+          <div class="row justify-center items-center q-py-md"
+            :style="getWidth">
             <!-- IS SHOWING DIARY -->
-            <div
-              v-if="isShowingDiarySection"
-              class="col"
-            >
-              <q-scroll-area
-                :style="heightForScrollArea"
-                ref="scrollArea"
-              >
+            <div v-if="isShowingDiarySection"
+              class="col">
+              <q-scroll-area :style="heightForScrollArea"
+                ref="scrollArea">
                 <!-- VIEW MODE -->
                 <div v-if="viewingMode === 'view'">
                   <!-- If there is an entry for that day. -->
-                  <q-card
-                    v-if="editor != ''"
-                    class="editorCard shadow-3 text-justify"
-                  >
+                  <q-card v-if="editor != ''"
+                    class="editorCard shadow-3 text-justify">
                     <q-item>
                       <q-item-section v-html="editor"> </q-item-section>
                     </q-item>
                   </q-card>
                   <!-- If there is no entry yet for that day. -->
-                  <q-card
-                    v-else
-                    class="editorCard shadow-3 text-justify"
-                  >
+                  <q-card v-else
+                    class="editorCard shadow-3 text-justify">
                     <q-card-section class="card-text text-center">
-                      <q-btn
-                        color="accent"
+                      <q-btn color="accent"
                         flat
                         dense
                         icon="bi-plus"
-                        @click="createDiaryEntry"
-                      />
+                        @click="createDiaryEntry" />
                     </q-card-section>
                   </q-card>
                 </div>
                 <!-- EDIT MODE -->
-                <div
-                  class="editorContainer"
-                  v-else
-                >
-                  <BaseEditor
-                    ref="editorRef1"
+                <div class="editorContainer"
+                  v-else>
+                  <BaseEditor ref="editorRef1"
                     v-model="changeData.editor"
                     @openDialogCreateTemplate="showTemplateCreator"
                     @openDialogViewTemplates="showTemplateViewer"
                     @pasteTemplate="pasteTemplate"
                     minHeight="445px"
-                    type="DIARY"
-                  />
+                    type="DIARY" />
                 </div>
               </q-scroll-area>
             </div>
             <!-- IS SHOWING STATUS -->
-            <div
-              v-else
-              class="col"
-            >
+            <div v-else
+              class="col">
               <!-- MODE: VIEW -->
-              <div
-                v-if="viewingMode === 'view'"
-                class="column"
-              >
+              <div v-if="viewingMode === 'view'"
+                class="column">
                 <div class="col text-left">Overall Mood</div>
                 <div class="col text-center">O O O O O</div>
 
@@ -226,19 +178,15 @@
               <!-- MODE: EDIT -->
               <div v-else>
                 <div class="row justify-end">
-                  <q-btn
-                    class="col=1"
+                  <q-btn class="col=1"
                     flat
                     icon="fas fa-folder-open"
-                    color="secondary"
-                  ></q-btn>
-                  <q-select
-                    dense
+                    color="secondary"></q-btn>
+                  <q-select dense
                     borderless
                     v-model="statusTemplateModel"
                     :options="statusTemplateOptions"
-                    label="templates"
-                  >
+                    label="templates">
                   </q-select>
                 </div>
                 <div class="column">
@@ -255,20 +203,16 @@
         </div>
         <!-- Case 2B: Empty diary entry. Show create. -->
         <div v-else-if="changeData.editor === undefined || changeData.editor === ''">
-          <div
-            class="row justify-center items-center q-pa-md q-ma-md"
-            :style="getWidth"
-          >
+          <div class="row justify-center items-center q-pa-md q-ma-md"
+            :style="getWidth">
             <div class="col">
               <q-card class="editorCard shadow-3 text-justify">
                 <q-card-section class="card-text text-center">
-                  <q-btn
-                    color="accent"
+                  <q-btn color="accent"
                     flat
                     dense
                     icon="bi-plus"
-                    @click="createDiaryEntry"
-                  />
+                    @click="createDiaryEntry" />
                 </q-card-section>
               </q-card>
             </div>
@@ -302,7 +246,6 @@ export default {
     DialogViewDiaryTemplates,
   },
   emits: [
-    "scroll",
     "change-view",
     "save-changes",
     "openEntryInFullscreen",
@@ -431,15 +374,9 @@ export default {
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
-    onScroll(info) {
-      console.log("scroll! ", info);
-    },
     openEntryInFullscreen() {
       console.log("openEntryInFullscreen");
       this.$emit("openEntryInFullscreen", this.editor);
-    },
-    scroll(offset) {
-      this.$emit("scroll", offset);
     },
     // for diary panels
     changeView(viewMode) {

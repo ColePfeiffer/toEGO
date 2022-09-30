@@ -5,20 +5,15 @@
       <div class="q-pt-md">
         <div class="row justify-center items-center no-wrap">
           <!-- Title -->
-          <div
-            class="col-8 smallText text-left text-white"
-            :style="$store.state.data.headlineStyle"
-          >
+          <div class="col-8 smallText text-left text-white"
+            :style="$store.state.data.headlineStyle">
             {{ getTextForFirstHeadline }}
           </div>
           <!-- Left-Side Buttons -->
-          <div
-            v-if="hasEvents || isDiarySectionVisible === false"
-            class="smallText col-2 text-right"
-          >
+          <div v-if="hasEvents || isDiarySectionVisible === false"
+            class="smallText col-2 text-right">
             <!-- Button: Enter Viewing Mode -->
-            <q-btn
-              v-if="!$store.state.data.eventsOnDiaryPageAreExpanded"
+            <q-btn v-if="!$store.state.data.eventsOnDiaryPageAreExpanded"
               class="col-1 smallText"
               flat
               dense
@@ -27,12 +22,10 @@
               :label="getLabel('view')"
               @click="expandMore"
               :style="$store.state.data.sTextAccentShadow"
-              size="10px"
-            >
+              size="10px">
             </q-btn>
             <!-- Button: Leaving Viewing Mode -->
-            <q-btn
-              v-else
+            <q-btn v-else
               class="col-1"
               flat
               dense
@@ -41,18 +34,14 @@
               :label="getLabel('back')"
               color="white"
               @click="expandLess"
-              size="10px"
-            ></q-btn>
+              size="10px"></q-btn>
           </div>
-          <div
-            v-else
-            class="smallText col-2 text-right"
-          ></div>
+          <div v-else
+            class="smallText col-2 text-right"></div>
           <!-- Right-Side Button -->
           <!-- Button: Create new event -->
           <div class="smallText col-2 text-right">
-            <q-btn
-              v-if="hasEvents"
+            <q-btn v-if="hasEvents"
               flat
               dense
               icon="bi-plus-lg"
@@ -60,12 +49,9 @@
               @click="goToPageNewEventSetToCreationMode"
               :label="getLabel('new ')"
               :style="$store.state.data.sTextAccentShadow"
-              size="10px"
-            ></q-btn>
-            <div
-              v-else
-              class="smallText col-2 text-right"
-            ></div>
+              size="10px"></q-btn>
+            <div v-else
+              class="smallText col-2 text-right"></div>
           </div>
 
 
@@ -73,16 +59,12 @@
       </div>
 
       <!-- Events Container -->
-      <q-scroll-area
-        :style="heightForScrollArea"
-        ref="scrollArea"
-      >
-        <EventViewer
-          :style="getWidth"
+      <q-scroll-area :style="heightForScrollArea"
+        ref="scrollArea">
+        <EventViewer :style="getWidth"
           :diaryEntry="diaryEntry"
           :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :showMessageIfThereAreNoEvents="false"
-        >
+          :showMessageIfThereAreNoEvents="false">
         </EventViewer>
       </q-scroll-area>
     </div>
@@ -180,22 +162,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.test {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-.editor {
-  border-style: unset;
-  border-radius: 0px;
-  margin: 3px;
-}
-
-.templateSelector {
-  font-size: 12.5px;
-}
-
-.editorCard {
-  font-size: 12.5px;
-}
-</style>

@@ -32,11 +32,11 @@
     </template>
 
     <template v-slot:content>
-      <TheBetterEventViewer class="q-pa-xs"
+      <TheEventViewer class="q-pa-xs"
         :diaryEntry="diaryEntry"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         :showMessageIfThereAreNoEvents="false">
-      </TheBetterEventViewer>
+      </TheEventViewer>
     </template>
   </BaseSectionForDiary>
 </template>
@@ -45,13 +45,13 @@
 <script>
 import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
 import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
-import TheBetterEventViewer from '../common/TheBetterEventViewer.vue';
+import TheEventViewer from '../common/TheEventViewer.vue';
 export default {
   name: "TheSectionForEvents",
   components: {
     BaseSectionForDiary,
     ButtonForDiarySection,
-    TheBetterEventViewer
+    TheEventViewer
   },
   emits: ["go-to-new-event-in-creation-mode", "set-visibility-of-diarysection"],
   props: {
