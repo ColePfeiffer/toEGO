@@ -9,7 +9,6 @@
 
         <div>
           <TheSectionForEvents :diaryEntry="$store.state.data.diaryEntries[0]">
-
           </TheSectionForEvents>
         </div>
 

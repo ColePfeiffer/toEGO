@@ -1,114 +1,132 @@
 <template>
-    <BaseSectionForDiary ref="baseSection"
-        :width="width"
-        :heightForScrollArea="heightForScrollArea"
-        :isShowingLeftButton="isShowingLeftButton"
-        :isShowingRightButton="isShowingRightButton"
-        @click-left-button="clickLeftButton"
-        @click-right-button="clickRightButton">
-        <template v-slot:nameOfTitle>
-            {{ getTextForFirstHeadline }}
-        </template>
+  <BaseSectionForDiary ref="baseSection"
+    :heightForScrollArea="heightForScrollArea">
+    <template v-slot:nameOfTitle>
+      {{ getTextForFirstHeadline }}
+    </template>
+    <!-- Button: Initiate Viewing-Mode -->
+    <template v-if="isShowingButtons"
+      v-slot:leftSideButton>
+      <ButtonForDiarySection v-if="!$store.state.data.eventsOnDiaryPageAreExpanded"
+        textColor="white"
+        icon="bi-eye"
+        label="view"
+        :style="$store.state.data.sTextAccentShadow"
+        @click-button="expandMore"></ButtonForDiarySection>
+      <!-- Button: Leave Viewing-Mode -->
+      <ButtonForDiarySection v-else
+        textColor="white"
+        icon="bi-chevron-left"
+        label="back"
+        :style="$store.state.data.sTextAccentShadow"
+        @click-button="expandLess"></ButtonForDiarySection>
+    </template>
 
-        <!-- Button: Initiate Viewing-Mode -->
-        <template v-slot:leftSideButton
-            :payload="leftButton1"></template>
+    <template v-if="isShowingButtons"
+      v-slot:rightSideButton>
+      <!-- Button: Create new event -->
+      <ButtonForDiarySection textColor="accent"
+        icon="bi-plus-lg"
+        label="new "
+        :style="$store.state.data.sTextAccentShadow"
+        @click-button="goToPageNewEventSetToCreationMode" />
+    </template>
 
-        <!-- Right Button-->
-
-        <template v-slot:content>
-            <TheEventViewer :style="getWidth"
-                :diaryEntry="diaryEntry"
-                :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-                :showMessageIfThereAreNoEvents="false">
-            </TheEventViewer>
-        </template>
-    </BaseSectionForDiary>
-
-
+    <template v-slot:content>
+      <TheEventViewer class="q-pa-xs"
+        :diaryEntry="diaryEntry"
+        :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
+        :showMessageIfThereAreNoEvents="false">
+      </TheEventViewer>
+    </template>
+  </BaseSectionForDiary>
 </template>
 
 
 <script>
-import BaseSectionForDiary from './BaseSectionForDiary.vue';
+import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
+import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
 import TheEventViewer from '../common/TheEventViewer.vue';
 export default {
-    name: "TheSectionForEvents",
-    components: {
-        BaseSectionForDiary,
-        TheEventViewer
+  name: "TheSectionForEvents",
+  components: {
+    BaseSectionForDiary,
+    ButtonForDiarySection,
+    TheEventViewer
+  },
+  emits: ["go-to-new-event-in-creation-mode", "set-visibility-of-diarysection"],
+  props: {
+    //isDiarySectionVisible: Boolean,
+    diaryEntry: Object,
+    // TODO: kann maybe weg? prüfe.
+    isShowingExpandButtonOfEventCard: {
+      type: Boolean,
+      default: true,
     },
-    emits: [],
-    props: {
-        //isDiarySectionVisible: Boolean,
-        diaryEntry: Object,
-        width: {
-            type: Number,
-            default: 350,
-        },
-        // TODO: kann maybe weg? prüfe.
-        isShowingExpandButtonOfEventCard: {
-            type: Boolean,
-            default: true,
-        },
 
+  },
+  data() {
+    return {
+      heightForScrollArea: 175,
+      size: 350,
+    };
+  },
+  computed: {
+    // FIXME: maybe rethink this
+    isShowingButtons() {
+      if (this.hasEvents || this.isDiarySectionVisible === false) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    data() {
-        return {
-            leftButton1: {
-                textColor: "white",
-                icon: "bi-eye",
-                label: "view",
-                style: this.$store.state.data.sTextAccentShadow
-            },
-            /*
-             <template v-slot:rightSideButton
-            :textColor="'accent'"
-            :icon="'bi-plus-lg'"
-            :label="'new '"
-            :style="$store.state.data.sTextAccentShadow">
-        </template> */
-            heightForScrollArea: 175,
-        };
+    getTextForFirstHeadline() {
+      if (this.diaryEntry != undefined) {
+        return "EVENTS";
+      } else {
+        return "";
+      }
     },
-    computed: {
-        getTextForFirstHeadline() {
-            if (this.diaryEntry != undefined) {
-                return "EVENTS";
-            } else {
-                return "";
-            }
-        },
-        hasEvents() {
-            if (this.diaryEntry != undefined) {
-                if (this.diaryEntry.events.length > 0) {
-                    return true;
-                }
-            }
-            return false;
-        },
-        // TODO: 
-        isShowingLeftButton() {
-            return true
-        },
-        // TODO: 
-        isShowingRightButton() {
-            return true
+    hasEvents() {
+      if (this.diaryEntry != undefined) {
+        if (this.diaryEntry.events.length > 0) {
+          return true;
         }
+      }
+      return false;
     },
-    methods: {
-        clickLeftButton(buttonName) {
-            this.$emit("click-left-button", buttonName);
-        },
-        clickRightButton(buttonName) {
-            this.$emit("click-right-button", buttonName);
-        }
+  },
+  methods: {
+    goToPageNewEventSetToCreationMode() {
+      this.$emit("go-to-new-event-in-creation-mode");
     },
+    expandMore() {
+      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
+      this.toggleExpansedStatusOfAllEvents(true);
+      this.setVisibilityOfDiarySection(false);
+      this.heightForScrollArea = { height: "650px", width: this.width };
+    },
+    expandLess() {
+      this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
+      this.heightForScrollArea = { height: "175px", width: this.width };
+      this.toggleExpansedStatusOfAllEvents(false);
+      this.setVisibilityOfDiarySection(true);
+    },
+    toggleExpansedStatusOfAllEvents(isExpanded) {
+      let payload = {
+        diaryEntryRef: this.diaryEntry,
+        isExpanded: isExpanded,
+      };
+      this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
+    },
+    setVisibilityOfDiarySection(newValue) {
+      this.$emit("set-visibility-of-diarysection", newValue);
+    },
+  },
 
 }
 </script>
-    
+
 <style scoped>
 
 </style>
-    
