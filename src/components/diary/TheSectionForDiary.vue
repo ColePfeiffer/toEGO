@@ -130,6 +130,15 @@ export default {
 
   },
   methods: {
+    editDiaryEntry() {
+      this.changeView("edit");
+      this.changeData = {
+        id: this.diaryEntry.id,
+        date: this.diaryEntry.date,
+        editor: this.diaryEntry.editor,
+        events: this.diaryEntry.events,
+      };
+    },
     goToPageNewEventSetToCreationMode() {
       this.$emit("go-to-new-event-in-creation-mode");
     },

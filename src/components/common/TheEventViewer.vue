@@ -4,17 +4,19 @@
       @closeDialog="closeDialog"></DialogDeleteEvent>
 
     <!-- Case 1: There is no diaryentry for the selected day. -->
-    <div v-if="diaryEntry === undefined && showMessageIfThereAreNoEvents">
-      <BaseCard>
-        <template v-slot:content>
-          There is nothing here yet.
-          <q-btn color="accent"
-            flat
-            dense
-            icon="bi-plus"
-            @click="goToPageNewEventSetToCreationMode" />
-        </template>
-      </BaseCard>
+    <div v-if="diaryEntry === undefined">
+      <div v-if="showMessageIfThereAreNoEvents">
+        <BaseCard>
+          <template v-slot:content>
+            There is nothing here yet.
+            <q-btn color="accent"
+              flat
+              dense
+              icon="bi-plus"
+              @click="goToPageNewEventSetToCreationMode" />
+          </template>
+        </BaseCard>
+      </div>
     </div>
     <!-- Case 2: Entry exists, but no event has been created yet. -->
     <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1">
@@ -52,6 +54,10 @@ export default {
     EventCard,
     DialogDeleteEvent,
     BaseCard
+  },
+  created() {
+    console.log("created ...")
+    console.log(this.diaryEntry);
   },
   props: {
     diaryEntry: Object,
@@ -121,6 +127,8 @@ export default {
   },
   computed: {
     events() {
+      console.log("lol hmm`?? ")
+      console.log(this.diaryEntry);
       return this.diaryEntry.events.slice().reverse();
     },
   },

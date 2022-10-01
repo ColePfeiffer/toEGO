@@ -32,8 +32,7 @@
     </template>
 
     <template v-slot:content>
-      <TheEventViewer class="q-pa-xs"
-        :diaryEntry="diaryEntry"
+      <TheEventViewer :diaryEntry="diaryEntry"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         :showMessageIfThereAreNoEvents="false">
       </TheEventViewer>
@@ -55,7 +54,7 @@ export default {
   },
   emits: ["go-to-new-event-in-creation-mode", "set-visibility-of-diarysection"],
   props: {
-    //isDiarySectionVisible: Boolean,
+    isDiarySectionVisible: Boolean,
     diaryEntry: Object,
     // TODO: kann maybe weg? prüfe.
     isShowingExpandButtonOfEventCard: {
@@ -63,6 +62,10 @@ export default {
       default: true,
     },
 
+  },
+  created() {
+    console.log("created section for events...")
+    console.log(this.diaryEntry);
   },
   data() {
     return {
