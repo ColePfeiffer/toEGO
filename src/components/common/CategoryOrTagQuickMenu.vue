@@ -1,116 +1,90 @@
 <template>
-  <q-menu
-    dense
+  <q-menu dense
     anchor="top middle"
     self="bottom middle"
-    class="no-border-radius"
-  >
+    class="no-border-radius">
     <q-list dense>
       <!-- new category button -->
-      <q-item
-        v-if="!isCreatingNewCategory"
+      <q-item v-if="!isCreatingNewCategory"
         clickable
-        @click="toggleNewCategoryCreation"
-      >
+        @click="toggleNewCategoryCreation">
         <q-item-section avatar>
-          <q-icon
-            color="secondary"
+          <q-icon color="secondary"
             size="xs"
-            name="bi-plus"
-          />
+            name="bi-plus" />
         </q-item-section>
         <q-item-section>New category</q-item-section>
       </q-item>
       <q-item v-else>
         <q-item-section avatar>
-          <q-btn
-            size="10px"
+          <q-btn size="10px"
             dense
             round
             flat
             color="secondary"
             icon="keyboard_arrow_left"
-            @click="closeAndResetNewCategoryCreation"
-          >
+            @click="closeAndResetNewCategoryCreation">
           </q-btn>
         </q-item-section>
         <q-item-section>
-          <q-input
-            ref="nameRef"
+          <q-input ref="nameRef"
             bottom-slots
             v-model="newCategoryName"
             counter
             maxlength="20"
             dense
             lazy-rules
-            :rules="nameRules"
-          >
+            :rules="nameRules">
             <template v-slot:hint> Name of category </template>
           </q-input>
         </q-item-section>
         <q-item-section side>
-          <q-btn
-            round
+          <q-btn round
             dense
             flat
             icon="bi-check"
             color="teal"
-            @click="onSubmit"
-          />
+            @click="onSubmit" />
         </q-item-section>
       </q-item>
 
       <!-- Settings button -->
-      <q-item
-        clickable
+      <q-item clickable
         v-close-popup
-        @click="openDialogFolderManagement"
-      >
+        @click="openDialogFolderManagement">
         <q-item-section avatar>
-          <q-icon
-            color="secondary"
+          <q-icon color="secondary"
             size="xs"
-            name="bi-gear"
-          />
+            name="bi-gear" />
         </q-item-section>
         <q-item-section>Settings</q-item-section>
       </q-item>
       <!-- Unset all button -->
-      <q-item
-        clickable
-        @click="unsetAllCategories"
-      >
+      <q-item clickable
+        @click="unsetAllCategories">
         <q-item-section avatar>
-          <q-icon
-            color="secondary"
+          <q-icon color="secondary"
             size="xs"
-            name="bi-x"
-          />
+            name="bi-x" />
         </q-item-section>
         <q-item-section>Unset all</q-item-section>
       </q-item>
       <!-- Add to/Remove from QuickList Button -->
-      <q-item
-        clickable
+      <q-item clickable
         @click="manageQuicklistStatus"
-        :style="getTextColorForQuicklist"
-      >
+        :style="getTextColorForQuicklist">
         <q-item-section avatar>
-          <q-icon
-            color="secondary"
+          <q-icon color="secondary"
             size="xs"
-            name="bi-star"
-          />
+            name="bi-star" />
         </q-item-section>
         <q-item-section>Add to quick-list</q-item-section>
         <q-item-section avatar>
-          <q-btn
-            dense
+          <q-btn dense
             :color="isTemplateInQuicklist() === 'bi-dash' ? 'orange' : 'teal'"
             round
             flat
-            :icon="isTemplateInQuicklist()"
-          >
+            :icon="isTemplateInQuicklist()">
           </q-btn>
         </q-item-section>
       </q-item>
@@ -118,13 +92,11 @@
       <q-scroll-area :style="styleForScrollArea">
         <q-resize-observer @resize="onResize" />
         <!-- FIXME: this has to be adjusted to the new format -->
-        <FolderCategoryTemplateStructure
-          :currentTemplate="currentTemplate"
+        <FolderCategoryTemplateStructure :currentTemplate="currentTemplate"
           :folders="folders"
           :categories="categories"
           :templates="templates"
-          @templateClicked="templateClicked"
-        >
+          @templateClicked="templateClicked">
         </FolderCategoryTemplateStructure>
       </q-scroll-area>
     </q-list>
@@ -203,7 +175,7 @@ export default {
       if (nameInput.hasError) {
       } else {
         this.$q.notify({
-          icon: "done",
+          icon: "bi-check",
           color: "secondary",
           textColor: "black",
           message: "Category created.",

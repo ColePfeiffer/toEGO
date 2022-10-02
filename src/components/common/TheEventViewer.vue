@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-py-md q-px-xs">
     <DialogDeleteEvent @deleteEvent="deleteEvent"
       @closeDialog="closeDialog"></DialogDeleteEvent>
 
@@ -34,7 +34,8 @@
     <div v-else
       v-for="event in events"
       :key="event.id">
-      <EventCard :eventData="event"
+      <EventCard class="q-mb-lg"
+        :eventData="event"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
         @editEvent="goToPageNewEventSetToEditingMode"

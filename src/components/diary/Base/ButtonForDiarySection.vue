@@ -32,7 +32,6 @@ export default {
       this.$emit("click-button", this.label);
     },
     getLabel(labelname) {
-      console.log("q-screen: ", this.$q.screen.lt.sm);
       if (this.$q.screen.lt.sm === true && this.$store.state.data.isShowingLabelsForDiarySection) {
         return labelname;
       } else {

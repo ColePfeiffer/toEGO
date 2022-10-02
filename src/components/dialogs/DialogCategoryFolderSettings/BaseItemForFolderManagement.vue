@@ -1,11 +1,9 @@
 <template>
   <div>
-    <BaseItemClickable
-      :item="item"
+    <BaseItemClickable :item="item"
       :parent="parent"
       :icon="icon"
-      @click-item="clickItem"
-    ></BaseItemClickable>
+      @click-item="clickItem"></BaseItemClickable>
   </div>
 
 </template>
@@ -25,7 +23,6 @@ export default {
   },
   methods: {
     clickItem() {
-      console.log("item clicked lololololol :O")
     },
   },
 

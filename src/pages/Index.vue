@@ -1,25 +1,23 @@
 <template>
   <q-page class="q-pa-sm">
-    <infoHeader></infoHeader>
-    <EventViewer
-      :diaryEntry="getDiaryEntry"
-      class="col"
-    ></EventViewer>
+    <TheHeader></TheHeader>
+    <TheEventViewer :diaryEntry="getDiaryEntry"
+      class="q-px-lg q-pt-xl "></TheEventViewer>
     <!-- Player Character -->
   </q-page>
 </template>
 
 <script>
-import infoHeader from "../../components/TheHeader.vue";
-import EventViewer from "../../components/common/TheEventViewer.vue";
+import TheHeader from "src/components/home/TheHeader.vue";
+import TheEventViewer from "src/components/common/TheEventViewer.vue";
 
 export default {
   data() {
     return {};
   },
   components: {
-    infoHeader,
-    EventViewer,
+    TheHeader,
+    TheEventViewer
   },
   methods: {
   },

@@ -8,7 +8,6 @@
       @pasteTemplate="pasteTemplate">
     </DialogViewDiaryTemplates>
 
-
     <BaseSectionForDiary :heightForScrollArea="heightForScrollArea">
       <template v-slot:nameOfTitle
         v-if="isDiaryVisible">
@@ -22,7 +21,7 @@
           icon="bi-chevron-left"
           label="back"
           :style="$store.state.data.sTextAccentShadow"
-          @click-button="changeView('view')"></ButtonForDiarySection>
+          @click-button="goBack"></ButtonForDiarySection>
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
@@ -53,12 +52,22 @@
 
       <template v-slot:content>
         <TheDiaryViewer :diaryEntry="diaryEntry"
+          :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
           :viewingMode="viewingMode"
           :isDiaryVisible="isDiaryVisible"
           :changeData="changeData"
-          @paste-template="pasteTemplate"
-          @change-view="changeView"
+          @create-diary-entry="createDiaryEntry"
           @go-to-new-event-in-creation-mode="goToPageNewEventSetToCreationMode">
+          <template v-slot:editor>
+            <BaseEditor ref="editorRef1"
+              class="no-border-radius no-box-shadow q-pa-none"
+              v-model="changeData.editor"
+              @openDialogCreateTemplate="showTemplateCreator"
+              @openDialogViewTemplates="showTemplateViewer"
+              @pasteTemplate="pasteTemplate"
+              minHeight="445px"
+              type="DIARY" />
+          </template>
         </TheDiaryViewer>
       </template>
     </BaseSectionForDiary>
@@ -73,6 +82,7 @@ import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
 import DialogNameAndCreate from '../dialogs/DialogNameAndCreate.vue';
 import DialogViewDiaryTemplates from '../dialogs/DialogViewDiaryTemplates.vue';
 import TheDiaryViewer from './TheDiaryViewer.vue';
+import BaseEditor from '../ui/BaseEditor.vue';
 
 export default {
   name: "TheSectionForEvents",
@@ -81,7 +91,8 @@ export default {
     ButtonForDiarySection,
     DialogNameAndCreate,
     DialogViewDiaryTemplates,
-    TheDiaryViewer
+    TheDiaryViewer,
+    BaseEditor
   },
   emits: ["change-view", "enter-fullscreen-mode", "save-changes", "go-to-new-event-in-creation-mode"],
   props: {
@@ -92,9 +103,7 @@ export default {
     return {
       isCreatingNewDiaryEntry: false,
       changeData: {},
-      // TODO: old stuff
       heightForScrollArea: 520,
-      size: 350,
     };
   },
   computed: {
@@ -130,6 +139,31 @@ export default {
 
   },
   methods: {
+    goBack() {
+      this.changeView('view');
+      this.resetChangeData();
+    },
+    resetChangeData() {
+      this.changeData = {
+        id: "",
+        date: "",
+        editor: "",
+        events: [],
+      };
+
+    },
+    createDiaryEntry() {
+      this.changeView("edit");
+      this.isCreatingNewDiaryEntry = true;
+      this.resetChangeData();
+
+      // applying default template
+      let defaultTemplate =
+        this.$store.getters["data/getDefaultTemplate"]("DIARY");
+      if (defaultTemplate != undefined) {
+        this.changeData.editor = defaultTemplate;
+      }
+    },
     editDiaryEntry() {
       this.changeView("edit");
       this.changeData = {
@@ -160,6 +194,10 @@ export default {
       } else if (viewMode === "edit") {
         this.changeDiaryModeToCreationMode();
       }
+
+      this.$emit("change-view", viewMode);
+
+
     },
     changeDiaryModeToCreationMode() {
       this.isCreatingNewDiaryEntry = true;
@@ -188,9 +226,9 @@ export default {
       this.$emit("enter-fullscreen-mode", this.editor);
     },
     saveChanges() {
-      this.isCreatingNewDiaryEntry = false;
-      this.$emit("save-changes", this.changeData);
       this.$emit("change-view", "view");
+      this.$emit("save-changes", this.changeData);
+      this.resetChangeData();
     },
     createTemplate(templateName) {
       let newTemplate = {
@@ -201,7 +239,24 @@ export default {
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
-
+    // Template Viewer
+    showTemplateViewer() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogViewDiaryTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+    // Template Creator
+    showTemplateCreator() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogCreateDiaryTemplate",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
   },
 
 }

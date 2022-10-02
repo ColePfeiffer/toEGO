@@ -25,7 +25,7 @@
 <script>
 import HeaderForDiarySections from './HeaderForDiarySections.vue';
 export default {
-  name: "TheEventSection",
+  name: "BaseSectionForDiary",
   emits: [],
   components: {
     HeaderForDiarySections,

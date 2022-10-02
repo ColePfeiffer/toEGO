@@ -87,7 +87,7 @@
       <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
         :class="getDiarySectionClass"
         :diaryEntry="getDiaryEntry"
-        viewingMode="viewingMode"
+        :viewingMode="viewingMode"
         @change-view="changeViewMode"
         @save-changes="saveChangesToEntry"
         @enter-fullscreen-mode="enterFullscreenMode"
@@ -125,16 +125,13 @@
 import { date } from "quasar";
 import TheSectionForEvents from "src/components/diary/TheSectionForEvents.vue";
 import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
+import { useQuasar } from "quasar";
 
 export default {
   name: "diary",
   components: {
     TheSectionForEvents,
     TheSectionForDiary
-  },
-  created() {
-    console.log("created diary...")
-    console.log(this.getDiaryEntry);
   },
   data() {
     return {
@@ -225,8 +222,6 @@ export default {
       let diaryEntryRefForDate = this.$store.getters[
         "data/getDiaryEntryByDate"
       ](this.getDate);
-      console.log("lolol");
-      console.log(diaryEntryRefForDate);
       return diaryEntryRefForDate;
     },
     getCountOfDaysAwayFromToday() {
@@ -291,13 +286,26 @@ export default {
       this.$router.push("NewEvent");
     },
     saveChangesToEntry(changeData) {
-      console.log(changeData);
       let payload;
       if (this.getDiaryEntry === undefined) {
-        let newEntry = changeData;
-        console.log("new Entry: ", newEntry);
-        newEntry.date = this.getDate;
-        this.$store.commit("data/addEntryToDiaryEntries", newEntry);
+
+        let cleanedEditorText = changeData.editor.replaceAll("&nbsp;", '');
+        cleanedEditorText = cleanedEditorText.replaceAll(" ", '');
+        console.log("here are the results, boss! ", cleanedEditorText);
+        if (cleanedEditorText != "") {
+          // if editor isn't empty and doesn't just contain whitespace
+          let newEntry = changeData;
+          console.log("new Entry: ", newEntry);
+          newEntry.date = this.getDate;
+          this.$store.commit("data/addEntryToDiaryEntries", newEntry);
+        } else {
+          this.$q.notify({
+            icon: "bi-exclamation-square",
+            color: "secondary",
+            textColor: "black",
+            message: "Please write something.",
+          });
+        }
       } else {
         payload = {
           diaryEntryRef: this.getDiaryEntry,

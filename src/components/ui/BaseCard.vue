@@ -1,6 +1,7 @@
 <template>
-  <q-card class="test my-base-card shadow-3 text-justify ">
-    <q-card-section class="card-text text-center">
+  <q-card class="test my-base-card shadow-3  ">
+    <q-card-section class="card-text"
+      :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
       <slot name="content">
 
       </slot>
@@ -8,15 +9,51 @@
   </q-card>
 </template>
 
+<script>
+
+
+export default {
+  name: "BaseCard",
+  props: {
+    isTextSetToCentered: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    isTextCentered() {
+      if (this.isTextSetToCentered) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isTextLeft() {
+      if (!this.isTextSetToCentered) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+};
+
+</script>
+
 <style>
 .my-base-card {
   font-size: 12.5px;
+  background: whitesmoke;
+  border-width: 1.5px;
+  border-color: #FFFFFF var(--q-secondary) var(--q-secondary) #FFFFFF;
+  border-style: solid;
+  border-radius: 0px;
 }
 
 .test {
   background: whitesmoke;
   border-width: 1.5px;
-  border-color: #FFFFFF #6e6e6e #6e6e6e #FFFFFF;
+  border-color: #FFFFFF var(--q-secondary) var(--q-secondary) #FFFFFF;
   border-style: solid;
   border-radius: 0px;
 }
