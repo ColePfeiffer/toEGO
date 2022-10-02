@@ -50,8 +50,8 @@
             { label: '', value: 'home', icon: 'bi-eye', slot: 'home' },
             {
               label: '',
-              value: 'NewEvent',
-              slot: 'NewEvent',
+              value: 'Event',
+              slot: 'Event',
               icon: 'bi-plus-lg',
               color: 'accent',
             },
@@ -68,7 +68,7 @@
               :offset="[10, 10]"
               :delay="300">home</q-tooltip>
           </template>
-          <template v-slot:NewEvent>
+          <template v-slot:Event>
             <q-tooltip class="bg-secondary text-body2 text-black"
               :offset="[10, 10]"
               :delay="300">create new event

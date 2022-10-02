@@ -9,8 +9,8 @@
       <template v-slot:title-bar-controls></template>
       <template v-slot:content>
         <q-tabs v-model="settingsTab"
+          class="text-lightgrey2 tab"
           dense
-          class="text-grey tab"
           active-color="accent"
           indicator-color="accent"
           align="justify"
@@ -24,82 +24,54 @@
             label="Account" />
         </q-tabs>
 
-        <q-separator />
 
         <q-tab-panels v-model="settingsTab"
           animated>
           <q-tab-panel name="view">
-            <div class="q-px-md promptTitle underlined">General</div>
-            <div class="q-mb-xl">
-              <div class="smallText borderStyleForTab q-mt-md">
-                <q-list class="q-tb-md">
-                  <q-item tag="label"
-                    v-ripple>
-                    <q-item-section>
-                      <q-item-label>Dark-Mode</q-item-label>
-                    </q-item-section>
-                    <q-item-section avatar>
-                      <q-toggle color="accent"
-                        v-model="isDarkModeTurnedOn"
-                        val="battery" />
-                    </q-item-section>
-                  </q-item>
+            <BaseSettingsTabPanelGroup title="General">
+              <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Dark-Mode">
+                  <template v-slot:content>
+                    <q-toggle color="accent"
+                      v-model="isDarkModeTurnedOn"
+                      val="battery" />
+                  </template>
+                </BaseItemForSettingsTabPanel>
+                <BaseItemForSettingsTabPanel title="Change Font"
+                  caption="Use a non-pixel font.">
+                  <template v-slot:content>
+                    <q-btn-toggle v-model="isUsingNonPixelFont"
+                      class="my-custom-toggle"
+                      color="transparent"
+                      square
+                      unelevated
+                      toggle-color="accent"
+                      text-color="lightgrey1"
+                      toggle-text-color="white"
+                      no-caps
+                      :options="[
+                        {label: '1', value: '1'},
+                        {label: '2', value: '2'},
+                        {label: '3', value: '3'}
+                      ]" />
+                  </template>
+                </BaseItemForSettingsTabPanel>
 
-                  <q-item tag="label"
-                    :v-ripple="false">
-                    <q-item-section>
-                      <q-item-label>Font</q-item-label>
-                      <q-item-label caption>Use a non-pixel font.</q-item-label>
-                    </q-item-section>
-                    <q-item-section avatar>
-                      <q-btn-toggle v-model="isUsingNonPixelFont"
-                        color="transparent"
-                        text-color="primary"
-                        glossy
-                        unelevated
-                        toggle-color="accent"
-                        toggle-text-color="primary"
-                        no-caps
-                        :options="[
-                          {label: '1', value: '1'},
-                          {label: '2', value: '2'},
-                          {label: '3', value: '3'}
-                        ]" />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </div>
-            </div>
-            <div>
-              <div class="q-px-md promptTitle underlined">Events</div>
-              <div class="smallText borderStyleForTab q-mt-md">
-                <q-list class="q-tb-md">
-                  <q-item tag="label"
-                    v-ripple>
-                    <q-item-section>
-                      <q-item-label>Show expand button</q-item-label>
-                      <q-item-label caption>Show the button to expand individual events on the diary page.
-                      </q-item-label>
-                    </q-item-section>
-                    <q-item-section avatar>
-                      <q-toggle color="accent"
-                        v-model="isShowingExpandButtonForEventsViaDiary"
-                        val="battery" />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </div>
-            </div>
-          </q-tab-panel>
+              </template>
+            </BaseSettingsTabPanelGroup>
 
-          <q-tab-panel name="other">
-            <div class="text-h6">Other</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </q-tab-panel>
-
-          <q-tab-panel name="account">
-            <div class="text-h6">Account</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <BaseSettingsTabPanelGroup title="Events">
+              <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Show expand button"
+                  caption="Show the button to expand individual events on the diary page.">
+                  <template v-slot:content>
+                    <q-toggle color="accent"
+                      v-model="isShowingExpandButtonForEventsViaDiary"
+                      val="battery" />
+                  </template>
+                </BaseItemForSettingsTabPanel>
+              </template>
+            </BaseSettingsTabPanelGroup>
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -112,16 +84,18 @@
 <script>
 import { mapMutations } from "vuex";
 import BasePage from "src/components/ui/BasePage.vue";
+import BaseSettingsTabPanelGroup from "src/components/settings/BaseSettingsTabPanelGroup.vue";
+import BaseItemForSettingsTabPanel from "src/components/settings/BaseItemForSettingsTabPanel.vue";
 
 export default {
-  components: { BasePage },
+  components: { BasePage, BaseSettingsTabPanelGroup, BaseItemForSettingsTabPanel },
   data() {
     return {
       model: "1",
       notifications: "",
       settingsTab: 'view',
       isDarkModeTurnedOn: false,
-      isUsingNonPixelFont: false,
+      isUsingNonPixelFont: '1',
       isShowingExpandButtonForEventsViaDiary: false,
     };
   },
@@ -151,19 +125,14 @@ export default {
   border-radius: 0px;
 }
 
+.my-custom-toggle {
+  border: 1px solid lightgrey;
+  border-radius: 0px;
+  border-style: solid;
+}
+
 .tab {
   font-size: 12.5px;
   background: whitesmoke;
-}
-
-.underlined {
-  border-bottom: 1px solid var(--q-secondary);
-  padding: 0 0 4px;
-}
-
-.promptTitle {
-
-  font-size: 1.1em;
-  color: lightgrey;
 }
 </style>

@@ -10,12 +10,20 @@ export default {
 </script>
 
 <style>
-.text-lightGray {
-  color: #c0c0c0 !important;
+.text-whitesmoke {
+  color: whitesmoke !important;
 }
 
 .bg-lightGray {
-  background: #c0c0c0 !important;
+  background: whitesmoke !important;
+}
+
+.text-lightgrey {
+  color: #d3d3d3 !important;
+}
+
+.bg-lightGray {
+  background: #d3d3d3 !important;
 }
 
 .text-accent2 {

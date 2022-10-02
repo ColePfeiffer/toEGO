@@ -4,6 +4,7 @@ import Diary from "pages/Diary.vue";
 import Items from "pages/Items.vue";
 import Settings from "pages/Settings.vue";
 import NewEvent from "pages/NewEvent.vue";
+import Event from "pages/Event.vue";
 
 const routes = [
   {
@@ -16,9 +17,9 @@ const routes = [
     children: [{ path: "", component: index }],
   },
   {
-    path: "/NewEvent",
+    path: "/Event",
     component: mainLayout,
-    children: [{ path: "", component: NewEvent }],
+    children: [{ path: "", component: Event }],
   },
   {
     path: "/Diary",
