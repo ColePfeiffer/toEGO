@@ -1,11 +1,12 @@
 <template>
-  <q-card class="test my-base-card shadow-3  ">
-    <q-card-section class="card-text"
-      :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
-      <slot name="content">
-
-      </slot>
-    </q-card-section>
+  <q-card class="test my-base-card shadow-3">
+    <slot name="content">
+      <q-card-section class="card-text"
+        :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
+        <slot name="contentInsideSection">
+        </slot>
+      </q-card-section>
+    </slot>
   </q-card>
 </template>
 

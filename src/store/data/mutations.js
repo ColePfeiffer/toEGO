@@ -220,6 +220,7 @@ export const updateExpandedStatusOfEventViaEventID = (state, eventID) => {
 */
 
 export const updateExpandedStatusOfEventViaEventID = (state, payload) => {
+  console.log("changing expanded state of event");
   let event = payload.diaryEntryRef.events.find(
     (event) => event.id === payload.eventID
   );

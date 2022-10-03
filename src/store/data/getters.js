@@ -1,14 +1,6 @@
 import { date } from "quasar";
 import { useQuasar } from "quasar";
 
-export const isDarkModeActive = (state) => {
-  if (useQuasar().dark.isActive) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
 // takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
 export const getDiaryEntryByDate = (state) => {
   return (selectedDate) => {

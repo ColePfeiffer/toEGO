@@ -57,7 +57,7 @@ export default {
         color: "black",
       };
 
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
         currentStyle = styleDark;
       } else {
         currentStyle = styleLight;
@@ -68,10 +68,10 @@ export default {
     },
 
     getStyleForHeadline() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.$store.state.data.sTextBasicShadowDarkWhiteFont;
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        return this.$store.state.layout.sTextBasicShadowDarkWhiteFont;
       } else {
-        return this.$store.state.data.sTextBasicShadowBlackFont;
+        return this.$store.state.layout.sTextBasicShadowBlackFont;
       }
     },
     getStyleForDialogTitleBar() {

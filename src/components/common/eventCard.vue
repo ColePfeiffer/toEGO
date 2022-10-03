@@ -1,33 +1,39 @@
 <template>
-  <div>
-    <q-card class="my-card my-base-card shadow-3 text-justify">
+  <BaseCard :isTextSetToCentered="false">
+    <template v-slot:content>
       <!-- Mood, Title, Expand Button -->
-      <q-item>
+      <q-item class="q-pa-xs">
         <!-- mood emoji -->
         <q-item-section avatar>
-          <q-icon size="22.5px"
-            :name="eventData.mood"
-            text-color="secondary"
-            color="secondary"></q-icon>
+          <row justify-center
+            class="q-ml-sm"
+            items-center>
+            <q-icon size="22.5px"
+              class="col-auto"
+              :name="eventData.mood"
+              text-color="secondary"
+              color="secondary"></q-icon>
+          </row>
+
         </q-item-section>
 
         <!-- event title, expand button -->
         <q-item-section>
-          <div class="row justify-center items-center">
-            <div class="col-9 text-left">
+          <div class="row justify-between items-center q-py-none q-px-xs">
+            <div class="col-10 text-left">
               <q-item-label class="card-title">{{
               eventData.title
               }}</q-item-label>
             </div>
             <div v-if="isShowingExpandButtonOfEventCard === true"
-              class="col-3 text-right">
-              <BaseButtonExpandable :eventData="eventData"
-                color="secondary"
-                @expandMore="expand"
-                @expandLess="expand"></BaseButtonExpandable>
+              class="col-2 text-right">
+              <BaseButtonExpandable color="secondary"
+                dense
+                :isEventExpanded="eventData.expanded"
+                @expand="expand"></BaseButtonExpandable>
             </div>
             <div v-else
-              class="col-3"></div>
+              class="col-2"></div>
           </div>
         </q-item-section>
       </q-item>
@@ -40,9 +46,8 @@
           eventData.expanded === false &&
           eventData.text.length >= maxLengthOfCardText
         "
-          class="q-pa-sm"
+          class="q-pa-xs"
           style="min-height: 80px">
-
 
           <q-card-section v-if="!isEventEditorEmpty"
             class="card-text">
@@ -63,7 +68,7 @@
         </div>
         <!-- view when not expanded -->
         <div v-else-if="eventData.expanded === false"
-          class="q-pa-sm"
+          class="q-pa-xs"
           style="min-height: 80px">
           <q-card-section class="card-text">
             {{ eventData.text }}
@@ -79,17 +84,17 @@
         </div>
         <!-- view when expanded and editor text is empty -->
         <div v-else-if="eventData.expanded === true && isEventEditorEmpty">
-          <div class="q-pa-sm">
+          <div class="q-pa-xs">
             <q-card-section class="card-text">
               <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
             </q-card-section>
 
-            <q-card-section class="q-py-xs card-time">
+            <q-card-section class="q-pr-none card-time">
               <div class="row justify-between items-center">
                 <div class="col-3">
                   {{ timeAgo }}
                 </div>
-                <div class="col-3">
+                <div class="col-3 text-right">
                   <div class="row no-wrap">
                     <q-btn class="col"
                       v-if="eventData.expanded === true"
@@ -147,24 +152,24 @@
               </div>
             </q-card-section>
           </div>
-
-
         </div>
       </div>
-    </q-card>
-  </div>
+    </template>
+  </BaseCard>
+
 </template>
 
 <script>
 import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
 import { date } from "quasar";
+import BaseCard from "../ui/BaseCard.vue";
 //import TimeAgo from "vue3-timeago";
 
 export default {
   name: "eventCard",
   components: {
     BaseButtonExpandable,
-    //TimeAgo,
+    BaseCard
   },
   props: {
     eventData: Object,
@@ -212,6 +217,7 @@ export default {
       this.$emit("editEvent", this.eventData);
     },
     expand() {
+      console.log("lol")
       this.$emit("changeEventData", this.eventData);
     },
     mergeText(eventData) {

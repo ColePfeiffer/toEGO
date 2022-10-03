@@ -7,7 +7,7 @@
     <div v-if="diaryEntry === undefined">
       <div v-if="showMessageIfThereAreNoEvents">
         <BaseCard>
-          <template v-slot:content>
+          <template v-slot:contentInsideSection>
             There is nothing here yet.
             <q-btn color="accent"
               flat
@@ -21,7 +21,7 @@
     <!-- Case 2: Entry exists, but no event has been created yet. -->
     <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1">
       <BaseCard>
-        <template v-slot:content>
+        <template v-slot:contentInsideSection>
           <q-btn color="accent"
             flat
             dense
@@ -111,7 +111,7 @@ export default {
     },
     goToPageNewEventSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
-      this.$router.push("NewEvent");
+      this.$router.push("Event");
     },
     goToPageNewEventSetToEditingMode(eventData) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
@@ -123,12 +123,11 @@ export default {
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
       this.$store.commit("data/setModeForNewEvent", "EDIT");
-      this.$router.push("NewEvent");
+      this.$router.push("Event");
     },
   },
   computed: {
     events() {
-      console.log("lol hmm`?? ")
       console.log(this.diaryEntry);
       return this.diaryEntry.events.slice().reverse();
     },

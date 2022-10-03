@@ -4,7 +4,7 @@
       <!-- Case 1: There is no entry for the selected day. -->
       <div v-if="diaryEntry === undefined">
         <BaseCard>
-          <template v-slot:content>
+          <template v-slot:contentInsideSection>
             Nothing here yet. Add an event
             <q-btn color="accent"
               flat
@@ -26,7 +26,7 @@
         <!-- Case 2.1.1: Showing + Button, if journal-entry is empty. -->
         <div v-if="editor === ''">
           <BaseCard>
-            <template v-slot:content>
+            <template v-slot:contentInsideSection>
               <q-btn flat
                 dense
                 color="accent"
@@ -38,7 +38,7 @@
         <!-- Case 2.1.2: Showing journal-entrie's text. -->
         <div v-else>
           <BaseCard :isTextSetToCentered="false">
-            <template v-slot:content>
+            <template v-slot:contentInsideSection>
               <div v-html="editor">
               </div>
             </template>

@@ -2,14 +2,6 @@ import { date } from "quasar";
 export default function () {
   return {
     isShowingLabelsForDiarySection: false,
-    backgrounds: [
-      "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
-      "https://64.media.tumblr.com/73966b6acfd978cc2ae90639bd803d73/tumblr_inline_mydbkloJQm1qak244.gif",
-      "https://64.media.tumblr.com/1f53852736e2f58f84d1c06f4fa4d17d/tumblr_inline_mkjlph6wcQ1qz4rgp.png",
-      "https://64.media.tumblr.com/42e248b655ff41e98e501f2bc475214b/tumblr_inline_nateoe8C4C1qak244.gif",
-      "https://64.media.tumblr.com/9c181a9f3f01baa1cdbf45e4f9a279e5/tumblr_inline_natenvWAWX1qak244.gif",
-      "https://64.media.tumblr.com/8b250bb0b90cbb3667071d88f3555c70/tumblr_inline_n9qgx3Si4l1qak244.png",
-    ],
     // all templates for events are in here
     diaryTemplates: [
       {
@@ -64,7 +56,6 @@ export default function () {
         isSetToDefault: false,
       },
     ],
-    dialogWidth: "width: 300px;",
     quicklistForDiary: {
       id: 0,
       name: "Quick List",
@@ -107,67 +98,7 @@ export default function () {
     newEventIsInCreationMode: true,
     isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
-    headlineStyle: {
-      "text-decoration": "underline",
-      color: "white",
-      "text-decoration-style": "solid",
-      "text-decoration-color": "var(--q-accent)",
-      "text-shadow": "var(--q-info) 2px 2px 2px",
-    },
-    buttonFlatStyleTransparent: {
-      "box-shadow": "none",
-      "background-color": "transparent",
-    },
-    sFontColor: "black",
-    // button fixed size, just icon
-    buttonFlatOnlyIcon: {
-      "background-color": "transparent",
-      "border-style": "unset",
-      "box-shadow": "none",
-      "min-width": "20px",
-      "max-width": "20px",
-      "min-height": "20px",
-    },
-    // button flat color; no borders
-    buttonFlatStyle: {
-      "min-width": "83px",
-      "max-width": "83px",
-      "min-height": "23px",
-      "box-shadow": "none",
-      "background-color": "var(--q-secondary)",
-    },
-    // button flat color for accent buttons; no borders
-    buttonFlatStyleAccentColor: {
-      "min-width": "83px",
-      "max-width": "83px",
-      "min-height": "23px",
-      "box-shadow": "none",
-      "background-color": "var(--q-accent)",
-    },
-    sTextBasicBlackFont: {
-      "font-color": "black",
-      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-      "text-shadow": "2px 2px 3px rgba(255,255,255,0.1)",
-    },
-    sTextBasicShadowBlackFont: {
-      "text-shadow": "var(--q-secondary) 2px 2px 2px",
-      color: "black !important",
-    },
-    sTextBasicShadowDarkWhiteFont: {
-      "text-shadow": "2px 2px #000000",
-      "text-shadow": "rgb(0 0 0) 2px 2px 2px",
-      color: "white !important",
-    },
-    sTextAccentShadow: {
-      color: "var(--q-accent)",
-      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-      "text-shadow": "var(--q-info) 2px 2px 2px",
-    },
-    sTextTitleBar: {
-      color: "white",
-      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-      "text-shadow": "var(--q-info) 2px 2px 2px",
-    },
+
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",
@@ -248,28 +179,5 @@ export default function () {
             ],
           },
         ],*/
-    // all methods are in here
-    methods: [
-      {
-        id: 0,
-        icon: "task_alt",
-        name: "5-to-1 Methode",
-        refName: "oneToFiveMethode",
-        maxWidthOfExpansionItems: { "max-width": "350px" },
-
-        // user input gets loaded from here
-        UserInputs: [],
-      },
-      {
-        id: 1,
-        icon: "spa",
-        name: "Handling Emotions",
-        refName: "handlingEmotions",
-        maxWidthOfExpansionItems: { "max-width": "350px" },
-        content: {},
-        // user input gets loaded from here
-        UserInputs: [{ id: 1, value: "false" }],
-      },
-    ],
   };
 }

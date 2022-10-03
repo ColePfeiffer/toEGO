@@ -6,16 +6,17 @@
         size="25px" />
     </template>
     <template v-slot:title-bar-controls>
+      <!-- TODO: ??? -->
       <q-btn v-if="isShowingEditor"
-        :style="$store.state.data.buttonFlatStyleTransparent"
+        :style="$store.state.layout.buttonFlatStyleTransparent"
         flat
         icon="bi-blockquote-right"
         @click="toggleVisibilityOfEventText"
-        color="$store.state.data.sFontColor">
+        color="$store.state.layout.sFontColor">
       </q-btn>
     </template>
     <template v-slot:content>
-      <!-- Content: Emoji, Title, What happened? -->
+      <!-- Emoji-Selection, Title, What happened? -->
       <q-card v-if="isShowingEditor === false"
         class="transparent no-shadow">
         <q-card-section class="row items-center justify-center">
@@ -24,7 +25,7 @@
             <!-- Title -->
             <div class="row justify-center items-center">
               <div class="col-12 underlined promptTitle"
-                :style="getStyleForHeadline">
+                :style="$store.getters['layout/getStyleForHeadline']">
                 How are you feeling?
               </div>
             </div>
@@ -45,7 +46,7 @@
                     ]">
                     <template v-slot:angry>
                       <q-btn padding="xs"
-                        :style="$store.state.data.buttonFlatStyleTransparent"
+                        :style="$store.state.layout.buttonFlatStyleTransparent"
                         flat
                         size="15px"
                         icon="las la-angry" />
@@ -53,7 +54,7 @@
 
                     <template v-slot:sad>
                       <q-btn padding="xs"
-                        :style="$store.state.data.buttonFlatStyleTransparent"
+                        :style="$store.state.layout.buttonFlatStyleTransparent"
                         flat
                         size="15px"
                         icon="las la-sad-tear" />
@@ -61,7 +62,7 @@
 
                     <template v-slot:meh>
                       <q-btn padding="xs"
-                        :style="$store.state.data.buttonFlatStyleTransparent"
+                        :style="$store.state.layout.buttonFlatStyleTransparent"
                         flat
                         size="15px"
                         icon="las la-meh" />
@@ -69,7 +70,7 @@
 
                     <template v-slot:content>
                       <q-btn padding="xs"
-                        :style="$store.state.data.buttonFlatStyleTransparent"
+                        :style="$store.state.layout.buttonFlatStyleTransparent"
                         flat
                         size="15px"
                         icon="las la-smile" />
@@ -77,7 +78,7 @@
 
                     <template v-slot:happy>
                       <q-btn padding="xs"
-                        :style="$store.state.data.buttonFlatStyleTransparent"
+                        :style="$store.state.layout.buttonFlatStyleTransparent"
                         flat
                         size="15px"
                         icon="las la-grin-alt" />
@@ -132,11 +133,11 @@
           ref="scrollArea">
           <div v-if="isShowingEventText"
             class="defaultFont smallText"
-            :style="getStyleForQuotedEventText">
+            :style="$store.getters['layout/getStyleForQuotedEventText']">
             <q-scroll-area :style="styleEventTextScrollArea">
               <span class="bold">You wrote:</span> <br />
               <span class="text-justify keep-whitespace">{{
-              quotedText
+              textForQuoted
               }}</span>
             </q-scroll-area>
           </div>
@@ -164,7 +165,7 @@
         no-wrap
         class="button col-2 q-mr-xs"
         flat
-        :style="$store.state.data.buttonFlatStyleAccentColor"
+        :style="$store.state.layout.buttonFlatStyleAccentColor"
         @click="showEditor">
         <div class="row items-center no-wrap">
           <q-icon size="15px"
@@ -178,7 +179,7 @@
       </q-btn>
       <q-btn no-caps
         class="button col-2 q-mx-xs"
-        :style="$store.state.data.buttonFlatStyle"
+        :style="$store.state.layout.buttonFlatStyle"
         flat
         @click="closeDialog">
         <div class="text-center text-black">Discard</div>
@@ -186,10 +187,10 @@
 
       <q-btn no-caps
         class="button col-2 q-ml-xs"
-        :style="$store.state.data.buttonFlatStyle"
+        :style="$store.state.layout.buttonFlatStyle"
         flat
         @click="saveChanges">
-        <div class="text-center text-black">Create</div>
+        <div class="text-center text-black">{{textForRightButton}}</div>
       </q-btn>
     </template>
   </BasePage>
@@ -199,31 +200,219 @@
 
 <script>
 import BasePage from "src/components/ui/BasePage.vue";
+import BaseEditor from "src/components/ui/BaseEditor.vue";
 
 export default {
-  components: { BasePage, },
+  components: { BasePage, BaseEditor },
   data() {
     return {
       isShowingEditor: false,
-
+      styleEventTextScrollArea: {
+        height: "125px",
+      },
+      heightForScrollArea: "height: 600px",
+      isShowingEventText: false,
+      widthOfDialog: 350,
     };
-  },
-  created() {
-    console.log("you created me");
-    console.log(this.$store.getters["layout/getStyleForHeadline"])
   },
   watch: {
 
   },
+  computed: {
+    textForRightButton() {
+      if ((this.diaryEntry === undefined) | (this.editor === "")) {
+        return "Create";
+      } else {
+        return "Save changes";
+      }
+    },
+    textForQuoted() {
+      //eventData.text.substring(0, this.maxLengthOfCardText) + "..."
+      if (this.text === "") {
+        return "Nothing yet.";
+      } else {
+        return '"' + this.text + '"';
+      }
+    },
+
+
+    getIconForEditorButton() {
+      if (this.isShowingEditor) {
+        return "bi-arrow-left";
+      } else {
+        return "bi-file-text";
+      }
+    },
+    getLabelForEditorButton() {
+      if (this.isShowingEditor) {
+        return "Back";
+      } else {
+        return "Editor";
+      }
+    },
+
+    editor: {
+      get() {
+        return this.$store.state.data.eventData.editor;
+      },
+      set(value) {
+        this.$store.commit("data/updateEditor", value);
+      },
+    },
+    title: {
+      get() {
+        return this.$store.state.data.eventData.title;
+      },
+      set(value) {
+        this.$store.commit("data/updateTitle", value);
+      },
+    },
+    mood: {
+      get() {
+        return this.$store.state.data.eventData.mood;
+      },
+      set(value) {
+        this.$store.commit("data/updateMood", value);
+      },
+    },
+    text: {
+      get() {
+        return this.$store.state.data.eventData.text;
+      },
+      set(value) {
+        this.$store.commit("data/updateText", value);
+      },
+    },
+  },
   methods: {
+    pasteTemplate(template) {
+      if (this.editor != "") {
+        this.editor = this.editor + "<br>" + template.text;
+      } else {
+        this.editor = template.text;
+      }
+    },
+    openDialogCreateTemplate() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogCreateEventTemplate",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+    openDialogViewTemplates() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogViewEventTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
     toggleVisibilityOfEventText() {
       this.isShowingEventText = !this.isShowingEventText;
+    },
+    showEditor() {
+      // applying default template
+      let defaultTemplate =
+        this.$store.getters["data/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.$store.commit("data/updateEditor", defaultTemplate);
+      }
+
+      this.isShowingEditor = !this.isShowingEditor;
+    },
+    closeDialog() {
+      let lastPath = this.$router.options.history.state.back;
+      lastPath = lastPath.substring(1);
+      this.$store.commit("data/resetEventData");
+      this.$router.push(lastPath);
+    },
+    saveChanges() {
+      if (this.mood === "") {
+        this.mood = "las la-meh-blank";
+      }
+      console.log("mode: ", this.$store.state.data.newEventIsInCreationMode);
+      // check wether a new event is created or an existing one is being edited
+      if (this.$store.state.data.newEventIsInCreationMode) {
+        let lastPath = this.$router.options.history.state.back;
+
+        // if we are at home, we want to use new Date
+        if (lastPath === "/home") {
+          // creating a new event:
+          this.$store.commit("data/addEventToEvents", new Date());
+          // if we are at the diary page, we want to use lastSelectedDate
+        } else if (lastPath === "/diary") {
+          // creating a new event:
+          this.$store.commit(
+            "data/addEventToEvents",
+            this.$store.state.data.lastSelectedDate
+          );
+        }
+      } else {
+        // editing an existing event:
+        this.$store.commit("data/saveChangesToEditedEvent");
+      }
+      this.closeDialog();
     },
   },
 }
 </script>
 
 
-<style scoped>
 
+<style scoped src="98.css">
+.promptContainer {
+  text-align: center;
+}
+
+.containerForSection {
+  height: 600px;
+}
+
+.editorSection {
+  background-color: white;
+}
+
+.test {
+  color: puprle;
+}
+</style>
+
+<style scoped>
+.container {
+  background-color: white;
+  height: 600px;
+}
+
+.input {
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.definedWidth {
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.promptContainer {
+  text-align: center;
+}
+
+.normalStyle {
+  color: green;
+}
+
+.topMargin {
+  margin-top: 20px;
+}
+
+.underlined {
+  border-bottom: 1px solid black;
+  padding: 0 0 4px;
+}
+
+.promptTitle {
+  font-weight: bolder;
+  font-size: 1.1em;
+}
 </style>

@@ -15,20 +15,30 @@
 $primary: #00080f;
 $secondary: #dfd4f5;
 $accent: #ffc107;
+$info: #35359fc9;
 
 $dark: #1d1d1d;
 
 $positive: #21ba45;
 $negative: #c10015;
-$info: #35359fc9;
 $warning: #f2c037;
+
+$whitesmoke: #f5f5f5;
 
 $lightGray: #c0c0c0;
 
+.text-whitesmoke {
+  color: #f5f5f5 !important;
+}
+
+.bg-whitesmoke {
+  background: #f5f5f5 !important;
+}
+
 .text-lightGray {
-    color: $lightGray;
+  color: $lightGray;
 }
 
 .bg-lightGray {
-    color: $lightGray;
+  color: $lightGray;
 }
