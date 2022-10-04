@@ -34,7 +34,7 @@
     <div v-else
       v-for="event in events"
       :key="event.id">
-      <EventCard class="q-mb-lg"
+      <EventCard :style="styleForEventCard"
         :eventData="event"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
@@ -70,6 +70,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    marginBottom: {
+      type: Number,
+      default: 33
+    }
+
   },
   data() {
     return {
@@ -131,6 +136,9 @@ export default {
       console.log(this.diaryEntry);
       return this.diaryEntry.events.slice().reverse();
     },
+    styleForEventCard() {
+      return { 'margin-bottom': this.marginBottom + "px" }
+    }
   },
 };
 </script>

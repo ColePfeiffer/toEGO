@@ -220,7 +220,7 @@ export default {
   },
   computed: {
     textForRightButton() {
-      if ((this.diaryEntry === undefined) | (this.editor === "")) {
+      if ((this.$store.state.data.eventData === undefined) | (this.$store.state.data.eventData.editor === "")) {
         return "Create";
       } else {
         return "Save changes";

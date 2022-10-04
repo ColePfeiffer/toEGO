@@ -6,14 +6,15 @@
         <!-- mood emoji -->
         <q-item-section avatar
           class="card-text">
-          <row justify-center
-            items-center>
+          <div class="row
+            justify-center
+            items-center">
             <q-icon size="22.5px"
               class="col-auto"
               :name="eventData.mood"
               text-color="secondary"
               color="secondary"></q-icon>
-          </row>
+          </div>
         </q-item-section>
 
         <!-- event title, expand button -->
@@ -240,7 +241,6 @@ export default {
 
 .card-text {
   padding-left: 9px;
-  background-color: goldenrod;
 }
 
 .card-text,
