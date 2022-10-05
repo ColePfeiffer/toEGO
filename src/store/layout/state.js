@@ -1,5 +1,7 @@
 export default function () {
   return {
+    fontsize: "12.5",
+    nonDefaultFont: "Tahoma",
     accent2: "#14157a",
     whitesmoke: "#f5f5f5",
     dark: "1d1d1d",

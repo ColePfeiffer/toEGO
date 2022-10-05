@@ -2,152 +2,101 @@
   <BaseCard :isTextSetToCentered="false">
     <template v-slot:content>
       <!-- Mood, Title, Expand Button -->
-      <q-item class="padding">
-        <!-- mood emoji -->
-        <q-item-section avatar
-          class="card-text">
-          <div class="row
-            justify-center
-            items-center">
-            <q-icon size="22.5px"
-              class="col-auto"
-              :name="eventData.mood"
-              text-color="secondary"
-              color="secondary"></q-icon>
-          </div>
-        </q-item-section>
-
-        <!-- event title, expand button -->
+      <q-item>
         <q-item-section>
-          <div class="row justify-between items-center q-py-none q-px-xs">
-            <div class="col-10 text-left">
+          <div class="row justify-between items-center q-pa-none">
+            <div class="col-1 ">
+              <q-icon size="22.5px"
+                :name="eventData.mood"
+                text-color="secondary"
+                color="secondary"></q-icon>
+            </div>
+            <div class="col-10 text-left  q-pl-md">
               <q-item-label class="card-title">{{
               eventData.title
               }}</q-item-label>
             </div>
             <div v-if="isShowingExpandButtonOfEventCard === true"
-              class="col-2 text-right">
+              class="col-1 text-right ">
               <BaseButtonExpandable color="secondary"
                 dense
                 :isEventExpanded="eventData.expanded"
                 @expand="expand"></BaseButtonExpandable>
             </div>
             <div v-else
-              class="col-2"></div>
+              class="col-1"></div>
           </div>
+
+
         </q-item-section>
       </q-item>
 
       <q-separator class="card-separator" />
       <!-- Text, Extras -->
-      <div class="padding"
-        style="min-height: 80px">
+      <div style="min-height: 80px">
         <!-- Expanded: False -->
-        <div v-if="
-        eventData.expanded === false">
-          <div v-if="eventData.text.length >= maxLengthOfCardText">
-            <q-card-section v-if="!isEventEditorEmpty"
-              class="card-text">
-              {{ eventData.text.substring(0, this.maxLengthOfCardText - 5) }}
-              <span style="color: var(--q-secondary)">
-                (<q-icon size="22.5px"
-                  name="bi-three-dots"
-                  text-color="secondary"
-                  color="secondary">
-                </q-icon>)
-              </span>
-            </q-card-section>
-            <q-card-section v-else
-              class="card-text">
+        <q-card-section v-if="!eventData.expanded"
+          class="row justify-left items-center">
+          <div>
+            <!-- Text is shortened -->
+            <p v-if="eventData.text.length >= maxLengthOfCardText">
               {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
-            </q-card-section>
-          </div>
-          <!-- Expanded: False -->
-          <div v-else>
-            <q-card-section class="card-text">
+            </p>
+            <!-- Text can be used as is -->
+            <p v-else>
               {{ eventData.text }}
-              <span v-if="!isEventEditorEmpty"
-                style="color: var(--q-secondary)">
-                (<q-icon size="22.5px"
-                  name="bi-three-dots"
-                  text-color="secondary"
-                  color="secondary">
-                </q-icon>)
-              </span>
-            </q-card-section>
+            </p>
           </div>
-        </div>
+          <!-- Indicator whether or not this event holds editor-content -->
+          <span v-if="!isEventEditorEmpty"
+            class="q-ml-xs"
+            style="color: var(--q-secondary)">
+            (<q-icon size="22.5px"
+              name="bi-three-dots"
+              text-color="secondary"
+              color="secondary">
+            </q-icon>)
+          </span>
+        </q-card-section>
         <!-- Expanded: True -->
         <div v-else>
-          <!-- view when expanded and editor text is empty -->
-          <div v-if="isEventEditorEmpty">
-            <q-card-section class="card-text">
+          <!-- Full event text + editor content (if not empty)-->
+          <q-card-section>
+            <!-- Event text -->
+            <p>
               <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
-            </q-card-section>
-
-            <q-card-section class="q-pr-none card-time">
-              <div class="row justify-between items-center">
-                <div class="col-3">
-                  {{ timeAgo }}
-                </div>
-                <div class="col-3 text-right">
-                  <div class="row no-wrap">
-                    <q-btn class="col"
-                      v-if="eventData.expanded === true"
-                      flat
-                      icon="delete"
-                      color="secondary"
-                      @click="deleteEvent"></q-btn>
-                    <q-btn class="col"
-                      v-if="eventData.expanded === true"
-                      flat
-                      icon="edit"
-                      color="secondary"
-                      @click="editEvent"></q-btn>
-                  </div>
+            </p>
+            <!-- If Editor isn't empty, show content here -->
+            <div v-if="!isEventEditorEmpty"
+              style="white-space: pre-wrap"
+              v-html="eventData.editor">
+            </div>
+          </q-card-section>
+          <q-card-section class="q-pa-xs q-pl-md">
+            <!-- Creation time, buttons to edit and delete -->
+            <div class="row justify-between items-center q-pr-none card-time">
+              <div class="col-3">
+                {{ timeAgo }}
+              </div>
+              <div class="col-3 text-right">
+                <div class="row no-wrap">
+                  <q-btn class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="delete"
+                    color="secondary"
+                    @click="deleteEvent"></q-btn>
+                  <q-btn class="col"
+                    v-if="eventData.expanded === true"
+                    flat
+                    icon="edit"
+                    color="secondary"
+                    @click="editEvent"></q-btn>
                 </div>
               </div>
-            </q-card-section>
-          </div>
-          <!-- view when expanded and editor text isn't empty -->
-          <div v-else
-            class="card-text">
-            <q-card-section>
-              <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
-            </q-card-section>
-            <q-separator class="card-separator" />
-            <div>
-              <q-card-section style="white-space: pre-wrap"
-                v-html="eventData.editor">
-              </q-card-section>
-              <q-card-section class="card-time">
-                <div class="row justify-between items-center">
-                  <div class="col-3">
-                    {{ timeAgo }}
-                  </div>
-                  <div class="col-3">
-                    <div class="row no-wrap">
-                      <q-btn class="col"
-                        v-if="eventData.expanded === true"
-                        flat
-                        icon="delete"
-                        color="secondary"
-                        @click="deleteEvent"></q-btn>
-                      <q-btn class="col"
-                        v-if="eventData.expanded === true"
-                        flat
-                        icon="edit"
-                        color="secondary"
-                        @click="editEvent"></q-btn>
-                    </div>
-                  </div>
-                </div>
-              </q-card-section>
             </div>
-
-          </div>
+          </q-card-section>
         </div>
-
 
       </div>
     </template>
@@ -232,17 +181,6 @@ export default {
 </script>
 
 <style scoped>
-.padding {
-  padding-left: 9px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  padding-right: 9px;
-}
-
-.card-text {
-  padding-left: 9px;
-}
-
 .card-text,
 .card-time {
   font-size: 12.5px;

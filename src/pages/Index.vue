@@ -2,6 +2,7 @@
   <q-page class="q-pa-sm">
     <TheHeader></TheHeader>
     <TheEventViewer :diaryEntry="getDiaryEntry"
+      :marginBottom="22"
       class="q-px-lg q-pt-xl "></TheEventViewer>
     <!-- Player Character -->
   </q-page>

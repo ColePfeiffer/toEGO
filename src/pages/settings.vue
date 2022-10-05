@@ -37,7 +37,7 @@
                       val="battery" />
                   </template>
                 </BaseItemForSettingsTabPanel>
-                <BaseItemForSettingsTabPanel title="Change Font"
+                <BaseItemForSettingsTabPanel title="Font-Style"
                   caption="Use a non-pixel font.">
                   <template v-slot:content>
                     <q-btn-toggle v-model="isUsingNonPixelFont"
@@ -57,6 +57,27 @@
                   </template>
                 </BaseItemForSettingsTabPanel>
 
+                <BaseItemForSettingsTabPanel title="Font-Size"
+                  caption="Change the font size.">
+                  <template v-slot:content>
+                    <q-btn-toggle v-model="fontsize"
+                      class="my-custom-toggle"
+                      :style="$store.getters['layout/getFontsize']"
+                      color="transparent"
+                      square
+                      unelevated
+                      toggle-color="accent"
+                      text-color="lightgrey1"
+                      toggle-text-color="white"
+                      no-caps
+                      :options="[
+                        {label: 'xs', value: 'xs'},
+                        {label: 's', value: 's'},
+                        {label: 'md', value: 'md'}
+                      ]" />
+                  </template>
+                </BaseItemForSettingsTabPanel>
+
               </template>
             </BaseSettingsTabPanelGroup>
 
@@ -72,6 +93,7 @@
                 </BaseItemForSettingsTabPanel>
               </template>
             </BaseSettingsTabPanelGroup>
+
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -96,6 +118,7 @@ export default {
       settingsTab: 'view',
       isDarkModeTurnedOn: false,
       isUsingNonPixelFont: '1',
+      fontsize: 's',
       isShowingExpandButtonForEventsViaDiary: false,
     };
   },
@@ -107,6 +130,13 @@ export default {
     isShowingExpandButtonForEventsViaDiary(newValue) {
       console.log(newValue);
       this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
+    },
+    fontsize(newValue) {
+      this.$store.dispatch(
+        "layout/changeFontsize",
+        newValue
+      );
+
     },
   },
   methods: {

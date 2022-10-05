@@ -2,8 +2,8 @@
   <q-page class="q-pa-sm">
     <div class="outerContainer row justify-center items-center q-pa-md q-pt-xl">
       <!-- Header / Titlebar-->
-      <div class="title-bar col-md-11 col-12 row"
-        :style="getStyleForDialogTitleBar">
+      <div class="title-bar col-md-11 col-12 row shadow-1"
+        :style="$store.getters['layout/getStyleForTitleBar']">
         <div class="title-bar-text">
           <div class="q-pr-lg">
             <slot name="title-bar-icon"></slot>
@@ -15,8 +15,8 @@
         </div>
       </div>
       <!-- Content -->
-      <div class="col-md-11 col-12 container q-mt-sm"
-        :style="outerContainerStyle">
+      <div class="col-md-11 col-12 container q-mt-sm shadow-2"
+        :style="$store.getters['layout/getStyleForRegularCard']">
         <slot name="content"></slot>
       </div>
       <!-- Footer / Buttons -->
@@ -35,52 +35,6 @@ export default {
   props: {
     icon: String,
     titleOfPage: String,
-  },
-  data() {
-    return {
-      styleForDialogTitleBar: { background: "var(--q-secondary)" },
-      styleForDialogTitleBarDark: { background: "var(--q-secondary)" },
-    };
-  },
-  methods: {
-
-  },
-  computed: {
-    outerContainerStyle() {
-      let currentStyle;
-      let styleDark = {
-        "background-color": "var(--q-dark)",
-        color: "white",
-      };
-      let styleLight = {
-        "background-color": "rgb(255 255 255 )",
-        color: "black",
-      };
-
-      if (this.$store.getters["layout/isDarkModeActive"]) {
-        currentStyle = styleDark;
-      } else {
-        currentStyle = styleLight;
-      }
-
-
-      return currentStyle;
-    },
-
-    getStyleForHeadline() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
-        return this.$store.state.layout.sTextBasicShadowDarkWhiteFont;
-      } else {
-        return this.$store.state.layout.sTextBasicShadowBlackFont;
-      }
-    },
-    getStyleForDialogTitleBar() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.styleForDialogTitleBarDark;
-      } else {
-        return this.styleForDialogTitleBar;
-      }
-    },
   },
 };
 </script>

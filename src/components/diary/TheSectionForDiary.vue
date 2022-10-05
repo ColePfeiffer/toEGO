@@ -20,14 +20,14 @@
           textColor="white"
           icon="bi-chevron-left"
           label="back"
-          :style="$store.state.data.sTextAccentShadow"
+          :style="$store.state.layout.sTextAccentShadow"
           @click-button="goBack"></ButtonForDiarySection>
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
           icon="bi-eye"
           label="view"
-          :style="$store.state.data.sTextAccentShadow"
+          :style="$store.state.layout.sTextAccentShadow"
           @click-button="openEntryInFullscreen"></ButtonForDiarySection>
       </template>
 
@@ -38,7 +38,7 @@
           textColor="accent"
           icon="fas fa-save"
           label="save"
-          :style="$store.state.data.sTextAccentShadow"
+          :style="$store.state.layout.sTextAccentShadow"
           @click-button="saveChanges" />
         <!-- Button: Edit diaryentry -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
@@ -46,7 +46,7 @@
           icon="bi-pencil-fill"
           label="save"
           size="9.5px"
-          :style="$store.state.data.sTextAccentShadow"
+          :style="$store.state.layout.sTextAccentShadow"
           @click-button="editDiaryEntry" />
       </template>
 

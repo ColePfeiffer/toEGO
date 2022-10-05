@@ -7,15 +7,15 @@
       size="12px"
       icon-size="xs"
       :label="getIntentionText"
-      class="smallText q-pa-xs text-center text-white"
-      :style="$store.state.layout.sTextAccentShadow"
+      class="q-pa-xs text-center text-white"
+      :style="{...{'font-size': '12.5px'}, ...$store.state.layout.sTextAccentShadow}"
       expand-icon="bi-chevron-down"
       expanded-icon="bi-chevron-up"
       expand-icon-class="text-accent">
-      <q-card class="my-card  shadow-3 q-pa-sm q-pb-md q-mt-md   "
+      <q-card class="q-pa-sm q-pb-md q-mt-md   "
         :style="$store.getters['layout/getStyleForTransparentCard']">
         <q-card-section>
-          <div class="cursor-pointer smallText"
+          <div class="cursor-pointer"
             :style="$store.getters['layout/getStyleForText']">
             {{ text }}
             <q-popup-edit v-model="text"

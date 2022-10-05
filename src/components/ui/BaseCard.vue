@@ -1,8 +1,8 @@
 <template>
-  <q-card class="test my-base-card shadow-3">
+  <q-card class="test my-base-card shadow-3"
+    :style="$store.getters['layout/getFontsize']">
     <slot name="content">
-      <q-card-section class="card-text"
-        :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
+      <q-card-section :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
         <slot name="contentInsideSection">
         </slot>
       </q-card-section>
@@ -43,7 +43,6 @@ export default {
 
 <style>
 .my-base-card {
-  font-size: 12.5px;
   background: whitesmoke;
   border-width: 1.5px;
   border-color: #FFFFFF var(--q-secondary) var(--q-secondary) #FFFFFF;
@@ -60,7 +59,6 @@ export default {
 }
 
 .border {
-  font-size: 12.5px;
   display: grid;
   place-items: center;
   border: 8px solid;

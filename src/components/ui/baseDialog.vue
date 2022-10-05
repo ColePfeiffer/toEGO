@@ -1,40 +1,59 @@
 <template>
   <!-- whole thing -->
-  <q-dialog class="baseDialog" full-width persistent>
+  <q-dialog class="baseDialog"
+    full-width
+    persistent>
     <!-- row -->
-    <div class="row justify-center" :style="boxShadowStyle">
+    <div class="row justify-center"
+      :style="boxShadowStyle">
       <div class="col-12 col-sm-7 col-md-4 col-xl-3">
-        <div class="window dialogBox column" :style="getStyleForDialog">
+        <div class="window dialogBox column"
+          :style="getStyleForDialog">
           <div class="col-1">
             <!-- Title Bar -->
-            <div class="title-bar row" :style="getStyleForDialogTitleBar">
+            <div class="title-bar row"
+              :style="getStyleForDialogTitleBar">
               <div class="title-bar-text">
                 <slot name="dialogTitle"></slot>
               </div>
               <div class="title-bar-controls">
-                <button v-if="hasHelpOption" aria-label="Help" @click="showHelp"></button>
-                <button aria-label="Close" @click="closeDialog"></button>
+                <button v-if="hasHelpOption"
+                  aria-label="Help"
+                  @click="showHelp"></button>
+                <button aria-label="Close"
+                  @click="closeDialog"></button>
               </div>
             </div>
             <!-- Content Slot -->
-            <slot name="content" :style="getStyleForDialog"></slot>
+            <slot name="content"
+              :style="getStyleForDialog"></slot>
             <!-- Footer Slot | Option to hide buttons -->
             <slot name="footer">
               <div class="col-1 q-pa-sm q-pb-md q-mt-md">
                 <div class="row justify-end">
-                  <q-btn v-if="hasExtraButton" class="button extraButton col-3 col-md-2 q-mx-xs" flat
-                    :style="$store.state.data.buttonFlatStyleAccentColor" :icon="extraButtonIcon"
+                  <q-btn v-if="hasExtraButton"
+                    class="button extraButton col-3 col-md-2 q-mx-xs"
+                    flat
+                    :style="$store.state.layout.buttonFlatStyleAccentColor"
+                    :icon="extraButtonIcon"
                     @click="clickExtraButton">
                     <slot name="extra-button"> </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
+                  <q-btn class="button col-3 col-md-2 q-mx-xs"
+                    no-caps
+                    :style="$store.state.layout.buttonFlatStyle"
+                    flat
                     @click="closeDialog">
                     <slot name="close-button"> Cancel </slot>
                   </q-btn>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs" no-caps :style="$store.state.data.buttonFlatStyle" flat
-                    :disabled="isSaveButtonDisabled" @click="saveChanges">
+                  <q-btn class="button col-3 col-md-2 q-mx-xs"
+                    no-caps
+                    :style="$store.state.layout.buttonFlatStyle"
+                    flat
+                    :disabled="isSaveButtonDisabled"
+                    @click="saveChanges">
                     <slot name="confirm-button"> Save </slot>
                   </q-btn>
                 </div>

@@ -1,4 +1,3 @@
-/*
-export function someMutation (state) {
-}
-*/
+export const setFontsize = (state, fontsize) => {
+  state.fontsize = fontsize;
+};

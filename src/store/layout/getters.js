@@ -36,13 +36,49 @@ export const getStyleForTransparentCard = (state, getters) => {
 };
 
 export const getStyleForText = (state, getters) => {
+  let style = {};
+  style = getters.getFontsize;
+
   if (getters.isDarkModeActive) {
-    return state.sTextBasicShadowDarkWhiteFont;
+    let merged = {
+      ...getters.getFontsize,
+      ...state.sTextBasicShadowDarkWhiteFont,
+    };
+    return merged;
+  } else {
+    style["font-color"] = "black";
+    style["text-shadow"] = "2px 2px 3px rgba(var(--q-secondary), 0.5)";
+    return style;
+  }
+};
+
+export const getShadowForAriaButtons = (state) => {
+  return {
+    "text-shadow": state.accent2 + state.lowOpacity + " 1px 1px 1px",
+  };
+};
+
+export const getStyleForRegularCard = (getters) => {
+  if (getters.isDarkModeActive) {
+    return {
+      "background-color": "var(--q-dark)",
+      color: "white",
+    };
   } else {
     return {
-      "font-color": "black",
-      //"text-shadow": "0 0 3px var(--q-secondary), 0 0 5px var(--q-secondary)",
-      "text-shadow": "2px 2px 3px rgba(var(--q-secondary), 0.5) ",
+      "background-color": "rgb(255 255 255 )",
+      color: "black",
+    };
+  }
+};
+
+export const getStyleForTitleBar = (state, getters) => {
+  if (getters.isDarkModeActive) {
+    return { background: "var(--q-secondary)" };
+  } else {
+    return {
+      background: "var(--q-secondary)",
+      "text-shadow": state.accent2 + state.lowOpacity + " 1px 1px 1px",
     };
   }
 };
@@ -55,6 +91,30 @@ export const getStyleForHeadline = (state, getters) => {
   }
 };
 
+export const getNonDefaultFont = (state) => {
+  return { "font-family": state.nonDefaultFont };
+};
+
+export const getFontsize = (state, getters) => {
+  return { "font-size": state.fontsize + "px" };
+};
+
+export const getToolbarIconColor = (state, getters) => {
+  if (getters.isDarkModeActive) {
+    return "secondary";
+  } else {
+    return "black";
+  }
+};
+
+export const getToolbarBackgroundColor = (state, getters) => {
+  if (getters.isDarkModeActive) {
+    return "black";
+  } else {
+    return "white";
+  }
+};
+
 export const getStyleForQuotedEventText = (state, getters) => {
   if (getters.isDarkModeActive) {
     return {
@@ -64,6 +124,7 @@ export const getStyleForQuotedEventText = (state, getters) => {
       padding: "0.5em 10px",
       "margin-bottom": "10px",
       "margin-top": "2px",
+      "font-size": state.fontsize + "px",
     };
   } else {
     return {
@@ -72,6 +133,7 @@ export const getStyleForQuotedEventText = (state, getters) => {
       padding: "0.5em 10px",
       "margin-bottom": "10px",
       "margin-top": "2px",
+      "font-size": state.fontsize + "px",
     };
   }
 };
