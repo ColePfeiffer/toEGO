@@ -1,12 +1,25 @@
 export default function () {
   return {
+    // Font Settings
+    defaultFont: "PressStart",
     fontsize: "12.5",
-    nonDefaultFont: "Tahoma",
+    nonDefaultFont: "Inter",
+
+    // Color Brand Settings
+    primary: "#00080f", // Font Color
+    secondary: "#dfd4f5",
+    accent: "#ffc107",
     accent2: "#14157a",
+    // System colors, can't be changed by the user
     whitesmoke: "#f5f5f5",
-    dark: "1d1d1d",
+    blacksmoke: "#2c2c2c",
+    dark: "#252425",
+    white: "#ffffff",
+    lightgrey: "#d3d3d3",
+    // Opacity
     lowOpacity: "30",
     mediumOpacity: "a6",
+    // Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
       "https://64.media.tumblr.com/73966b6acfd978cc2ae90639bd803d73/tumblr_inline_mydbkloJQm1qak244.gif",

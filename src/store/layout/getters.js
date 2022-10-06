@@ -5,6 +5,7 @@ export function someGetter (state) {
 import { useQuasar } from "quasar";
 import { colors } from "quasar";
 import { getCssVar } from "quasar";
+import state from "./state";
 
 const { getPaletteColor } = colors;
 const { lighten } = colors;
@@ -58,44 +59,82 @@ export const getShadowForAriaButtons = (state) => {
   };
 };
 
-export const getStyleForRegularCard = (getters) => {
+export const getStyleForRegularCard = (state, getters) => {
+  let style = {};
+  style["border-radius"] = "0px";
+  style["border-style"] = "solid";
+  style["font-size"] = state.fontsize + "px";
+
   if (getters.isDarkModeActive) {
-    return {
-      "background-color": "var(--q-dark)",
-      color: "white",
-    };
+    style["background-color"] = state.blacksmoke;
+    style["color"] = "white";
+    style["border"] = "2px solid";
+    style["border-image-slice"] = "1";
+    style["border-width"] = "1px";
+    style["border-image-source"] =
+      "linear-gradient(to left, turquoise, greenyellow)";
+    /* amazing border
+    style["border-width"] = "20px";
+    style["border-image"] =
+      "repeating-radial-gradient(circle at 10px,turquoise, pink 2px, greenyellow 4px, pink 2px) 1";
+    */
   } else {
-    return {
-      "background-color": "rgb(255 255 255 )",
-      color: "black",
-    };
+    style["background-color"] = state.whitesmoke;
+    style["color"] = "black";
+    style["border-width"] = "1.5px";
+    style["border-color"] =
+      "#FFFFFF var(--q-secondary) var(--q-secondary) #FFFFFF";
   }
+  return style;
 };
 
-export const getStyleForTitleBar = (state, getters) => {
+export const getStyleForBasePage = (state, getters) => {
+  let style = {};
+  style["border-radius"] = "0px";
+  style["font-size"] = state.fontsize + "px";
+
   if (getters.isDarkModeActive) {
-    return { background: "var(--q-secondary)" };
+    style["background-color"] = state.dark;
+    style["color"] = "white";
   } else {
-    return {
-      background: "var(--q-secondary)",
-      "text-shadow": state.accent2 + state.lowOpacity + " 1px 1px 1px",
-    };
+    style["background-color"] = state.white;
+    style["color"] = "black";
   }
+  return style;
+};
+
+export const getStyleForTitleBar = (state) => {
+  let style = {};
+  style["background"] = "var(--q-secondary)";
+  style["text-shadow"] = state.accent2 + state.lowOpacity + " 1px 1px 1px";
+  style["text-family"] = state.nonDefaultFont;
+  return style;
 };
 
 export const getStyleForHeadline = (state, getters) => {
+  let style = {};
+  style["font-weight"] = "bolder";
+  style["font-size"] = "1.1em";
+  //style["text-family"] = state.nonDefaultFont;
+  style["border-bottom"] = "1px solid black";
+  style["padding"] = "0 0 4px";
+
   if (getters.isDarkModeActive) {
-    return state.sTextBasicShadowDarkWhiteFont;
+    style["text-shadow"] = state.accent2 + " 2px 2px 2px";
+    style["color"] = "white";
   } else {
-    return state.sTextBasicShadowBlackFont;
+    style["text-shadow"] = state.secondary + " 2px 2px 2px";
+    style["color"] = "black";
   }
+  return style;
 };
 
 export const getNonDefaultFont = (state) => {
   return { "font-family": state.nonDefaultFont };
 };
 
-export const getFontsize = (state, getters) => {
+export const getFontsize = (state) => {
+  console.log("lol");
   return { "font-size": state.fontsize + "px" };
 };
 

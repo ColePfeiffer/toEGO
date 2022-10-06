@@ -16,7 +16,7 @@
       </div>
       <!-- Content -->
       <div class="col-md-11 col-12 container q-mt-sm shadow-2"
-        :style="$store.getters['layout/getStyleForRegularCard']">
+        :style="$store.getters['layout/getStyleForBasePage']">
         <slot name="content"></slot>
       </div>
       <!-- Footer / Buttons -->

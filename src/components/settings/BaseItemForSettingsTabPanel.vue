@@ -1,14 +1,15 @@
 <template>
   <q-item tag="label"
     :v-ripple="false">
-    <q-item-section>
-      <q-item-label>{{title}}</q-item-label>
-      <q-item-label caption>{{caption}}</q-item-label>
-    </q-item-section>
-    <q-item-section avatar>
+    <div class="row full-width justify-between"
+      :style="$store.getters['layout/getNonDefaultFont']">
+      <q-item-section class="col">
+        <q-item-label>{{title}}</q-item-label>
+        <q-item-label caption>{{caption}}</q-item-label>
+      </q-item-section>
       <slot name="content">
       </slot>
-    </q-item-section>
+    </div>
   </q-item>
 </template>
 

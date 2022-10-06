@@ -3,7 +3,7 @@
     class="col-2 q-ml-xs"
     :ripple="false"
     :flat="!hasShadow"
-    :style="$store.state.layout.buttonFlatStyle"
+    :style="getStyle"
     @click="clickButton"
     :label="buttonText">
     <slot name="content"></slot>
@@ -24,6 +24,22 @@ export default {
   methods: {
     clickButton() {
       this.$emit("click-button");
+    }
+  },
+  computed: {
+    getStyle() {
+      let style = {
+        "min-width": "83px",
+        "max-width": "83px",
+        "min-height": "23px",
+        "box-shadow": "none",
+        "background-color": "var(--q-secondary)"
+      };
+
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = "black";
+
+      return style;
     }
   }
 };

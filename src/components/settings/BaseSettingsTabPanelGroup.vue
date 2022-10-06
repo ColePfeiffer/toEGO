@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="q-px-md promptTitle underlined">{{title}}</div>
+    <div class="q-px-none settings-panel-group-title underlined"
+      :style="$store.getters['layout/getNonDefaultFont']">{{title}}</div>
     <div class="q-mb-xl">
-      <div class="smallText borderStyleForTab q-mt-md">
+      <div class="settings-tab q-mt-md"
+        :style="getStyle">
         <q-list class="q-tb-md">
           <slot name="q-item-section-content">
           </slot>
@@ -26,25 +28,34 @@ export default {
 
   },
   computed: {
+    getStyle() {
+      let style = {};
 
+      style["border-radius"] = "0px";
+      style["font-size"] = "12px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+
+      if (this.$store.getters['layout/isDarkModeActive']) {
+        style["background-color"] = this.$store.state.layout.blacksmoke;
+      } else {
+        style["background-color"] = this.$store.state.layout.whitesmoke;
+
+      }
+      return style;
+    }
   },
 };
 </script>
 
 <style scoped>
-.borderStyleForTab {
-  font-size: 12.5px;
-  background: whitesmoke;
-  border-radius: 0px;
-}
-
 .underlined {
   border-bottom: 1px solid lightgrey;
-  padding: 0 0 4px;
 }
 
-.promptTitle {
-  font-size: 12.px;
+.settings-panel-group-title {
+  font-size: 12.5px;
   color: lightgrey;
+  padding-bottom: 0px;
+  margin-bottom: -10px;
 }
 </style>

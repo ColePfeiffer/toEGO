@@ -10,6 +10,7 @@
       <template v-slot:content>
         <q-tabs v-model="settingsTab"
           class="text-lightgrey2 tab"
+          :style="getStyleForSettingsTab"
           dense
           active-color="accent"
           indicator-color="accent"
@@ -23,7 +24,7 @@
           <q-tab name="account"
             label="Account" />
         </q-tabs>
-
+        <q-separator color="lightgrey" />
 
         <q-tab-panels v-model="settingsTab"
           animated>
@@ -38,43 +39,40 @@
                   </template>
                 </BaseItemForSettingsTabPanel>
                 <BaseItemForSettingsTabPanel title="Font-Style"
-                  caption="Use a non-pixel font.">
+                  caption="Change text style.">
                   <template v-slot:content>
-                    <q-btn-toggle v-model="isUsingNonPixelFont"
-                      class="my-custom-toggle"
-                      color="transparent"
-                      square
-                      unelevated
-                      toggle-color="accent"
-                      text-color="lightgrey1"
-                      toggle-text-color="white"
-                      no-caps
-                      :options="[
-                        {label: '1', value: '1'},
-                        {label: '2', value: '2'},
-                        {label: '3', value: '3'}
-                      ]" />
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-btn-toggle v-model="isUsingNonPixelFont"
+                        class="my-custom-toggle"
+                        color="transparent"
+                        square
+                        unelevated
+                        toggle-color="accent"
+                        text-color="lightgrey1"
+                        toggle-text-color="white"
+                        no-caps
+                        :options="[
+                          {label: '1', value: '1'},
+                          {label: '2', value: '2'},
+                          {label: '3', value: '3'}
+                        ]" />
+                    </q-item-section>
+
                   </template>
                 </BaseItemForSettingsTabPanel>
 
                 <BaseItemForSettingsTabPanel title="Font-Size"
-                  caption="Change the font size.">
+                  caption="Change text size (px).">
                   <template v-slot:content>
-                    <q-btn-toggle v-model="fontsize"
-                      class="my-custom-toggle"
-                      :style="$store.getters['layout/getFontsize']"
-                      color="transparent"
-                      square
-                      unelevated
-                      toggle-color="accent"
-                      text-color="lightgrey1"
-                      toggle-text-color="white"
-                      no-caps
-                      :options="[
-                        {label: 'xs', value: 'xs'},
-                        {label: 's', value: 's'},
-                        {label: 'md', value: 'md'}
-                      ]" />
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input v-model.number="fontsize"
+                        type="number"
+                        filled
+                        square
+                        style="max-width: 80px; max-height: 55px" />
+                    </q-item-section>
                   </template>
                 </BaseItemForSettingsTabPanel>
 
@@ -86,9 +84,13 @@
                 <BaseItemForSettingsTabPanel title="Show expand button"
                   caption="Show the button to expand individual events on the diary page.">
                   <template v-slot:content>
-                    <q-toggle color="accent"
-                      v-model="isShowingExpandButtonForEventsViaDiary"
-                      val="battery" />
+                    <q-item-section class="col-4"
+                      avatar>
+                      <q-toggle color="accent"
+                        v-model="isShowingExpandButtonForEventsViaDiary"
+                        val="battery" />
+                    </q-item-section>
+
                   </template>
                 </BaseItemForSettingsTabPanel>
               </template>
@@ -118,7 +120,7 @@ export default {
       settingsTab: 'view',
       isDarkModeTurnedOn: false,
       isUsingNonPixelFont: '1',
-      fontsize: 's',
+      fontsize: 12,
       isShowingExpandButtonForEventsViaDiary: false,
     };
   },
@@ -132,11 +134,8 @@ export default {
       this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
     },
     fontsize(newValue) {
-      this.$store.dispatch(
-        "layout/changeFontsize",
-        newValue
-      );
-
+      console.log("calling mutation")
+      this.$store.commit("layout/setFontsize", newValue);
     },
   },
   methods: {
@@ -145,6 +144,23 @@ export default {
       this.$q.dark.set(!this.$q.dark.isActive);
     },
   },
+  computed: {
+    getStyleForSettingsTab() {
+      let style = {};
+
+      style["font-size"] = "12px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["text-shadow"] = this.$store.state.layout.accent2 + this.$store.state.layout.lowOpacity + " 1px 1px 1px";
+
+      if (this.$store.getters['layout/isDarkModeActive']) {
+        style["background-color"] = this.$store.state.layout.blacksmoke;
+      } else {
+        style["background-color"] = this.$store.state.layout.whitesmoke;
+
+      }
+      return style;
+    }
+  }
 };
 </script>
 

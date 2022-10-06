@@ -27,7 +27,7 @@
             <div class="promptContainer col-12 q-mx-md q-pa-md">
               <!-- Title -->
               <div class="row justify-center items-center">
-                <div class="col-12 underlined promptTitle"
+                <div class="col-12"
                   :style="$store.getters['layout/getStyleForHeadline']">
                   How are you feeling?
                 </div>
@@ -99,14 +99,15 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input class="input body"
-                    color="primary"
+                  <q-input color="primary"
                     v-model="title"
                     stack-label
                     filled
                     square
                     label="Title"
-                    input-style="max-height: 50px; min-height: 25px; font-size: 12.5px; font-family: Tahoma"
+                    label-color="lightgrey"
+                    :style="getStyleForInput"
+                    :input-style="{'max-height': '50px', 'min-height': '25px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}"
                     :rules="[
                       (val) =>
                         val.length <= 50 || 'Please use maximum 50 characters',
@@ -116,14 +117,15 @@
               <!-- Text Input -->
               <div class="row justify-center q-mt-xs items-center">
                 <div class="col-12">
-                  <q-input class="input"
-                    v-model="text"
+                  <q-input v-model="text"
                     label="What happened?"
                     stack-label
                     filled
                     square
                     autogrow
-                    input-style="max-height: 335px; min-height: 220px; font-size: 12.5px; font-family: Tahoma" />
+                    label-color="lightgrey"
+                    :style="getStyleForInput"
+                    :input-style="{'max-height': '335px', 'min-height': '220px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}" />
                 </div>
               </div>
             </div>
@@ -202,6 +204,14 @@ export default {
   },
 
   computed: {
+    getStyleForInput() {
+      let style = {};
+      style["font-size"] = "12px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["min-width"] = "250px !important";
+      style["max-width"] = "250px !important";
+      return style;
+    },
     textForRightButton() {
 
 
@@ -355,10 +365,6 @@ export default {
   color: red !important;
 }
 
-.body {
-  font-family: Tahoma !important;
-}
-
 .promptContainer {
   text-align: center;
 }
@@ -382,13 +388,7 @@ export default {
   height: 600px;
 }
 
-.input {
-  color: red;
-  font-size: 11.5px;
-  font-family: 'Tahoma';
-  min-width: 250px !important;
-  max-width: 250px !important;
-}
+
 
 .definedWidth {
   min-width: 250px;
@@ -405,15 +405,5 @@ export default {
 
 .topMargin {
   margin-top: 20px;
-}
-
-.underlined {
-  border-bottom: 1px solid black;
-  padding: 0 0 4px;
-}
-
-.promptTitle {
-  font-weight: bolder;
-  font-size: 1.1em;
 }
 </style>
