@@ -23,13 +23,13 @@ export const isDarkModeActive = (state) => {
 export const getStyleForTransparentCard = (state, getters) => {
   if (getters.isDarkModeActive) {
     return {
-      "background-color": getCssVar("dark") + state.mediumOpacity,
+      "background-color": state.blacksmoke,
       "text-shadow": "#000000" + state.lowOpacity + " 2px 2px 2px",
       color: "white !important",
     };
   } else {
     return {
-      "background-color": state.whitesmoke + state.mediumOpacity,
+      "background-color": state.whitesmoke,
       "text-shadow": state.accent2 + state.lowOpacity + " 2px 2px 2px",
       color: "black !important",
     };
@@ -89,26 +89,74 @@ export const getStyleForRegularCard = (state, getters) => {
 };
 
 export const getStyleForBasePage = (state, getters) => {
-  let style = {};
-  style["border-radius"] = "0px";
-  style["font-size"] = state.fontsize + "px";
+  return (isTransparent) => {
+    let style = {};
 
-  if (getters.isDarkModeActive) {
-    style["background-color"] = state.dark;
-    style["color"] = "white";
-  } else {
-    style["background-color"] = state.white;
-    style["color"] = "black";
-  }
-  return style;
+    if (isTransparent) {
+      style["border-radius"] = "0px";
+      style["height"] = "612px";
+      style["font-size"] = state.fontsize + "px";
+      style["background-color"] = state.secondary + state.mediumOpacity;
+      style["margin-top"] = "0px";
+      // style["height"] =
+      style["box-shadow"] =
+        "inset -1px -1px #222738b3, inset -4px -4px " +
+        state.secondary +
+        ", inset -5px -5px #fffff8, inset 1px 1px #fffff8, inset 4px 4px " +
+        state.secondary +
+        ", inset 5px 5px #22273894";
+
+      if (getters.isDarkModeActive) {
+        style["color"] = "white";
+      } else {
+        style["color"] = "black";
+      }
+      return style;
+    } else {
+      style["height"] = "600px";
+      style["border-radius"] = "0px";
+      style["font-size"] = state.fontsize + "px";
+
+      if (getters.isDarkModeActive) {
+        style["background-color"] = state.dark;
+        style["color"] = "white";
+      } else {
+        style["background-color"] = state.white;
+        style["color"] = "black";
+      }
+      return style;
+    }
+  };
 };
 
 export const getStyleForTitleBar = (state) => {
-  let style = {};
-  style["background"] = "var(--q-secondary)";
-  style["text-shadow"] = state.accent2 + state.lowOpacity + " 1px 1px 1px";
-  style["text-family"] = state.nonDefaultFont;
-  return style;
+  return (isTransparent) => {
+    let style = {};
+    style["background"] = "var(--q-secondary)";
+    style["text-shadow"] = state.accent2 + state.lowOpacity + " 1px 1px 1px";
+    style["text-family"] = state.nonDefaultFont;
+
+    if (isTransparent) {
+      style["min-height"] = "33px";
+      style["margin-top"] = "-5px";
+      /*
+      rgb(34 39 56 / 70%)       -1px 0 inset,
+      rgb(223 212 245)       -4px 0px inset,
+      rgb(255 255 248)       -5px 0px inset,
+        rgb(255 255 248)         1px 1px inset,
+          rgb(223 212 245) 4px 4px inset,
+           rgb(34 39 56 / 58%) 5px 5px inset
+       */
+      style["box-shadow"] =
+        "inset -1px 0 #222738b3, inset -4px 0px " +
+        state.secondary +
+        ", inset -5px 0px #fffff8, inset 1px 1px #fffff8, inset 4px 4px " +
+        state.secondary +
+        ", inset 5px 5px #22273894";
+    }
+
+    return style;
+  };
 };
 
 export const getStyleForHeadline = (state, getters) => {

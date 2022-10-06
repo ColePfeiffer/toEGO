@@ -1,26 +1,55 @@
 <template>
-  <q-page class="q-pa-sm">
-    <TheHeader></TheHeader>
-    <TheEventViewer :diaryEntry="getDiaryEntry"
-      :marginBottom="22"
-      class="q-px-lg q-pt-xl "></TheEventViewer>
-    <!-- Player Character -->
-  </q-page>
+  <BasePage icon="bi-eye"
+    titleOfPage="Today"
+    :isTransparent="true">
+    <template v-slot:title-bar-icon>
+      <q-icon name="bi-eye"
+        size="25px" />
+    </template>
+    <template v-slot:title-bar-controls>
+      <div class="row justify-between items-center">
+        <BaseButtonForTitleBar icon="bi-chevron-down">
+        </BaseButtonForTitleBar>
+        <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
+          icon="bi-envelope"
+          @click-button="toggleLetterVisibility">
+        </BaseButtonForTitleBar>
+      </div>
+    </template>
+    <template v-slot:content>
+      <div>
+        <TheHeader v-if="isLetterVisible"
+          class="q-px-md "></TheHeader>
+        <TheEventViewer :diaryEntry="getDiaryEntry"
+          :marginBottom="22"
+          class="q-px-md q-pt-md "></TheEventViewer>
+      </div>
+    </template>
+  </BasePage>
 </template>
 
 <script>
 import TheHeader from "src/components/home/TheHeader.vue";
 import TheEventViewer from "src/components/common/TheEventViewer.vue";
+import BasePage from "src/components/ui/BasePage.vue";
+import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 
 export default {
   data() {
-    return {};
+    return {
+      isLetterVisible: false,
+    };
   },
   components: {
     TheHeader,
-    TheEventViewer
+    TheEventViewer,
+    BasePage,
+    BaseButtonForTitleBar
   },
   methods: {
+    toggleLetterVisibility() {
+      this.isLetterVisible = !this.isLetterVisible;
+    }
   },
   computed: {
     // get diary entry for today
@@ -34,6 +63,8 @@ export default {
 };
 </script>
 
-<style>
-
+<style scoped>
+.test2 {
+  background: red;
+}
 </style>
