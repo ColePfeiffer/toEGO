@@ -106,11 +106,11 @@ export default {
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
       this.toggleExpansedStatusOfAllEvents(true);
       this.setVisibilityOfDiarySection(false);
-      this.heightForScrollArea = { height: "650px", width: this.width };
+      this.heightForScrollArea = 650;
     },
     expandLess() {
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
-      this.heightForScrollArea = { height: "175px", width: this.width };
+      this.heightForScrollArea = 175;
       this.toggleExpansedStatusOfAllEvents(false);
       this.setVisibilityOfDiarySection(true);
     },

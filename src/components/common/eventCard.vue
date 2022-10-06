@@ -31,7 +31,7 @@
         </q-item-section>
       </q-item>
 
-      <q-separator class="card-separator" />
+      <q-separator color="whitestorm" />
       <!-- Text, Extras -->
       <div style="min-height: 80px">
         <!-- Expanded: False -->
