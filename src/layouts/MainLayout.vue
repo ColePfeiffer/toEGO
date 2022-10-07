@@ -12,7 +12,7 @@
 
     <!-- Router-view -->
     <q-page-container>
-      <q-page class="pageView">
+      <q-page :style="$store.getters['layout/getStyleForPage']">
         <div class="row justify-center"
           :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-4 col-xl-3 q-pt-xs">
@@ -223,13 +223,6 @@ export default {
 <style lang="sass">
 ::-webkit-scrollbar
     display: none
-
-.pageView
-  font-family: 'PressStart'
-  background: url(/images/background_wide2.jpg) no-repeat center center fixed
-  background: url('https://64.media.tumblr.com/9e45fc59f535b1a82eace3dd4a62449a/tumblr_inline_nater8MFLq1qak244.gif') repeat  center
-  margin: auto
-  padding: auto
 
 .card-separator
   background-color: rgba(157, 157, 213, 0.6)

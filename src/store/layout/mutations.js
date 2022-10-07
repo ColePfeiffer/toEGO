@@ -1,5 +1,11 @@
 export const setFontsize = (state, fontsize) => {
-  console.log("mutation in action.... ", state.fontsize, fontsize);
   state.fontsize = fontsize;
-  console.log(fontsize);
+};
+
+export const setFont = (state, font) => {
+  state.defaultFont = font;
+};
+
+export const changeBackgroundImage = (state, imageURL) => {
+  state.backgroundImageURL = imageURL;
 };

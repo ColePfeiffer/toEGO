@@ -7,11 +7,11 @@
         size="25px" />
     </template>
     <template v-slot:title-bar-controls>
-      <div class="row justify-between items-center">
+      <div class="row justify-between items-center q-pr-sm">
         <BaseButtonForTitleBar icon="bi-chevron-down">
         </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
-          icon="bi-envelope"
+          :icon="getLetterIcon"
           @click-button="toggleLetterVisibility">
         </BaseButtonForTitleBar>
       </div>
@@ -59,6 +59,13 @@ export default {
       ](new Date());
       return diaryEntryRefForDate;
     },
+    getLetterIcon() {
+      if (this.isLetterVisible) {
+        return 'bi-envelope-paper-heart'
+      } else {
+        return 'bi-envelope'
+      }
+    }
   },
 };
 </script>

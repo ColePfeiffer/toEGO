@@ -271,7 +271,7 @@ export default {
     },
     goToPageNewEventSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
-      this.$router.push("NewEvent");
+      this.$router.push("Event");
     },
     goToPageNewEventSetToEditingMode(eventData) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
@@ -283,7 +283,7 @@ export default {
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
       this.$store.commit("data/setModeForNewEvent", "EDIT");
-      this.$router.push("NewEvent");
+      this.$router.push("Event");
     },
     saveChangesToEntry(changeData) {
       let payload;

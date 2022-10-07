@@ -88,6 +88,17 @@ export const getStyleForRegularCard = (state, getters) => {
   return style;
 };
 
+export const getStyleForPage = (state) => {
+  let style = {};
+
+  style["font-family"] = state.defaultFont;
+  style["background"] = state.backgroundImageURL;
+  style["margin"] = "auto";
+  style["padding"] = "auto";
+
+  return style;
+};
+
 export const getStyleForBasePage = (state, getters) => {
   return (isTransparent) => {
     let style = {};
@@ -162,8 +173,7 @@ export const getStyleForTitleBar = (state) => {
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
   style["font-weight"] = "bolder";
-  style["font-size"] = "1.1em";
-  //style["text-family"] = state.nonDefaultFont;
+  style["font-size"] = "1.2em";
   style["border-bottom"] = "1px solid black";
   style["padding"] = "0 0 4px";
 

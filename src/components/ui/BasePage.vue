@@ -26,7 +26,7 @@
         :style="$store.getters['layout/getStyleForBasePage'](isTransparent)">
         <q-scroll-area :thumb-style="thumbStyle"
           :bar-style="barStyle"
-          style="height: 592px; margin-top: 6px">
+          :style="getStyleForScrollArea">
           <slot name="content"></slot>
         </q-scroll-area>
       </div>
@@ -67,6 +67,19 @@ export default {
         width: '9px',
         opacity: 0.2
       }
+    }
+  },
+  computed: {
+    getStyleForScrollArea() {
+      let style = {};
+      if (this.isTransparent) {
+        style["height"] = "592px";
+        style["margin-top"] = "6px";
+      } else {
+        style["height"] = "595px";
+        style["margin-top"] = "0px";
+      }
+      return style;
     }
   }
 };

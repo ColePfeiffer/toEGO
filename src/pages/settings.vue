@@ -22,7 +22,9 @@
           <q-tab name="other"
             label="Other" />
           <q-tab name="account"
-            label="Account" />
+            label="Account"
+            :disabled="true"
+            :disable="true" />
         </q-tabs>
         <q-separator color="lightgrey" />
 
@@ -38,24 +40,55 @@
                       val="battery" />
                   </template>
                 </BaseItemForSettingsTabPanel>
-                <BaseItemForSettingsTabPanel title="Font-Style"
-                  caption="Change text style.">
+
+                <BaseItemForSettingsTabPanel title="Background-Image"
+                  caption="Change Background image.">
                   <template v-slot:content>
-                    <q-item-section class="col-6"
+                    <q-item-section class="col-12"
                       avatar>
-                      <q-btn-toggle v-model="isUsingNonPixelFont"
+                      <q-btn-toggle v-model="backgroundImage"
                         class="my-custom-toggle"
                         color="transparent"
                         square
                         unelevated
                         toggle-color="accent"
-                        text-color="lightgrey1"
+                        text-color="lightgrey"
                         toggle-text-color="white"
                         no-caps
                         :options="[
-                          {label: '1', value: '1'},
-                          {label: '2', value: '2'},
-                          {label: '3', value: '3'}
+                          {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
+                          {label: '2', value: 'url(\'https://64.media.tumblr.com/9e45fc59f535b1a82eace3dd4a62449a/tumblr_inline_nater8MFLq1qak244.gif\') repeat  center'},
+                          {label: '3', value: 'url(\'https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif\')'},
+                          {label: '4', value: 'url(\'https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif\')'},
+                          {label: 'x', value: 'none'},
+                        ]" />
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+              </template>
+            </BaseSettingsTabPanelGroup>
+
+            <BaseSettingsTabPanelGroup title="Font">
+              <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Font-Style"
+                  caption="Change text style.">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-btn-toggle v-model="isUsingFont"
+                        class="my-custom-toggle"
+                        color="transparent"
+                        square
+                        unelevated
+                        toggle-color="accent"
+                        text-color="lightgrey"
+                        toggle-text-color="white"
+                        no-caps
+                        :options="[
+                          {label: '1', value: 'PressStart'},
+                          {label: '2', value: 'Inter'},
+                          {label: '3', value: 'Munro'},
                         ]" />
                     </q-item-section>
 
@@ -79,6 +112,11 @@
               </template>
             </BaseSettingsTabPanelGroup>
 
+
+
+          </q-tab-panel>
+
+          <q-tab-panel name="other">
             <BaseSettingsTabPanelGroup title="Events">
               <template v-slot:q-item-section-content>
                 <BaseItemForSettingsTabPanel title="Show expand button"
@@ -95,7 +133,6 @@
                 </BaseItemForSettingsTabPanel>
               </template>
             </BaseSettingsTabPanelGroup>
-
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -119,7 +156,8 @@ export default {
       notifications: "",
       settingsTab: 'view',
       isDarkModeTurnedOn: false,
-      isUsingNonPixelFont: '1',
+      isUsingFont: 'PressStart',
+      backgroundImage: 'url(/images/background_wide2.jpg) no-repeat center center fixed',
       fontsize: 12,
       isShowingExpandButtonForEventsViaDiary: false,
     };
@@ -134,9 +172,15 @@ export default {
       this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
     },
     fontsize(newValue) {
-      console.log("calling mutation")
       this.$store.commit("layout/setFontsize", newValue);
     },
+    isUsingFont(newValue) {
+      console.log("change font!!");
+      this.$store.commit("layout/setFont", newValue);
+    },
+    backgroundImage(imageURL) {
+      this.$store.commit("layout/changeBackgroundImage", imageURL);
+    }
   },
   methods: {
     ...mapMutations(["./store/data/showModal", "store/data/showModal"]),

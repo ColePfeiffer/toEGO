@@ -4,7 +4,8 @@ export default function () {
     defaultFont: "PressStart",
     fontsize: "12.5",
     nonDefaultFont: "Inter",
-
+    backgroundImageURL:
+      "url(/images/background_wide2.jpg) no-repeat center center fixed",
     // Color Brand Settings
     primary: "#00080f", // Font Color
     secondary: "#dfd4f5",
