@@ -14,7 +14,7 @@ export default {
   color: whitesmoke !important;
 }
 
-.bg-lightGray {
+.bg-whitesmoke {
   background: whitesmoke !important;
 }
 
@@ -22,8 +22,16 @@ export default {
   color: #d3d3d3 !important;
 }
 
-.bg-lightGray {
+.bg-lightgrey {
   background: #d3d3d3 !important;
+}
+
+.text-darkgrey {
+  color: #989898 !important;
+}
+
+.bg-darkgrey {
+  background: #989898 !important;
 }
 
 .text-accent2 {

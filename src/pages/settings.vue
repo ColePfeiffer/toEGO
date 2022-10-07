@@ -1,7 +1,6 @@
 <template>
   <q-page>
-    <BasePage icon="bi-gear-fill"
-      titleOfPage="Settings">
+    <BasePage titleOfPage="Settings">
       <template v-slot:title-bar-icon>
         <q-icon name="bi-menu-button-wide-fill"
           size="25px" />
@@ -63,7 +62,82 @@
                           {label: 'x', value: 'none'},
                         ]" />
                     </q-item-section>
+                  </template>
+                </BaseItemForSettingsTabPanel>
+              </template>
+            </BaseSettingsTabPanelGroup>
 
+            <BaseSettingsTabPanelGroup title="Color Theme">
+              <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Color: Secondary">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="secondaryColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="secondaryColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+                  </template>
+                </BaseItemForSettingsTabPanel>
+
+                <BaseItemForSettingsTabPanel title="Color: Accent">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="accentColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input ">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="accentColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+                  </template>
+                </BaseItemForSettingsTabPanel>
+
+                <BaseItemForSettingsTabPanel title="Color: Accent2">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="accent2Color"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="accent2Color" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
                   </template>
                 </BaseItemForSettingsTabPanel>
               </template>
@@ -168,7 +242,6 @@ export default {
       this.setDarkMode();
     },
     isShowingExpandButtonForEventsViaDiary(newValue) {
-      console.log(newValue);
       this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
     },
     fontsize(newValue) {
@@ -189,6 +262,30 @@ export default {
     },
   },
   computed: {
+    secondaryColor: {
+      get() {
+        return this.$store.state.layout.secondary;
+      },
+      set(value) {
+        this.$store.commit("layout/setSecondary", value);
+      },
+    },
+    accentColor: {
+      get() {
+        return this.$store.state.layout.accent;
+      },
+      set(value) {
+        this.$store.commit("layout/setAccent", value);
+      },
+    },
+    accent2Color: {
+      get() {
+        return this.$store.state.layout.accent2;
+      },
+      set(value) {
+        this.$store.commit("layout/setAccent2", value);
+      },
+    },
     getStyleForSettingsTab() {
       let style = {};
 
@@ -209,6 +306,8 @@ export default {
 </script>
 
 <style scoped>
+.color-picker-input {}
+
 .borderStyleForTab {
   font-size: 12.5px;
   background: whitesmoke;

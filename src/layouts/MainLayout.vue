@@ -44,24 +44,27 @@
           flat
           stretch
           padding="ml"
-          toggle-color="secondary"
+          toggle-color="white"
+          text-color="darkgrey"
           @update:model-value="goToPage"
           :options="[
-            { label: '', value: 'home', icon: 'bi-eye', slot: 'home' },
+            { label: '', value: 'home', icon: 'bi-eye', slot: 'home', class: 'q-mr-xl' },
             {
               label: '',
               value: 'Event',
               slot: 'Event',
               icon: 'bi-plus-lg',
               color: 'accent',
+              class: 'q-ml-lg'
             },
             {
               label: '',
               value: 'diary',
               icon: 'bi-journal-text',
               slot: 'diary',
+              class: 'q-mr-xl'
             },
-            { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings' },
+            { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings', class: 'q-ml-lg' },
           ]">
           <template v-slot:home>
             <q-tooltip class="bg-secondary text-body2 text-black"
@@ -143,6 +146,7 @@ export default {
       ](new Date());
       return getDiaryEntryRefForToday;
     },
+
   },
 
   watch: {

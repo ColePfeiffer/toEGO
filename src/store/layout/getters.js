@@ -9,7 +9,8 @@ import state from "./state";
 
 const { getPaletteColor } = colors;
 const { lighten } = colors;
-const { changeAlpha } = colors;
+const { brightness } = colors;
+const { luminosity } = colors;
 const { hexToRgb } = colors;
 
 export const isDarkModeActive = (state) => {
@@ -113,7 +114,11 @@ export const getStyleForBasePage = (state, getters) => {
       style["box-shadow"] =
         "inset -1px -1px #222738b3, inset -4px -4px " +
         state.secondary +
-        ", inset -5px -5px #fffff8, inset 1px 1px #fffff8, inset 4px 4px " +
+        ", inset -5px -5px " +
+        getters.getLighterSecondary +
+        ", inset 1px 1px " +
+        getters.getLighterSecondary +
+        ", inset 4px 4px " +
         state.secondary +
         ", inset 5px 5px #22273894";
 
@@ -140,7 +145,7 @@ export const getStyleForBasePage = (state, getters) => {
   };
 };
 
-export const getStyleForTitleBar = (state) => {
+export const getStyleForTitleBar = (state, getters) => {
   return (isTransparent) => {
     let style = {};
     style["background"] = "var(--q-secondary)";
@@ -161,15 +166,29 @@ export const getStyleForTitleBar = (state) => {
       style["box-shadow"] =
         "inset -1px 0 #222738b3, inset -4px 0px " +
         state.secondary +
-        ", inset -5px 0px #fffff8, inset 1px 1px #fffff8, inset 4px 4px " +
+        ", inset -5px 0px " +
+        getters.getLighterSecondary +
+        ", inset 1px 1px " +
+        getters.getLighterSecondary +
+        ", inset 4px 4px " +
         state.secondary +
         ", inset 5px 5px #22273894";
     }
-
     return style;
+    //#fffff8
   };
 };
 
+export const getLighterSecondary = (state, getters) => {
+  let newColor;
+  let calculatedBrightness = brightness(state.secondary);
+  if (calculatedBrightness < 151) {
+    newColor = lighten(state.secondary, 40);
+  } else {
+    newColor = lighten(state.secondary, 65);
+  }
+  return newColor;
+};
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
   style["font-weight"] = "bolder";

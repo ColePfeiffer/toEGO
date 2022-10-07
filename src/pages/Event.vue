@@ -1,6 +1,5 @@
 <template>
-  <BasePage icon="theater_comedy"
-    titleOfPage="Creating a new event">
+  <BasePage titleOfPage="Creating a new event">
     <template v-slot:title-bar-icon>
       <q-icon name="theater_comedy"
         size="25px" />

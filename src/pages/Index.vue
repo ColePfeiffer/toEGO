@@ -1,6 +1,5 @@
 <template>
-  <BasePage icon="bi-eye"
-    titleOfPage="Today"
+  <BasePage titleOfPage="Today"
     :isTransparent="true">
     <template v-slot:title-bar-icon>
       <q-icon name="bi-eye"
@@ -8,8 +7,6 @@
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center q-pr-sm">
-        <BaseButtonForTitleBar icon="bi-chevron-down">
-        </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
           :icon="getLetterIcon"
           @click-button="toggleLetterVisibility">
@@ -28,11 +25,13 @@
   </BasePage>
 </template>
 
+
 <script>
 import TheHeader from "src/components/home/TheHeader.vue";
 import TheEventViewer from "src/components/common/TheEventViewer.vue";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
+
 
 export default {
   data() {
@@ -61,9 +60,9 @@ export default {
     },
     getLetterIcon() {
       if (this.isLetterVisible) {
-        return 'bi-envelope-paper-heart'
+        return 'bi-envelope-open'
       } else {
-        return 'bi-envelope'
+        return "bi-envelope"
       }
     }
   },
