@@ -45,26 +45,26 @@
           stretch
           padding="ml"
           toggle-color="white"
-          text-color="darkgrey"
+          text-color="white"
           @update:model-value="goToPage"
           :options="[
-            { label: '', value: 'home', icon: 'bi-eye', slot: 'home', class: 'q-mr-xl' },
+            { label: '', value: 'home', icon: getIconForHome, slot: 'home'},
             {
               label: '',
               value: 'Event',
               slot: 'Event',
-              icon: 'bi-plus-lg',
+              icon: getIconForEvent,
               color: 'accent',
-              class: 'q-ml-lg'
+
             },
             {
               label: '',
               value: 'diary',
-              icon: 'bi-journal-text',
+              icon: getIconForDiary,
               slot: 'diary',
-              class: 'q-mr-xl'
+
             },
-            { label: '', value: 'settings', icon: 'bi-gear', slot: 'settings', class: 'q-ml-lg' },
+            { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings'  },
           ]">
           <template v-slot:home>
             <q-tooltip class="bg-secondary text-body2 text-black"
@@ -146,9 +146,35 @@ export default {
       ](new Date());
       return getDiaryEntryRefForToday;
     },
-
+    getIconForDiary() {
+      if (this.isNavigationSetTo('diary')) {
+        return 'bi-journal-bookmark-fill'
+      } else {
+        return 'bi-journal-bookmark';
+      }
+    },
+    getIconForEvent() {
+      if (this.isNavigationSetTo('event')) {
+        return 'bi-sticky-fill'
+      } else {
+        return 'bi-sticky';
+      }
+    },
+    getIconForSettings() {
+      if (this.isNavigationSetTo('settings')) {
+        return 'bi-gear-fill'
+      } else {
+        return 'bi-gear';
+      }
+    },
+    getIconForHome() {
+      if (this.isNavigationSetTo('home')) {
+        return 'bi-eye-fill'
+      } else {
+        return 'bi-eye';
+      }
+    },
   },
-
   watch: {
     currentRouterPath(newPath) {
       // whenever the router path updates, we want to set expanded to false for events.
@@ -166,6 +192,15 @@ export default {
     this.$store.commit("data/initiateDay");
   },
   methods: {
+    isNavigationSetTo(path) {
+      let test = this.currentRouterPath.substring(1).toLowerCase();
+      console.log(test, path);
+      if (test === path) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     openDialogViewEventTemplates() {
       let payload = {
         isVisible: true,

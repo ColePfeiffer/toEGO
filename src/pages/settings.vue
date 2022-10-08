@@ -17,15 +17,14 @@
           no-caps
           narrow-indicator>
           <q-tab name="view"
-            label="View" />
+            label="Design" />
           <q-tab name="other"
-            label="Other" />
+            label="Page Layout" />
           <q-tab name="account"
-            label="Account"
+            label="Other"
             :disabled="true"
             :disable="true" />
         </q-tabs>
-        <q-separator color="lightgrey" />
 
         <q-tab-panels v-model="settingsTab"
           animated>
@@ -267,7 +266,7 @@ export default {
         return this.$store.state.layout.secondary;
       },
       set(value) {
-        this.$store.commit("layout/setSecondary", value);
+        this.$store.dispatch("layout/setSecondaryColor", value);
       },
     },
     accentColor: {

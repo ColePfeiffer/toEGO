@@ -11,15 +11,20 @@ export default function () {
     secondary: "#dfd4f5",
     accent: "#ffc107",
     accent2: "#14157a",
+    // Sub Colors
+    SecondaryLighter: "#f3effc",
     // System colors, can't be changed by the user
     whitesmoke: "#f5f5f5",
     blacksmoke: "#2c2c2c",
     dark: "#252425",
     white: "#ffffff",
     lightgrey: "#d3d3d3",
+    darkgrey: "#989898",
     // Opacity
     lowOpacity: "30",
     mediumOpacity: "a6",
+    // Other
+    textShadowForTitle: "#dfd4f5 2px 2px 2px",
     // Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",

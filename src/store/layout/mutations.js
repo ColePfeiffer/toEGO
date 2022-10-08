@@ -26,3 +26,11 @@ export const setAccent2 = (state, color) => {
   state.accent2 = color;
   setCssVar("info", color);
 };
+
+export const setBrightnessOfTextShadowForTitle = (state, shadowProperties) => {
+  state.textShadowForTitle = shadowProperties;
+};
+
+export const setColorSecondaryLighter = (state, color) => {
+  state.SecondaryLighter = color;
+};

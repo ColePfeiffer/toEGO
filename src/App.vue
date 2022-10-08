@@ -41,4 +41,8 @@ export default {
 .bg-accent2 {
   background: #14157a !important;
 }
+
+.text-reallydarkgrey {
+  color: #4c4c4c !important;
+}
 </style>

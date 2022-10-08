@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="q-px-none settings-panel-group-title underlined"
-      :style="$store.getters['layout/getNonDefaultFont']">{{title}}</div>
+    <div class="q-px-none settings-panel-group-title"
+      :style="getStyleForTitle">{{title}}</div>
     <div class="q-mb-xl">
       <div class="settings-tab q-mt-md"
         :style="getStyle">
@@ -42,7 +42,21 @@ export default {
 
       }
       return style;
+    },
+    getStyleForTitle() {
+      let style = this.$store.getters['layout/getNonDefaultFont'];
+
+      if (this.$store.getters['layout/isDarkModeActive']) {
+        style["color"] = this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity;
+        style["border-bottom"] = "1px solid " + this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity;
+      } else {
+        style["color"] = "lightgrey";
+        style["border-bottom"] = "1px solid lightgrey";
+
+      }
+      return style;
     }
+
   },
 };
 </script>

@@ -37,7 +37,11 @@ export default {
       };
 
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["color"] = "black";
+      if (this.$store.getters['layout/getBrightness'](this.$store.state.layout.secondary) <= 155) {
+        style["color"] = "white";
+      } else {
+        style["color"] = "black";
+      }
 
       return style;
     }

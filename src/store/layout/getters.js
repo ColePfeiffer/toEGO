@@ -4,14 +4,10 @@ export function someGetter (state) {
 */
 import { useQuasar } from "quasar";
 import { colors } from "quasar";
-import { getCssVar } from "quasar";
 import state from "./state";
 
 const { getPaletteColor } = colors;
-const { lighten } = colors;
 const { brightness } = colors;
-const { luminosity } = colors;
-const { hexToRgb } = colors;
 
 export const isDarkModeActive = (state) => {
   if (useQuasar().dark.isActive) {
@@ -112,12 +108,12 @@ export const getStyleForBasePage = (state, getters) => {
       style["margin-top"] = "0px";
       // style["height"] =
       style["box-shadow"] =
-        "inset -1px -1px #222738b3, inset -4px -4px " +
+        "inset -1px -1px #22273894, inset -4px -4px " +
         state.secondary +
         ", inset -5px -5px " +
-        getters.getLighterSecondary +
+        state.SecondaryLighter +
         ", inset 1px 1px " +
-        getters.getLighterSecondary +
+        state.SecondaryLighter +
         ", inset 4px 4px " +
         state.secondary +
         ", inset 5px 5px #22273894";
@@ -163,32 +159,31 @@ export const getStyleForTitleBar = (state, getters) => {
           rgb(223 212 245) 4px 4px inset,
            rgb(34 39 56 / 58%) 5px 5px inset
        */
+
       style["box-shadow"] =
-        "inset -1px 0 #222738b3, inset -4px 0px " +
+        "inset -1px 0 #22273894, inset -4px 0px " +
         state.secondary +
         ", inset -5px 0px " +
-        getters.getLighterSecondary +
-        ", inset 1px 1px " +
-        getters.getLighterSecondary +
-        ", inset 4px 4px " +
+        state.SecondaryLighter +
+        ", inset 1px 0px " +
+        state.SecondaryLighter +
+        ", inset 4px 3px " +
         state.secondary +
-        ", inset 5px 5px #22273894";
+        ", 0px -1px " +
+        state.SecondaryLighter +
+        ", inset 5px 4px #222738" +
+        state.lowOpacity;
     }
     return style;
-    //#fffff8
   };
 };
 
-export const getLighterSecondary = (state, getters) => {
-  let newColor;
-  let calculatedBrightness = brightness(state.secondary);
-  if (calculatedBrightness < 151) {
-    newColor = lighten(state.secondary, 40);
-  } else {
-    newColor = lighten(state.secondary, 65);
-  }
-  return newColor;
+export const getBrightness = () => {
+  return (color) => {
+    return brightness(color);
+  };
 };
+
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
   style["font-weight"] = "bolder";
@@ -200,7 +195,7 @@ export const getStyleForHeadline = (state, getters) => {
     style["text-shadow"] = state.accent2 + " 2px 2px 2px";
     style["color"] = "white";
   } else {
-    style["text-shadow"] = state.secondary + " 2px 2px 2px";
+    style["text-shadow"] = state.textShadowForTitle;
     style["color"] = "black";
   }
   return style;
@@ -211,7 +206,6 @@ export const getNonDefaultFont = (state) => {
 };
 
 export const getFontsize = (state) => {
-  console.log("lol");
   return { "font-size": state.fontsize + "px" };
 };
 
