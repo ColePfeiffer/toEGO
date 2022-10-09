@@ -97,37 +97,45 @@ export const getStyleForPage = (state) => {
 };
 
 export const getStyleForBasePage = (state, getters) => {
-  return (isTransparent) => {
+  return (payload) => {
+    let mode = payload.mode;
+    let backgroundColor = payload.backgroundColor;
+
     let style = {};
+    style["border-radius"] = "0px";
+    style["font-size"] = state.fontsize + "px";
 
-    if (isTransparent) {
-      style["border-radius"] = "0px";
-      style["height"] = "612px";
-      style["font-size"] = state.fontsize + "px";
-      style["background-color"] = state.secondary + state.mediumOpacity;
-      style["margin-top"] = "0px";
-      // style["height"] =
-      style["box-shadow"] =
-        "inset -1px -1px #22273894, inset -4px -4px " +
-        state.secondary +
-        ", inset -5px -5px " +
-        state.SecondaryLighter +
-        ", inset 1px 1px " +
-        state.SecondaryLighter +
-        ", inset 4px 4px " +
-        state.secondary +
-        ", inset 5px 5px #22273894";
-
-      if (getters.isDarkModeActive) {
-        style["color"] = "white";
-      } else {
-        style["color"] = "black";
-      }
-      return style;
+    if (getters.isDarkModeActive) {
+      style["background-color"] = "#000000ad";
+      style["color"] = "white";
     } else {
-      style["height"] = "600px";
-      style["border-radius"] = "0px";
-      style["font-size"] = state.fontsize + "px";
+      style["background-color"] = backgroundColor;
+      style["color"] = "black";
+    }
+
+    style["box-shadow"] =
+      "inset -1px -1px #22273894, inset -4px -4px " +
+      state.secondary +
+      ", inset -5px -5px " +
+      state.SecondaryLighter +
+      ", inset 1px 1px " +
+      state.SecondaryLighter +
+      ", inset 4px 4px " +
+      state.secondary +
+      ", inset 5px 5px #22273894";
+    console.log("height", state.height * 0.72);
+    style["height"] = state.height * 0.67 + "px";
+    if (mode === "retro") {
+      style["margin-top"] = "0px";
+    } else if (mode === "compact") {
+      style["margin-top"] = "9px";
+      style["box-shadow"] = "none";
+      style["border"] = "2px solid " + state.secondary;
+    } else if (mode === "plain") {
+      style["box-shadow"] = "none";
+      style["background-color"] = "transparent";
+    } else {
+      style["box-shadow"] = "none";
 
       if (getters.isDarkModeActive) {
         style["background-color"] = state.dark;
@@ -136,30 +144,22 @@ export const getStyleForBasePage = (state, getters) => {
         style["background-color"] = state.white;
         style["color"] = "black";
       }
-      return style;
     }
+    return style;
   };
 };
 
 export const getStyleForTitleBar = (state, getters) => {
-  return (isTransparent) => {
+  return (mode) => {
     let style = {};
+
     style["background"] = "var(--q-secondary)";
     style["text-shadow"] = state.accent2 + state.lowOpacity + " 1px 1px 1px";
     style["text-family"] = state.nonDefaultFont;
 
-    if (isTransparent) {
+    if (mode === "retro") {
       style["min-height"] = "33px";
       style["margin-top"] = "-5px";
-      /*
-      rgb(34 39 56 / 70%)       -1px 0 inset,
-      rgb(223 212 245)       -4px 0px inset,
-      rgb(255 255 248)       -5px 0px inset,
-        rgb(255 255 248)         1px 1px inset,
-          rgb(223 212 245) 4px 4px inset,
-           rgb(34 39 56 / 58%) 5px 5px inset
-       */
-
       style["box-shadow"] =
         "inset -1px 0 #22273894, inset -4px 0px " +
         state.secondary +
@@ -187,7 +187,7 @@ export const getBrightness = () => {
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
   style["font-weight"] = "bolder";
-  style["font-size"] = "1.2em";
+  style["font-size"] = "1.3em";
   style["border-bottom"] = "1px solid black";
   style["padding"] = "0 0 4px";
 
@@ -195,7 +195,7 @@ export const getStyleForHeadline = (state, getters) => {
     style["text-shadow"] = state.accent2 + " 2px 2px 2px";
     style["color"] = "white";
   } else {
-    style["text-shadow"] = state.textShadowForTitle;
+    style["text-shadow"] = state.EventTextShadow;
     style["color"] = "black";
   }
   return style;

@@ -16,19 +16,40 @@ export function setShadowForTitle({ getters, state, commit }) {
 
   if (brightness > 60 && brightness < 150) {
     commit(
-      "setBrightnessOfTextShadowForTitle",
+      "setBrightnessOfEventTextShadow",
       state.secondary + state.mediumOpacity + " 2px 2px 2px"
     );
   } else if (brightness <= 60) {
     commit(
-      "setBrightnessOfTextShadowForTitle",
+      "setBrightnessOfEventTextShadow",
       state.secondary + state.lowOpacity + " 2px 2px 2px"
     );
   } else {
-    commit(
-      "setBrightnessOfTextShadowForTitle",
-      state.secondary + " 2px 2px 2px"
-    );
+    commit("setBrightnessOfEventTextShadow", state.secondary + " 2px 2px 2px");
+  }
+}
+
+export function changeMode({ commit }, payload) {
+  if (payload.page === "home") {
+    commit("changeModeForHome", payload.mode);
+  } else if (payload.page === "event") {
+    commit("changeEventMode", payload.mode);
+  } else if (payload.page === "diary") {
+    commit("changeModeForDiary", payload.mode);
+  } else {
+    console.log("lol ok nix da");
+  }
+}
+
+export function changeEventPageProperties({ commit }, payload) {
+  if (payload.type === "color") {
+    commit("setEventBackgroundColor", payload.color);
+  } else if (payload.type === "text") {
+    commit("setEventTextColor", payload.color);
+  } else if (payload.type === "textShadow") {
+    commit("setEventTextShadowColor", payload.color);
+  } else {
+    commit("setEventInputBackgroundColor", payload.color);
   }
 }
 

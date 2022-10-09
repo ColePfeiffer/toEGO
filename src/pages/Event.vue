@@ -1,5 +1,7 @@
 <template>
-  <BasePage titleOfPage="Creating a new event">
+  <BasePage titleOfPage="Creating a new event"
+    :mode="getEventMode"
+    :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
       <q-icon name="theater_comedy"
         size="25px" />
@@ -17,152 +19,133 @@
       </div>
     </template>
     <template v-slot:content>
-      <div>
-        <!-- Emoji-Selection, Title, What happened? -->
-        <q-card v-if="isShowingEditor === false"
-          class="transparent no-shadow">
-          <q-card-section class="row items-center justify-center">
-            <!-- How Are You-Section | Emoji-Selection -->
-            <div class="promptContainer col-12 q-mx-md q-pa-md">
-              <!-- Title -->
-              <div class="row justify-center items-center">
-                <div class="col-12"
-                  :style="$store.getters['layout/getStyleForHeadline']">
-                  How are you feeling?
-                </div>
-              </div>
-              <!-- Emoji Selection via Button Toggle -->
-              <div class="emojiSelection q-mt-md row justify-center items-center">
-                <div class="col-12">
-                  <div class="align-center">
-                    <q-btn-toggle v-model="mood"
-                      toggle-color="accent"
-                      padding="none"
-                      flat
-                      :options="[
-                        { value: 'las la-angry', slot: 'angry' },
-                        { value: 'las la-sad-tear', slot: 'sad' },
-                        { value: 'las la-meh', slot: 'meh' },
-                        { value: 'las la-smile', slot: 'content' },
-                        { value: 'las la-grin-alt', slot: 'happy' },
-                      ]">
-                      <template v-slot:angry>
-                        <q-btn padding="xs"
-                          :style="$store.state.layout.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-angry" />
-                      </template>
+      <!-- Emoji-Selection, Title, What happened? -->
+      <div v-if="isShowingEditor === false"
+        class="row justify-center items-center text-center q-px-md">
+        <!-- How are you feeling? -->
+        <p class="col-10 text-center q-mt-lg "
+          :style="$store.getters['layout/getStyleForHeadline']">
+          How are you feeling?
+        </p>
+        <!-- Mood Selection -->
+        <div class="col-12">
+          <q-btn-toggle v-model="mood"
+            class="col-12 q-mb-md"
+            toggle-color="accent"
+            padding="none"
+            flat
+            :options="[
+              { value: 'las la-angry', slot: 'angry' },
+              { value: 'las la-sad-tear', slot: 'sad' },
+              { value: 'las la-meh', slot: 'meh' },
+              { value: 'las la-smile', slot: 'content' },
+              { value: 'las la-grin-alt', slot: 'happy' },
+            ]">
+            <template v-slot:angry>
+              <q-btn padding="xs"
+                :style="$store.state.layout.buttonFlatStyleTransparent"
+                flat
+                size="15px"
+                icon="las la-angry" />
+            </template>
 
-                      <template v-slot:sad>
-                        <q-btn padding="xs"
-                          :style="$store.state.layout.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-sad-tear" />
-                      </template>
+            <template v-slot:sad>
+              <q-btn padding="xs"
+                :style="$store.state.layout.buttonFlatStyleTransparent"
+                flat
+                size="15px"
+                icon="las la-sad-tear" />
+            </template>
 
-                      <template v-slot:meh>
-                        <q-btn padding="xs"
-                          :style="$store.state.layout.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-meh" />
-                      </template>
+            <template v-slot:meh>
+              <q-btn padding="xs"
+                :style="$store.state.layout.buttonFlatStyleTransparent"
+                flat
+                size="15px"
+                icon="las la-meh" />
+            </template>
 
-                      <template v-slot:content>
-                        <q-btn padding="xs"
-                          :style="$store.state.layout.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-smile" />
-                      </template>
+            <template v-slot:content>
+              <q-btn padding="xs"
+                :style="$store.state.layout.buttonFlatStyleTransparent"
+                flat
+                size="15px"
+                icon="las la-smile" />
+            </template>
 
-                      <template v-slot:happy>
-                        <q-btn padding="xs"
-                          :style="$store.state.layout.buttonFlatStyleTransparent"
-                          flat
-                          size="15px"
-                          icon="las la-grin-alt" />
-                      </template>
-                    </q-btn-toggle>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <template v-slot:happy>
+              <q-btn padding="xs"
+                :style="$store.state.layout.buttonFlatStyleTransparent"
+                flat
+                size="15px"
+                icon="las la-grin-alt" />
+            </template>
+          </q-btn-toggle>
+        </div>
+        <!-- Input: Title -->
+        <div class="col-12 ">
+          <BaseInput title="Title"
+            eventMode="eventMode"
+            :inputStyle="{'max-height': '50px', 'min-height': '25px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}"
+            :rules="[(val) => val.length <= 50 || 'Please use maximum 50 characters']"></BaseInput>
+          <q-input color="secondary"
+            class="q-mb-md q-mt-md"
+            v-model="title"
+            stack-label
+            autofocus
+            filled
+            label="Title"
+            :label-color="labelColor"
+            @focus="setFocus"
+            @blur="loseFocus"
+            :style="getStyleForInput" />
+        </div>
+        <!-- Input: What happened -->
+        <div class="col-12 ">
+          <q-input v-model="text"
+            color="accent"
+            label="What happened?"
+            stack-label
+            filled
+            autogrow
+            label-color="lightgrey"
+            :style="getStyleForInput"
+            :input-style="{'max-height':  $store.state.layout.height * .33+'px', 'padding-left': '15px', 'min-height': '220px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}" />
+        </div>
 
-            <!-- What Happened-Section -->
-            <div class="promptContainer col-12 q-mx-md q-mt-xs q-px-md">
-              <!-- Title -->
-              <div class="row justify-center items-center"></div>
-              <!-- Text Input -->
-              <div class="row justify-center q-mt-xs items-center">
-                <div class="col-12">
-                  <q-input color="primary"
-                    v-model="title"
-                    stack-label
-                    filled
-                    square
-                    label="Title"
-                    label-color="lightgrey"
-                    :style="getStyleForInput"
-                    :input-style="{'max-height': '50px', 'min-height': '25px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}"
-                    :rules="[
-                      (val) =>
-                        val.length <= 50 || 'Please use maximum 50 characters',
-                    ]" />
-                </div>
-              </div>
-              <!-- Text Input -->
-              <div class="row justify-center q-mt-xs items-center">
-                <div class="col-12">
-                  <q-input v-model="text"
-                    label="What happened?"
-                    stack-label
-                    filled
-                    square
-                    autogrow
-                    label-color="lightgrey"
-                    :style="getStyleForInput"
-                    :input-style="{'max-height': '335px', 'min-height': '220px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}" />
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-        <!-- Content: Editor -->
-        <div v-else
-          class="column">
-          <q-scroll-area :style="heightForScrollArea"
-            ref="scrollArea">
-            <div v-if="isShowingEventText"
-              class="smallText"
-              :style="$store.getters['layout/getStyleForQuotedEventText']">
-              <q-scroll-area :style="styleEventTextScrollArea">
-                <span class="bold">You wrote:</span> <br />
-                <span class="text-justify keep-whitespace">{{
-                textForQuoted
-                }}</span>
+      </div>
+      <!-- Content: Editor -->
+      <div v-else
+        class="column">
+        <q-scroll-area :style="heightForScrollArea"
+          ref="scrollArea">
+          <div v-if="isShowingEventText"
+            class="smallText"
+            :style="$store.getters['layout/getStyleForQuotedEventText']">
+            <q-scroll-area :style="styleEventTextScrollArea">
+              <span class="bold">You wrote:</span> <br />
+              <span class="text-justify keep-whitespace">{{
+              textForQuoted
+              }}</span>
+            </q-scroll-area>
+          </div>
+          <!-- Editor -->
+          <div class="row justify-center">
+            <div class="col-12">
+              <q-scroll-area :style="heightForScrollArea"
+                ref="scrollArea">
+                <BaseEditor class="no-border-radius no-box-shadow"
+                  ref="editorRef1"
+                  v-model="editor"
+                  minHeight="535px"
+                  type="EVENT"
+                  @openDialogCreateTemplate="openDialogCreateTemplate"
+                  @openDialogViewTemplates="openDialogViewTemplates"
+                  @pasteTemplate="pasteTemplate" />
               </q-scroll-area>
             </div>
-            <!-- Editor -->
-            <div class="row justify-center">
-              <div class="col-12">
-                <q-scroll-area :style="heightForScrollArea"
-                  ref="scrollArea">
-                  <BaseEditor class="no-border-radius no-box-shadow"
-                    ref="editorRef1"
-                    v-model="editor"
-                    minHeight="535px"
-                    type="EVENT"
-                    @openDialogCreateTemplate="openDialogCreateTemplate"
-                    @openDialogViewTemplates="openDialogViewTemplates"
-                    @pasteTemplate="pasteTemplate" />
-                </q-scroll-area>
-              </div>
-            </div>
-          </q-scroll-area>
-        </div>
+          </div>
+        </q-scroll-area>
       </div>
 
     </template>
@@ -184,36 +167,31 @@ import BasePage from "src/components/ui/BasePage.vue";
 import BaseEditor from "src/components/ui/BaseEditor.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
+import BaseInput from "src/components/ui/BaseInput.vue";
 
 export default {
-  components: { BasePage, BaseEditor, BaseButtonForTitleBar, BaseButtonForDialogFooter },
+  components: { BasePage, BaseEditor, BaseButtonForTitleBar, BaseButtonForDialogFooter, BaseInput },
   data() {
     return {
       isShowingEditor: false,
       styleEventTextScrollArea: {
         height: "125px",
       },
-      heightForScrollArea: "height: 600px",
+      heightForScrollArea: "500px",
       isShowingEventText: false,
-      widthOfDialog: 350,
     };
   },
   watch: {
-
   },
 
   computed: {
-    getStyleForInput() {
-      let style = {};
-      style["font-size"] = "12px";
-      style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["min-width"] = "250px !important";
-      style["max-width"] = "250px !important";
-      return style;
+    getEventMode() {
+      return this.$store.state.layout.eventMode;
+    },
+    getBackgroundColor() {
+      return this.$store.state.layout.eventBackgroundColor;
     },
     textForRightButton() {
-
-
       if ((this.$store.state.data.eventData === undefined) | (this.$store.state.data.eventData.editor === "")) {
         return "Create";
       } else {
@@ -363,45 +341,9 @@ export default {
   font-family: Tahoma !important;
   color: red !important;
 }
-
-.promptContainer {
-  text-align: center;
-}
-
-.containerForSection {
-  height: 600px;
-}
-
-.editorSection {
-  background-color: white;
-}
-
-.test {
-  color: puprle;
-}
 </style>
 
 <style scoped>
-.container {
-  background-color: white;
-  height: 600px;
-}
-
-
-
-.definedWidth {
-  min-width: 250px;
-  max-width: 250px;
-}
-
-.promptContainer {
-  text-align: center;
-}
-
-.normalStyle {
-  color: green;
-}
-
 .topMargin {
   margin-top: 20px;
 }

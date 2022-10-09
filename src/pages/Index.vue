@@ -1,13 +1,14 @@
 <template>
   <BasePage titleOfPage="Today"
-    :isTransparent="true">
+    :mode="getModeForHome"
+    :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
       <q-icon name="bi-eye"
         size="25px" />
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center q-pr-sm">
-        <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
+        <BaseButtonForTitleBar class="q-ml-xs  no-box-shadow "
           :icon="getLetterIcon"
           @click-button="toggleLetterVisibility">
         </BaseButtonForTitleBar>
@@ -64,6 +65,12 @@ export default {
       } else {
         return "bi-envelope"
       }
+    },
+    getModeForHome() {
+      return this.$store.state.layout.modeForHome;
+    },
+    getBackgroundColor() {
+      return this.$store.state.layout.backgroundColorForHome;
     }
   },
 };

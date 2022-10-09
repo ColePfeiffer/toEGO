@@ -7,7 +7,8 @@
         <q-item-label>{{title}}</q-item-label>
         <q-item-label caption>{{caption}}</q-item-label>
       </q-item-section>
-      <slot name="content">
+      <slot name="content"
+        class="col-12">
       </slot>
     </div>
   </q-item>
@@ -21,6 +22,10 @@ export default {
     caption: {
       type: String,
       default: ""
+    },
+    isOnSameLine: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

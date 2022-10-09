@@ -39,8 +39,7 @@
                   </template>
                 </BaseItemForSettingsTabPanel>
 
-                <BaseItemForSettingsTabPanel title="Background-Image"
-                  caption="Change Background image.">
+                <BaseItemForSettingsTabPanel title="Background-Image">
                   <template v-slot:content>
                     <q-item-section class="col-12"
                       avatar>
@@ -63,11 +62,7 @@
                     </q-item-section>
                   </template>
                 </BaseItemForSettingsTabPanel>
-              </template>
-            </BaseSettingsTabPanelGroup>
 
-            <BaseSettingsTabPanelGroup title="Color Theme">
-              <template v-slot:q-item-section-content>
                 <BaseItemForSettingsTabPanel title="Color: Secondary">
                   <template v-slot:content>
                     <q-item-section class="col-6"
@@ -176,6 +171,7 @@
                       <q-input v-model.number="fontsize"
                         type="number"
                         filled
+                        dense
                         square
                         style="max-width: 80px; max-height: 55px" />
                     </q-item-section>
@@ -190,8 +186,197 @@
           </q-tab-panel>
 
           <q-tab-panel name="other">
-            <BaseSettingsTabPanelGroup title="Events">
+            <BaseSettingsTabPanelGroup title="Page: Home">
               <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Page-Style"
+                  caption="Change the look.">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-btn-toggle v-model="modeForHome"
+                        dense
+                        class="my-custom-toggle"
+                        color="transparent"
+                        square
+                        unelevated
+                        toggle-color="accent"
+                        text-color="lightgrey"
+                        toggle-text-color="white"
+                        no-caps
+                        :options="[
+                          {label: 'retro', value: 'retro'},
+                          {label: 'compact', value: 'compact'},
+                          {label: 'plain', value: 'plain'},
+                        ]" />
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+
+                <BaseItemForSettingsTabPanel v-if="modeForHome === 'retro' || modeForHome === 'compact'"
+                  title="Background-Color"
+                  caption="You can also change the opacity here.">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="backgroundColorForHome"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="backgroundColorForHome" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+              </template>
+            </BaseSettingsTabPanelGroup>
+
+            <BaseSettingsTabPanelGroup title="Page: Event">
+              <template v-slot:q-item-section-content>
+                <BaseItemForSettingsTabPanel title="Layout"
+                  :isOnSameLine="false">
+                  <template v-slot:content>
+                    <q-item-section class="col-12"
+                      avatar>
+                      <q-btn-toggle v-model="eventMode"
+                        dense
+                        class="my-custom-toggle"
+                        color="transparent"
+                        square
+                        unelevated
+                        toggle-color="accent"
+                        text-color="lightgrey"
+                        toggle-text-color="white"
+                        no-caps
+                        :options="[
+                          {label: 'default', value: 'default'},
+                          {label: 'retro', value: 'retro'},
+                          {label: 'compact', value: 'compact'},
+                          {label: 'plain', value: 'plain'},
+                        ]" />
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+                <q-separator v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  color="whitestorm" />
+                <BaseItemForSettingsTabPanel v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  title="Color: Background"
+                  caption="Set color and opacity.">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="eventBackgroundColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="eventBackgroundColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+                <BaseItemForSettingsTabPanel v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  class="q-pb-sm"
+                  title="Color: Input fields"
+                  caption="Set the background color.">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="eventInputBackgroundColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="eventInputBackgroundColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+                  </template>
+                </BaseItemForSettingsTabPanel>
+                <BaseItemForSettingsTabPanel v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  title="Color: Text"
+                  caption="Set Color for title and emojis">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="eventTextColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="eventTextColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+                <BaseItemForSettingsTabPanel v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  title="Color: Text-Shadow">
+                  <template v-slot:content>
+                    <q-item-section class="col-6"
+                      avatar>
+                      <q-input filled
+                        dense
+                        v-model="eventTextShadowColor"
+                        :rules="['anyColor']"
+                        class="color-picker-input">
+                        <template v-slot:append>
+                          <q-icon name="colorize"
+                            class="cursor-pointer">
+                            <q-popup-proxy cover
+                              transition-show="scale"
+                              transition-hide="scale">
+                              <q-color v-model="eventTextShadowColor" />
+                            </q-popup-proxy>
+                          </q-icon>
+                        </template>
+                      </q-input>
+                    </q-item-section>
+
+                  </template>
+                </BaseItemForSettingsTabPanel>
+
+                <q-separator v-if="eventMode === 'retro' || eventMode === 'compact'"
+                  color="whitestorm" />
                 <BaseItemForSettingsTabPanel title="Show expand button"
                   caption="Show the button to expand individual events on the diary page.">
                   <template v-slot:content>
@@ -206,6 +391,8 @@
                 </BaseItemForSettingsTabPanel>
               </template>
             </BaseSettingsTabPanelGroup>
+
+
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -233,11 +420,17 @@ export default {
       backgroundImage: 'url(/images/background_wide2.jpg) no-repeat center center fixed',
       fontsize: 12,
       isShowingExpandButtonForEventsViaDiary: false,
+      modeForHome: this.$store.state.layout.modeForHome,
+      backgroundColorForHome: this.$store.state.layout.backgroundColorForHome,
+      eventMode: this.$store.state.layout.eventMode,
+      eventBackgroundColor: this.$store.state.layout.eventBackgroundColor,
+      eventTextColor: this.$store.state.layout.eventTextColor,
+      eventTextShadowColor: this.$store.state.layout.eventTextShadowColor,
+      eventInputBackgroundColor: this.$store.state.layout.eventInputBackgroundColor,
     };
   },
   watch: {
     isDarkModeTurnedOn(newValue) {
-      console.log(newValue);
       this.setDarkMode();
     },
     isShowingExpandButtonForEventsViaDiary(newValue) {
@@ -252,7 +445,34 @@ export default {
     },
     backgroundImage(imageURL) {
       this.$store.commit("layout/changeBackgroundImage", imageURL);
-    }
+    },
+    modeForHome(mode) {
+      let payload = { "page": "home", "mode": mode };
+      this.$store.dispatch("layout/changeMode", payload);
+    },
+    backgroundColorForHome(color) {
+      this.$store.commit("layout/changeBackgroundColorForHome", color);
+    },
+    eventMode(mode) {
+      let payload = { "page": "event", "mode": mode };
+      this.$store.dispatch("layout/changeMode", payload);
+    },
+    eventBackgroundColor(color) {
+      let payload = { "type": "color", "color": color };
+      this.$store.dispatch("layout/changeEventPageProperties", payload);
+    },
+    eventTextColor(color) {
+      let payload = { "type": "text", "color": color };
+      this.$store.dispatch("layout/changeEventPageProperties", payload);
+    },
+    eventTextShadowColor(color) {
+      let payload = { "type": "textShadow", "color": color };
+      this.$store.dispatch("layout/changeEventPageProperties", payload);
+    },
+    eventInputBackgroundColor(color) {
+      let payload = { "type": "inputBackground", "color": color };
+      this.$store.dispatch("layout/changeEventPageProperties", payload);
+    },
   },
   methods: {
     ...mapMutations(["./store/data/showModal", "store/data/showModal"]),

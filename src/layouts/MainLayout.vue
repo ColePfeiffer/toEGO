@@ -12,6 +12,7 @@
 
     <!-- Router-view -->
     <q-page-container>
+      <q-resize-observer @resize="onResize" />
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <div class="row justify-center"
           :style="boxShadowStyle">
@@ -192,6 +193,11 @@ export default {
     this.$store.commit("data/initiateDay");
   },
   methods: {
+    onResize(size) {
+      console.log("Size changed to ", size.height, " x ", size.width);
+      this.$store.commit("layout/setWidth", size.width);
+      this.$store.commit("layout/setHeight", size.height);
+    },
     isNavigationSetTo(path) {
       let test = this.currentRouterPath.substring(1).toLowerCase();
       console.log(test, path);
@@ -284,4 +290,7 @@ export default {
 
 .my-card
   font-size: 12.5px
+
+
+
 </style>

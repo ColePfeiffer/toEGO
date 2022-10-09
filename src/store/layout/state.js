@@ -1,31 +1,47 @@
 export default function () {
   return {
+    //
+    width: 359,
+    height: 700,
+    innerWidth: 250,
     // Font Settings
     defaultFont: "PressStart",
     fontsize: "12.5",
     nonDefaultFont: "Inter",
     backgroundImageURL:
       "url(/images/background_wide2.jpg) no-repeat center center fixed",
-    // Color Brand Settings
+    //  Colors
+    //  - Color Brand Settings
     primary: "#00080f", // Font Color
     secondary: "#dfd4f5",
     accent: "#ffc107",
     accent2: "#14157a",
-    // Sub Colors
+    //  - Sub Colors
     SecondaryLighter: "#f3effc",
-    // System colors, can't be changed by the user
+    //  - System colors, can't be changed by the user
     whitesmoke: "#f5f5f5",
     blacksmoke: "#2c2c2c",
     dark: "#252425",
     white: "#ffffff",
     lightgrey: "#d3d3d3",
     darkgrey: "#989898",
-    // Opacity
+    //  Opacity
     lowOpacity: "30",
     mediumOpacity: "a6",
-    // Other
-    textShadowForTitle: "#dfd4f5 2px 2px 2px",
-    // Backgrounds
+    //  Page Settings
+    //  - Home
+    modeForHome: "retro",
+    backgroundColorForHome: "#ffffff54",
+    //  - Event
+    eventMode: "default",
+    eventBackgroundColor: "#fffffffc",
+    eventInputBackgroundColor: "#f5f5f5",
+    eventTextColor: "fffffffc",
+    eventTextShadowColor: "#dfd4f5",
+    eventTextShadow: "#dfd4f5 2px 2px 2px",
+    eventInputBackgroundColor: "#f5f5f5",
+    modeForDiary: "plain",
+    //  Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
       "https://64.media.tumblr.com/73966b6acfd978cc2ae90639bd803d73/tumblr_inline_mydbkloJQm1qak244.gif",
