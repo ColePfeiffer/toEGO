@@ -2,8 +2,9 @@ export default function () {
   return {
     //
     width: 359,
-    height: 700,
+    height: 500,
     innerWidth: 250,
+    innerHeight: 400,
     // Font Settings
     defaultFont: "PressStart",
     fontsize: "12.5",

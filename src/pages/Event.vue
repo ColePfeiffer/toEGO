@@ -84,33 +84,25 @@
         </div>
         <!-- Input: Title -->
         <div class="col-12 ">
-          <BaseInput title="Title"
+          <BaseInput class="q-mb-md q-mt-sm"
+            v-model="title"
+            title="Title"
+            autofocus
             eventMode="eventMode"
             :inputStyle="{'max-height': '50px', 'min-height': '25px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}"
             :rules="[(val) => val.length <= 50 || 'Please use maximum 50 characters']"></BaseInput>
-          <q-input color="secondary"
-            class="q-mb-md q-mt-md"
-            v-model="title"
-            stack-label
-            autofocus
-            filled
-            label="Title"
-            :label-color="labelColor"
-            @focus="setFocus"
-            @blur="loseFocus"
-            :style="getStyleForInput" />
         </div>
+
+
         <!-- Input: What happened -->
-        <div class="col-12 ">
-          <q-input v-model="text"
-            color="accent"
-            label="What happened?"
-            stack-label
-            filled
+        <div class="col-12">
+          <BaseInput v-model="text"
+            class="q-mb-lg"
+            title="What happened?"
             autogrow
-            label-color="lightgrey"
-            :style="getStyleForInput"
-            :input-style="{'max-height':  $store.state.layout.height * .33+'px', 'padding-left': '15px', 'min-height': '220px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}" />
+            eventMode="eventMode"
+            :inputStyle="getInputStyleForWhatHappened">
+          </BaseInput>
         </div>
 
       </div>
@@ -177,7 +169,7 @@ export default {
       styleEventTextScrollArea: {
         height: "125px",
       },
-      heightForScrollArea: "500px",
+      heightForScrollArea: "900px",
       isShowingEventText: false,
     };
   },
@@ -185,6 +177,13 @@ export default {
   },
 
   computed: {
+    getInputStyleForWhatHappened() {
+      let style = {};
+      style["min-height"] = this.$store.state.layout.innerHeight * 0.40 + "px";
+      style["font-size"] = "12.5px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      return style;
+    },
     getEventMode() {
       return this.$store.state.layout.eventMode;
     },
@@ -257,6 +256,7 @@ export default {
     },
   },
   methods: {
+
     switchSection() {
       // applying default template
       let defaultTemplate =

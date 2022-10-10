@@ -123,8 +123,6 @@ export const getStyleForBasePage = (state, getters) => {
       ", inset 4px 4px " +
       state.secondary +
       ", inset 5px 5px #22273894";
-    console.log("height", state.height * 0.72);
-    style["height"] = state.height * 0.67 + "px";
     if (mode === "retro") {
       style["margin-top"] = "0px";
     } else if (mode === "compact") {

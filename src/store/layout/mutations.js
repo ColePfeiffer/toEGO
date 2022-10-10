@@ -71,14 +71,14 @@ export const setEventInputBackgroundColor = (state, color) => {
   state.eventInputBackgroundColor = color;
 };
 
-export const setWidth = (state, width) => {
-  state.width = width;
+export const setSize = (state, size) => {
+  console.log("Size changed to ", size.height, " x ", size.width);
+  state.width = size.width;
+  state.height = size.height;
 };
 
-export const setHeight = (state, height) => {
-  state.height = height;
-};
-
-export const setInnerWidth = (state, width) => {
-  state.innerWidth = width;
+export const setInnerSize = (state, size) => {
+  console.log("Inner size changed to ", size.height, " x ", size.width);
+  state.innerWidth = size.width;
+  state.innerHeight = size.height;
 };

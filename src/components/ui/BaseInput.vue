@@ -2,7 +2,7 @@
   <q-input color="secondary"
     stack-label
     filled
-    label=title
+    :label=title
     :label-color="labelColor"
     @focus="setFocus"
     @blur="loseFocus"
@@ -39,8 +39,8 @@ export default {
       let style = {};
       style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["width"] = this.$store.state.layout.innerWidth * .68 + "px";
-      if (this.getEventMode != 'default') {
+      style["width"] = this.$store.state.layout.innerWidth * .75 + "px";
+      if (this.eventMode != 'default') {
         style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
       }
       return style;

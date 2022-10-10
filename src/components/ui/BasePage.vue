@@ -1,7 +1,6 @@
 <template>
   <q-page class="q-pa-sm">
-    <q-resize-observer @resize="onResize" />
-    <div class="row justify-center items-center q-pa-md q-pt-xl">
+    <div class="row justify-center items-center q-pa-md q-pt-lg">
       <!-- Header / Titlebar-->
       <div class="title-bar col-md-11 col-12 row shadow-1"
         :style="$store.getters['layout/getStyleForTitleBar'](mode)">
@@ -25,12 +24,18 @@
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
         :style="$store.getters['layout/getStyleForBasePage']({'mode': mode, 'backgroundColor': backgroundColor})">
-        <q-scroll-area :thumb-style="thumbStyle"
-          :bar-style="barStyle"
-          :style="getStyleForScrollArea">
-          <slot name="content"></slot>
-        </q-scroll-area>
+
+        <div style="height: 70vh">
+          <q-resize-observer @resize="onResize" />
+          <q-scroll-area :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+            :style="getStyleForScrollArea">
+            <slot name="content"></slot>
+          </q-scroll-area>
+        </div>
+
       </div>
+
       <!-- Footer / Buttons -->
       <div class="col-md-11 col-12 q-mt-md">
         <div class="row justify-end items-center no-wrap">
@@ -74,20 +79,18 @@ export default {
   },
   methods: {
     onResize(size) {
-      console.log("Size changed for inner values to ", size.height, " x ", size.width);
       if (size.height != 0) {
-        this.$store.commit("layout/setInnerWidth", size.width);
+        this.$store.commit("layout/setInnerSize", size);
       }
     },
   },
   computed: {
     getStyleForScrollArea() {
       let style = {};
+      style["height"] = this.$store.state.layout.innerHeight * .97 + "px";
       if (this.mode === 'retro') {
-        style["height"] = this.$store.state.layout.height * .70 + "px";
         style["margin-top"] = "6px";
       } else {
-        style["height"] = "595px";
         style["margin-top"] = "0px";
       }
       return style;

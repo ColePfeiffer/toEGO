@@ -1,5 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
+    <q-resize-observer @resize="onResize" />
     <!-- Dialogs -->
     <DialogNameAndCreate @create="eventCreateTemplate"
       @closeDialog="closeDialog">
@@ -12,7 +13,6 @@
 
     <!-- Router-view -->
     <q-page-container>
-      <q-resize-observer @resize="onResize" />
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <div class="row justify-center"
           :style="boxShadowStyle">
@@ -194,9 +194,7 @@ export default {
   },
   methods: {
     onResize(size) {
-      console.log("Size changed to ", size.height, " x ", size.width);
-      this.$store.commit("layout/setWidth", size.width);
-      this.$store.commit("layout/setHeight", size.height);
+      this.$store.commit("layout/setSize", size);
     },
     isNavigationSetTo(path) {
       let test = this.currentRouterPath.substring(1).toLowerCase();
