@@ -33,6 +33,7 @@
             class="col-12 q-mb-md"
             toggle-color="accent"
             padding="none"
+            :color="$store.getters['layout/getTextColorForEvent']['color']"
             flat
             :options="[
               { value: 'las la-angry', slot: 'angry' },
@@ -43,7 +44,7 @@
             ]">
             <template v-slot:angry>
               <q-btn padding="xs"
-                :style="$store.state.layout.buttonFlatStyleTransparent"
+                :style="getStyleForEmojiButton"
                 flat
                 size="15px"
                 icon="las la-angry" />
@@ -51,7 +52,7 @@
 
             <template v-slot:sad>
               <q-btn padding="xs"
-                :style="$store.state.layout.buttonFlatStyleTransparent"
+                :style="getStyleForEmojiButton"
                 flat
                 size="15px"
                 icon="las la-sad-tear" />
@@ -59,7 +60,7 @@
 
             <template v-slot:meh>
               <q-btn padding="xs"
-                :style="$store.state.layout.buttonFlatStyleTransparent"
+                :style="getStyleForEmojiButton"
                 flat
                 size="15px"
                 icon="las la-meh" />
@@ -67,7 +68,7 @@
 
             <template v-slot:content>
               <q-btn padding="xs"
-                :style="$store.state.layout.buttonFlatStyleTransparent"
+                :style="getStyleForEmojiButton"
                 flat
                 size="15px"
                 icon="las la-smile" />
@@ -75,7 +76,7 @@
 
             <template v-slot:happy>
               <q-btn padding="xs"
-                :style="$store.state.layout.buttonFlatStyleTransparent"
+                :style="getStyleForEmojiButton"
                 flat
                 size="15px"
                 icon="las la-grin-alt" />
@@ -89,7 +90,7 @@
             title="Title"
             autofocus
             eventMode="eventMode"
-            :inputStyle="{'max-height': '50px', 'min-height': '25px', 'font-size': '12.5px', 'font-family': $store.state.layout.nonDefaultFont}"
+            :inputStyle="getInputStyleForTitle"
             :rules="[(val) => val.length <= 50 || 'Please use maximum 50 characters']"></BaseInput>
         </div>
 
@@ -171,17 +172,38 @@ export default {
       },
       heightForScrollArea: "900px",
       isShowingEventText: false,
+      style: {},
     };
   },
   watch: {
   },
 
   computed: {
+    getStyleForEmojiButton() {
+      let style = {};
+
+      style["box-shadow"] = "none";
+      style["background-color"] = "transparent";
+      style["text-shadow"] = this.$store.getters['layout/getTextColorForEvent']["text-shadow"];
+
+      return style;
+
+    },
+    getInputStyleForTitle() {
+      let style = {};
+      style["min-height"] = "25px";
+      style["max-height"] = "50px";
+      style["font-size"] = "12.5px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = this.$store.getters['layout/getColorBasedOnBackgroundColor'](this.$store.state.layout.eventInputBackgroundColor);
+      return style;
+    },
     getInputStyleForWhatHappened() {
       let style = {};
       style["min-height"] = this.$store.state.layout.innerHeight * 0.40 + "px";
       style["font-size"] = "12.5px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = this.$store.getters['layout/getColorBasedOnBackgroundColor'](this.$store.state.layout.eventInputBackgroundColor);
       return style;
     },
     getEventMode() {

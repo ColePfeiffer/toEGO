@@ -43,6 +43,7 @@ export default {
       if (this.eventMode != 'default') {
         style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
       }
+
       return style;
     },
   },

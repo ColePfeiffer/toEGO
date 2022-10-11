@@ -96,6 +96,32 @@ export const getStyleForPage = (state) => {
   return style;
 };
 
+export const getColorBasedOnBackgroundColor = (state, getters) => {
+  return (backgroundColor) => {
+    if (getters.getBrightness(backgroundColor) <= 162) {
+      return "white";
+    } else {
+      return "black";
+    }
+  };
+};
+
+export const getTextColorForEvent = (state, getters) => {
+  let textColor = getters.getColorBasedOnBackgroundColor(
+    state.eventBackgroundColor
+  );
+  let style = {};
+
+  style["color"] = textColor;
+  if (textColor === "white") {
+    style["text-shadow"] = state.accent2 + " 2px 2px 2px";
+  } else {
+    style["text-shadow"] = state.eventTextShadowColor + " 2px 2px 2px";
+  }
+
+  return style;
+};
+
 export const getStyleForBasePage = (state, getters) => {
   return (payload) => {
     let mode = payload.mode;
@@ -184,18 +210,15 @@ export const getBrightness = () => {
 
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
+  let textColor = getters.getTextColorForEvent;
+  console.log("getting headline style.... ", textColor);
+
   style["font-weight"] = "bolder";
   style["font-size"] = "1.3em";
-  style["border-bottom"] = "1px solid black";
+  style["border-bottom"] = "1px solid " + textColor;
   style["padding"] = "0 0 4px";
+  style["color"] = textColor;
 
-  if (getters.isDarkModeActive) {
-    style["text-shadow"] = state.accent2 + " 2px 2px 2px";
-    style["color"] = "white";
-  } else {
-    style["text-shadow"] = state.EventTextShadow;
-    style["color"] = "black";
-  }
   return style;
 };
 

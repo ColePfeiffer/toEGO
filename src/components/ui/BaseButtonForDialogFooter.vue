@@ -35,14 +35,8 @@ export default {
         "box-shadow": "none",
         "background-color": "var(--q-secondary)"
       };
-
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      if (this.$store.getters['layout/getBrightness'](this.$store.state.layout.secondary) <= 155) {
-        style["color"] = "white";
-      } else {
-        style["color"] = "black";
-      }
-
+      style["color"] = this.$store.getters['layout/getColorBasedOnBackgroundColor'](this.$store.state.layout.secondary);
       return style;
     }
   }
