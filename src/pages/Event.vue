@@ -10,7 +10,7 @@
       <div class="row justify-between items-center">
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow"
           :icon="getIconForEditorButton"
-          @click-button="switchSection">
+          @click-button="toggleEditorView">
         </BaseButtonForTitleBar>
       </div>
     </template>
@@ -122,7 +122,7 @@
     </template>
     <template v-slot:footer>
       <BaseButtonForDialogFooter buttonText="Discard"
-        @click-button="closeDialog">
+        @click-button="leavePage">
       </BaseButtonForDialogFooter>
       <BaseButtonForDialogFooter :buttonText="textForRightButton"
         @click-button="saveChanges">
@@ -162,7 +162,96 @@ export default {
       this.setEventData();
     }
   },
+  methods: {
+    setEventData() {
+      this.editor = this.$store.state.data.eventData.editor;
+      this.title = this.$store.state.data.eventData.title;
+      this.mood = this.$store.state.data.eventData.mood;
+      this.text = this.$store.state.data.eventData.text;
+    },
+    resetEventData() {
+      this.isShowingEditor = false;
+      this.$store.commit("data/resetEventData");
+      this.setEventData();
+    },
+    updateEventData() {
+      this.$store.commit("data/updateEditor", this.editor);
+      this.$store.commit("data/updateTitle", this.title);
+      this.$store.commit("data/updateMood", this.mood);
+      this.$store.commit("data/updateText", this.text);
+    },
+    leavePage() {
+      let lastPath = this.$router.options.history.state.back;
+      lastPath = lastPath.substring(1);
+      this.$router.push(lastPath);
+      this.resetEventData();
+    },
+    saveChanges() {
+      if (this.mood === "") {
+        this.mood = "las la-meh-blank";
+      }
+      // check wether a new event is created or an existing one is being edited
+      if (this.$store.state.data.newEventIsInCreationMode) {
+        let lastPath = this.$router.options.history.state.back;
+        if (lastPath === "/diary") {
+          this.updateEventData();
+          this.$store.commit(
+            "data/addEventToEvents",
+            this.$store.state.data.lastSelectedDate
+          );
+        } else {
+          this.updateEventData();
+          // if we are at home, we want to use new Date
+          this.$store.commit("data/addEventToEvents", new Date());
+        }
+      } else {
+        this.updateEventData();
+        this.$store.commit("data/saveChangesToEditedEvent");
+        this.$store.commit("data/setModeForNewEvent", "CREATE");
+
+      }
+      this.leavePage();
+    },
+    // TODO: maybe put this into editor or somewhere else, as it appears to be used in multiple places
+    toggleEditorView() {
+      // Applying default template
+      let defaultTemplate =
+        this.$store.getters["data/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.$store.commit("data/updateEditor", defaultTemplate);
+      }
+      this.isShowingEditor = !this.isShowingEditor;
+    },
+    pasteTemplate(template) {
+      if (this.editor != "") {
+        this.editor = this.editor + "<br>" + template.text;
+      } else {
+        this.editor = template.text;
+      }
+    },
+    openDialogCreateTemplate() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogCreateEventTemplate",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+    openDialogViewTemplates() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: true,
+        nameOfCurrentDialog: "dialogViewEventTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+
+  },
   computed: {
+    // Styling _____________________
+    getEventMode() {
+      return this.$store.state.layout.eventMode;
+    },
     getStyleForHeadline() {
       return this.$store.getters["layout/getStyleForHeadline"];
     },
@@ -184,7 +273,6 @@ export default {
     },
     getStyleForEmojiButton() {
       let style = {};
-
       style["box-shadow"] = "none";
       style["background-color"] = "transparent";
       style["text-shadow"] =
@@ -213,12 +301,10 @@ export default {
       ](this.$store.state.layout.eventInputBackgroundColor);
       return style;
     },
-    getEventMode() {
-      return this.$store.state.layout.eventMode;
-    },
     getBackgroundColor() {
       return this.$store.state.layout.eventBackgroundColor;
     },
+    // Conditional Stuff for buttons
     textForRightButton() {
       if (this.$store.state.data.newEventIsInCreationMode) {
         return "Create";
@@ -232,90 +318,6 @@ export default {
       } else {
         return "bi-pencil-square";
       }
-    },
-  },
-  methods: {
-    switchSection() {
-      // applying default template
-      let defaultTemplate =
-        this.$store.getters["data/getDefaultTemplate"]("EVENT");
-      if (defaultTemplate != undefined) {
-        this.$store.commit("data/updateEditor", defaultTemplate);
-      }
-
-      this.isShowingEditor = !this.isShowingEditor;
-    },
-    pasteTemplate(template) {
-      if (this.editor != "") {
-        this.editor = this.editor + "<br>" + template.text;
-      } else {
-        this.editor = template.text;
-      }
-    },
-    openDialogCreateTemplate() {
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogCreateEventTemplate",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
-    },
-    openDialogViewTemplates() {
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogViewEventTemplates",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
-    },
-    closeDialog() {
-      let lastPath = this.$router.options.history.state.back;
-      lastPath = lastPath.substring(1);
-      this.$router.push(lastPath);
-      this.resetEventData();
-    },
-    resetEventData() {
-      this.isShowingEditor = false;
-      this.$store.commit("data/resetEventData");
-      this.setEventData();
-    },
-    setEventData() {
-      this.editor = this.$store.state.data.eventData.editor;
-      this.title = this.$store.state.data.eventData.title;
-      this.mood = this.$store.state.data.eventData.mood;
-      this.text = this.$store.state.data.eventData.text;
-    },
-    updateEventData() {
-      this.$store.commit("data/updateEditor", this.editor);
-      this.$store.commit("data/updateTitle", this.title);
-      this.$store.commit("data/updateMood", this.mood);
-      this.$store.commit("data/updateText", this.text);
-    },
-    saveChanges() {
-      if (this.mood === "") {
-        this.mood = "las la-meh-blank";
-      }
-      // check wether a new event is created or an existing one is being edited
-      if (this.$store.state.data.newEventIsInCreationMode) {
-        let lastPath = this.$router.options.history.state.back;
-        if (lastPath === "/diary") {
-          this.updateEventData();
-          this.$store.commit(
-            "data/addEventToEvents",
-            this.$store.state.data.lastSelectedDate
-          );
-        } else {
-          this.updateEventData();
-          // if we are at home, we want to use new Date
-          this.$store.commit("data/addEventToEvents", new Date());
-        }
-      } else {
-        this.updateEventData();
-        this.$store.commit("data/saveChangesToEditedEvent");
-        this.$store.commit("data/setModeForNewEvent", "CREATE");
-
-      }
-      this.closeDialog();
     },
   },
 };
