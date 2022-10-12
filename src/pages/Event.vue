@@ -155,7 +155,13 @@ export default {
       text: this.$store.state.data.eventData.text
     };
   },
-  watch: {},
+  // gets called anytime this component is set to active
+  activated() {
+    // if mode is set to editing mode, we fetch the updated eventData
+    if (!this.$store.state.data.newEventIsInCreationMode) {
+      this.setEventData();
+    }
+  },
   computed: {
     getStyleForHeadline() {
       return this.$store.getters["layout/getStyleForHeadline"];
@@ -213,12 +219,8 @@ export default {
     getBackgroundColor() {
       return this.$store.state.layout.eventBackgroundColor;
     },
-    // TODO:
     textForRightButton() {
-      if (
-        (this.$store.state.data.eventData === undefined) |
-        (this.$store.state.data.eventData.editor === "")
-      ) {
+      if (this.$store.state.data.newEventIsInCreationMode) {
         return "Create";
       } else {
         return "Save";
@@ -275,11 +277,13 @@ export default {
     resetEventData() {
       this.isShowingEditor = false;
       this.$store.commit("data/resetEventData");
+      this.setEventData();
+    },
+    setEventData() {
       this.editor = this.$store.state.data.eventData.editor;
       this.title = this.$store.state.data.eventData.title;
       this.mood = this.$store.state.data.eventData.mood;
       this.text = this.$store.state.data.eventData.text;
-
     },
     updateEventData() {
       this.$store.commit("data/updateEditor", this.editor);
@@ -306,9 +310,10 @@ export default {
           this.$store.commit("data/addEventToEvents", new Date());
         }
       } else {
-        // TODO: check if this still works
-        // editing an existing event:
+        this.updateEventData();
         this.$store.commit("data/saveChangesToEditedEvent");
+        this.$store.commit("data/setModeForNewEvent", "CREATE");
+
       }
       this.closeDialog();
     },

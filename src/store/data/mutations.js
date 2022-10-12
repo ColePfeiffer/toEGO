@@ -380,11 +380,12 @@ export const addEventToEvents = (state, dateEventIsCreatedFor) => {
 // saves the changes of an edited event
 export const saveChangesToEditedEvent = (state) => {
   let id = state.eventData.id;
-
+  console.log("ID: ", id);
   let index = state.diaryEntryRef.events.findIndex((event) => {
     return event.id === id;
   });
-
+  console.log("Index: ", index);
+  console.log("ID: ", state.diaryEntryRef.events[index]);
   state.diaryEntryRef.events[index] = state.eventData;
 };
 

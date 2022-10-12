@@ -57,7 +57,7 @@
           :isDiaryVisible="isDiaryVisible"
           :changeData="changeData"
           @create-diary-entry="createDiaryEntry"
-          @go-to-new-event-in-creation-mode="goToPageNewEventSetToCreationMode">
+          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
           <template v-slot:editor>
             <BaseEditor ref="editorRef1"
               class="no-border-radius no-box-shadow q-pa-none"
@@ -94,7 +94,7 @@ export default {
     TheDiaryViewer,
     BaseEditor
   },
-  emits: ["change-view", "enter-fullscreen-mode", "save-changes", "go-to-new-event-in-creation-mode"],
+  emits: ["change-view", "enter-fullscreen-mode", "save-changes", "go-to-event-set-to-creation-mode"],
   props: {
     diaryEntry: Object,
     viewingMode: String,
@@ -173,8 +173,8 @@ export default {
         events: this.diaryEntry.events,
       };
     },
-    goToPageNewEventSetToCreationMode() {
-      this.$emit("go-to-new-event-in-creation-mode");
+    goToEventSetToCreationMode() {
+      this.$emit("go-to-event-set-to-creation-mode");
     },
     closeDialog() {
       let payload = {

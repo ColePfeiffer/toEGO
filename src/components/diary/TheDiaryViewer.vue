@@ -10,7 +10,7 @@
               flat
               dense
               icon="bi-plus"
-              @click="goToPageNewEventSetToCreationMode" />
+              @click="goToEventSetToCreationMode" />
             <br />
             or create an entry.
             <q-btn color="accent"
@@ -61,7 +61,7 @@ export default {
     BaseCard,
   },
   // TODO:
-  emits: ["create-diary-entry", "go-to-new-event-in-creation-mode"],
+  emits: ["create-diary-entry", "go-to-event-set-to-creation-mode"],
   props: {
     diaryEntry: Object,
     viewingMode: String,
@@ -77,9 +77,8 @@ export default {
     createDiaryEntry() {
       this.$emit("create-diary-entry");
     },
-    // Methods for Buttons
-    goToPageNewEventSetToCreationMode() {
-      this.$emit("go-to-new-event-in-creation-mode");
+    goToEventSetToCreationMode() {
+      this.$emit("go-to-event-set-to-creation-mode");
     },
 
   },

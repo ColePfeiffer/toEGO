@@ -20,6 +20,8 @@
           class="q-px-md "></TheHeader>
         <TheEventViewer :diaryEntry="getDiaryEntry"
           :marginBottom="22"
+          @goToEventSetToCreationMode="goToEventSetToCreationMode"
+          @goToEventSetToEditingMode="goToEventSetToEditingMode"
           class="q-px-md q-pt-md "></TheEventViewer>
       </div>
     </template>
@@ -49,7 +51,26 @@ export default {
   methods: {
     toggleLetterVisibility() {
       this.isLetterVisible = !this.isLetterVisible;
-    }
+    },
+    goToEventSetToCreationMode() {
+      this.$store.commit("data/setModeForNewEvent", "CREATE");
+      this.$router.push("Event");
+    },
+    // TODO: angucken!
+    goToEventSetToEditingMode(eventData) {
+      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
+        "data/getDiaryEntryByDate"
+      ](eventData.createdOn);
+
+      console.log("eventdata: ", eventData);
+
+      this.$store.commit("data/updateEventData", {
+        eventData: eventData,
+        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
+      });
+      this.$store.commit("data/setModeForNewEvent", "EDIT");
+      this.$router.push("Event");
+    },
   },
   computed: {
     // get diary entry for today

@@ -13,7 +13,7 @@
               flat
               dense
               icon="bi-plus"
-              @click="goToPageNewEventSetToCreationMode" />
+              @click="goToEventSetToCreationMode" />
           </template>
         </BaseCard>
       </div>
@@ -26,7 +26,7 @@
             flat
             dense
             icon="bi-plus"
-            @click="goToPageNewEventSetToCreationMode" />
+            @click="goToEventSetToCreationMode" />
         </template>
       </BaseCard>
     </div>
@@ -38,7 +38,7 @@
         :eventData="event"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
-        @editEvent="goToPageNewEventSetToEditingMode"
+        @editEvent="goToEventSetToEditingMode"
         @deleteEvent="showConfirmDeleteDialog" />
     </div>
   </div>
@@ -51,6 +51,7 @@ import DialogDeleteEvent from "../dialogs/DialogDeleteEvent.vue";
 
 export default {
   name: "TheEventViewer",
+  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode"],
   components: {
     EventCard,
     DialogDeleteEvent,
@@ -110,22 +111,13 @@ export default {
 
       this.closeDialog();
     },
-    goToPageNewEventSetToCreationMode() {
-      this.$store.commit("data/setModeForNewEvent", "CREATE");
-      this.$router.push("Event");
+    goToEventSetToCreationMode() {
+      this.$emit("go-to-event-set-to-creation-mode");
     },
-    goToPageNewEventSetToEditingMode(eventData) {
-      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](eventData.createdOn);
+    goToEventSetToEditingMode(eventData) {
+      this.$emit("go-to-event-set-to-editing-mode", eventData);
+    },
 
-      this.$store.commit("data/updateEventData", {
-        eventData: eventData,
-        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
-      });
-      this.$store.commit("data/setModeForNewEvent", "EDIT");
-      this.$router.push("Event");
-    },
   },
   computed: {
     events() {

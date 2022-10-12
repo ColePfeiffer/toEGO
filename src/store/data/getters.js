@@ -8,9 +8,9 @@ export const getDiaryEntryByDate = (state) => {
       date.isSameDate(diaryEntry.date, selectedDate, "day")
     );
     if (refToDiaryInStore != undefined) {
-      console.log("Entry found: ", refToDiaryInStore);
+      console.log("* * Entry found: ", refToDiaryInStore);
     } else {
-      console.log("Entry found: none, returning undefined.");
+      console.log("* * No Entry found.");
     }
     return refToDiaryInStore;
   };

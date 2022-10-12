@@ -28,11 +28,13 @@
         icon="bi-plus-lg"
         label="new "
         :style="$store.state.data.sTextAccentShadow"
-        @click-button="goToPageNewEventSetToCreationMode" />
+        @click-button="goToEventSetToCreationMode" />
     </template>
 
     <template v-slot:content>
       <TheEventViewer :diaryEntry="diaryEntry"
+        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         :showMessageIfThereAreNoEvents="false">
       </TheEventViewer>
@@ -52,7 +54,7 @@ export default {
     ButtonForDiarySection,
     TheEventViewer
   },
-  emits: ["go-to-new-event-in-creation-mode", "set-visibility-of-diarysection"],
+  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "set-visibility-of-diarysection"],
   props: {
     isDiarySectionVisible: Boolean,
     diaryEntry: Object,
@@ -95,8 +97,11 @@ export default {
     },
   },
   methods: {
-    goToPageNewEventSetToCreationMode() {
-      this.$emit("go-to-new-event-in-creation-mode");
+    goToEventSetToCreationMode() {
+      this.$emit("go-to-event-set-to-creation-mode");
+    },
+    goToEventSetToEditingMode(eventData) {
+      this.$emit("go-to-event-set-to-editing-mode", eventData);
     },
     expandMore() {
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);

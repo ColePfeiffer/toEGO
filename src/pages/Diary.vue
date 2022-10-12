@@ -79,7 +79,8 @@
         :diaryEntry="getDiaryEntry"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         :isDiarySectionVisible="isDiarySectionVisible"
-        @go-to-new-event-in-creation-mode="goToPageNewEventSetToCreationMode"
+        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
         @set-visibility-of-diarysection="setVisibilityOfDiarySection">
 
       </TheSectionForEvents>
@@ -91,7 +92,7 @@
         @change-view="changeViewMode"
         @save-changes="saveChangesToEntry"
         @enter-fullscreen-mode="enterFullscreenMode"
-        @go-to-new-event-in-creation-mode="goToPageNewEventSetToCreationMode">
+        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
 
       </TheSectionForDiary>
     </div>
@@ -219,10 +220,7 @@ export default {
       return 0;
     },
     getDiaryEntry() {
-      let diaryEntryRefForDate = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](this.getDate);
-      return diaryEntryRefForDate;
+      return this.$store.getters["data/getDiaryEntryByDate"](this.getDate);
     },
     getCountOfDaysAwayFromToday() {
       // returns the number of days away from today... minus means its in the future, positive number means its in the past. zero means today.
@@ -268,11 +266,11 @@ export default {
     exitFullscreen() {
       this.isDiaryEntryShownInFullscreen = false;
     },
-    goToPageNewEventSetToCreationMode() {
+    goToEventSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
-    goToPageNewEventSetToEditingMode(eventData) {
+    goToEventSetToEditingMode(eventData) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "data/getDiaryEntryByDate"
       ](eventData.createdOn);

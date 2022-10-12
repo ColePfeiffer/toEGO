@@ -142,10 +142,7 @@ export default {
       return this.$route.path;
     },
     getDiaryEntryForToday() {
-      let getDiaryEntryRefForToday = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](new Date());
-      return getDiaryEntryRefForToday;
+      return this.$store.getters["data/getDiaryEntryByDate"](new Date());
     },
     getIconForDiary() {
       if (this.isNavigationSetTo('diary')) {
@@ -156,9 +153,9 @@ export default {
     },
     getIconForEvent() {
       if (this.isNavigationSetTo('event')) {
-        return 'bi-sticky-fill'
+        return 'bi-plus-circle-fill'
       } else {
-        return 'bi-sticky';
+        return 'bi-plus-lg';
       }
     },
     getIconForSettings() {
