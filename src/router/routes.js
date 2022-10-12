@@ -3,7 +3,6 @@ import index from "pages/Index.vue";
 import Diary from "pages/Diary.vue";
 import Items from "pages/Items.vue";
 import Settings from "pages/Settings.vue";
-import NewEvent from "pages/NewEvent.vue";
 import Event from "pages/Event.vue";
 
 const routes = [

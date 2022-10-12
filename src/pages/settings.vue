@@ -6,7 +6,7 @@
       backgroundColor="white">
       <template v-slot:title-bar-icon>
         <q-icon name="bi-menu-button-wide-fill"
-          size="25px" />
+          size="22px" />
       </template>
       <template v-slot:title-bar-controls></template>
       <template v-slot:content>

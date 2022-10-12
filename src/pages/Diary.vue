@@ -1,125 +1,125 @@
 <template>
-  <q-page class="q-pa-sm">
-    <div class="bookmark"
-      v-if="viewingMode === 'view' && false"></div>
-    <!-- DAY SELECTION -->
-    <div class="row justify-between items-center text-center q-py-md q-pb-xl maxHeight">
-      <!-- Date + Calendar Button -->
-      <div class="col-12">
-        <q-btn class="datePickerButton text-white"
-          no-wrap
-          flat
-          icon-right="event"
-          :style="$store.state.data.sTextAccentShadow"
-          :label="formatDate(getDate)">
-          <q-popup-proxy cover
-            transition-show="scale"
+  <BasePage :mode="diaryMode"
+    :backgroundColor="getBackgroundColor">
+    <template v-slot:title-bar-icon>
+      <div class="q-pa-xs">
+        <q-icon name="bi-journal"
+          size="19px" />
+      </div>
+    </template>
+    <template v-slot:title>
+      <div class="selected-date q-pl-sm">
+        {{formatDate(getDate)}}
+      </div>
+    </template>
+    <template v-slot:title-bar-controls>
+      <div class="row justify-between items-center no-wrap text-center">
+        <q-btn class="no-box-shadow q-mr-xs text-center"
+          icon="bi-calendar-event"
+          :ripple="false"
+          padding="3px"
+          size="12px"
+          :style="$store.getters['layout/getStyleForTitleBar']"
+          unelevated
+          color="transparent">
+          <q-popup-proxy transition-show="scale"
             transition-hide="scale">
             <q-date v-model="formattedDate">
               <div class="row items-center justify-end">
-                <q-btn v-close-popup
-                  label="Close"
-                  color="primary"
-                  flat />
+
                 <q-btn label="today"
                   color="primary"
                   flat
                   @click="setDateToToday()" />
+                <q-btn v-close-popup
+                  label="Close"
+                  color="primary"
+                  flat />
               </div>
             </q-date>
           </q-popup-proxy>
         </q-btn>
-      </div>
-      <!-- go back button -->
-      <div class="col-3 text-left">
-        <q-btn v-if="viewingMode === 'view'"
-          class="text-white"
-          flat
+
+        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+          class="no-box-shadow q-mr-xs"
           icon="bi-chevron-left"
           size="12px"
-          :style="$store.state.data.sTextAccentShadow"
-          @click="subtractFromDate(1)"></q-btn>
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
-          class="text-white q-pl-none"
+          @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
+        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+          class="no-box-shadow q-mr-xs"
+          icon="bi-dot"
           size="12px"
-          flat
-          icon="bi-chevron-double-left"
-          :style="$store.state.data.sTextAccentShadow"
-          @click="setDateToToday()">
-        </q-btn>
-      </div>
-      <!-- today, yesterday, x days ago, x days ahead... -->
-      <div class="col-6">
-        <div class="text-white smallText "
-          :style="$store.state.data.sTextAccentShadow">{{ getDay }}</div>
-      </div>
-      <!-- go forward button -->
-      <div class="col-3 text-right">
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
-          class="text-white q-pr-none"
-          size="12px"
-          flat
-          icon="bi-chevron-double-right"
-          :style="$store.state.data.sTextAccentShadow"
-          @click="setDateToToday()">
-        </q-btn>
-        <q-btn v-if="viewingMode === 'view'"
-          class="text-white "
-          flat
+          @click-button="setDateToToday()"></BaseButtonForTitleBar>
+
+        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+          class="no-box-shadow q-mr-xs"
           icon="bi-chevron-right"
           size="12px"
-          :style="$store.state.data.sTextAccentShadow"
-          @click="addToDate(1)"></q-btn>
+          @click-button="addToDate(1)"></BaseButtonForTitleBar>
+
       </div>
-    </div>
-    <br />
-    <div class="q-px-md">
-      <!-- EVENT SECTION -->
-      <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-        :diaryEntry="getDiaryEntry"
-        :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-        :isDiarySectionVisible="isDiarySectionVisible"
-        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-        @set-visibility-of-diarysection="setVisibilityOfDiarySection">
+    </template>
+    <template v-slot:content>
+      <div class="bookmark"
+        v-if="viewingMode === 'view' && false"></div>
+      <!-- DAY SELECTION -->
+      <div class="row justify-center items-center text-center">
+        <!-- today, yesterday, x days ago, x days ahead... -->
+        <div class="col-12">
+          <div class="text-white smallText "
+            :style="$store.state.layout.sTextAccentShadow">{{ getDay }}</div>
+        </div>
 
-      </TheSectionForEvents>
-      <!-- DIARY SECTION -->
-      <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
-        :class="getDiarySectionClass"
-        :diaryEntry="getDiaryEntry"
-        :viewingMode="viewingMode"
-        @change-view="changeViewMode"
-        @save-changes="saveChangesToEntry"
-        @enter-fullscreen-mode="enterFullscreenMode"
-        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
-
-      </TheSectionForDiary>
-    </div>
-
-    <!-- DIARY SECTION FULLSCREEN -->
-    <div v-if="isDiaryEntryShownInFullscreen"
-      class="q-pa-md">
-      <div class="row justify-end q-pb-md">
-        <div class="col-4 smallText text-right"></div>
-        <q-btn class="smallText text-right"
-          flat
-          dense
-          icon="bi-chevron-left"
-          label="back"
-          color="white"
-          size="10px"
-          @click="exitFullscreen"
-          :style="$store.state.data.sTextAccentShadow"></q-btn>
       </div>
 
-      <q-card class="editorCard shadow-3 text-justify">
-        <q-item>
-          <q-item-section v-html="editorHTMLContent"> </q-item-section>
-        </q-item>
-      </q-card>
-    </div>
-  </q-page>
+      <div>
+        <!-- EVENT SECTION -->
+        <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
+          :diaryEntry="getDiaryEntry"
+          :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
+          :isDiarySectionVisible="isDiarySectionVisible"
+          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+          @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+          @set-visibility-of-diarysection="setVisibilityOfDiarySection">
+
+        </TheSectionForEvents>
+        <!-- DIARY SECTION -->
+        <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
+          :class="getDiarySectionClass"
+          :diaryEntry="getDiaryEntry"
+          :viewingMode="viewingMode"
+          @change-view="changeViewMode"
+          @save-changes="saveChangesToEntry"
+          @enter-fullscreen-mode="enterFullscreenMode"
+          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
+
+        </TheSectionForDiary>
+      </div>
+
+      <!-- DIARY SECTION FULLSCREEN -->
+      <div v-if="isDiaryEntryShownInFullscreen"
+        class="q-pa-md">
+        <div class="row justify-end q-pb-md">
+          <div class="col-4 smallText text-right"></div>
+          <q-btn class="smallText text-right"
+            flat
+            dense
+            icon="bi-chevron-left"
+            label="back"
+            color="white"
+            size="10px"
+            @click="exitFullscreen"
+            :style="$store.state.layout.sTextAccentShadow"></q-btn>
+        </div>
+
+        <q-card class="editorCard shadow-3 text-justify">
+          <q-item>
+            <q-item-section v-html="editorHTMLContent"> </q-item-section>
+          </q-item>
+        </q-card>
+      </div>
+    </template>
+  </BasePage>
 </template>
 
 <script>
@@ -127,12 +127,16 @@ import { date } from "quasar";
 import TheSectionForEvents from "src/components/diary/TheSectionForEvents.vue";
 import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
 import { useQuasar } from "quasar";
+import BasePage from "src/components/ui/BasePage.vue";
+import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 
 export default {
   name: "diary",
   components: {
     TheSectionForEvents,
-    TheSectionForDiary
+    TheSectionForDiary,
+    BasePage,
+    BaseButtonForTitleBar,
   },
   data() {
     return {
@@ -167,6 +171,12 @@ export default {
     },
   },
   computed: {
+    diaryMode() {
+      return this.$store.state.layout.diaryMode;
+    },
+    getBackgroundColor() {
+      return this.$store.state.layout.diaryBackgroundColor;
+    },
     isShowingExpandButtonOfEventCard() {
       return this.$store.state.data
         .isShowingExpandButtonOfEventCardsOnDiaryPage;
@@ -335,8 +345,14 @@ export default {
   font-size: 12.5px;
 }
 
+.selected-date {
+  font-size: 12.5px;
+  margin-top: 1px;
+}
+
 .datePickerButton {
   text-transform: none;
+
 }
 
 .maxHeight {

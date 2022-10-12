@@ -184,7 +184,7 @@ export const getStyleForTitleBar = (state, getters) => {
     let style = {};
 
     style["background"] = "var(--q-secondary)";
-    style["text-shadow"] = state.accent2 + state.lowOpacity + " 1px 1px 1px";
+    style["text-shadow"] = state.accent2 + state.lowOpacity + " 2px 2px 2px";
     style["text-family"] = state.nonDefaultFont;
 
     if (mode === "retro") {

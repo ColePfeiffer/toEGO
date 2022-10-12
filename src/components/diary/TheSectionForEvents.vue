@@ -10,14 +10,14 @@
         textColor="white"
         icon="bi-eye"
         label="view"
-        :style="$store.state.data.sTextAccentShadow"
+        :style="$store.state.layout.sTextAccentShadow"
         @click-button="expandMore"></ButtonForDiarySection>
       <!-- Button: Leave Viewing-Mode -->
       <ButtonForDiarySection v-else
         textColor="white"
         icon="bi-chevron-left"
         label="back"
-        :style="$store.state.data.sTextAccentShadow"
+        :style="$store.state.layout.sTextAccentShadow"
         @click-button="expandLess"></ButtonForDiarySection>
     </template>
 
@@ -26,12 +26,13 @@
       <!-- Button: Create new event -->
       <ButtonForDiarySection textColor="accent"
         icon="bi-plus-lg"
+        class="q-mr-xs"
         label="new "
-        :style="$store.state.data.sTextAccentShadow"
+        :style="$store.state.layout.sTextAccentShadow"
         @click-button="goToEventSetToCreationMode" />
     </template>
 
-    <template v-slot:content>
+    <template v-slot:content-in-scroll-area>
       <TheEventViewer :diaryEntry="diaryEntry"
         @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
         @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"

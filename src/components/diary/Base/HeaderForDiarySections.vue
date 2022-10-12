@@ -2,7 +2,7 @@
   <div class="q-pt-md">
     <div class="row justify-between items-center no-wrap ">
       <div class="col-8 smallText text-left text-white"
-        :style="$store.state.data.headlineStyle">
+        :style="$store.state.layout.headlineStyle">
         <slot name="nameOfTitle">
         </slot>
       </div>

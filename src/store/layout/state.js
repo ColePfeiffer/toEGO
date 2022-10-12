@@ -40,7 +40,8 @@ export default function () {
     eventInputBackgroundColor: "#f5f5f5fc",
     eventTextColor: "fffffffc",
     eventTextShadow: "#dfd4f5 2px 2px 2px",
-    modeForDiary: "plain",
+    diaryMode: "plain",
+    diaryBackgroundColor: "fffffffc",
     //  Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",

@@ -36,6 +36,7 @@
         <!-- Button: Save changes to diaryentry -->
         <ButtonForDiarySection v-if="modeIsSetToEdit"
           textColor="accent"
+          class="q-mr-xs"
           icon="fas fa-save"
           label="save"
           :style="$store.state.layout.sTextAccentShadow"
@@ -43,7 +44,8 @@
         <!-- Button: Edit diaryentry -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="accent"
-          icon="bi-pencil-fill"
+          icon="bi-pencil-square"
+          class="q-mr-xs"
           label="save"
           size="9.5px"
           :style="$store.state.layout.sTextAccentShadow"
@@ -103,7 +105,7 @@ export default {
     return {
       isCreatingNewDiaryEntry: false,
       changeData: {},
-      heightForScrollArea: 520,
+      heightForScrollArea: 400,
     };
   },
   computed: {

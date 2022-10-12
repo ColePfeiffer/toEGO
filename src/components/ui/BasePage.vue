@@ -2,24 +2,29 @@
   <q-page class="q-pa-sm">
     <div class="row justify-center items-center q-pa-md q-pt-lg">
       <!-- Header / Titlebar-->
-      <div class="title-bar col-md-11 col-12 row shadow-1"
+      <div class="title-bar col-md-11 col-12 row justify-center shadow-1"
         :style="$store.getters['layout/getStyleForTitleBar'](mode)">
-        <div class="title-bar-text"
-          :style="getMargin">
-          <div class="q-pr-lg row justify-between items-center no-wrap"
-            :style="getPadding">
-            <slot name="title-bar-icon"
-              class="q-pl-xl"></slot>
-            <div class="q-pl-sm">
-              {{ titleOfPage }}
+        <slot name="titlebar">
+          <div class="title-bar-text"
+            :style="getMargin">
+            <div class="q-pr-lg row justify-between items-center no-wrap"
+              :style="getPadding">
+              <slot name="title-bar-icon"
+                class="q-pl-xl"></slot>
+              <slot name="title">
+                <div class="q-pl-sm">
+                  {{ titleOfPage }}
+                </div>
+              </slot>
             </div>
           </div>
-        </div>
-        <div class="title-bar-controls"
-          :style="getMargin">
-          <slot name="title-bar-controls"></slot>
-        </div>
+          <div class="title-bar-controls"
+            :style="getMargin">
+            <slot name="title-bar-controls"></slot>
+          </div>
+        </slot>
       </div>
+
 
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
@@ -66,14 +71,14 @@ export default {
   data() {
     return {
       thumbStyle: {
-        right: '2px',
+        right: '1px',
         borderRadius: '5px',
         backgroundColor: 'var(--q-secondary)',
         width: '8px',
         opacity: 0.75
       },
       barStyle: {
-        right: '2px',
+        right: '1px',
         borderRadius: '9px',
         backgroundColor: "var(--q-info)",
         width: '11px',

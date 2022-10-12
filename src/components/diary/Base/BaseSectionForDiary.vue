@@ -14,11 +14,12 @@
   </div>
   <!-- Content -->
   <div>
-    <q-scroll-area :style="getHeightForScrollArea"
-      ref="scrollArea">
-      <slot name="content">
-      </slot>
-    </q-scroll-area>
+    <slot name="content">
+      <q-scroll-area :style="getHeightForScrollArea"
+        ref="scrollArea">
+        <slot name="content-in-scroll-area"></slot>
+      </q-scroll-area>
+    </slot>
   </div>
 </template>
 

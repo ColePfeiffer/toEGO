@@ -4,7 +4,7 @@
     :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
       <q-icon name="bi-eye"
-        size="25px" />
+        size="22px" />
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center q-pr-sm">
@@ -62,12 +62,11 @@ export default {
         "data/getDiaryEntryByDate"
       ](eventData.createdOn);
 
-      console.log("eventdata: ", eventData);
-
       this.$store.commit("data/updateEventData", {
         eventData: eventData,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
+
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");
     },

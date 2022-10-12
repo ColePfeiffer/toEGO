@@ -1,8 +1,7 @@
 <template>
   <div>
-    <q-card class="q-px-sm q-pb-none q-mt-lg noBorderRadius"
-      :style="$store.getters['layout/getStyleForTransparentCard']">
-      <q-card-section class="cardSection">
+    <BaseCardWithTape :tapeColor="$store.state.layout.accent">
+      <template v-slot:content>
         <p class="cursor-pointer q-pa-xs q-mb-none text-center"
           :style="$store.getters['layout/getStyleForText']">
           {{ text }}
@@ -16,15 +15,15 @@
               @keyup.enter="scope.set" />
           </q-popup-edit>
         </p>
-        <div class="tape tape-1"
-          :style="{ 'background': $store.state.layout.accent+'59'}"></div>
-      </q-card-section>
-    </q-card>
+      </template>
+    </BaseCardWithTape>
+
   </div>
 
 </template>
 
 <script>
+import BaseCardWithTape from '../ui/BaseCardWithTape.vue';
 export default {
   name: "TheHeader",
   data() {
@@ -33,20 +32,6 @@ export default {
       expanded: false,
     };
   },
+  components: { BaseCardWithTape }
 };
 </script>
-
-<style scoped>
-.noBorderRadius {
-  border-radius: 0px;
-}
-
-.tape {
-  position: absolute;
-  top: -12px;
-  left: 26%;
-  height: 25px;
-  width: 128px;
-  transform: rotate(1deg);
-}
-</style>
