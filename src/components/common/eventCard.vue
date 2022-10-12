@@ -162,7 +162,6 @@ export default {
       this.$emit("editEvent", this.eventData);
     },
     expand() {
-      console.log("lol")
       this.$emit("changeEventData", this.eventData);
     },
     mergeText(eventData) {
@@ -173,7 +172,6 @@ export default {
         // später löschen, nur zum testen
         //output = this.lorem;
       }
-      //console.log([output][0]);
       return [output][0];
     },
   },

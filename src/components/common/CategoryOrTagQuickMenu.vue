@@ -132,12 +132,10 @@ export default {
   computed: {
     getTextColorForQuicklist() {
       if (this.isTemplateInQuicklist() === "bi-dash") {
-        console.log("black");
         return {
           color: "var(--q-primary)",
         };
       } else {
-        console.log("gray");
         return {
           color: "#d3d3d3 ",
         };
@@ -146,8 +144,6 @@ export default {
   },
   methods: {
     onResize(size) {
-      console.log("new size: ", size);
-      console.log("new size: ", size.height, size.width);
       this.styleForScrollArea = {
         height: size.height + "px",
         width: size.width + "px",
@@ -160,15 +156,10 @@ export default {
       this.$emit("openDialogFolderManagement");
     },
     templateClicked(template) {
-      console.log(
-        "template clicked triggered in categoryTagQuickMenu: ",
-        template
-      );
       console.log("template clicked!!!", template);
     },
     onSubmit() {
       let nameInput = this.$refs.nameRef;
-      console.log(nameInput);
       nameInput.validate();
 
       // if form has error

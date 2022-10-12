@@ -10,11 +10,7 @@ const { getPaletteColor } = colors;
 const { brightness } = colors;
 
 export const isDarkModeActive = (state) => {
-  if (useQuasar().dark.isActive) {
-    return true;
-  } else {
-    return false;
-  }
+  return state.isDarkModeOn;
 };
 
 export const getStyleForTransparentCard = (state, getters) => {
@@ -98,6 +94,7 @@ export const getStyleForPage = (state) => {
 
 export const getColorBasedOnBackgroundColor = (state, getters) => {
   return (backgroundColor) => {
+    // if dark-mode is active, there is no custom-colored background, so the color gets set to white.
     if (getters.getBrightness(backgroundColor) <= 162) {
       return "white";
     } else {
@@ -107,16 +104,26 @@ export const getColorBasedOnBackgroundColor = (state, getters) => {
 };
 
 export const getTextColorForEvent = (state, getters) => {
-  let textColor = getters.getColorBasedOnBackgroundColor(
-    state.eventBackgroundColor
-  );
+  let textColor;
   let style = {};
+
+  if (state.eventMode === "default") {
+    if (getters.isDarkModeActive) {
+      textColor = "white";
+    } else {
+      textColor = "black";
+    }
+  } else {
+    textColor = getters.getColorBasedOnBackgroundColor(
+      state.eventBackgroundColor
+    );
+  }
 
   style["color"] = textColor;
   if (textColor === "white") {
     style["text-shadow"] = state.accent2 + " 2px 2px 2px";
   } else {
-    style["text-shadow"] = state.eventTextShadowColor + " 2px 2px 2px";
+    style["text-shadow"] = state.eventTextShadow;
   }
 
   return style;
@@ -124,19 +131,25 @@ export const getTextColorForEvent = (state, getters) => {
 
 export const getStyleForBasePage = (state, getters) => {
   return (payload) => {
-    let mode = payload.mode;
-    let backgroundColor = payload.backgroundColor;
-
     let style = {};
+    let defaultColor;
     style["border-radius"] = "0px";
     style["font-size"] = state.fontsize + "px";
 
-    if (getters.isDarkModeActive) {
-      style["background-color"] = "#000000ad";
-      style["color"] = "white";
+    if (payload.isUsingBackgroundColorAsDefaultColor) {
+      defaultColor = payload.backgroundColor;
     } else {
-      style["background-color"] = backgroundColor;
-      style["color"] = "black";
+      defaultColor = state.whitesmoke;
+    }
+
+    if (getters.isDarkModeActive && payload.mode === "default") {
+      style["background-color"] = state.dark;
+    } else if (getters.isDarkModeActive && payload.mode != "default") {
+      style["background-color"] = "#000000ad";
+    } else if (!getters.isDarkModeActive && payload.mode === "default") {
+      style["background-color"] = defaultColor;
+    } else {
+      style["background-color"] = payload.backgroundColor;
     }
 
     style["box-shadow"] =
@@ -149,25 +162,18 @@ export const getStyleForBasePage = (state, getters) => {
       ", inset 4px 4px " +
       state.secondary +
       ", inset 5px 5px #22273894";
-    if (mode === "retro") {
+
+    if (payload.mode === "retro") {
       style["margin-top"] = "0px";
-    } else if (mode === "compact") {
+    } else if (payload.mode === "compact") {
       style["margin-top"] = "9px";
       style["box-shadow"] = "none";
       style["border"] = "2px solid " + state.secondary;
-    } else if (mode === "plain") {
+    } else if (payload.mode === "plain") {
       style["box-shadow"] = "none";
       style["background-color"] = "transparent";
     } else {
       style["box-shadow"] = "none";
-
-      if (getters.isDarkModeActive) {
-        style["background-color"] = state.dark;
-        style["color"] = "white";
-      } else {
-        style["background-color"] = state.white;
-        style["color"] = "black";
-      }
     }
     return style;
   };
@@ -211,14 +217,17 @@ export const getBrightness = () => {
 export const getStyleForHeadline = (state, getters) => {
   let style = {};
   let textColor = getters.getTextColorForEvent;
-  console.log("getting headline style.... ", textColor);
 
   style["font-weight"] = "bolder";
   style["font-size"] = "1.3em";
-  style["border-bottom"] = "1px solid " + textColor;
+  style["border-bottom"] = "1px solid " + textColor["color"];
   style["padding"] = "0 0 4px";
-  style["color"] = textColor;
 
+  style = {
+    ...style,
+    ...textColor,
+  };
+  console.log(style);
   return style;
 };
 
@@ -240,9 +249,9 @@ export const getToolbarIconColor = (state, getters) => {
 
 export const getToolbarBackgroundColor = (state, getters) => {
   if (getters.isDarkModeActive) {
-    return "black";
+    return state.dark;
   } else {
-    return "white";
+    return state.white;
   }
 };
 

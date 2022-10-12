@@ -30,17 +30,16 @@ export default function () {
     lowOpacity: "30",
     mediumOpacity: "a6",
     //  Page Settings
+    isDarkModeOn: false,
     //  - Home
     modeForHome: "retro",
     backgroundColorForHome: "#ffffff54",
     //  - Event
     eventMode: "default",
-    eventBackgroundColor: "#fffffffc",
-    eventInputBackgroundColor: "#f5f5f5",
+    eventBackgroundColor: "#f5f5f5fc",
+    eventInputBackgroundColor: "#f5f5f5fc",
     eventTextColor: "fffffffc",
-    eventTextShadowColor: "#dfd4f5",
     eventTextShadow: "#dfd4f5 2px 2px 2px",
-    eventInputBackgroundColor: "#f5f5f5",
     modeForDiary: "plain",
     //  Backgrounds
     backgrounds: [

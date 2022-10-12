@@ -13,15 +13,15 @@ export default {
   props: { isEventExpanded: Boolean },
   data() {
     return {
-      expandIcon: "expand_more",
+      expandIcon: "bi-chevron-down",
     };
   },
   computed: {
     getIcon() {
       if (this.isEventExpanded) {
-        return "expand_less";
+        return "bi-chevron-up";
       } else {
-        return "expand_more";
+        return "bi-chevron-down";
       }
     }
   },

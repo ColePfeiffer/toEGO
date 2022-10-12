@@ -63,10 +63,6 @@ export default {
     },
 
   },
-  created() {
-    console.log("created section for events...")
-    console.log(this.diaryEntry);
-  },
   data() {
     return {
       heightForScrollArea: 175,

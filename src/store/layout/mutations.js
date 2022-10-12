@@ -27,7 +27,7 @@ export const setAccent2 = (state, color) => {
   setCssVar("info", color);
 };
 
-export const setBrightnessOfEventTextShadow = (state, shadowProperties) => {
+export const setEventTextShadow = (state, shadowProperties) => {
   state.eventTextShadow = shadowProperties;
 };
 
@@ -59,12 +59,12 @@ export const setEventBackgroundColor = (state, color) => {
   state.eventBackgroundColor = color;
 };
 
-export const setEventTextColor = (state, color) => {
-  state.eventTextColor = color;
+export const toggleDarkMode = (state) => {
+  state.isDarkModeOn = !state.isDarkModeOn;
 };
 
-export const setEventTextShadowColor = (state, color) => {
-  state.eventTextShadowColor = color;
+export const setEventTextColor = (state, color) => {
+  state.eventTextColor = color;
 };
 
 export const setEventInputBackgroundColor = (state, color) => {

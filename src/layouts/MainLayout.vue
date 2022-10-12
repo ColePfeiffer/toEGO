@@ -198,7 +198,6 @@ export default {
     },
     isNavigationSetTo(path) {
       let test = this.currentRouterPath.substring(1).toLowerCase();
-      console.log(test, path);
       if (test === path) {
         return true;
       } else {

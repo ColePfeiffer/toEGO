@@ -99,8 +99,6 @@ export default {
   },
   methods: {
     onResize(size) {
-      console.log("new size: ", size);
-      console.log("new size: ", size.height, size.width);
       this.styleForContent = {
         height: size.height - 2 + "px",
         width: size.width - 2 + "px",

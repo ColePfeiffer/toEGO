@@ -262,7 +262,6 @@ export default {
       this.getDate = Date.now();
     },
     enterFullscreenMode(editor) {
-      console.log("triggered in diary ", editor);
       this.isDiaryEntryShownInFullscreen = true;
       this.editorHTMLContent = editor;
     },
@@ -291,7 +290,6 @@ export default {
 
         let cleanedEditorText = changeData.editor.replaceAll("&nbsp;", '');
         cleanedEditorText = cleanedEditorText.replaceAll(" ", '');
-        console.log("here are the results, boss! ", cleanedEditorText);
         if (cleanedEditorText != "") {
           // if editor isn't empty and doesn't just contain whitespace
           let newEntry = changeData;

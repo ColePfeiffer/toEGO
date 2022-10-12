@@ -124,18 +124,6 @@ export const removeChildFromParent = (state, payload) => {
   parent.storedIDs = filteredArray;
 };
 
-export const testAuto = (state, payload) => {
-  let child = payload.child; // for example category item, template item ...
-  let parents = payload.parents; // for example categories or  folders
-
-  // child is in folder or category, that gets checked before comitting
-  // !currentParent.storedIDs.includes(child.id)
-
-  parents = parents.filter((parent) => !parent.storedIDs.includes(child.id));
-
-  console.log(parents);
-};
-
 export const removeChildFromAllParents = (state, payload) => {
   let child = payload.child; // can be category item or template item ...
   let parents = payload.parents; // can be folders or categories
@@ -162,7 +150,6 @@ export const removeTemplateFromCategory = (state, payload) => {
   let template = payload.template;
 
   // Remove template from array
-  console.log(category, template);
   var filteredArray = category.storedIDs.filter(function (templateID) {
     return templateID != template.id;
   });
@@ -220,7 +207,6 @@ export const updateExpandedStatusOfEventViaEventID = (state, eventID) => {
 */
 
 export const updateExpandedStatusOfEventViaEventID = (state, payload) => {
-  console.log("changing expanded state of event");
   let event = payload.diaryEntryRef.events.find(
     (event) => event.id === payload.eventID
   );
@@ -324,7 +310,6 @@ export const createTemplateAndAddToList = (state, payload) => {
     text: payload.text,
     isSetToDefault: false,
   };
-  console.log(payload.text);
   if (payload.type === "DIARY") {
     state.diaryTemplates.push(newTemplate);
   } else {

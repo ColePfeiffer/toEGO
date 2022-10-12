@@ -15,17 +15,20 @@ export function setShadowForTitle({ getters, state, commit }) {
   let brightness = getters.getBrightness(state.secondary);
 
   if (brightness > 60 && brightness < 150) {
+    console.log("medium opacity");
     commit(
-      "setBrightnessOfEventTextShadow",
+      "setEventTextShadow",
       state.secondary + state.mediumOpacity + " 2px 2px 2px"
     );
   } else if (brightness <= 60) {
+    console.log("low opacity");
     commit(
-      "setBrightnessOfEventTextShadow",
+      "setEventTextShadow",
       state.secondary + state.lowOpacity + " 2px 2px 2px"
     );
   } else {
-    commit("setBrightnessOfEventTextShadow", state.secondary + " 2px 2px 2px");
+    console.log("normal opacity");
+    commit("setEventTextShadow", state.secondary + " 2px 2px 2px");
   }
 }
 
@@ -37,17 +40,12 @@ export function changeMode({ commit }, payload) {
   } else if (payload.page === "diary") {
     commit("changeModeForDiary", payload.mode);
   } else {
-    console.log("lol ok nix da");
   }
 }
 
 export function changeEventPageProperties({ commit }, payload) {
   if (payload.type === "color") {
     commit("setEventBackgroundColor", payload.color);
-  } else if (payload.type === "text") {
-    commit("setEventTextColor", payload.color);
-  } else if (payload.type === "textShadow") {
-    commit("setEventTextShadowColor", payload.color);
   } else {
     commit("setEventInputBackgroundColor", payload.color);
   }

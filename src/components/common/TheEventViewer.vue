@@ -56,10 +56,6 @@ export default {
     DialogDeleteEvent,
     BaseCard
   },
-  created() {
-    console.log("created ...")
-    console.log(this.diaryEntry);
-  },
   props: {
     diaryEntry: Object,
     showMessageIfThereAreNoEvents: {
@@ -133,7 +129,6 @@ export default {
   },
   computed: {
     events() {
-      console.log(this.diaryEntry);
       return this.diaryEntry.events.slice().reverse();
     },
     styleForEventCard() {

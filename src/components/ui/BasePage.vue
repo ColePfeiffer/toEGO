@@ -23,8 +23,7 @@
 
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
-        :style="$store.getters['layout/getStyleForBasePage']({'mode': mode, 'backgroundColor': backgroundColor})">
-
+        :style="$store.getters['layout/getStyleForBasePage']({'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor})">
         <div style="height: 70vh">
           <q-resize-observer @resize="onResize" />
           <q-scroll-area :thumb-style="thumbStyle"
@@ -58,6 +57,11 @@ export default {
       type: String,
       default: "#ffffff54",
     },
+    isUsingBackgroundColorAsDefaultColor: {
+      type: Boolean,
+      default: false,
+    }
+
   },
   data() {
     return {

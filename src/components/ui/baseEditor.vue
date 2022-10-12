@@ -1,10 +1,8 @@
 <template>
   <q-editor ref="editorRef"
-    :content-class="{ 'max-width': '200px' }"
     class="editor text-justify"
-    :style="$store.getters['layout/getFontsize']"
-    :min-height="minHeight"
-    :toolbar-bg="$store.getters['layout/getToolbarBackgroundColor']"
+    :content-style="getStyleForEditor"
+    :style="getStyleForEditor"
     :toolbar-text-color="$store.getters['layout/getToolbarIconColor']"
     :toolbar-color="$store.getters['layout/getToolbarIconColor']"
     :toolbar="getToolbar"
@@ -110,7 +108,6 @@ export default {
     "pasteTemplate",
   ],
   props: {
-    minHeight: String,
     type: String,
   },
   data() {
@@ -224,6 +221,17 @@ export default {
     },
   },
   computed: {
+    getStyleForEditor() {
+      let style = {};
+      style["font-size"] = this.$store.state.layout.fontsize + "px";
+
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = "blacksmoke";
+      } else {
+        style["background-color"] = "whitesmoke";
+      }
+      return style;
+    },
     pasteQuicklistTextStyle() {
       if (this.isQuicklistDisabled) {
         return {
