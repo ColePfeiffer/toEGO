@@ -5,8 +5,10 @@
       :isUsingBackgroundColorAsDefaultColor="true"
       backgroundColor="white">
       <template v-slot:title-bar-icon>
-        <q-icon name="bi-menu-button-wide-fill"
-          size="22px" />
+        <div style="padding: 4px">
+          <q-icon name="bi-menu-button-wide-fill"
+            size="19px" />
+        </div>
       </template>
       <template v-slot:title-bar-controls></template>
       <template v-slot:content>

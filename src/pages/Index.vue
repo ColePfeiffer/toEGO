@@ -3,8 +3,10 @@
     :mode="getModeForHome"
     :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
-      <q-icon name="bi-eye"
-        size="22px" />
+      <div style="padding: 4px">
+        <q-icon name="bi-eye"
+          size="19px" />
+      </div>
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center q-pr-sm">

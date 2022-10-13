@@ -3,8 +3,10 @@
     :mode="getEventMode"
     :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
-      <q-icon name="theater_comedy"
-        size="25px" />
+      <div style="padding: 1.5px">
+        <q-icon name="theater_comedy"
+          size="24px" />
+      </div>
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center">

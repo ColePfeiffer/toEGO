@@ -1,15 +1,76 @@
 <template>
   <BasePage :mode="diaryMode"
+    titleOfPage="Diary"
     :backgroundColor="getBackgroundColor">
     <template v-slot:title-bar-icon>
-      <div class="q-pa-xs">
+      <div style="padding: 4px">
         <q-icon name="bi-journal"
           size="19px" />
       </div>
     </template>
-    <template v-slot:title>
-      <div class="selected-date q-pl-sm">
-        {{formatDate(getDate)}}
+    <template v-slot:titlebar>
+      <div class="row justify-center items-center text-center no-wrap q-px-xs full-width">
+        <div class="col-1 text-left">
+          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+            class="no-box-shadow "
+            icon="bi-chevron-left"
+            size="15px"
+            :style="$store.state.layout.sTextAccentShadow"
+            @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
+        </div>
+        <div class="col-1 text-left">
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
+            class="q-pl-xs q-mr-xs no-box-shadow col-1"
+            icon="bi-chevron-double-left"
+            size="15px"
+            :style="$store.state.layout.sTextAccentShadow"
+            @click-button="setDateToToday()"></BaseButtonForTitleBar>
+        </div>
+        <!-- today, yesterday, x days ago, x days ahead... -->
+        <div class="col-8 text-white"
+          :style="$store.state.layout.sTextAccentShadow">
+          <q-btn class="datePickerButton text-white"
+            no-wrap
+            flat
+            icon-right="event"
+            :style="$store.state.layout.sTextAccentShadow"
+            :label="formatDate(getDate)">
+            <q-popup-proxy cover
+              transition-show="scale"
+              transition-hide="scale">
+              <q-date v-model="formattedDate">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup
+                    label="Close"
+                    color="primary"
+                    flat />
+                  <q-btn label="today"
+                    color="primary"
+                    flat
+                    @click="setDateToToday()" />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
+        </div>
+        <!-- go forward button -->
+        <div class="col-1 text-right">
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
+            class="q-pl-none q-mr-xs no-box-shadow"
+            icon="bi-chevron-double-right"
+            size="15px"
+            :style="$store.state.layout.sTextAccentShadow"
+            @click-button="setDateToToday()" />
+        </div>
+        <div class="col-1 text-right">
+          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+            class="q-pl-none q-mr-xs no-box-shadow"
+            icon="bi-chevron-right"
+            size="15px"
+            :style="$store.state.layout.sTextAccentShadow"
+            @click-button="addToDate(1)" />
+
+        </div>
       </div>
     </template>
     <template v-slot:title-bar-controls>
@@ -66,10 +127,21 @@
       <div class="row justify-center items-center text-center">
         <!-- today, yesterday, x days ago, x days ahead... -->
         <div class="col-12">
-          <div class="text-white smallText "
-            :style="$store.state.layout.sTextAccentShadow">{{ getDay }}</div>
+          <div class="text-white"
+            :style="getSubtitleStyle">
+            {{getSubtitle}}</div>
         </div>
-
+        <div class="col-12 q-px-xs">
+          <BaseCardWithTape class="subtitle"
+            :tapeColor="$store.state.layout.accent">
+            <template v-slot:content>
+              <p class="cursor-pointer q-pa-xs q-mb-none text-center"
+                :style="$store.getters['layout/getStyleForText']">
+                {{getSubtitle}}
+              </p>
+            </template>
+          </BaseCardWithTape>
+        </div>
       </div>
 
       <div>
@@ -129,6 +201,7 @@ import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
 import { useQuasar } from "quasar";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
+import BaseCardWithTape from "src/components/ui/BaseCardWithTape.vue";
 
 export default {
   name: "diary",
@@ -137,6 +210,7 @@ export default {
     TheSectionForDiary,
     BasePage,
     BaseButtonForTitleBar,
+    BaseCardWithTape
   },
   data() {
     return {
@@ -171,6 +245,23 @@ export default {
     },
   },
   computed: {
+    getSubtitle() {
+      let subtitle = this.formatDate(this.getDate);
+      subtitle = subtitle.substring(0, subtitle.length - 6);
+
+      if (this.$store.state.layout.diaryIsCountingDays) {
+        return subtitle + " - " + this.getDay
+      } else {
+        return this.formatDate(this.getDate);
+      }
+    },
+    getSubtitleStyle() {
+      return {
+        "text-shadow": "var(--q-info) 2px 2px 2px",
+        "font-size": "1.15em",
+        "color": "white"
+      }
+    },
     diaryMode() {
       return this.$store.state.layout.diaryMode;
     },
@@ -343,6 +434,10 @@ export default {
 <style scoped>
 .editorCard {
   font-size: 12.5px;
+}
+
+.subtitle {
+  margin-top: -8px;
 }
 
 .selected-date {
