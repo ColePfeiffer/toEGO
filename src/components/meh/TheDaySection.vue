@@ -3,13 +3,23 @@
     <div class="row justify-between items-center text-center q-py-md q-pb-xl maxHeight">
       <!-- Date + Calendar Button -->
       <div class="col-12">
-        <q-btn class="datePickerButton text-white" no-wrap flat icon-right="event"
-          :style="$store.state.data.sTextAccentShadow" :label="formatDate(getDate)">
-          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+        <q-btn class="datePickerButton text-white"
+          no-wrap
+          flat
+          icon-right="event"
+          :style="$store.state.data.sTextAccentShadow"
+          :label="formatDate(getDate)">
+          <q-popup-proxy cover
+            transition-show="scale"
+            transition-hide="scale">
             <q-date v-model="formattedDate">
               <div class="row items-center justify-end">
-                <q-btn v-close-popup label="Close" color="primary" flat />
-                <q-btn label="today" color="primary" flat @click="setDateToToday()" />
+                <q-btn v-close-popup
+                  label="Close"
+                  flat />
+                <q-btn label="today"
+                  flat
+                  @click="setDateToToday()" />
               </div>
             </q-date>
           </q-popup-proxy>
@@ -17,23 +27,44 @@
       </div>
       <!-- go back button -->
       <div class="col-3 text-left">
-        <q-btn v-if="viewingMode === 'view'" class="text-white" flat icon="bi-chevron-left" size="12px"
-          :style="$store.state.data.sTextAccentShadow" @click="subtractFromDate(1)"></q-btn>
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0" class="text-white q-pl-none" size="12px"
-          flat icon="bi-chevron-double-left" :style="$store.state.data.sTextAccentShadow" @click="setDateToToday()">
+        <q-btn v-if="viewingMode === 'view'"
+          class="text-white"
+          flat
+          icon="bi-chevron-left"
+          size="12px"
+          :style="$store.state.data.sTextAccentShadow"
+          @click="subtractFromDate(1)"></q-btn>
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
+          class="text-white q-pl-none"
+          size="12px"
+          flat
+          icon="bi-chevron-double-left"
+          :style="$store.state.data.sTextAccentShadow"
+          @click="setDateToToday()">
         </q-btn>
       </div>
       <!-- today, yesterday, x days ago, x days ahead... -->
       <div class="col-6">
-        <div class="text-white smallText " :style="$store.state.data.sTextAccentShadow">{{ getDay }}</div>
+        <div class="text-white smallText "
+          :style="$store.state.data.sTextAccentShadow">{{ getDay }}</div>
       </div>
       <!-- go forward button -->
       <div class="col-3 text-right">
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0" class="text-white q-pr-none" size="12px"
-          flat icon="bi-chevron-double-right" :style="$store.state.data.sTextAccentShadow" @click="setDateToToday()">
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
+          class="text-white q-pr-none"
+          size="12px"
+          flat
+          icon="bi-chevron-double-right"
+          :style="$store.state.data.sTextAccentShadow"
+          @click="setDateToToday()">
         </q-btn>
-        <q-btn v-if="viewingMode === 'view'" class="text-white " flat icon="bi-chevron-right" size="12px"
-          :style="$store.state.data.sTextAccentShadow" @click="addToDate(1)"></q-btn>
+        <q-btn v-if="viewingMode === 'view'"
+          class="text-white "
+          flat
+          icon="bi-chevron-right"
+          size="12px"
+          :style="$store.state.data.sTextAccentShadow"
+          @click="addToDate(1)"></q-btn>
       </div>
     </div>
   </div>

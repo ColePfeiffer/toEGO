@@ -188,7 +188,7 @@ export default {
     return {
       isGeneralGroupExpanded: true,
       isColorGroupExpanded: true,
-      isFontGroupExpanded: false,
+      isFontGroupExpanded: true,
       isDarkModeTurnedOn: false,
       backgroundImage: this.$store.state.layout.backgroundImageURL,
       backgroundColor: this.$store.state.layout.backgroundColor,

@@ -1,20 +1,15 @@
 <template>
-  <q-item
-    dense
+  <q-item dense
     clickable
     @click="clickItem"
-    :style="textColorStyle"
-  >
+    color="white"
+    :style="textColorStyle">
     <!-- Category/Template Icon -->
-    <q-item-section
-      avatar
-      class="q-pl-sm"
-    >
-      <q-icon
-        color="secondary"
+    <q-item-section avatar
+      class="q-pl-sm">
+      <q-icon color="secondary"
         size="xs"
-        :name="icon"
-      />
+        :name="icon" />
     </q-item-section>
     <!-- Name of Category or Template -->
     <q-item-section>

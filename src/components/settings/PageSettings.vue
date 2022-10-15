@@ -277,8 +277,8 @@ export default {
   data() {
     return {
       isHomeGroupExpanded: true,
-      isEventGroupExpanded: false,
-      isDiaryGroupExpanded: false,
+      isEventGroupExpanded: true,
+      isDiaryGroupExpanded: true,
       homeMode: this.$store.state.layout.homeMode,
       eventMode: this.$store.state.layout.eventMode,
       eventInputBackgroundColor: this.$store.state.layout.eventInputBackgroundColor,

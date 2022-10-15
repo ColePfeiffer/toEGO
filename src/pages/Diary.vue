@@ -36,10 +36,8 @@
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup
                     label="Close"
-                    color="primary"
                     flat />
                   <q-btn label="today"
-                    color="primary"
                     flat
                     @click="setDateToToday()" />
                 </div>
@@ -98,10 +96,8 @@
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup
                     label="Close"
-                    color="primary"
                     flat />
                   <q-btn label="today"
-                    color="primary"
                     flat
                     @click="setDateToToday()" />
 

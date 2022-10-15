@@ -1,28 +1,25 @@
 <template>
-  <q-item clickable :ripple="false">
-    <q-menu
-      fit
+  <q-item clickable
+    :ripple="false">
+    <q-menu fit
       square
       cover
       anchor="top left"
       class="no-border-radius"
       ref="qMenuModelRef"
-      v-model="qMenuModel"
-    >
+      v-model="qMenuModel">
       <q-list>
         <!-- Header Item with name and buttons to rename and delete -->
         <q-item v-if="!isRenaming">
           <!-- Button: Close Dropdown Menu -->
           <q-item-section avatar>
-            <q-btn
-              size="10px"
+            <q-btn size="10px"
               dense
               flat
               color="secondary"
               class="q-pl-sm"
               icon="bi-chevron-left"
-              @click="toggleMenu"
-            >
+              @click="toggleMenu">
             </q-btn>
           </q-item-section>
           <!-- Name and Buttons -->
@@ -33,50 +30,40 @@
                 {{ item.name }}
               </div>
               <!-- Button: Edit-->
-              <q-btn
-                v-if="!isDeleting"
+              <q-btn v-if="!isDeleting"
                 class="col-2"
-                color="primary"
                 dense
                 round
                 flat
                 icon="bi-pencil"
                 size="10px"
                 :ripple="false"
-                @click="initiateRenaming"
-              >
+                @click="initiateRenaming">
               </q-btn>
               <!-- Button: Cancel Deleting -->
-              <q-btn
-                v-else
+              <q-btn v-else
                 class="col-2"
                 dense
                 round
                 flat
-                color="primary"
                 icon="bi-x"
                 size="10.5px"
                 :ripple="false"
-                @click="cancelDeleting"
-              >
+                @click="cancelDeleting">
               </q-btn>
               <!-- Button: Initiate Deletion -->
-              <q-btn
-                v-if="!isDeleting"
+              <q-btn v-if="!isDeleting"
                 class="col-2"
-                color="primary"
                 dense
                 round
                 flat
                 icon="bi-trash"
                 size="10px"
                 :ripple="false"
-                @click="initiateDeletion"
-              >
+                @click="initiateDeletion">
               </q-btn>
               <!-- Button: Confirm Deleting -->
-              <q-btn
-                v-else
+              <q-btn v-else
                 class="col-2"
                 dense
                 round
@@ -85,8 +72,7 @@
                 icon="bi-check"
                 size="10.5px"
                 :ripple="false"
-                @click="deleteItem"
-              >
+                @click="deleteItem">
               </q-btn>
             </div>
           </q-item-section>
@@ -95,23 +81,20 @@
         <q-item v-else>
           <!-- Button: Cancel Editing -->
           <q-item-section avatar>
-            <q-btn
-              size="10px"
+            <q-btn size="10px"
               dense
               round
               flat
               color="secondary"
               class="q-pl-sm"
               icon="bi-chevron-left"
-              @click="cancelRenaming"
-            >
+              @click="cancelRenaming">
             </q-btn>
           </q-item-section>
           <!-- Input for changing name -->
           <q-item-section>
             <div class="row justify-center items-center">
-              <q-input
-                input-class="inputField"
+              <q-input input-class="inputField"
                 class="col-10"
                 ref="nameRef"
                 bottom-slots
@@ -120,19 +103,16 @@
                 maxlength="20"
                 dense
                 lazy-rules
-                :rules="nameRules"
-              >
+                :rules="nameRules">
                 <template v-slot:hint>Renaming...</template>
               </q-input>
-              <q-btn
-                class="col-2"
+              <q-btn class="col-2"
                 round
                 dense
                 flat
                 icon="bi-check"
                 color="teal"
-                @click="submitNewName"
-              />
+                @click="submitNewName" />
             </div>
           </q-item-section>
         </q-item>
@@ -144,8 +124,11 @@
     </q-menu>
 
     <!-- Category/Folder Icon -->
-    <q-item-section avatar top>
-      <q-avatar :icon="icon" color="transparent" text-color="secondary" />
+    <q-item-section avatar
+      top>
+      <q-avatar :icon="icon"
+        color="transparent"
+        text-color="secondary" />
     </q-item-section>
 
     <!-- Name of category/folder and amount -->
@@ -158,16 +141,14 @@
     <q-item-section side>
       <div class="row justify-end items-center q-px-lg">
         <div class="col-1">
-          <q-btn
-            dense
+          <q-btn dense
             round
             flat
             :icon="expandIcon"
             color="secondary"
             size="10.5px"
             :ripple="false"
-            @click="showQMenu"
-          >
+            @click="showQMenu">
           </q-btn>
         </div>
       </div>

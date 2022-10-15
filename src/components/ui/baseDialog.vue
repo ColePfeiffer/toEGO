@@ -3,53 +3,73 @@
   <q-dialog class="baseDialog"
     full-width
     persistent>
+
     <!-- row -->
-    <div class="row justify-center"
+    <div class="row justify-center items-center q-pa-none"
       :style="boxShadowStyle">
+
       <div class="col-12 col-sm-7 col-md-4 col-xl-3">
-        <div class="window dialogBox column"
+        <div class="window dialogBox row"
           :style="getStyleForDialog">
-          <div class="col-1">
-            <!-- Title Bar -->
-            <div class="title-bar row"
-              :style="getStyleForDialogTitleBar">
-              <div class="title-bar-text">
-                <slot name="dialogTitle"></slot>
-              </div>
-              <div class="title-bar-controls">
-                <button v-if="hasHelpOption"
-                  aria-label="Help"
-                  @click="showHelp"></button>
-                <button aria-label="Close"
-                  @click="closeDialog"></button>
-              </div>
-            </div>
 
-            <!-- Content Slot -->
-            <slot name="content"
-              :style="getStyleForDialog"></slot>
-
-
-            <!-- Footer Slot | Option to hide buttons -->
-            <slot name="footer">
-              <div class="col-1 q-pa-sm q-my-md">
-                <div class="row justify-end items-center no-wrap">
-                  <slot name="footer-buttons">
-                    <BaseButtonForDialogFooter class="q-mr-sm"
-                      buttonText="Back"
-                      @click-button="closeDialog">
-                    </BaseButtonForDialogFooter>
-
-                    <BaseButtonForDialogFooter class="q-mr-sm"
-                      buttonText="Save"
-                      :disabled="isSaveButtonDisabled"
-                      @click-button="saveChanges">
-                    </BaseButtonForDialogFooter>
-                  </slot>
+          <!-- Title Bar -->
+          <div class="title-bar col-12"
+            :style="$store.getters['layout/getStyleForTitleBar']('default')">
+            <div class="title-bar-text">
+              <div class="q-pr-lg row justify-between items-center no-wrap">
+                <div style="padding: 4px">
+                  <q-icon :name="icon"
+                    size="19px" />
+                </div>
+                <div class="q-pl-sm">
+                  {{ dialogTitle }}
                 </div>
               </div>
-            </slot>
+            </div>
+            <div class="title-bar-controls">
+              <slot name="title-bar-controls">
+                <BaseButtonForTitleBar v-if="hasHelpOption"
+                  class="no-box-shadow q-mr-xs"
+                  icon="bi-question"
+                  size="10px"
+                  @click-button="showHelp"></BaseButtonForTitleBar>
+
+                <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+                  icon="bi-x"
+                  size="10px"
+                  @click-button="closeDialog"></BaseButtonForTitleBar>
+              </slot>
+
+            </div>
           </div>
+
+          <!-- Content Slot -->
+          <div class="col-12">
+            <slot name="content"></slot>
+          </div>
+
+          <!-- Footer Slot | Option to hide buttons -->
+          <div class="col-12">
+            <div class="col-1 q-pa-sm q-my-md">
+              <div class="row justify-end items-center no-wrap">
+                <slot name="footer-buttons">
+                  <BaseButtonForDialogFooter v-if="button1.isShown"
+                    class="q-mr-sm"
+                    :buttonText="button1.text"
+                    @click-button="closeDialog">
+                  </BaseButtonForDialogFooter>
+                  <BaseButtonForDialogFooter v-if="button2.isShown"
+                    class="q-mr-sm"
+                    :buttonText="button2.text"
+                    :disabled="isButton2Disabled"
+                    @click-button="saveChanges">
+                  </BaseButtonForDialogFooter>
+                </slot>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
@@ -58,43 +78,36 @@
 
 <script>
 import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
+import BaseButtonForTitleBar from './BaseButtonForTitleBar.vue';
 export default {
   name: "baseDialog",
-  emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
+  emits: ["closeDialog", "save", "showHelp"],
   props: {
+    dialogTitle: String,
+    icon: String,
     minHeight: {
       type: Number,
       default: 300,
     },
-    widthOfDialog: Number,
-    hasHelpOption: Boolean,
-
-    extraButtonLabel: {
-      type: String,
-      default: "",
+    hasHelpOption: {
+      type: Boolean,
+      default: false
     },
-    extraButtonIcon: {
-      type: String,
-      default: "",
-    },
-    isSaveButtonDisabled: {
+    isButton2Disabled: {
       type: Boolean,
       default: false,
     },
+    button1: Object,
+    button2: Object
   },
   data() {
     return {
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      styleForDialogTitleBar: { background: "var(--q-secondary)" },
-      styleForDialogTitleBarDark: { background: "var(--q-secondary)" },
     };
   },
   methods: {
-    clickExtraButton() {
-      this.$emit("clickExtraButton");
-    },
     closeDialog() {
       this.$emit("closeDialog");
     },
@@ -106,68 +119,30 @@ export default {
     },
   },
   computed: {
-    getHeight() {
-      let height = this.$q.screen.height;
-      return {
-        height,
-      };
-    },
-    getStyleForDialogTitleBar() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return this.styleForDialogTitleBarDark;
-      }
-      else {
-        return this.styleForDialogTitleBar;
-      }
-    },
     getStyleForDialog() {
       let style = {};
-      let currentMaxHeight;
-      let screenHeightAsNumber = this.getHeight.height;
-      if (screenHeightAsNumber >= 650) {
-        currentMaxHeight = "650px";
-      }
-      else {
-        currentMaxHeight = screenHeightAsNumber + "px";
-      }
-      //console.log("heightAsString", currentMaxHeight);
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
         style = {
-          //width: this.widthOfDialog + "px",
-          "background-color": "rgb(0 0 0 / 77%)",
-          "max-height": currentMaxHeight,
-          color: "white",
+          "background-color": this.$store.state.layout.dark,
+          "min-height": this.minHeight,
         };
       }
       else {
         style = {
-          //width: this.widthOfDialog + "px",
-          "background-color": "rgb(255 255 255 )",
-          // max-height
-          // min-height
+          "background-color": this.$store.state.layout.whitesmoke,
           "min-height": this.minHeight,
-          "max-height": currentMaxHeight,
-          color: "black",
         };
       }
       return style;
     },
   },
-  components: { BaseButtonForDialogFooter }
+  components: { BaseButtonForDialogFooter, BaseButtonForTitleBar }
 };
 </script>
 
 <style scoped src="98.css">
-.defaultFont {
-  font-family: "PressStart";
-}
-
-.baseDialog :deep(.window) {
-  color: #fff;
-}
-
-.iconTitleContainer {
-  border-bottom: 1px solid white;
+.dialogBox {
+  background-color: whitesmoke;
 }
 
 .baseDialog :deep(.q-dialog__inner > div) {

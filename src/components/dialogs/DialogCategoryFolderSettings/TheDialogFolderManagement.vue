@@ -1,38 +1,23 @@
 <template>
-  <BaseDialog
-    v-model="isDialogVisible"
+  <BaseDialog v-model="isDialogVisible"
+    dialogTitle="Folder and Category Settings"
+    icon="bi-file-earmark-font"
+    :button1="{isShown: true, text: 'Close'}"
+    :button2="{isShown: false, text: ''}"
     :hasHelpOption="true"
-    :widthOfDialog="315"
-    @closeDialog="closeDialog"
-    @save="createTemplate"
-  >
-    <template v-slot:confirm-button> Create </template>
-    <template v-slot:close-button> Back </template>
-    <template v-slot:dialogTitle>
-      <q-icon
-        :name="menuIcon"
-        size="22px"
-      />
-      Folder and Category Settings
-    </template>
+    @closeDialog="closeDialog">
     <template v-slot:content>
-      <div class="row items-center justify-center q-pt-md q-pa-xl">
+      <div class="row items-center justify-center q-pt-md q-px-md q-mx-lg">
         <!-- Outer Container -->
-        <div class="col-10 col-md-11 col-xs-12 col-sm-11">
-          <q-list
-            bordered
-            padding
-          >
-            <TheFolderSection
-              :type="type"
-              :itemsToDisplay="folders"
-            ></TheFolderSection>
+        <div class="col-12">
+          <q-list bordered
+            padding>
+            <TheFolderSection :type="type"
+              :itemsToDisplay="folders"></TheFolderSection>
             <q-separator spaced />
-            <TheCategorySection
-              :type="type"
+            <TheCategorySection :type="type"
               :itemsToDisplay="categories"
-              @delete-category="deleteCategory"
-            ></TheCategorySection>
+              @delete-category="deleteCategory"></TheCategorySection>
           </q-list>
         </div>
       </div>
@@ -60,7 +45,6 @@ export default {
   data() {
     return {
       icon: true,
-      menuIcon: "bi-file-earmark-font",
       templateName: "",
       isCreatingNewCategory: false,
       isCreatingNewFolder: false,
@@ -122,10 +106,7 @@ export default {
       this.reset();
       this.$emit("closeDialog");
     },
-    createTemplate() {
-      this.$emit("createTemplate", this.templateName);
-      this.reset();
-    },
+
     reset() {
       this.templateName = "";
     },

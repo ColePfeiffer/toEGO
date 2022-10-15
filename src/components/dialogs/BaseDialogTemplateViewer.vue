@@ -10,16 +10,12 @@
     @closeDialog="closeDialog"
     @save="pasteTemplateAndClose"
     @showHelp="showHelp"
-    :widthOfDialog="315"
+    dialogTitle="Template Viewer"
+    icon="bi-file-earmark-font"
+    :button1="{isShown: true, text: 'Close'}"
+    :button2="{isShown: true, text: 'Paste'}"
     :hasHelpOption="true"
-    :isSaveButtonDisabled="!isAtLeastOneTemplateCreated">
-    <template v-slot:confirm-button>Paste</template>
-    <template v-slot:close-button> Back </template>
-    <template v-slot:dialogTitle>
-      <q-icon :name="menuIcon"
-        size="22px" />
-      Template Viewer
-    </template>
+    :isButton2Disabled="!isAtLeastOneTemplateCreated">
     <template v-slot:content>
       <div>
         <div v-if="isAtLeastOneTemplateCreated === true"
@@ -42,8 +38,9 @@
                 no-caps
                 class="col-12 q-pa-none"
                 square
+                :style="getStyleForTemplatePickerButton"
                 color="transparent"
-                text-color="black"
+                :text-color="this.$store.getters['layout/getTextColorOnSecondary']"
                 label="Pick Template">
                 <q-menu fit
                   full-width
@@ -65,7 +62,7 @@
             <q-card flat
               bordered
               square
-              class="bg-grey-1">
+              :style="getStyleForCard">
               <q-card-section class="q-pb-xs">
                 <div class="text-h6">{{ currentTemplate.name }}</div>
               </q-card-section>
@@ -207,8 +204,6 @@
           </div>
         </div>
       </div>
-      <!-- v-for list of templates, kommt später weg -->
-      <!-- class fixedHeight-->
     </template>
   </baseDialog>
 </template>
@@ -237,7 +232,6 @@ export default {
       qMenuModel: false,
       expandIcon: "expand_more",
       icon: true,
-      menuIcon: "bi-file-earmark-font",
       isHelpShown: false,
       currentTemplate: this.templateList[0],
       maxNumberOfDisplayedChars: 1200,
@@ -330,6 +324,24 @@ export default {
     },
   },
   computed: {
+    getStyleForCard() {
+      let style = {};
+
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = this.$store.state.layout.blacksmoke;
+        style["color"] = "white";
+      } else {
+        style["background-color"] = "white";
+        style["color"] = "black";
+      }
+
+      return style;
+    },
+    getStyleForTemplatePickerButton() {
+      let style = {};
+      style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
+      return style;
+    },
     getIndexOfCurrentTemplate() {
       return this.templateList.indexOf(this.currentTemplate);
     },
@@ -444,7 +456,7 @@ export default {
 }
 
 .containerForHeaderOfTemplateViewer {
-  background-color: var(--q-secondary);
+  background-color: var(--q-secondary)
 }
 
 .fixedHeight {

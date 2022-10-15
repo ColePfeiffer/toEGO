@@ -1,39 +1,28 @@
 <template>
-  <BaseDialog
-    v-model="isDialogVisible"
-    :widthOfDialog="315"
-    :isSaveButtonDisabled="!isNameValid"
+  <BaseDialog v-model="isDialogVisible"
+    :dialogTitle="dialogName"
+    :icon="menuIcon"
+    :button1="{isShown: true, text: 'Discard'}"
+    :button2="{isShown: true, text: 'Create'}"
+    :isButton2Disabled="!isNameValid"
     @closeDialog="closeDialog"
-    @save="create"
-  >
-    <template v-slot:confirm-button> Create </template>
-    <template v-slot:close-button> Cancel </template>
-    <template v-slot:dialogTitle>
-      <q-icon :name="menuIcon" size="22px" />
-      {{ dialogName }}
-    </template>
+    @save="create">
     <template v-slot:content>
       <q-card class="transparent no-shadow">
-        <q-card-section class="row items-center">
-          <div class="col-3">
-            <q-avatar
-              icon="bi-journal-plus"
-              color="primary"
-              text-color="white"
-            />
+        <q-card-section class="row q-pa-md items-between justify-center text-center ">
+          <div class="col-2 q-pr-xs q-mt-xs">
+            <q-avatar icon="bi-journal-plus"
+              text-color="secondary" />
           </div>
-          <div class="col">
-            <span class="q-ml-sm">{{ text }}</span>
-            <q-input
-              filled
+          <div class="col-10">
+            <q-input filled
               square
               v-model="name"
               :rules="[
                 (val) => !!val || '* Required',
                 (val) => val.length >= 2 || 'Please use minimum 2 characters',
                 (val) => val.length <= 20 || 'Please use maximum 25 characters',
-              ]"
-            />
+              ]" />
           </div>
         </q-card-section>
       </q-card>

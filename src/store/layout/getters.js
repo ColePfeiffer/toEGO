@@ -104,6 +104,10 @@ export const getColorBasedOnBackgroundColor = (state, getters) => {
   };
 };
 
+export const getTextColorOnSecondary = (state, getters) => {
+  return getters.getColorBasedOnBackgroundColor(state.secondary);
+};
+
 export const getTextColorForEvent = (state, getters) => {
   let textColor;
   let style = {};

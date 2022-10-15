@@ -1,28 +1,17 @@
 <template>
-  <baseDialog
+  <baseDialog v-model="isDialogVisible"
+    dialogTitle="Deleting Event"
+    :icon="menuIcon"
+    :button1="{isShown: true, text: 'No'}"
+    :button2="{isShown: true, text: 'Yes'}"
     :minHeight="200"
-    v-model="isDialogVisible"
-    :widthOfDialog="315"
-    :hasHelpOption="false"
     @closeDialog="closeDialog"
-    @save="deleteEvent"
-  >
-    <template v-slot:confirm-button> Yes </template>
-    <template v-slot:close-button> No </template>
-    <template v-slot:dialogTitle>
-      <q-icon :name="menuIcon" size="25px" />
-      Deleting Event
-    </template>
+    @save="deleteEvent">
     <template v-slot:content>
       <q-card class="transparent no-shadow">
-        <q-card-section class="row items-center">
-          <div class="col-3">
-            <q-avatar icon="delete" color="primary" text-color="white" />
-          </div>
-          <div class="col">
-            <span class="q-ml-sm"
-              >Do you really want to delete this event?</span
-            >
+        <q-card-section class="row q-pa-md items-center justify-center text-center ">
+          <div class="col-10 q-mt-md">
+            <span class="q-ml-sm ">Do you really want to delete this event?</span>
           </div>
         </q-card-section>
       </q-card>
@@ -59,7 +48,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            "dialogDeleteEvent"
+          "dialogDeleteEvent"
         ) {
           return true;
         } else {
