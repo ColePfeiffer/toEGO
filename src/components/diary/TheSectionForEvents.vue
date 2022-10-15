@@ -33,7 +33,8 @@
     </template>
 
     <template v-slot:content-in-scroll-area>
-      <TheEventViewer :diaryEntry="diaryEntry"
+      <TheEventViewer :backgroundColor="backgroundColor"
+        :diaryEntry="diaryEntry"
         @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
         @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
@@ -64,12 +65,15 @@ export default {
       type: Boolean,
       default: true,
     },
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
+    }
 
   },
   data() {
     return {
       heightForScrollArea: 175,
-      size: 350,
     };
   },
   computed: {
@@ -130,7 +134,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -24,38 +24,28 @@
                   @click="closeDialog"></button>
               </div>
             </div>
+
             <!-- Content Slot -->
             <slot name="content"
               :style="getStyleForDialog"></slot>
+
+
             <!-- Footer Slot | Option to hide buttons -->
             <slot name="footer">
-              <div class="col-1 q-pa-sm q-pb-md q-mt-md">
-                <div class="row justify-end">
-                  <q-btn v-if="hasExtraButton"
-                    class="button extraButton col-3 col-md-2 q-mx-xs"
-                    flat
-                    :style="$store.state.layout.buttonFlatStyleAccentColor"
-                    :icon="extraButtonIcon"
-                    @click="clickExtraButton">
-                    <slot name="extra-button"> </slot>
-                  </q-btn>
+              <div class="col-1 q-pa-sm q-my-md">
+                <div class="row justify-end items-center no-wrap">
+                  <slot name="footer-buttons">
+                    <BaseButtonForDialogFooter class="q-mr-sm"
+                      buttonText="Back"
+                      @click-button="closeDialog">
+                    </BaseButtonForDialogFooter>
 
-                  <q-btn class="button col-3 col-md-2 q-mx-xs"
-                    no-caps
-                    :style="$store.state.layout.buttonFlatStyle"
-                    flat
-                    @click="closeDialog">
-                    <slot name="close-button"> Cancel </slot>
-                  </q-btn>
-
-                  <q-btn class="button col-3 col-md-2 q-mx-xs"
-                    no-caps
-                    :style="$store.state.layout.buttonFlatStyle"
-                    flat
-                    :disabled="isSaveButtonDisabled"
-                    @click="saveChanges">
-                    <slot name="confirm-button"> Save </slot>
-                  </q-btn>
+                    <BaseButtonForDialogFooter class="q-mr-sm"
+                      buttonText="Save"
+                      :disabled="isSaveButtonDisabled"
+                      @click-button="saveChanges">
+                    </BaseButtonForDialogFooter>
+                  </slot>
                 </div>
               </div>
             </slot>
@@ -67,6 +57,7 @@
 </template>
 
 <script>
+import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
 export default {
   name: "baseDialog",
   emits: ["closeDialog", "save", "showHelp", "clickExtraButton"],
@@ -77,10 +68,7 @@ export default {
     },
     widthOfDialog: Number,
     hasHelpOption: Boolean,
-    hasExtraButton: {
-      type: Boolean,
-      default: false,
-    },
+
     extraButtonLabel: {
       type: String,
       default: "",
@@ -124,11 +112,11 @@ export default {
         height,
       };
     },
-
     getStyleForDialogTitleBar() {
       if (this.$store.getters["data/isDarkModeActive"]) {
         return this.styleForDialogTitleBarDark;
-      } else {
+      }
+      else {
         return this.styleForDialogTitleBar;
       }
     },
@@ -138,7 +126,8 @@ export default {
       let screenHeightAsNumber = this.getHeight.height;
       if (screenHeightAsNumber >= 650) {
         currentMaxHeight = "650px";
-      } else {
+      }
+      else {
         currentMaxHeight = screenHeightAsNumber + "px";
       }
       //console.log("heightAsString", currentMaxHeight);
@@ -149,7 +138,8 @@ export default {
           "max-height": currentMaxHeight,
           color: "white",
         };
-      } else {
+      }
+      else {
         style = {
           //width: this.widthOfDialog + "px",
           "background-color": "rgb(255 255 255 )",
@@ -163,6 +153,7 @@ export default {
       return style;
     },
   },
+  components: { BaseButtonForDialogFooter }
 };
 </script>
 

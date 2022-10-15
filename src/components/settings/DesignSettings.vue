@@ -1,5 +1,7 @@
 <template>
-  <BaseSettingsTabPanelGroup title="General">
+  <BaseSettingsTabPanelGroup title="General"
+    :isExpanded="isGeneralGroupExpanded"
+    @toggle-expand-state="isGeneralGroupExpanded = !isGeneralGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Dark-Mode">
         <template v-slot:content>
@@ -9,130 +11,151 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Background-Image">
+      <BaseItemForSettingsTabPanel title="Background-Image"
+        :isOnSameLine="false">
         <template v-slot:content>
-          <q-item-section class="col-12"
-            avatar>
-            <q-btn-toggle v-model="backgroundImage"
-              class="my-custom-toggle"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
-                {label: '2', value: 'url(\'https://64.media.tumblr.com/9e45fc59f535b1a82eace3dd4a62449a/tumblr_inline_nater8MFLq1qak244.gif\') repeat  center'},
-                {label: '3', value: 'url(\'https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif\')'},
-                {label: '4', value: 'url(\'https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif\')'},
-                {label: 'x', value: 'none'},
-              ]" />
-          </q-item-section>
+          <q-btn-toggle v-model="backgroundImage"
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
+              {label: '2', value: 'url(/images/tumblr_inline_mvbeksKtt61qak244.png) repeat  center'},
+              {label: '3', value: 'url(/images/tumblr_inline_mkjlcqZOBM1qz4rgp.png) repeat  center'},
+              {label: '4', value: 'url(\'https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif\')'},
+              {label: '5', value: 'url(\'https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif\')'},
+              {label: '[x]', value: 'none'},
+            ]" />
         </template>
       </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'none'"
+        title="Color: Background">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="backgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="backgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+
+
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Colors">
+  <BaseSettingsTabPanelGroup title="Colors"
+    :isExpanded="isColorGroupExpanded"
+    @toggle-expand-state="isColorGroupExpanded = !isColorGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Secondary">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="secondaryColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="secondaryColor" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="secondaryColor"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="secondaryColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
 
       <BaseItemForSettingsTabPanel title="Accent">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="accentColor"
-              :rules="['anyColor']"
-              class="color-picker-input ">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="accentColor" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="accentColor"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="accentColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
 
       <BaseItemForSettingsTabPanel title="Shadows">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="accent2Color"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="accent2Color" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="accent2Color"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="accent2Color" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Font">
+  <BaseSettingsTabPanelGroup title="Font"
+    :isExpanded="isFontGroupExpanded"
+    @toggle-expand-state="isFontGroupExpanded = !isFontGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Font-Style"
         caption="Change text style.">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-btn-toggle v-model="isUsingFont"
-              class="my-custom-toggle"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                {label: '1', value: 'PressStart'},
-                {label: '2', value: 'Inter'},
-                {label: '3', value: 'Munro'},
-              ]" />
-          </q-item-section>
+          <q-btn-toggle v-model="isUsingFont"
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: '1', value: 'PressStart'},
+              {label: '2', value: 'Inter'},
+              {label: '3', value: 'Munro'},
+            ]" />
 
         </template>
       </BaseItemForSettingsTabPanel>
@@ -140,15 +163,13 @@
       <BaseItemForSettingsTabPanel title="Font-Size"
         caption="Change text size (px).">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input v-model.number="fontsize"
-              type="number"
-              filled
-              dense
-              square
-              style="max-width: 80px; max-height: 55px" />
-          </q-item-section>
+          <q-input v-model.number="fontsize"
+            type="number"
+            filled
+            hide-bottom-space
+            dense
+            square
+            style="max-height: 55px" />
         </template>
       </BaseItemForSettingsTabPanel>
 
@@ -165,9 +186,13 @@ export default {
   components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup },
   data() {
     return {
+      isGeneralGroupExpanded: true,
+      isColorGroupExpanded: true,
+      isFontGroupExpanded: false,
       isDarkModeTurnedOn: false,
-      isUsingFont: 'PressStart',
-      backgroundImage: 'url(/images/background_wide2.jpg) no-repeat center center fixed',
+      backgroundImage: this.$store.state.layout.backgroundImageURL,
+      backgroundColor: this.$store.state.layout.backgroundColor,
+      isUsingFont: this.$store.state.layout.defaultFont,
       fontsize: 12,
     };
   },
@@ -184,6 +209,9 @@ export default {
     backgroundImage(imageURL) {
       this.$store.commit("layout/changeBackgroundImage", imageURL);
     },
+    backgroundColor(color) {
+      this.$store.commit("layout/changeBackgroundColor", color);
+    }
   },
   methods: {
     ...mapMutations(["./store/data/showModal", "store/data/showModal"]),

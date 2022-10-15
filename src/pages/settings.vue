@@ -2,6 +2,7 @@
   <q-page>
     <BasePage titleOfPage="Settings"
       mode="default"
+      heightForContent="80vh"
       :isUsingBackgroundColorAsDefaultColor="true"
       backgroundColor="white">
       <template v-slot:title-bar-icon>

@@ -1,7 +1,7 @@
 <template>
   <BasePage titleOfPage="Creating a new event"
     :mode="getEventMode"
-    :backgroundColor="getBackgroundColor">
+    :backgroundColor="$store.getters['layout/getEventBackgroundColor']">
     <template v-slot:title-bar-icon>
       <div style="padding: 1.5px">
         <q-icon name="theater_comedy"
@@ -261,7 +261,7 @@ export default {
       return this.$store.getters["layout/getTextColorForEvent"]["color"];
     },
     getPaddingForEditor() {
-      if (this.getEventMode === "compact") {
+      if (this.getEventMode === "border") {
         return {
           "padding-top": "5px",
           "padding-left": "5px",

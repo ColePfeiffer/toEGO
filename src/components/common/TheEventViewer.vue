@@ -6,7 +6,7 @@
     <!-- Case 1: There is no diaryentry for the selected day. -->
     <div v-if="diaryEntry === undefined">
       <div v-if="showMessageIfThereAreNoEvents">
-        <BaseCard>
+        <BaseCard :backgroundColor="backgroundColor">
           <template v-slot:contentInsideSection>
             There is nothing here yet.
             <q-btn color="accent"
@@ -20,7 +20,7 @@
     </div>
     <!-- Case 2: Entry exists, but no event has been created yet. -->
     <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1">
-      <BaseCard>
+      <BaseCard :backgroundColor="backgroundColor">
         <template v-slot:contentInsideSection>
           <q-btn color="accent"
             flat
@@ -35,6 +35,7 @@
       v-for="event in events"
       :key="event.id">
       <EventCard :style="styleForEventCard"
+        :backgroundColor="backgroundColor"
         :eventData="event"
         :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
@@ -70,6 +71,10 @@ export default {
     marginBottom: {
       type: Number,
       default: 33
+    },
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
     }
 
   },

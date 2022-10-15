@@ -52,40 +52,41 @@ export const getShadowForAriaButtons = (state) => {
   };
 };
 
-export const getStyleForRegularCard = (state, getters) => {
-  let style = {};
-  style["border-radius"] = "0px";
-  style["border-style"] = "solid";
-  style["font-size"] = state.fontsize + "px";
-
+export const getHomeBackgroundColor = (state, getters) => {
   if (getters.isDarkModeActive) {
-    style["background-color"] = state.blacksmoke;
-    style["color"] = "white";
-    style["border"] = "2px solid";
-    style["border-image-slice"] = "1";
-    style["border-width"] = "1px";
-    style["border-image-source"] =
-      "linear-gradient(to left, turquoise, greenyellow)";
-    /* amazing border
-    style["border-width"] = "20px";
-    style["border-image"] =
-      "repeating-radial-gradient(circle at 10px,turquoise, pink 2px, greenyellow 4px, pink 2px) 1";
-    */
+    return state.homeBackgroundColorDark;
   } else {
-    style["background-color"] = state.whitesmoke;
-    style["color"] = "black";
-    style["border-width"] = "1.5px";
-    style["border-color"] =
-      "#FFFFFF var(--q-secondary) var(--q-secondary) #FFFFFF";
+    return state.homeBackgroundColor;
   }
-  return style;
+};
+
+export const getEventBackgroundColor = (state, getters) => {
+  if (getters.isDarkModeActive) {
+    return state.eventBackgroundColorDark;
+  } else {
+    return state.eventBackgroundColor;
+  }
+};
+
+export const getDiaryBackgroundColor = (state, getters) => {
+  if (getters.isDarkModeActive) {
+    return state.diaryBackgroundColorDark;
+  } else {
+    return state.diaryBackgroundColor;
+  }
 };
 
 export const getStyleForPage = (state) => {
   let style = {};
+  let background = state.backgroundImageURL;
 
   style["font-family"] = state.defaultFont;
-  style["background"] = state.backgroundImageURL;
+  if (background != "none") {
+    style["background"] = background;
+  } else {
+    style["background-color"] = state.backgroundColor;
+  }
+
   style["margin"] = "auto";
   style["padding"] = "auto";
 
@@ -115,7 +116,7 @@ export const getTextColorForEvent = (state, getters) => {
     }
   } else {
     textColor = getters.getColorBasedOnBackgroundColor(
-      state.eventBackgroundColor
+      getters.getEventBackgroundColor
     );
   }
 
@@ -145,7 +146,8 @@ export const getStyleForBasePage = (state, getters) => {
     if (getters.isDarkModeActive && payload.mode === "default") {
       style["background-color"] = state.dark;
     } else if (getters.isDarkModeActive && payload.mode != "default") {
-      style["background-color"] = "#000000ad";
+      // TODO: kann vielleicht weg?
+      style["background-color"] = payload.backgroundColor;
     } else if (!getters.isDarkModeActive && payload.mode === "default") {
       style["background-color"] = defaultColor;
     } else {
@@ -165,11 +167,11 @@ export const getStyleForBasePage = (state, getters) => {
 
     if (payload.mode === "retro") {
       style["margin-top"] = "0px";
-    } else if (payload.mode === "compact") {
+    } else if (payload.mode === "border") {
       style["margin-top"] = "9px";
       style["box-shadow"] = "none";
       style["border"] = "2px solid " + state.secondary;
-    } else if (payload.mode === "plain") {
+    } else if (payload.mode === "clear") {
       style["box-shadow"] = "none";
       style["background-color"] = "transparent";
     } else {
@@ -179,12 +181,16 @@ export const getStyleForBasePage = (state, getters) => {
   };
 };
 
+export const getLowOpacityShadowForAccent2 = (state) => {
+  return state.accent2 + state.lowOpacity + " 2px 2px 2px";
+};
+
 export const getStyleForTitleBar = (state, getters) => {
   return (mode) => {
     let style = {};
 
     style["background"] = "var(--q-secondary)";
-    style["text-shadow"] = state.accent2 + state.lowOpacity + " 2px 2px 2px";
+    style["text-shadow"] = getters.getLowOpacityShadowForAccent2;
     style["text-family"] = state.nonDefaultFont;
 
     if (mode === "retro") {

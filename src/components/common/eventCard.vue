@@ -1,5 +1,6 @@
 <template>
-  <BaseCard :isTextSetToCentered="false">
+  <BaseCard :isTextSetToCentered="false"
+    :backgroundColor="backgroundColor">
     <template v-slot:content>
       <!-- Mood, Title, Expand Button -->
       <q-item>
@@ -122,6 +123,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
+    }
   },
   emits: ["changeEventData", "deleteEvent", "editEvent"],
   data() {

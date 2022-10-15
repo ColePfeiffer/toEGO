@@ -1,7 +1,7 @@
 <template>
   <BasePage titleOfPage="Today"
-    :mode="getModeForHome"
-    :backgroundColor="getBackgroundColor">
+    :mode="getHomeMode"
+    :backgroundColor="$store.getters['layout/getHomeBackgroundColor']">
     <template v-slot:title-bar-icon>
       <div style="padding: 4px">
         <q-icon name="bi-eye"
@@ -10,7 +10,11 @@
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center q-pr-sm">
-        <BaseButtonForTitleBar class="q-ml-xs  no-box-shadow "
+        <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
+          icon="bi-plus-lg"
+          @click-button="goToEventSetToCreationMode">
+        </BaseButtonForTitleBar>
+        <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
           :icon="getLetterIcon"
           @click-button="toggleLetterVisibility">
         </BaseButtonForTitleBar>
@@ -88,12 +92,9 @@ export default {
         return "bi-envelope"
       }
     },
-    getModeForHome() {
-      return this.$store.state.layout.modeForHome;
+    getHomeMode() {
+      return this.$store.state.layout.homeMode;
     },
-    getBackgroundColor() {
-      return this.$store.state.layout.backgroundColorForHome;
-    }
   },
 };
 </script>

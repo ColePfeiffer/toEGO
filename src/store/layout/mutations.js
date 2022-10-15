@@ -35,28 +35,52 @@ export const setColorSecondaryLighter = (state, color) => {
   state.SecondaryLighter = color;
 };
 
-export const changeBackgroundColorForHome = (state, color) => {
-  state.backgroundColorForHome = color;
+export const setHomeBackgroundColor = (state, color) => {
+  state.homeBackgroundColor = color;
 };
 
-export const changeEventBackgroundColor = (state, color) => {
-  state.eventBackgroundColor = color;
-};
-
-export const changeModeForHome = (state, mode) => {
-  state.modeForHome = mode;
-};
-
-export const changeEventMode = (state, mode) => {
-  state.eventMode = mode;
-};
-
-export const changeModeForDiary = (state, mode) => {
-  state.modeForDiary = mode;
+export const setHomeBackgroundColorDark = (state, color) => {
+  state.homeBackgroundColorDark = color;
 };
 
 export const setEventBackgroundColor = (state, color) => {
   state.eventBackgroundColor = color;
+};
+
+export const setEventBackgroundColorDark = (state, color) => {
+  state.eventBackgroundColorDark = color;
+};
+
+export const setDiaryBackgroundColor = (state, color) => {
+  state.diaryBackgroundColor = color;
+};
+
+export const setDiaryBackgroundColorDark = (state, color) => {
+  state.diaryBackgroundColorDark = color;
+};
+
+export const setHomeMode = (state, mode) => {
+  state.homeMode = mode;
+};
+
+export const setEventMode = (state, mode) => {
+  state.eventMode = mode;
+};
+
+export const setDiaryMode = (state, mode) => {
+  state.diaryMode = mode;
+};
+
+export const setDiaryCardBackgroundColor = (state, color) => {
+  state.diaryCardBackgroundColor = color;
+};
+
+export const setDiarySubtitleStyleToAlternative = (state, bool) => {
+  state.isDiarySubtitleStyleSetToAlternative = bool;
+};
+
+export const setDiarySubtitleColor = (state, color) => {
+  state.diarySubtitleColor = color;
 };
 
 export const toggleDarkMode = (state) => {
@@ -69,6 +93,18 @@ export const setEventTextColor = (state, color) => {
 
 export const setEventInputBackgroundColor = (state, color) => {
   state.eventInputBackgroundColor = color;
+};
+
+export const toggleIsDiaryTitleBarShowingDay = (state, bool) => {
+  state.isDiaryTitlebarShowingDay = bool;
+};
+
+export const toggleIsDiaryCountingDays = (state, bool) => {
+  state.isDiaryCountingDays = bool;
+};
+
+export const changeBackgroundColor = (state, color) => {
+  state.backgroundColor = color;
 };
 
 export const setSize = (state, size) => {

@@ -3,7 +3,7 @@
     <div v-if="viewingMode === 'view'">
       <!-- Case 1: There is no entry for the selected day. -->
       <div v-if="diaryEntry === undefined">
-        <BaseCard>
+        <BaseCard :backgroundColor="backgroundColor">
           <template v-slot:contentInsideSection>
             Nothing here yet. Add an event
             <q-btn color="accent"
@@ -25,7 +25,7 @@
       <div v-else>
         <!-- Case 2.1.1: Showing + Button, if journal-entry is empty. -->
         <div v-if="editor === ''">
-          <BaseCard>
+          <BaseCard :backgroundColor="backgroundColor">
             <template v-slot:contentInsideSection>
               <q-btn flat
                 dense
@@ -37,7 +37,8 @@
         </div>
         <!-- Case 2.1.2: Showing journal-entrie's text. -->
         <div v-else>
-          <BaseCard :isTextSetToCentered="false">
+          <BaseCard :backgroundColor="backgroundColor"
+            :isTextSetToCentered="false">
             <template v-slot:contentInsideSection>
               <div v-html="editor">
               </div>
@@ -68,6 +69,10 @@ export default {
     isDiaryVisible: Boolean,
     changeData: Object,
     isCreatingNewDiaryEntry: Boolean,
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
+    }
   },
   data() {
     return {

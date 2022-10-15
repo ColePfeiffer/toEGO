@@ -1,7 +1,6 @@
 import mainLayout from "layouts/MainLayout.vue";
 import index from "pages/Index.vue";
 import Diary from "pages/Diary.vue";
-import Items from "pages/Items.vue";
 import Settings from "pages/Settings.vue";
 import Event from "pages/Event.vue";
 
@@ -24,11 +23,6 @@ const routes = [
     path: "/Diary",
     component: mainLayout,
     children: [{ path: "", component: Diary }],
-  },
-  {
-    path: "/Items",
-    component: mainLayout,
-    children: [{ path: "", component: Items }],
   },
   {
     path: "/Settings",

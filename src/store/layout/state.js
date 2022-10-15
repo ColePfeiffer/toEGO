@@ -11,6 +11,7 @@ export default function () {
     nonDefaultFont: "Inter",
     backgroundImageURL:
       "url(/images/background_wide2.jpg) no-repeat center center fixed",
+    backgroundColor: "#9c9c9c",
     //  Colors
     //  - Color Brand Settings
     primary: "#00080f", // Font Color
@@ -32,17 +33,24 @@ export default function () {
     //  Page Settings
     isDarkModeOn: false,
     //  - Home
-    modeForHome: "retro",
-    backgroundColorForHome: "#ffffff54",
+    homeMode: "retro",
+    homeBackgroundColor: "#ffffff54",
+    homeBackgroundColorDark: "#000000ad",
     //  - Event
     eventMode: "default",
     eventBackgroundColor: "#f5f5f5fc",
+    eventBackgroundColorDark: "#000000ad",
     eventInputBackgroundColor: "#f5f5f5fc",
     eventTextColor: "fffffffc",
     eventTextShadow: "#dfd4f5 2px 2px 2px",
-    diaryMode: "retro",
-    diaryBackgroundColor: "fffffffc",
-    diaryIsCountingDays: true,
+    diaryMode: "clear",
+    diaryBackgroundColor: "#ffffff54",
+    diaryBackgroundColorDark: "#000000ad",
+    diaryCardBackgroundColor: "#f5f5f5ff",
+    isDiarySubtitleStyleSetToAlternative: false,
+    diarySubtitleColor: "#000",
+    isDiaryTitlebarShowingDay: true,
+    isDiaryCountingDays: true,
     //  Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",

@@ -29,7 +29,7 @@
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
         :style="$store.getters['layout/getStyleForBasePage']({'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor})">
-        <div style="height: 70vh">
+        <div :style="getHeightForContent">
           <q-resize-observer @resize="onResize" />
           <q-scroll-area :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -58,15 +58,16 @@ export default {
     mode: {
       type: String,
       default: "solid",
-    }, backgroundColor: {
-      type: String,
-      default: "#ffffff54",
     },
+    backgroundColor: String,
     isUsingBackgroundColorAsDefaultColor: {
       type: Boolean,
       default: false,
+    },
+    heightForContent: {
+      type: String,
+      default: "70vh",
     }
-
   },
   data() {
     return {
@@ -94,6 +95,9 @@ export default {
     },
   },
   computed: {
+    getHeightForContent() {
+      return { "height": this.heightForContent }
+    },
     getStyleForScrollArea() {
       let style = {};
       style["height"] = this.$store.state.layout.innerHeight * .97 + "px";
@@ -134,5 +138,7 @@ export default {
 </script>
 
 <style scoped src="98.css">
-
+.title-bar {
+  max-height: 33px;
+}
 </style>

@@ -53,7 +53,8 @@
       </template>
 
       <template v-slot:content>
-        <TheDiaryViewer :diaryEntry="diaryEntry"
+        <TheDiaryViewer :backgroundColor="backgroundColor"
+          :diaryEntry="diaryEntry"
           :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
           :viewingMode="viewingMode"
           :isDiaryVisible="isDiaryVisible"
@@ -100,6 +101,10 @@ export default {
   props: {
     diaryEntry: Object,
     viewingMode: String,
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
+    }
   },
   data() {
     return {

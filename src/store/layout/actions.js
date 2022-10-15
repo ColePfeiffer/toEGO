@@ -34,12 +34,11 @@ export function setShadowForTitle({ getters, state, commit }) {
 
 export function changeMode({ commit }, payload) {
   if (payload.page === "home") {
-    commit("changeModeForHome", payload.mode);
+    commit("setHomeMode", payload.mode);
   } else if (payload.page === "event") {
-    commit("changeEventMode", payload.mode);
+    commit("setEventMode", payload.mode);
   } else if (payload.page === "diary") {
-    commit("changeModeForDiary", payload.mode);
-  } else {
+    commit("setDiaryMode", payload.mode);
   }
 }
 

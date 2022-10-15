@@ -1,39 +1,33 @@
 <template>
   <BasePage :mode="diaryMode"
+    heightForContent="80vh"
     titleOfPage="Diary"
-    :backgroundColor="getBackgroundColor">
-    <template v-slot:title-bar-icon>
-      <div style="padding: 4px">
-        <q-icon name="bi-journal"
-          size="19px" />
-      </div>
-    </template>
-    <template v-slot:titlebar>
-      <div class="row justify-center items-center text-center no-wrap q-px-xs full-width">
+    :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
+
+    <template v-if="isDiaryTitlebarShowingDay"
+      v-slot:titlebar>
+      <div class="row justify-center items-center text-center no-wrap q-px-xs full-width title-bar-height q-py-none">
         <div class="col-1 text-left">
           <BaseButtonForTitleBar v-if="viewingMode === 'view'"
             class="no-box-shadow "
             icon="bi-chevron-left"
-            size="15px"
-            :style="$store.state.layout.sTextAccentShadow"
+            size="12px"
             @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
         </div>
         <div class="col-1 text-left">
           <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
             class="q-pl-xs q-mr-xs no-box-shadow col-1"
-            icon="bi-chevron-double-left"
-            size="15px"
-            :style="$store.state.layout.sTextAccentShadow"
+            icon="bi-dot"
+            size="12px"
             @click-button="setDateToToday()"></BaseButtonForTitleBar>
         </div>
         <!-- today, yesterday, x days ago, x days ahead... -->
-        <div class="col-8 text-white"
-          :style="$store.state.layout.sTextAccentShadow">
-          <q-btn class="datePickerButton text-white"
+        <div class="col-8 text-white">
+          <q-btn class="date-picker-button text-white"
             no-wrap
             flat
             icon-right="event"
-            :style="$store.state.layout.sTextAccentShadow"
+            :style="getStyleForDayInTitlebar"
             :label="formatDate(getDate)">
             <q-popup-proxy cover
               transition-show="scale"
@@ -57,96 +51,104 @@
         <div class="col-1 text-right">
           <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
             class="q-pl-none q-mr-xs no-box-shadow"
-            icon="bi-chevron-double-right"
-            size="15px"
-            :style="$store.state.layout.sTextAccentShadow"
+            icon="bi-dot"
+            size="12px"
             @click-button="setDateToToday()" />
         </div>
         <div class="col-1 text-right">
           <BaseButtonForTitleBar v-if="viewingMode === 'view'"
             class="q-pl-none q-mr-xs no-box-shadow"
             icon="bi-chevron-right"
-            size="15px"
-            :style="$store.state.layout.sTextAccentShadow"
+            size="12px"
             @click-button="addToDate(1)" />
 
         </div>
       </div>
     </template>
-    <template v-slot:title-bar-controls>
-      <div class="row justify-between items-center no-wrap text-center">
-        <q-btn class="no-box-shadow q-mr-xs text-center"
-          icon="bi-calendar-event"
-          :ripple="false"
-          padding="3px"
-          size="12px"
-          :style="$store.getters['layout/getStyleForTitleBar']"
-          unelevated
-          color="transparent">
-          <q-popup-proxy transition-show="scale"
-            transition-hide="scale">
-            <q-date v-model="formattedDate">
-              <div class="row items-center justify-end">
+    <template v-else
+      v-slot:titlebar>
+      <div class="title-bar-text">
+        <div class="q-pr-lg row justify-between items-center no-wrap">
 
-                <q-btn label="today"
-                  color="primary"
-                  flat
-                  @click="setDateToToday()" />
-                <q-btn v-close-popup
-                  label="Close"
-                  color="primary"
-                  flat />
-              </div>
-            </q-date>
-          </q-popup-proxy>
-        </q-btn>
+          <div style="padding: 4px">
+            <q-icon name="bi-journal"
+              :style="getStyleForTitlebar"
+              size="19px" />
+          </div>
 
-        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-          class="no-box-shadow q-mr-xs"
-          icon="bi-chevron-left"
-          size="12px"
-          @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
-        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-          class="no-box-shadow q-mr-xs"
-          icon="bi-dot"
-          size="12px"
-          @click-button="setDateToToday()"></BaseButtonForTitleBar>
+          <div class="q-pl-sm"
+            :style="getStyleForTitlebar">
+            Diary
+          </div>
+        </div>
+      </div>
+      <div class="title-bar-controls"
+        :style="getMargin">
+        <div class="row justify-between items-center no-wrap text-center">
+          <q-btn class="no-box-shadow q-mr-xs text-center"
+            icon="bi-calendar-event"
+            :ripple="false"
+            size="12px"
+            unelevated
+            color="
+            transparent">
+            <q-popup-proxy transition-show="scale"
+              transition-hide="scale">
+              <q-date v-model="formattedDate">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup
+                    label="Close"
+                    color="primary"
+                    flat />
+                  <q-btn label="today"
+                    color="primary"
+                    flat
+                    @click="setDateToToday()" />
 
-        <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-          class="no-box-shadow q-mr-xs"
-          icon="bi-chevron-right"
-          size="12px"
-          @click-button="addToDate(1)"></BaseButtonForTitleBar>
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-btn>
 
+          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+            class="no-box-shadow q-mr-xs"
+            icon="bi-chevron-left"
+            size="12px"
+            @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
+          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+            class="no-box-shadow q-mr-xs"
+            icon="bi-dot"
+            size="12px"
+            @click-button="setDateToToday()"></BaseButtonForTitleBar>
+
+          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
+            class="no-box-shadow q-mr-xs"
+            icon="bi-chevron-right"
+            size="12px"
+            @click-button="addToDate(1)"></BaseButtonForTitleBar>
+
+        </div>
       </div>
     </template>
+
+
+
     <template v-slot:content>
       <div class="bookmark"
         v-if="viewingMode === 'view' && false"></div>
       <!-- DAY SELECTION -->
-      <div class="row justify-center items-center text-center">
+      <div class="row justify-center items-center text-center ">
         <!-- today, yesterday, x days ago, x days ahead... -->
-        <div class="col-12">
-          <div class="text-white"
-            :style="getSubtitleStyle">
+        <div class="col-12 q-pt-xs ">
+          <div :style="getSubtitleStyle">
             {{getSubtitle}}</div>
-        </div>
-        <div class="col-12 q-px-xs">
-          <BaseCardWithTape class="subtitle"
-            :tapeColor="$store.state.layout.accent">
-            <template v-slot:content>
-              <p class="cursor-pointer q-pa-xs q-mb-none text-center"
-                :style="$store.getters['layout/getStyleForText']">
-                {{getSubtitle}}
-              </p>
-            </template>
-          </BaseCardWithTape>
         </div>
       </div>
 
-      <div>
+      <div class="q-px-sm">
         <!-- EVENT SECTION -->
         <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
+          :backgroundColor="getCardBackgroundColor"
           :diaryEntry="getDiaryEntry"
           :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
           :isDiarySectionVisible="isDiarySectionVisible"
@@ -157,6 +159,7 @@
         </TheSectionForEvents>
         <!-- DIARY SECTION -->
         <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
+          :backgroundColor="getCardBackgroundColor"
           :class="getDiarySectionClass"
           :diaryEntry="getDiaryEntry"
           :viewingMode="viewingMode"
@@ -183,12 +186,14 @@
             @click="exitFullscreen"
             :style="$store.state.layout.sTextAccentShadow"></q-btn>
         </div>
-
-        <q-card class="editorCard shadow-3 text-justify">
-          <q-item>
-            <q-item-section v-html="editorHTMLContent"> </q-item-section>
-          </q-item>
-        </q-card>
+        <BaseCard :backgroundColor="getCardBackgroundColor"
+          class="text-justify">
+          <template v-slot:content>
+            <q-item>
+              <q-item-section v-html="editorHTMLContent"> </q-item-section>
+            </q-item>
+          </template>
+        </BaseCard>
       </div>
     </template>
   </BasePage>
@@ -201,7 +206,7 @@ import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
 import { useQuasar } from "quasar";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
-import BaseCardWithTape from "src/components/ui/BaseCardWithTape.vue";
+import BaseCard from "src/components/ui/BaseCard.vue";
 
 export default {
   name: "diary",
@@ -210,7 +215,7 @@ export default {
     TheSectionForDiary,
     BasePage,
     BaseButtonForTitleBar,
-    BaseCardWithTape
+    BaseCard
   },
   data() {
     return {
@@ -245,28 +250,65 @@ export default {
     },
   },
   computed: {
+    getCardBackgroundColor() {
+      return this.$store.state.layout.diaryCardBackgroundColor;
+    },
+    getStyleForDayInTitlebar() {
+      let style = {};
+      style["font-size"] = "1.15em";
+      style["font-family"] = "Pixelated MS Sans Serif";
+      style["font-weight"] = 700;
+      style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
+      return style;
+    },
+    getStyleForTitlebar() {
+      let style = {};
+      style["text-shadow"] = this.$store.state.layout.accent2 + this.$store.state.layout.lowOpacity + " 2px 2px 2px";
+      //style["text-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = "white";
+      style["font-weight"] = "700";
+      return style;
+    },
+    isDiaryTitlebarShowingDay() {
+      return this.$store.state.layout.isDiaryTitlebarShowingDay;
+    },
     getSubtitle() {
       let subtitle = this.formatDate(this.getDate);
       subtitle = subtitle.substring(0, subtitle.length - 6);
 
-      if (this.$store.state.layout.diaryIsCountingDays) {
+      if (this.$store.state.layout.isDiaryCountingDays) {
+        if (this.isDiaryTitlebarShowingDay) {
+          return this.getDay
+        };
         return subtitle + " - " + this.getDay
       } else {
-        return this.formatDate(this.getDate);
+        if (!this.isDiaryTitlebarShowingDay) {
+          return this.formatDate(this.getDate);
+        } else {
+          return "";
+        }
       }
     },
     getSubtitleStyle() {
-      return {
-        "text-shadow": "var(--q-info) 2px 2px 2px",
-        "font-size": "1.15em",
-        "color": "white"
+      let style = {};
+      style["font-size"] = "1.15em";
+      style["color"] = "white";
+      if (this.$store.state.layout.isDiarySubtitleStyleSetToAlternative) {
+        style["text-shadow"] = "2px 0 " + this.$store.state.layout.diarySubtitleColor
+          + ", -2px 0 " + this.$store.state.layout.diarySubtitleColor
+          + ", 0 2px " + this.$store.state.layout.diarySubtitleColor
+          + ", 0 -2px " + this.$store.state.layout.diarySubtitleColor
+          + ", 1px 1px " + this.$store.state.layout.diarySubtitleColor
+          + ", -1px -1px " + this.$store.state.layout.diarySubtitleColor
+          + ", 1px -1px " + this.$store.state.layout.diarySubtitleColor
+          + ", -1px 1px " + this.$store.state.layout.diarySubtitleColor;
+      } else {
+        style["text-shadow"] = "var(--q-info) 2px 2px 2px"; // für helle hintergründe, standard
       }
+      return style;
     },
     diaryMode() {
       return this.$store.state.layout.diaryMode;
-    },
-    getBackgroundColor() {
-      return this.$store.state.layout.diaryBackgroundColor;
     },
     isShowingExpandButtonOfEventCard() {
       return this.$store.state.data
@@ -340,11 +382,11 @@ export default {
       let diff = this.getCountOfDaysAwayFromToday;
       // date.isSameDate returns true when date1 and date2 are on the same day
       if (date.isSameDate(this.getDate, today, unit)) {
-        return "today";
+        return "Today";
       } else if (date.isSameDate(this.getDate, yesterday, unit)) {
-        return "yesterday";
+        return "Yesterday";
       } else if (date.isSameDate(this.getDate, tomorrow, unit)) {
-        return "tomorrow";
+        return "Tomorrow";
       } else {
         if (diff < -1) {
           return Math.abs(diff) + " days from now";
@@ -436,6 +478,15 @@ export default {
   font-size: 12.5px;
 }
 
+.title-bar-height {
+  height: 28px;
+}
+
+.date-picker-button {
+  text-transform: none;
+  font-size: 1.2em;
+}
+
 .subtitle {
   margin-top: -8px;
 }
@@ -445,10 +496,6 @@ export default {
   margin-top: 1px;
 }
 
-.datePickerButton {
-  text-transform: none;
-
-}
 
 .maxHeight {
   max-height: 80px;

@@ -1,109 +1,104 @@
 <template>
-  <BaseSettingsTabPanelGroup title="Page: Home">
+  <BaseSettingsTabPanelGroup title="Page: Home"
+    :isExpanded="isHomeGroupExpanded"
+    @toggle-expand-state="isHomeGroupExpanded = !isHomeGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Layout">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-btn-toggle v-model="modeForHome"
-              dense
-              class="my-custom-toggle"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                {label: 'retro', value: 'retro'},
-                {label: 'compact', value: 'compact'},
-                {label: 'plain', value: 'plain'},
-              ]" />
-          </q-item-section>
+          <q-btn-toggle v-model="homeMode"
+            dense
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: 'retro', value: 'retro'},
+              {label: 'border', value: 'border'},
+              {label: 'clear', value: 'clear'},
+            ]" />
 
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel v-if="modeForHome === 'retro' || modeForHome === 'compact'"
+      <BaseItemForSettingsTabPanel v-if="homeMode === 'retro' || homeMode === 'border'"
         title="Background"
         caption="Set color and opacity.">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="backgroundColorForHome"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="backgroundColorForHome" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="homeBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="homeBackgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
 
         </template>
       </BaseItemForSettingsTabPanel>
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Page: Event">
+  <BaseSettingsTabPanelGroup title="Page: Event"
+    :isExpanded="isEventGroupExpanded"
+    @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Layout"
         :isOnSameLine="false">
         <template v-slot:content>
-          <q-item-section class="col-12"
-            avatar>
-            <q-btn-toggle v-model="eventMode"
-              dense
-              class="my-custom-toggle"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                {label: 'default', value: 'default'},
-                {label: 'retro', value: 'retro'},
-                {label: 'compact', value: 'compact'},
-                {label: 'plain', value: 'plain'},
-              ]" />
-          </q-item-section>
+          <q-btn-toggle v-model="eventMode"
+            dense
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: 'default', value: 'default'},
+              {label: 'retro', value: 'retro'},
+              {label: 'border', value: 'border'},
+              {label: 'clear', value: 'clear'},
+            ]" />
 
         </template>
       </BaseItemForSettingsTabPanel>
       <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
         title="Background"
-        :caption="(eventMode === 'plain') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
+        :caption="(eventMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="eventBackgroundColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="eventBackgroundColor" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="eventBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="eventBackgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
         </template>
       </BaseItemForSettingsTabPanel>
@@ -112,29 +107,27 @@
         title="Input Fields"
         caption="Set color and opacity.">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="eventInputBackgroundColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="eventInputBackgroundColor"
-                      :palette="[
-                        '#24242469', '#fffcfc91', '#dfd4f587', '#00000087',
-                        '#f5f5f5fc'
-                      ]" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="eventInputBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="eventInputBackgroundColor"
+                    :palette="[
+                      '#24242469', '#fffcfc91', '#dfd4f587', '#00000087',
+                      '#f5f5f5fc'
+                    ]" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
       <q-separator v-if="eventMode != 'default'"
@@ -143,69 +136,132 @@
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Page: Diary">
+  <BaseSettingsTabPanelGroup title="Page: Diary"
+    :isExpanded="isDiaryGroupExpanded"
+    @toggle-expand-state="isDiaryGroupExpanded = !isDiaryGroupExpanded">
     <template v-slot:q-item-section-content>
       <BaseItemForSettingsTabPanel title="Layout">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-btn-toggle v-model="diaryMode"
-              dense
-              class="my-custom-toggle"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                {label: 'retro', value: 'retro'},
-                {label: 'compact', value: 'compact'},
-                {label: 'plain', value: 'plain'},
-              ]" />
-          </q-item-section>
+          <q-btn-toggle v-model="diaryMode"
+            dense
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: 'clear', value: 'clear'},
+              {label: 'retro', value: 'retro'},
+              {label: 'border', value: 'border'},
+            ]" />
 
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel v-if="modeForHome === 'retro' || modeForHome === 'compact'"
+      <BaseItemForSettingsTabPanel v-if="diaryMode != 'clear'"
         title="Background"
         caption="Set color and opacity.">
         <template v-slot:content>
-          <q-item-section class="col-6"
-            avatar>
-            <q-input filled
-              dense
-              v-model="diaryBackgroundColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="diaryBackgroundColor" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </q-item-section>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="diaryBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="diaryBackgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
 
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Card Background"
+        caption="Set color and opacity.">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="diaryCardBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="diaryCardBackgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Change titlebar style"
+        caption="Days will be shown in the titlebar.">
+        <template v-slot:content>
+          <q-toggle color="accent"
+            v-model="isDiaryTitlebarShowingDay" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Date: Change Border"
+        caption="Useful for bright or cluttered background images.">
+        <template v-slot:content>
+          <q-toggle color="accent"
+            v-model="isDiarySubtitleStyleSetToAlternative" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Border Color"
+        v-if="isDiarySubtitleStyleSetToAlternative">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="diarySubtitleColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="diarySubtitleColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Date: Counting Days"
+        caption="If turned off, diary will only show the date.">
+        <template v-slot:content>
+          <q-toggle color="accent"
+            v-model="isDiaryCountingDays" />
         </template>
       </BaseItemForSettingsTabPanel>
 
       <BaseItemForSettingsTabPanel title="Show expand button"
         caption="Show the button to expand individual events on the diary page.">
         <template v-slot:content>
-          <q-item-section class="col-4"
-            avatar>
-            <q-toggle color="accent"
-              v-model="isShowingExpandButtonForEventsViaDiary"
-              val="battery" />
-          </q-item-section>
-
+          <q-toggle color="accent"
+            v-model="isShowingExpandButtonForEventsViaDiary" />
         </template>
       </BaseItemForSettingsTabPanel>
     </template>
@@ -220,48 +276,95 @@ export default {
   components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup },
   data() {
     return {
-      modeForHome: this.$store.state.layout.modeForHome,
-      backgroundColorForHome: this.$store.state.layout.backgroundColorForHome,
+      isHomeGroupExpanded: true,
+      isEventGroupExpanded: false,
+      isDiaryGroupExpanded: false,
+      homeMode: this.$store.state.layout.homeMode,
       eventMode: this.$store.state.layout.eventMode,
-      eventBackgroundColor: this.$store.state.layout.eventBackgroundColor,
       eventInputBackgroundColor: this.$store.state.layout.eventInputBackgroundColor,
       isShowingExpandButtonForEventsViaDiary: false,
-      diaryMode: "default",
-      diaryBackgroundColor: "whitesmoke"
+      diaryMode: this.$store.state.layout.diaryMode,
+      isDiaryTitlebarShowingDay: this.$store.state.layout.isDiaryTitlebarShowingDay,
+      isDiaryCountingDays: this.$store.state.layout.isDiaryCountingDays,
+      diaryCardBackgroundColor: this.$store.state.layout.diaryCardBackgroundColor,
+      diarySubtitleColor: this.$store.state.layout.diarySubtitleColor,
+      isDiarySubtitleStyleSetToAlternative: this.$store.state.layout.isDiarySubtitleStyleSetToAlternative,
     };
   },
   watch: {
-    isShowingExpandButtonForEventsViaDiary(newValue) {
-      this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
-    },
-    modeForHome(mode) {
+    homeMode(mode) {
       let payload = { "page": "home", "mode": mode };
       this.$store.dispatch("layout/changeMode", payload);
-    },
-    backgroundColorForHome(color) {
-      this.$store.commit("layout/changeBackgroundColorForHome", color);
     },
     eventMode(mode) {
       let payload = { "page": "event", "mode": mode };
       this.$store.dispatch("layout/changeMode", payload);
     },
-    eventBackgroundColor(color) {
-      let payload = { "type": "color", "color": color };
-      this.$store.dispatch("layout/changeEventPageProperties", payload);
-    },
     eventInputBackgroundColor(color) {
       let payload = { "type": "inputBackground", "color": color };
       this.$store.dispatch("layout/changeEventPageProperties", payload);
     },
+    diaryMode(mode) {
+      let payload = { "page": "diary", "mode": mode };
+      this.$store.dispatch("layout/changeMode", payload);
+    },
+    isDiaryTitlebarShowingDay(bool) {
+      this.$store.commit("layout/toggleIsDiaryTitleBarShowingDay", bool);
+    },
+    isDiaryCountingDays(bool) {
+      this.$store.commit("layout/toggleIsDiaryCountingDays", bool);
+    },
+    isShowingExpandButtonForEventsViaDiary(newValue) {
+      this.$store.commit("data/toggleExpandButtonForEventsOnDiaryPage");
+    },
+    diaryCardBackgroundColor(color) {
+      this.$store.commit("layout/setDiaryCardBackgroundColor", color);
+    },
+    isDiarySubtitleStyleSetToAlternative(bool) {
+      this.$store.commit("layout/setDiarySubtitleStyleToAlternative", bool);
+    },
+    diarySubtitleColor(color) {
+      this.$store.commit("layout/setDiarySubtitleColor", color);
+    },
+
+
   },
   computed: {
-    accent2Color: {
+    eventBackgroundColor: {
       get() {
-        return this.$store.state.layout.accent2;
+        return this.$store.getters['layout/getEventBackgroundColor'];
       },
       set(value) {
-        this.$store.commit("layout/setAccent2", value);
+        if (this.$store.getters['layout/isDarkModeActive']) {
+          this.$store.commit("layout/setEventBackgroundColorDark", value);
+        } else {
+          this.$store.commit("layout/setEventBackgroundColor", value);
+        }
+      }
+    },
+    homeBackgroundColor: {
+      get() {
+        return this.$store.getters['layout/getHomeBackgroundColor'];
       },
+      set(value) {
+        if (this.$store.getters['layout/isDarkModeActive']) {
+          this.$store.commit("layout/setHomeBackgroundColorDark", value);
+        } else {
+          this.$store.commit("layout/setHomeBackgroundColor", value);
+        }
+      }
+    },
+    diaryBackgroundColor: {
+      get() {
+        return this.$store.getters['layout/getDiaryBackgroundColor'];
+      },
+      set(value) {
+        if (this.$store.getters['layout/isDarkModeActive']) {
+          this.$store.commit("layout/setDiaryBackgroundColorDark", value);
+        } else {
+          this.$store.commit("layout/setDiaryBackgroundColor", value);
+        }
+      }
     },
   }
 };

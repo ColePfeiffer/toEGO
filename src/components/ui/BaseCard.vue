@@ -1,6 +1,6 @@
 <template>
   <q-card class="shadow-3"
-    :style="$store.getters['layout/getStyleForRegularCard']">
+    :style="getStyleForCard">
     <slot name="content">
       <q-card-section :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
         <slot name="contentInsideSection">
@@ -18,8 +18,49 @@ export default {
       type: Boolean,
       default: true,
     },
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
+    }
   },
   computed: {
+    getStyleForCard() {
+      let style = {};
+      let fontColor = this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor);
+      style["border-radius"] = "0px";
+      style["border-style"] = "solid";
+      style["font-size"] = this.$store.state.layout.fontsize + "px";
+
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = this.$store.state.layout.blacksmoke;
+        style["color"] = "white";
+        style["border"] = "2px solid";
+        style["border-image-slice"] = "1";
+        style["border-width"] = "1px";
+        style["border-image-source"] = "linear-gradient(to left, turquoise, greenyellow)";
+
+        /* amazing border
+        style["border-width"] = "20px";
+        style["border-image"] =
+          "repeating-radial-gradient(circle at 10px,turquoise, pink 2px, greenyellow 4px, pink 2px) 1";
+        */
+      } else {
+        style["background-color"] = this.backgroundColor;
+        style["color"] = fontColor;
+        //style["color"] = "black";
+        style["border-width"] = "1.5px";
+        style["border-color"] =
+          this.backgroundColor + " #4a4a4a24 #4a4a4a24 " + this.backgroundColor;
+      }
+
+      if (fontColor === 'white') {
+        style["text-shadow"] = "2px 2px 3px #39373c";
+      } else {
+        style["text-shadow"] = "none";
+      }
+
+      return style;
+    },
     isTextCentered() {
       if (this.isTextSetToCentered) {
         return true;

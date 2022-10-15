@@ -29,17 +29,21 @@
 import BaseButtonExpandable from '../ui/BaseButtonExpandable.vue';
 export default {
   name: "BaseSettingsTabPanelGroup",
+  emits: ["toggle-expand-state"],
   props: {
     title: String,
+    isExpanded: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
-      isExpanded: false
     };
   },
   methods: {
     expandGroup() {
-      this.isExpanded = !this.isExpanded;
+      this.$emit("toggle-expand-state");
     }
   },
   computed: {
