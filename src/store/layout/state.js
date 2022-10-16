@@ -32,6 +32,8 @@ export default function () {
     mediumOpacity: "a6",
     //  Page Settings
     isDarkModeOn: false,
+    borderColorLeft: "#80d2f2",
+    borderColorRight: "#7d5fb8",
     //  - Home
     homeMode: "retro",
     homeBackgroundColor: "#ffffff54",
@@ -41,15 +43,15 @@ export default function () {
     eventBackgroundColor: "#f5f5f5fc",
     eventBackgroundColorDark: "#000000ad",
     eventInputBackgroundColor: "#f5f5f5fc",
-    eventTextColor: "fffffffc",
-    eventTextShadow: "#dfd4f5 2px 2px 2px",
+    eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated
+    // Diary
     diaryMode: "clear",
     diaryBackgroundColor: "#ffffff54",
     diaryBackgroundColorDark: "#000000ad",
     diaryCardBackgroundColor: "#f5f5f5ff",
+    isDiaryTitlebarShowingDay: false,
     isDiarySubtitleStyleSetToAlternative: false,
-    diarySubtitleColor: "#000",
-    isDiaryTitlebarShowingDay: true,
+    diarySubtitleColor: "#978fc7",
     isDiaryCountingDays: true,
     //  Backgrounds
     backgrounds: [

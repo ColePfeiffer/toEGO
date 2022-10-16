@@ -5,45 +5,6 @@ export const setDefaultSettings = (state, fontsize) => {
   console.log("resetting everything, whoop!!!");
 };
 
-/*
-
-bg image 5
-secondary bacbde
-a #FF7E6B
-s deb4db
-
-retro ffffff82
-
-diary clear
-
-card bg fafafaed
-change title bar no
-change border yes
-border color: bacbde
-
-
----
-
-DFD4F5
-a2cf9d ffc107
-211761
-
-*/
-
-//TODO:
-export const setThemeNightSky = (state, fontsize) => {
-  // ok doesnt really work like this, gotta do an action and then call all the different mutations from there, so the css stuff will be set too!
-  state.backgroundImageURL =
-    "url('https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif'";
-  state.secondary = "#7689b0";
-  state.accent = "#cdb1de";
-  state.accent2 = "#060754";
-  state.homeMode = "retro";
-  state.homeBackgroundColor = "#ebebeb59";
-  state.eventMode = "default";
-  // .. add default settings too!!
-};
-
 export const setFontsize = (state, fontsize) => {
   state.fontsize = fontsize;
 };
@@ -131,12 +92,16 @@ export const toggleDarkMode = (state) => {
   state.isDarkModeOn = !state.isDarkModeOn;
 };
 
-export const setEventTextColor = (state, color) => {
-  state.eventTextColor = color;
-};
-
 export const setEventInputBackgroundColor = (state, color) => {
   state.eventInputBackgroundColor = color;
+};
+
+export const setBorderColorLeft = (state, color) => {
+  state.borderColorLeft = color;
+};
+
+export const setBorderColorRight = (state, color) => {
+  state.borderColorRight = color;
 };
 
 export const toggleIsDiaryTitleBarShowingDay = (state, bool) => {

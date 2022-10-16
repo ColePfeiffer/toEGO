@@ -47,23 +47,20 @@
           padding="ml"
           toggle-color="white"
           text-color="white"
-          @update:model-value="goToPage"
+          @click="clickNavigationItem"
           :options="[
             { label: '', value: 'home', icon: getIconForHome, slot: 'home'},
-            {
-              label: '',
-              value: 'Event',
-              slot: 'Event',
-              icon: getIconForEvent,
-              color: 'accent',
-
-            },
             {
               label: '',
               value: 'diary',
               icon: getIconForDiary,
               slot: 'diary',
 
+            },
+            {
+              label: '',
+              value: 'templates',
+              slot: 'templates',
             },
             { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings'  },
           ]">
@@ -72,18 +69,31 @@
               :offset="[10, 10]"
               :delay="300">home</q-tooltip>
           </template>
-          <template v-slot:Event>
-            <q-tooltip class="bg-secondary text-body2 text-black"
-              :offset="[10, 10]"
-              :delay="300">create new event
-            </q-tooltip>
-          </template>
+
           <template v-slot:diary>
             <q-tooltip class="bg-secondary text-body2 text-black"
               :offset="[10, 10]"
               :delay="300">diary</q-tooltip>
           </template>
-
+          <template v-slot:templates>
+            <!-- TODO: icon slot to set icon size -->
+            <q-fab v-model="templatesFabButton"
+              vertical-actions-align="center"
+              icon="bi-fonts"
+              square
+              padding="none"
+              direction="up">
+              <q-fab-action @click="openDialogViewDiaryTemplates"
+                icon="bi-journal-bookmark"
+                color="primary"
+                label="Diary Templates" />
+              <q-fab-action color="primary"
+                dense
+                @click="openDialogViewEventTemplates"
+                icon="bi-sticky"
+                label="Event Templates" />
+            </q-fab>
+          </template>
           <template v-slot:settings>
             <q-tooltip class="bg-secondary text-body2 text-black"
               :offset="[10, 10]"
@@ -127,6 +137,7 @@ export default {
       boxShadowStyle: {
         "box-shadow": "none",
       },
+      templatesFabButton: false,
     };
   },
   components: {
@@ -174,6 +185,13 @@ export default {
     },
   },
   watch: {
+    navButtonToggleModel(newValue) {
+      if (newValue != 'templates') {
+        this.goToPage();
+      } else {
+        this.templatesFabButton = !this.templatesFabButton;
+      }
+    },
     currentRouterPath(newPath) {
       // whenever the router path updates, we want to set expanded to false for events.
       let payload = {
@@ -190,6 +208,9 @@ export default {
     this.$store.commit("data/initiateDay");
   },
   methods: {
+    clickNavigationItem() {
+      console.log("use me to allow double clicking templates :)")
+    },
     onResize(size) {
       this.$store.commit("layout/setSize", size);
     },
@@ -206,6 +227,14 @@ export default {
         isVisible: true,
         isBackgroundVisible: false,
         nameOfCurrentDialog: "dialogViewEventTemplates",
+      };
+      this.$store.commit("data/setDialogVisibility", payload);
+    },
+    openDialogViewDiaryTemplates() {
+      let payload = {
+        isVisible: true,
+        isBackgroundVisible: false,
+        nameOfCurrentDialog: "dialogViewDiaryTemplates",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },

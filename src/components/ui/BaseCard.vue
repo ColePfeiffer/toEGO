@@ -37,8 +37,8 @@ export default {
         style["border"] = "2px solid";
         style["border-image-slice"] = "1";
         style["border-width"] = "1px";
-        style["border-image-source"] = "linear-gradient(to left, turquoise, greenyellow)";
-
+        style["border-image-source"] = "linear-gradient(to left, " + this.$store.state.layout.borderColorRight + ", " + this.$store.state.layout.borderColorLeft + ")";
+        console.log(style["border-image-source"])
         /* amazing border
         style["border-width"] = "20px";
         style["border-image"] =

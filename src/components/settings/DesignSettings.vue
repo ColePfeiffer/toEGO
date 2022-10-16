@@ -3,16 +3,7 @@
     :isExpanded="isGeneralGroupExpanded"
     @toggle-expand-state="isGeneralGroupExpanded = !isGeneralGroupExpanded">
     <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Dark-Mode">
-        <template v-slot:content>
-          <q-toggle color="accent"
-            v-model="isDarkModeTurnedOn"
-            val="battery" />
-        </template>
-      </BaseItemForSettingsTabPanel>
-
-      <BaseItemForSettingsTabPanel title="Themes"
-        :isOnSameLine="false">
+      <BaseItemForSettingsTabPanel title="Themes">
         <template v-slot:content>
           <q-btn-toggle v-model="theme"
             class="my-custom-toggle"
@@ -31,6 +22,64 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
+
+      <BaseItemForSettingsTabPanel title="Dark-Mode">
+        <template v-slot:content>
+          <q-toggle color="accent"
+            v-model="isDarkModeTurnedOn"
+            val="battery" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
+        title="Card Border: Left Color">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="borderColorLeft"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="borderColorLeft" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
+        title="Card Border: Right Color">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="borderColorRight"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="borderColorRight" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+
+
+
       <BaseItemForSettingsTabPanel title="Background-Image"
         :isOnSameLine="false">
         <template v-slot:content>
@@ -45,12 +94,37 @@
             no-caps
             :options="[
               {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
-              {label: '2', value: 'url(/images/tumblr_inline_mvbeksKtt61qak244.png) repeat  center'},
-              {label: '3', value: 'url(/images/tumblr_inline_mkjlcqZOBM1qz4rgp.png) repeat  center'},
-              {label: '4', value: 'url(\'https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif\')'},
-              {label: '5', value: 'url(\'https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif\')'},
+              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat '},
+              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center'},
+              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)'},
+              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)'},
               {label: '[x]', value: 'none'},
             ]" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="backgroundImage != 'none'"
+        title="Use custom image"
+        caption="Upload your image somewhere and put the direct link here."
+        :isOnSameLine="false">
+        <template v-slot:content>
+          <q-input v-model="customBackgroundImage"
+            type="url"
+            hint="E.g.: https://someSite.myImage.png"
+            filled
+            bottom-slots>
+            <template v-slot:before>
+              <q-icon name="bi-image" />
+            </template>
+
+            <template v-slot:append>
+              <q-btn round
+                dense
+                flat
+                icon="add"
+                @click="useCustomImage" />
+            </template>
+          </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
 
@@ -215,6 +289,7 @@ export default {
       isUsingFont: this.$store.state.layout.defaultFont,
       fontsize: 12,
       theme: this.$store.state.layout.theme,
+      customBackgroundImage: "",
     };
   },
   watch: {
@@ -234,7 +309,10 @@ export default {
       this.$store.commit("layout/changeBackgroundColor", color);
     },
     theme(value) {
-      this.$store.commit("layout/setThemeNightSky", value);
+      this.$store.dispatch(
+        "layout/setTheme",
+        value
+      );
     }
   },
   methods: {
@@ -242,6 +320,10 @@ export default {
     setDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
       this.$store.commit("layout/toggleDarkMode");
+    },
+    useCustomImage() {
+      let url = "url(" + this.customBackgroundImage + ")";
+      this.$store.commit("layout/changeBackgroundImage", url);
     },
   },
   computed: {
@@ -267,6 +349,22 @@ export default {
       },
       set(value) {
         this.$store.commit("layout/setAccent2", value);
+      },
+    },
+    borderColorLeft: {
+      get() {
+        return this.$store.state.layout.borderColorLeft;
+      },
+      set(value) {
+        this.$store.commit("layout/setBorderColorLeft", value);
+      },
+    },
+    borderColorRight: {
+      get() {
+        return this.$store.state.layout.borderColorRight;
+      },
+      set(value) {
+        this.$store.commit("layout/setBorderColorRight", value);
       },
     },
   }

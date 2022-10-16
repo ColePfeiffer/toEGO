@@ -62,3 +62,78 @@ export function setSecondaryLighter({ getters, state, commit }) {
   }
   commit("setColorSecondaryLighter", newColor);
 }
+
+export function setTheme({ commit }, theme) {
+  if (theme === "Night Sky") {
+    commit(
+      "changeBackgroundImage",
+      "url('https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif'"
+    );
+    commit("setSecondary", "#7689b0");
+    commit("setAccent", "#cdb1de");
+    commit("setAccent2", "#060754");
+
+    commit("setHomeMode", "retro");
+    commit("setHomeBackgroundColor", "#ebebeb59");
+
+    commit("setEventMode", "default");
+    // .. add default settings too!!
+  } else if (theme === "Clouds") {
+    commit(
+      "changeBackgroundImage",
+      "url('https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif')"
+    );
+    commit("setSecondary", "#bacbde");
+    commit("setAccent", "#FF7E6B");
+    commit("setAccent2", "#deb4db");
+
+    commit("setHomeMode", "retro");
+    commit("setHomeBackgroundColor", "#ffffff82");
+    commit("setEventMode", "default");
+
+    commit("setDiaryMode", "clear");
+    commit("setDiaryCardBackgroundColor", "#fafafaed");
+
+    commit("setDiaryMode", "clear");
+    commit("toggleIsDiaryTitleBarShowingDay", false);
+    commit("setDiarySubtitleStyleToAlternative", true);
+    commit("setDiarySubtitleColor", "#bacbde");
+  } else {
+    // default
+    commit(
+      "changeBackgroundImage",
+      "url(/images/background_wide2.jpg) no-repeat center center fixed"
+    );
+    commit("setBorderColorLeft", "#80d2f2");
+    commit("setBorderColorRight", "#7d5fb8");
+
+    commit("setFontsize", 12.5);
+    commit("setFont", "PressStart");
+
+    commit("setSecondary", "#DFD4F5");
+    commit("setAccent", "#ffc107");
+    commit("setAccent2", "#211761");
+
+    commit("setHomeMode", "retro");
+    commit("setHomeBackgroundColor", "#ffffff54");
+    commit("setHomeBackgroundColorDark", "#000000ad");
+
+    commit("setEventMode", "default");
+    commit("setEventBackgroundColor", "#f5f5f5fc");
+    commit("setEventBackgroundColorDark", "#000000ad");
+    commit("setEventInputBackgroundColor", "#f5f5f5fc");
+
+    commit("setDiaryMode", "clear");
+    commit("setDiaryCardBackgroundColor", "#fafafaed");
+
+    commit("setDiaryMode", "clear");
+    commit("setDiaryBackgroundColor", "#ffffff54");
+    commit("setDiaryBackgroundColorDark", "#000000ad");
+    commit("setDiaryCardBackgroundColor", "#f5f5f5ff");
+
+    commit("toggleIsDiaryTitleBarShowingDay", false);
+    commit("setDiarySubtitleStyleToAlternative", false);
+    commit("setDiarySubtitleColor", "#978fc7");
+    commit("toggleIsDiaryCountingDays", true);
+  }
+}

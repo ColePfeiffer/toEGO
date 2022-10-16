@@ -80,8 +80,7 @@
           </div>
         </div>
       </div>
-      <div class="title-bar-controls"
-        :style="getMargin">
+      <div class="title-bar-controls">
         <div class="row justify-between items-center no-wrap text-center">
           <q-btn class="no-box-shadow q-mr-xs text-center"
             icon="bi-calendar-event"
