@@ -96,7 +96,7 @@ export const getStyleForPage = (state) => {
 export const getColorBasedOnBackgroundColor = (state, getters) => {
   return (backgroundColor) => {
     // if dark-mode is active, there is no custom-colored background, so the color gets set to white.
-    if (getters.getBrightness(backgroundColor) <= 162) {
+    if (getters.getBrightness(backgroundColor) <= 168) {
       return "white";
     } else {
       return "black";

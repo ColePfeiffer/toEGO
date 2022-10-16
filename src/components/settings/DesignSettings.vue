@@ -11,6 +11,26 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
+      <BaseItemForSettingsTabPanel title="Themes"
+        :isOnSameLine="false">
+        <template v-slot:content>
+          <q-btn-toggle v-model="theme"
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: '1', value: 'default'},
+              {label: '2', value: 'Night Sky'},
+              {label: '3', value: 'Clouds'},
+            ]" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
       <BaseItemForSettingsTabPanel title="Background-Image"
         :isOnSameLine="false">
         <template v-slot:content>
@@ -194,6 +214,7 @@ export default {
       backgroundColor: this.$store.state.layout.backgroundColor,
       isUsingFont: this.$store.state.layout.defaultFont,
       fontsize: 12,
+      theme: this.$store.state.layout.theme,
     };
   },
   watch: {
@@ -211,6 +232,9 @@ export default {
     },
     backgroundColor(color) {
       this.$store.commit("layout/changeBackgroundColor", color);
+    },
+    theme(value) {
+      this.$store.commit("layout/setThemeNightSky", value);
     }
   },
   methods: {

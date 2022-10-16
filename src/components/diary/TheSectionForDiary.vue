@@ -115,6 +115,7 @@ export default {
   },
   computed: {
     isDiaryVisible() {
+      console.log(this.diaryEntry, this.isCreatingNewDiaryEntry)
       if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {
         return true;
       } else {
@@ -235,6 +236,7 @@ export default {
     saveChanges() {
       this.$emit("change-view", "view");
       this.$emit("save-changes", this.changeData);
+      this.isCreatingNewDiaryEntry = false;
       this.resetChangeData();
     },
     createTemplate(templateName) {
