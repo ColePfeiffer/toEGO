@@ -3,15 +3,27 @@ export function someAction (context) {
 }
 */
 
-export const removeCategoryFromParentsAndDeleteIt = (context, payload) => {
+export const removeCategoryFromParentsAndDeleteIt = (
+  { state, commit },
+  payload
+) => {
   // remove category from all folders
   let data = { parents: payload.parents, child: payload.child };
-  context.commit("removeChildFromAllParents", data);
+  commit("removeChildFromAllParents", data);
+  let categories;
 
   // deleting category
-  let categories = context.getters.getCategoryByType(payload.type);
+  console.log("TYPE: ", payload.type);
+  if (payload.type === "DIARY") {
+    categories = state.categoriesForDiary;
+    console.log("D ", categories);
+  } else {
+    categories = state.categoriesForEvents;
+    console.log("E ", categories);
+  }
+  console.log("inside action: ", categories);
   data = { categoryToDelete: payload.child, categories: categories };
-  context.commit("deleteCategory", data);
+  commit("deleteCategory", data);
 };
 
 export function removeTemplateFromParentsAndDeleteIt(context, payload) {

@@ -2,15 +2,15 @@
   <q-layout view="hHh lpR fFf">
     <q-resize-observer @resize="onResize" />
     <!-- Dialogs -->
-    <DialogNameAndCreate @create="eventCreateTemplate"
+    <DialogNameAndCreate @create="createTemplate"
       @closeDialog="closeDialog">
     </DialogNameAndCreate>
-    <dialogViewEventTemplates :templateList="$store.state.data.eventTemplates"
-      @pasteTemplate="pasteTemplate"
-      @deleteTemplate="deleteTemplate"
-      @closeDialog="closeDialog">
-    </dialogViewEventTemplates>
 
+    <BaseDialogTemplateViewer :type="type"
+      :templateList="templates"
+      @pasteTemplate="pasteTemplate"
+      @closeDialog="closeDialog">
+    </BaseDialogTemplateViewer>
     <!-- Router-view -->
     <q-page-container>
       <q-page :style="$store.getters['layout/getStyleForPage']">
@@ -65,15 +65,10 @@
             { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings'  },
           ]">
           <template v-slot:home>
-            <q-tooltip class="bg-secondary text-body2 text-black"
-              :offset="[10, 10]"
-              :delay="300">home</q-tooltip>
+            <BaseTooltip text="Home"></BaseTooltip>
           </template>
-
           <template v-slot:diary>
-            <q-tooltip class="bg-secondary text-body2 text-black"
-              :offset="[10, 10]"
-              :delay="300">diary</q-tooltip>
+            <BaseTooltip text="Diary"></BaseTooltip>
           </template>
           <template v-slot:templates>
             <!-- TODO: icon slot to set icon size -->
@@ -82,7 +77,8 @@
               icon="bi-fonts"
               square
               padding="none"
-              direction="up">
+              direction="up"
+              @click="toggleFabButton">
               <q-fab-action @click="openDialogViewDiaryTemplates"
                 icon="bi-journal-bookmark"
                 color="primary"
@@ -95,9 +91,7 @@
             </q-fab>
           </template>
           <template v-slot:settings>
-            <q-tooltip class="bg-secondary text-body2 text-black"
-              :offset="[10, 10]"
-              :delay="300">settings</q-tooltip>
+            <BaseTooltip text="Settings"></BaseTooltip>
           </template>
         </q-btn-toggle>
         <q-space />
@@ -114,8 +108,9 @@
 
 <script>
 import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
-import DialogViewEventTemplates from "../components/dialogs/DialogViewEventTemplates.vue";
 import { date } from "quasar";
+import BaseDialogTemplateViewer from "../components/dialogs/BaseDialogTemplateViewer.vue";
+import BaseTooltip from "../components/ui/BaseTooltip.vue";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>
@@ -142,13 +137,31 @@ export default {
   },
   components: {
     DialogNameAndCreate,
-    DialogViewEventTemplates,
+    BaseDialogTemplateViewer,
+    BaseTooltip
   },
   mounted() {
     // sets our v-models initital value to the path of the url we are starting the app from
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    nameOfCurrentDialog() {
+      return this.$store.state.data.dialogSettings.nameOfCurrentDialog;
+    },
+    type() {
+      if (this.nameOfCurrentDialog === 'template-viewer-for-events' || this.nameOfCurrentDialog === 'template-creator-for-event') {
+        return "EVENT"
+      } else {
+        return "DIARY"
+      }
+    },
+    templates() {
+      if (this.nameOfCurrentDialog === "template-viewer-for-events") {
+        return this.$store.state.data.eventTemplates;
+      } else {
+        return this.$store.state.data.diaryTemplates;
+      }
+    },
     currentRouterPath() {
       return this.$route.path;
     },
@@ -185,13 +198,6 @@ export default {
     },
   },
   watch: {
-    navButtonToggleModel(newValue) {
-      if (newValue != 'templates') {
-        this.goToPage();
-      } else {
-        this.templatesFabButton = !this.templatesFabButton;
-      }
-    },
     currentRouterPath(newPath) {
       // whenever the router path updates, we want to set expanded to false for events.
       let payload = {
@@ -203,13 +209,25 @@ export default {
       // we also want to update navButtonToggleModel based on the new navigation
       this.navButtonToggleModel = newPath.substring(1);
     },
+    nameOfCurrentDialog(nameOfCurrentDialog) {
+      console.log("current dialog name changed to ", nameOfCurrentDialog);
+    },
   },
   created() {
     this.$store.commit("data/initiateDay");
   },
   methods: {
+    toggleFabButton() {
+      this.templatesFabButton = !this.templatesFabButton;
+    },
     clickNavigationItem() {
-      console.log("use me to allow double clicking templates :)")
+      console.log("model: ", this.navButtonToggleModel);
+      if (this.navButtonToggleModel != 'templates') {
+        this.templatesFabButton = false;
+        this.goToPage();
+      } else {
+        this.toggleFabButton();
+      }
     },
     onResize(size) {
       this.$store.commit("layout/setSize", size);
@@ -223,30 +241,26 @@ export default {
       }
     },
     openDialogViewEventTemplates() {
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogViewEventTemplates",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
+      this.openDialog("template-viewer-for-events");
     },
     openDialogViewDiaryTemplates() {
+      this.openDialog("template-viewer-for-diary");
+    },
+    openDialog(name) {
       let payload = {
         isVisible: true,
         isBackgroundVisible: false,
-        nameOfCurrentDialog: "dialogViewDiaryTemplates",
+        nameOfCurrentDialog: name,
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
     pasteTemplate(template) {
-      let newEditorContent;
-      if (this.$store.state.data.eventData.editor != "") {
-        newEditorContent =
-          this.$store.state.data.eventData.editor + "<br>" + template.text;
+      if (this.type === "DIARY") {
+        this.$store.commit("data/SetDialogTemplateViewerIsSetToDiaryMode", true);
       } else {
-        newEditorContent = template.text;
+        this.$store.commit("data/SetDialogTemplateViewerIsSetToDiaryMode", false);
       }
-      this.$store.commit("data/updateEditor", newEditorContent);
+      this.$store.commit("data/setPastedText", template.text);
     },
     deleteTemplate(template) {
       let payload = {
@@ -259,11 +273,11 @@ export default {
         payload
       );
     },
-    eventCreateTemplate(templateName) {
+    createTemplate(templateName) {
+      console.log("creating template.... for : ", this.type);
       let newTemplate = {
         name: templateName,
-        text: this.$store.state.data.eventData.editor,
-        type: "EVENT",
+        type: this.type,
       };
       this.$store.commit("data/createTemplateAndAddToList", newTemplate);
       this.closeDialog();

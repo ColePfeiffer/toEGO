@@ -15,14 +15,97 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: '1', value: 'default'},
-              {label: '2', value: 'Night Sky'},
-              {label: '3', value: 'Clouds'},
+              {label: '1', value: 'default', slot: 'lilac-dreams'},
+              {label: '2', value: 'Night Sky', slot: 'night-sky'},
+              {label: '3', value: 'Clouds', slot: 'clouds'},
+            ]">
+            <template v-slot:lilac-dreams>
+              <BaseTooltip text="Lilac Dreams"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:night-sky>
+              <BaseTooltip text="Night Sky"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:clouds>
+              <BaseTooltip text="Clouds"
+                :delay="0"></BaseTooltip>
+            </template>
+          </q-btn-toggle>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel title="Background-Image"
+        :isOnSameLine="false">
+        <template v-slot:content>
+          <q-btn-toggle v-model="backgroundImage"
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
+              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat '},
+              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center'},
+              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)'},
+              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)'},
+              {label: '', icon: 'bi-x', value: 'none'},
+              {label: '', icon: 'bi-image', value: 'custom'},
             ]" />
         </template>
       </BaseItemForSettingsTabPanel>
 
+      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'custom'"
+        title="Use custom image"
+        caption="Upload your image somewhere and put the direct link here."
+        :isOnSameLine="false">
+        <template v-slot:content>
+          <q-input v-model="customBackgroundImage"
+            type="url"
+            hint="E.g.: https://someSite.myImage.png"
+            filled
+            bottom-slots>
+            <template v-slot:before>
+              <q-icon name="bi-image" />
+            </template>
 
+            <template v-slot:append>
+              <q-btn round
+                dense
+                flat
+                icon="add"
+                @click="useCustomImage" />
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'none'"
+        title="Color: Background">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="backgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input ">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="backgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
       <BaseItemForSettingsTabPanel title="Dark-Mode">
         <template v-slot:content>
           <q-toggle color="accent"
@@ -76,81 +159,6 @@
           </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
-
-
-
-
-      <BaseItemForSettingsTabPanel title="Background-Image"
-        :isOnSameLine="false">
-        <template v-slot:content>
-          <q-btn-toggle v-model="backgroundImage"
-            class="my-custom-toggle"
-            color="transparent"
-            square
-            unelevated
-            toggle-color="accent"
-            text-color="lightgrey"
-            toggle-text-color="white"
-            no-caps
-            :options="[
-              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
-              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat '},
-              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center'},
-              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)'},
-              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)'},
-              {label: '[x]', value: 'none'},
-            ]" />
-        </template>
-      </BaseItemForSettingsTabPanel>
-
-      <BaseItemForSettingsTabPanel v-if="backgroundImage != 'none'"
-        title="Use custom image"
-        caption="Upload your image somewhere and put the direct link here."
-        :isOnSameLine="false">
-        <template v-slot:content>
-          <q-input v-model="customBackgroundImage"
-            type="url"
-            hint="E.g.: https://someSite.myImage.png"
-            filled
-            bottom-slots>
-            <template v-slot:before>
-              <q-icon name="bi-image" />
-            </template>
-
-            <template v-slot:append>
-              <q-btn round
-                dense
-                flat
-                icon="add"
-                @click="useCustomImage" />
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-
-      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'none'"
-        title="Color: Background">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="backgroundColor"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="backgroundColor" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-
 
 
     </template>
@@ -275,9 +283,10 @@
 import { mapMutations } from "vuex";
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
+import BaseTooltip from '../ui/BaseTooltip.vue';
 
 export default {
-  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup },
+  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip },
   data() {
     return {
       isGeneralGroupExpanded: true,
@@ -293,6 +302,7 @@ export default {
     };
   },
   watch: {
+
     isDarkModeTurnedOn() {
       this.setDarkMode();
     },
@@ -302,8 +312,14 @@ export default {
     isUsingFont(newValue) {
       this.$store.commit("layout/setFont", newValue);
     },
+    backgroundImageURL(newURL) {
+      this.backgroundImage = newURL;
+    },
     backgroundImage(imageURL) {
-      this.$store.commit("layout/changeBackgroundImage", imageURL);
+      console.log(imageURL);
+      if (imageURL != 'custom') {
+        this.$store.commit("layout/changeBackgroundImage", imageURL);
+      }
     },
     backgroundColor(color) {
       this.$store.commit("layout/changeBackgroundColor", color);
@@ -327,6 +343,9 @@ export default {
     },
   },
   computed: {
+    backgroundImageURL() {
+      return this.$store.state.layout.backgroundImageURL;
+    },
     secondaryColor: {
       get() {
         return this.$store.state.layout.secondary;

@@ -1,5 +1,5 @@
 <template>
-  <BasePage titleOfPage="Today"
+  <BasePage titleOfPage="Today's events"
     :mode="getHomeMode"
     :backgroundColor="$store.getters['layout/getHomeBackgroundColor']">
     <template v-slot:title-bar-icon>

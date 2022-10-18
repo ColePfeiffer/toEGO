@@ -145,16 +145,6 @@ export const getTemplatesByType = (state) => {
   };
 };
 
-export const getCategoryByType = (state) => {
-  return (type) => {
-    if (type === "DIARY") {
-      return state.categoriesForDiary;
-    } else {
-      return state.categoriesForEvent;
-    }
-  };
-};
-
 // TODO: L
 // check these below again!
 export const isCategoryEmpty = (state) => {

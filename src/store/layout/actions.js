@@ -65,10 +65,7 @@ export function setSecondaryLighter({ getters, state, commit }) {
 
 export function setTheme({ commit }, theme) {
   if (theme === "Night Sky") {
-    commit(
-      "changeBackgroundImage",
-      "url('https://64.media.tumblr.com/04ff549b92bb99db8ad725a83e288030/tumblr_inline_n258pty5wY1qhwjx8.gif'"
-    );
+    commit("changeBackgroundImage", "url(https://i.imgur.com/Dryps1y.png)");
     commit("setSecondary", "#7689b0");
     commit("setAccent", "#cdb1de");
     commit("setAccent2", "#060754");
@@ -79,10 +76,7 @@ export function setTheme({ commit }, theme) {
     commit("setEventMode", "default");
     // .. add default settings too!!
   } else if (theme === "Clouds") {
-    commit(
-      "changeBackgroundImage",
-      "url('https://64.media.tumblr.com/74dbe32d98265cb64e291100117b6d4a/tumblr_inline_n2590ayYaL1qhwjx8.gif')"
-    );
+    commit("changeBackgroundImage", "url(https://i.imgur.com/TPnaBOX.png)");
     commit("setSecondary", "#bacbde");
     commit("setAccent", "#FF7E6B");
     commit("setAccent2", "#deb4db");

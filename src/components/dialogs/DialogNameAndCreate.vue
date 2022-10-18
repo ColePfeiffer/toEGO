@@ -34,10 +34,8 @@
 import BaseDialog from "../ui/baseDialog.vue";
 
 export default {
-  name: "DialogCreateTemplate",
+  name: "DialogNameAndCreate",
   props: {
-    // can be 'DIARY', 'EVENT', 'CATEGORY', 'TEMPLATE'
-    type: String,
     menuIcon: {
       type: String,
       default: "bi-file-earmark-font",
@@ -84,24 +82,16 @@ export default {
     },
     isDialogVisible: {
       get() {
-        let nameOfDialog;
-        if (this.type === "DIARY") {
-          nameOfDialog = "dialogCreateDiaryTemplate";
-        } else if (this.type === "EVENT") {
-          nameOfDialog = "dialogCreateEventTemplate";
-        } else if (this.type === "FOLDER") {
-          nameOfDialog = "dialogCreateFolder";
+        if (this.$store.state.data.dialogSettings.isVisible === true) {
+          if (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+            "template-creator-for-diary") {
+            return true;
+          } else if (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
+            "template-creator-for-event") {
+            return true;
+          }
         }
-
-        if (
-          (this.$store.state.data.dialogSettings.isVisible === true) &
-          (this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-            nameOfDialog)
-        ) {
-          return true;
-        } else {
-          return false;
-        }
+        return false;
       },
       set(value) {
         let payload = {

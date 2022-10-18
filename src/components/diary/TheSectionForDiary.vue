@@ -1,13 +1,5 @@
 <template>
   <div>
-    <DialogNameAndCreate :type="'DIARY'"
-      @create="createTemplate"
-      @closeDialog="closeDialog">
-    </DialogNameAndCreate>
-    <DialogViewDiaryTemplates :templateList="$store.state.data.diaryTemplates"
-      @pasteTemplate="pasteTemplate">
-    </DialogViewDiaryTemplates>
-
     <BaseSectionForDiary :heightForScrollArea="heightForScrollArea">
       <template v-slot:nameOfTitle
         v-if="isDiaryVisible">
@@ -65,9 +57,9 @@
             <BaseEditor ref="editorRef1"
               class="no-border-radius no-box-shadow q-pa-none"
               v-model="changeData.editor"
-              @openDialogCreateTemplate="showTemplateCreator"
-              @openDialogViewTemplates="showTemplateViewer"
-              @pasteTemplate="pasteTemplate"
+              @show-dialog-template-creator="showTemplateCreator"
+              @show-dialog-template-viewer="showTemplateViewer"
+              @paste-template-from-quicklist="pasteTemplateFromQuicklist"
               minHeight="445px"
               type="DIARY" />
           </template>
@@ -82,8 +74,6 @@
 <script>
 import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
 import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
-import DialogNameAndCreate from '../dialogs/DialogNameAndCreate.vue';
-import DialogViewDiaryTemplates from '../dialogs/DialogViewDiaryTemplates.vue';
 import TheDiaryViewer from './TheDiaryViewer.vue';
 import BaseEditor from '../ui/BaseEditor.vue';
 
@@ -92,8 +82,6 @@ export default {
   components: {
     BaseSectionForDiary,
     ButtonForDiarySection,
-    DialogNameAndCreate,
-    DialogViewDiaryTemplates,
     TheDiaryViewer,
     BaseEditor
   },
@@ -106,6 +94,20 @@ export default {
       default: "#f5f5f5",
     }
   },
+  watch: {
+    pastedText(text) {
+      if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === true && text != "") {
+        if (this.changeData.editor != "") {
+          this.changeData.editor =
+            this.changeData.editor + "<br>" + text;
+        } else {
+          this.changeData.editor = text;
+        }
+        this.$store.commit("data/setPastedText", "");
+      }
+
+    }
+  },
   data() {
     return {
       isCreatingNewDiaryEntry: false,
@@ -114,6 +116,9 @@ export default {
     };
   },
   computed: {
+    pastedText() {
+      return this.$store.state.data.pastedText;
+    },
     isDiaryVisible() {
       console.log(this.diaryEntry, this.isCreatingNewDiaryEntry)
       if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {
@@ -222,7 +227,7 @@ export default {
         this.changeData.editor = defaultTemplate;
       }
     },
-    pasteTemplate(template) {
+    pasteTemplateFromQuicklist(template) {
       if (this.changeData.editor != "") {
         this.changeData.editor =
           this.changeData.editor + "<br>" + template.text;
@@ -239,30 +244,24 @@ export default {
       this.isCreatingNewDiaryEntry = false;
       this.resetChangeData();
     },
-    createTemplate(templateName) {
-      let newTemplate = {
-        name: templateName,
-        text: this.changeData.editor,
-        type: "DIARY",
-      };
-      this.$store.commit("data/createTemplateAndAddToList", newTemplate);
-      this.closeDialog();
-    },
+
     // Template Viewer
     showTemplateViewer() {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogViewDiaryTemplates",
+        nameOfCurrentDialog: "template-viewer-for-diary",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
+
     // Template Creator
     showTemplateCreator() {
+      this.$store.commit("data/setEditorText", this.changeData.editor);
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogCreateDiaryTemplate",
+        nameOfCurrentDialog: "template-creator-for-diary",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },

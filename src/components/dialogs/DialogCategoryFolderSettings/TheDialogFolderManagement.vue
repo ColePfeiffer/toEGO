@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     deleteCategory(categoryToDelete) {
+      console.log("categoryToDelete: ", categoryToDelete);
       let payload = {
         parents: this.folders,
         child: categoryToDelete,
@@ -74,16 +75,6 @@ export default {
       this.isCreatingNewFolder = true;
     },
     createNewFolder() { },
-
-    showNamingDialog() {
-      let payload = {
-        isVisible: true,
-        isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogCreateFolder",
-      };
-      this.$store.commit("data/setDialogVisibility", payload);
-    },
-
     toggleNewCategoryCreation() {
       this.isCreatingNewCategory = !this.isCreatingNewCategory;
     },

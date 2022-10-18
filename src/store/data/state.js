@@ -1,6 +1,9 @@
 import { date } from "quasar";
 export default function () {
   return {
+    dialogTemplateViewerIsSetToDiaryMode: true,
+    pastedText: "",
+    editorText: "",
     isShowingLabelsForDiarySection: false,
     // all templates for events are in here
     diaryTemplates: [
@@ -130,7 +133,6 @@ export default function () {
     phone: false,
     intentionText: "Today's message to myself",
     //dialogs
-    eventDialogSettings: { isOpen: false, editMode: false },
     dialogSettings: {
       nameOfCurrentDialog: "test",
       isVisible: false,

@@ -116,9 +116,9 @@
             v-model="editor"
             minHeight="535px"
             type="EVENT"
-            @openDialogCreateTemplate="openDialogCreateTemplate"
-            @openDialogViewTemplates="openDialogViewTemplates"
-            @pasteTemplate="pasteTemplate" />
+            @show-dialog-template-creator="openDialogCreateTemplate"
+            @show-dialog-template-viewer="openDialogViewTemplates"
+            @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
         </div>
       </div>
     </template>
@@ -162,6 +162,18 @@ export default {
     // if mode is set to editing mode, we fetch the updated eventData
     if (!this.$store.state.data.newEventIsInCreationMode) {
       this.setEventData();
+    }
+  },
+  watch: {
+    pastedText(text) {
+      if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === false && text != "") {
+        if (this.editor != "") {
+          this.editor = this.editor + "<br>" + text;
+        } else {
+          this.editor = text;
+        }
+        this.$store.commit("data/setPastedText", "");
+      }
     }
   },
   methods: {
@@ -224,7 +236,7 @@ export default {
       }
       this.isShowingEditor = !this.isShowingEditor;
     },
-    pasteTemplate(template) {
+    pasteTemplateFromQuicklist(template) {
       if (this.editor != "") {
         this.editor = this.editor + "<br>" + template.text;
       } else {
@@ -232,10 +244,11 @@ export default {
       }
     },
     openDialogCreateTemplate() {
+      this.$store.commit("data/setEditorText", this.editor);
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogCreateEventTemplate",
+        nameOfCurrentDialog: "template-creator-for-event",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
@@ -243,13 +256,16 @@ export default {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "dialogViewEventTemplates",
+        nameOfCurrentDialog: "template-viewer-for-events",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
 
   },
   computed: {
+    pastedText() {
+      return this.$store.state.data.pastedText;
+    },
     // Styling _____________________
     getEventMode() {
       return this.$store.state.layout.eventMode;

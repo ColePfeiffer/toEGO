@@ -1,7 +1,7 @@
 <template>
-  <!-- muss später eventuell gesondert behandelt werden, dunno yet.... also mit type -->
+  <!-- TODO: muss später eventuell gesondert behandelt werden, dunno yet.... also mit type -->
   <DialogFolderManagement :isDialogFolderManagementVisible="isDialogFolderManagementVisible"
-    type="DIARY"
+    :type="type"
     @closeDialog="setDialogVisibilty(false)"
     @saveChanges="saveChanges"
     @setDialogVisibilty="setDialogVisibilty">
@@ -97,6 +97,7 @@
                     :quicklist="quicklist"
                     :templates="templateList">
                   </CategoryOrTagQuickMenu>
+                  <BaseTooltip text="Template Settings"></BaseTooltip>
                 </q-btn>
 
                 <!-- Set default status button -->
@@ -104,20 +105,14 @@
                   :icon="defaultTemplateIcon"
                   @click="setDefaultStatus"
                   flat>
-                  <q-tooltip class="bg-secondary text-body2 text-black"
-                    :offset="[10, 10]"
-                    :delay="300">Set as default template
-                  </q-tooltip>
+                  <BaseTooltip text="Set as default template"></BaseTooltip>
                 </q-btn>
                 <!-- Paste Template button -->
                 <q-btn class="cardButton"
                   icon="bi-clipboard-plus"
                   @click="pasteTemplate()"
                   flat>
-                  <q-tooltip class="bg-secondary text-body2 text-black"
-                    :offset="[10, 10]"
-                    :delay="300">Paste template
-                  </q-tooltip>
+                  <BaseTooltip text="Paste template"></BaseTooltip>
                 </q-btn>
                 <!--Delete Templates button -->
                 <div>
@@ -214,6 +209,7 @@ import baseDialog from "../ui/baseDialog.vue";
 import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
 import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
 import FolderCategoryTemplateStructure from "./DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
+import BaseTooltip from "../ui/BaseTooltip.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -222,18 +218,18 @@ export default {
     baseDialog,
     CategoryOrTagQuickMenu,
     DialogFolderManagement,
-    FolderCategoryTemplateStructure
+    FolderCategoryTemplateStructure,
+    BaseTooltip
   },
-  props: { templateList: Array, type: String },
+  props: { type: String, templateList: Array },
   data() {
     return {
-
+      currentTemplate: this.templateList[0],
       isDialogFolderManagementVisible: false,
       qMenuModel: false,
       expandIcon: "expand_more",
       icon: true,
       isHelpShown: false,
-      currentTemplate: this.templateList[0],
       maxNumberOfDisplayedChars: 1200,
       StyleTmplateTextScrollArea: {
         height: "270px",
@@ -257,6 +253,7 @@ export default {
     setDialogVisibilty(newValue) {
       this.isDialogFolderManagementVisible = newValue;
     },
+    // TODO: ???
     saveChanges() { },
     openDialogFolderManagement() {
       this.setDialogVisibilty(true);
@@ -319,7 +316,7 @@ export default {
       this.$emit("pasteTemplate", this.currentTemplate);
     },
     pasteTemplateAndClose() {
-      this.$emit("pasteTemplate", this.currentTemplate);
+      this.pasteTemplate();
       this.closeDialog();
     },
   },
@@ -418,17 +415,10 @@ export default {
     },
     isDialogVisible: {
       get() {
-        let nameOfDialog;
-        if (this.type === "DIARY") {
-          nameOfDialog = "dialogViewDiaryTemplates";
-        } else {
-          nameOfDialog = "dialogViewEventTemplates";
-        }
-
+        let nameOfDialog = "template-viewer";
+        let nameOfCurrentDialog = this.$store.state.data.dialogSettings.nameOfCurrentDialog.substring(0, 15);
         if (
-          this.$store.state.data.dialogSettings.isVisible === true &&
-          this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-          nameOfDialog
+          this.$store.state.data.dialogSettings.isVisible === true && nameOfCurrentDialog === nameOfDialog
         ) {
           return true;
         } else {

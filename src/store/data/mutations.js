@@ -303,13 +303,19 @@ export const addEntryToDiaryEntries = (state, entry) => {
   state.diaryEntries.push(entry);
 };
 
+export const setEditorText = (state, text) => {
+  state.editorText = text;
+};
+
 export const createTemplateAndAddToList = (state, payload) => {
+  console.log("editortext: ", state.editorText);
   let newTemplate = {
     id: uid(),
     name: payload.name,
-    text: payload.text,
+    text: state.editorText,
     isSetToDefault: false,
   };
+  console.log("inside mutation: ", payload.type);
   if (payload.type === "DIARY") {
     state.diaryTemplates.push(newTemplate);
   } else {
@@ -425,4 +431,12 @@ export const updateRadioButtonIsBeyondControl = (state, { value, id }) => {
     (method) => method.id === id
   );
   methodInEvent.radioButtonIsBeyondControl = value;
+};
+
+export const setPastedText = (state, text) => {
+  state.pastedText = text;
+};
+
+export const SetDialogTemplateViewerIsSetToDiaryMode = (state, bool) => {
+  state.dialogTemplateViewerIsSetToDiaryMode = bool;
 };

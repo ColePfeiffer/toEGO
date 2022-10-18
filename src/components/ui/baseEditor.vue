@@ -78,7 +78,7 @@
                       :key="template"
                       dense
                       clickable
-                      @click="pasteTemplate(template)">
+                      @click="pasteTemplateFromQuicklist(template)">
                       <q-item-section avatar>
                         <q-icon dense
                           size="xs"
@@ -103,9 +103,9 @@ import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
 export default {
   name: "baseEditor",
   emits: [
-    "openDialogCreateTemplate",
-    "openDialogViewTemplates",
-    "pasteTemplate",
+    "show-dialog-template-creator",
+    "show-dialog-template-viewer",
+    "paste-template-from-quicklist",
   ],
   props: {
     type: String,
@@ -211,13 +211,13 @@ export default {
       editorRef.focus();
     },
     openDialogCreateTemplate() {
-      this.$emit("openDialogCreateTemplate");
+      this.$emit("show-dialog-template-creator");
     },
     openDialogViewTemplates() {
-      this.$emit("openDialogViewTemplates");
+      this.$emit("show-dialog-template-viewer");
     },
-    pasteTemplate(template) {
-      this.$emit("pasteTemplate", template);
+    pasteTemplateFromQuicklist(template) {
+      this.$emit("paste-template-from-quicklist", template);
     },
   },
   computed: {
