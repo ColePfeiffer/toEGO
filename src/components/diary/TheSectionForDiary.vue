@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseSectionForDiary :heightForScrollArea="heightForScrollArea">
+    <BaseSectionForDiary>
       <template v-slot:nameOfTitle
         v-if="isDiaryVisible">
         DIARY ENTRY
@@ -135,7 +135,6 @@ export default {
     return {
       isCreatingNewDiaryEntry: false,
       changeData: {},
-      heightForScrollArea: 400,
     };
   },
   computed: {
