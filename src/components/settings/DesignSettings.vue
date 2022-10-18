@@ -48,18 +48,50 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed'},
-              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat '},
-              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center'},
-              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)'},
-              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)'},
-              {label: '', icon: 'bi-x', value: 'none'},
-              {label: '', icon: 'bi-image', value: 'custom'},
-            ]" />
+              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed', slot: 'lilac-dreams'},
+              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat ', slot: 'growing'},
+              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center', slot: 'jellyfish'},
+              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)', slot: 'night-sky'},
+              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)', slot: 'clouds'},
+              {label: '', icon: 'bi-x', value: 'none', slot: 'none'},
+              {label: '', icon: 'bi-image', value: 'custom', slot: 'custom'},
+            ]">
+            <template v-slot:lilac-dreams>
+              <BaseTooltip text="Lilac Dreams"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:growing>
+              <BaseTooltip text="Growing"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:jellyfish>
+              <BaseTooltip text="Jellyfish"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:night-sky>
+              <BaseTooltip text="Night Sky"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:clouds>
+              <BaseTooltip text="Clouds"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:none>
+              <BaseTooltip text="Use a color instead"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:custom>
+              <BaseTooltip text="Set a custom image"
+                :delay="0"></BaseTooltip>
+            </template>
+
+          </q-btn-toggle>
+
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'custom'"
+      <BaseItemForSettingsTabPanel class="q-pa-md"
+        v-if="backgroundImage === 'custom'"
         title="Use custom image"
         caption="Upload your image somewhere and put the direct link here."
         :isOnSameLine="false">
@@ -114,8 +146,11 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
+      <p v-if="isDarkModeTurnedOn"
+        class="q-pa-md text-justify">You can change the color of the event border here.
+      </p>
       <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-        title="Card Border: Left Color">
+        title="Left Color">
         <template v-slot:content>
           <q-input filled
             dense
@@ -138,7 +173,7 @@
       </BaseItemForSettingsTabPanel>
 
       <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-        title="Card Border: Right Color">
+        title="Right Color">
         <template v-slot:content>
           <q-input filled
             dense
@@ -173,6 +208,7 @@
           <q-input filled
             dense
             hide-bottom-space
+            color="secondary"
             v-model="secondaryColor"
             :rules="['anyColor']"
             class="color-picker-input ">
@@ -196,6 +232,7 @@
           <q-input filled
             dense
             hide-bottom-space
+            color="accent"
             v-model="accentColor"
             :rules="['anyColor']"
             class="color-picker-input ">
@@ -217,6 +254,7 @@
         <template v-slot:content>
           <q-input filled
             dense
+            color="info"
             hide-bottom-space
             v-model="accent2Color"
             :rules="['anyColor']"
@@ -241,6 +279,9 @@
     :isExpanded="isFontGroupExpanded"
     @toggle-expand-state="isFontGroupExpanded = !isFontGroupExpanded">
     <template v-slot:q-item-section-content>
+      <p class="q-pa-md text-justify">You can change the style and size of the font. Click on 'home' or 'diary' to see
+        the effects.
+      </p>
       <BaseItemForSettingsTabPanel title="Font-Style"
         caption="Change text style.">
         <template v-slot:content>
@@ -254,10 +295,23 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: '1', value: 'PressStart'},
-              {label: '2', value: 'Inter'},
-              {label: '3', value: 'Munro'},
-            ]" />
+              {label: '1', value: 'PressStart', slot: 'pressStart'},
+              {label: '2', value: 'Inter', slot: 'inter'},
+              {label: '3', value: 'Munro', slot: 'munro'},
+            ]">
+            <template v-slot:pressStart>
+              <BaseTooltip text="Pixelfont: Default"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:inter>
+              <BaseTooltip text="Clean: Inter"
+                :delay="0"></BaseTooltip>
+            </template>
+            <template v-slot:munro>
+              <BaseTooltip text="Pixelfont: Munro"
+                :delay="0"></BaseTooltip>
+            </template>
+          </q-btn-toggle>
 
         </template>
       </BaseItemForSettingsTabPanel>

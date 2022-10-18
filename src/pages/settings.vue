@@ -29,10 +29,6 @@
               label="Design" />
             <q-tab name="other"
               label="Page Layout" />
-            <q-tab name="account"
-              label="Other"
-              :disabled="true"
-              :disable="true" />
           </q-tabs>
 
           <q-tab-panels v-model="settingsTab"

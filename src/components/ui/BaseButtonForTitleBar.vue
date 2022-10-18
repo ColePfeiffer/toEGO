@@ -7,7 +7,9 @@
     unelevated
     color="transparent"
     :icon="icon"
-    @click="clickButton"></q-btn>
+    @click="clickButton">
+    <slot name="tooltip"></slot>
+  </q-btn>
 </template>
 
 <script>

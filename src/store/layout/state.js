@@ -42,17 +42,17 @@ export default function () {
     eventMode: "default",
     eventBackgroundColor: "#f5f5f5fc",
     eventBackgroundColorDark: "#000000ad",
-    eventInputBackgroundColor: "#f5f5f5fc",
+    eventInputBackgroundColor: "#f7f7f700",
     eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated
     // Diary
     diaryMode: "clear",
     diaryBackgroundColor: "#ffffff54",
     diaryBackgroundColorDark: "#000000ad",
     diaryCardBackgroundColor: "#f5f5f5ff",
-    isDiaryTitlebarShowingDay: false,
+    isDiaryTitlebarShowingDay: true,
+    isDiaryCountingDays: false,
     isDiarySubtitleStyleSetToAlternative: false,
     diarySubtitleColor: "#978fc7",
-    isDiaryCountingDays: true,
     //  Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",
@@ -64,10 +64,7 @@ export default function () {
     ],
     dialogWidth: "width: 300px;",
     headlineStyle: {
-      "text-decoration": "underline",
       color: "white",
-      "text-decoration-style": "solid",
-      "text-decoration-color": "var(--q-accent)",
       "text-shadow": "var(--q-info) 2px 2px 2px",
     },
     buttonFlatStyleTransparent: {

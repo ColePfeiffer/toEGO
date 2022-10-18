@@ -13,10 +13,18 @@
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
           icon="bi-plus-lg"
           @click-button="goToEventSetToCreationMode">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Add new event"
+              :delay="15"></BaseTooltip>
+          </template>
         </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
           :icon="getLetterIcon"
           @click-button="toggleLetterVisibility">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Message to myself"
+              :delay="15"></BaseTooltip>
+          </template>
         </BaseButtonForTitleBar>
       </div>
     </template>
@@ -40,7 +48,7 @@ import TheHeader from "src/components/home/TheHeader.vue";
 import TheEventViewer from "src/components/common/TheEventViewer.vue";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
-
+import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 
 export default {
   data() {
@@ -52,7 +60,8 @@ export default {
     TheHeader,
     TheEventViewer,
     BasePage,
-    BaseButtonForTitleBar
+    BaseButtonForTitleBar,
+    BaseTooltip
   },
   methods: {
     toggleLetterVisibility() {

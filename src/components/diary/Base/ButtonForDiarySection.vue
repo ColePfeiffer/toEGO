@@ -8,7 +8,8 @@
       @click="clickButton(label)"
       :style="style"
       size="10px">
-
+      <slot name="tooltip">
+      </slot>
     </q-btn>
   </div>
 </template>

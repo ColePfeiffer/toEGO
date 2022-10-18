@@ -74,6 +74,12 @@ export function setTheme({ commit }, theme) {
     commit("setHomeBackgroundColor", "#ebebeb59");
 
     commit("setEventMode", "default");
+
+    commit("setDiaryMode", "clear");
+    commit("setDiaryCardBackgroundColor", "#fafafaed");
+    commit("toggleIsDiaryTitleBarShowingDay", false);
+    commit("setDiarySubtitleStyleToAlternative", false);
+
     // .. add default settings too!!
   } else if (theme === "Clouds") {
     commit("changeBackgroundImage", "url(https://i.imgur.com/TPnaBOX.png)");
@@ -83,6 +89,7 @@ export function setTheme({ commit }, theme) {
 
     commit("setHomeMode", "retro");
     commit("setHomeBackgroundColor", "#ffffff82");
+
     commit("setEventMode", "default");
 
     commit("setDiaryMode", "clear");
@@ -125,9 +132,9 @@ export function setTheme({ commit }, theme) {
     commit("setDiaryBackgroundColorDark", "#000000ad");
     commit("setDiaryCardBackgroundColor", "#f5f5f5ff");
 
-    commit("toggleIsDiaryTitleBarShowingDay", false);
+    commit("toggleIsDiaryTitleBarShowingDay", true);
+    commit("toggleIsDiaryCountingDays", false);
     commit("setDiarySubtitleStyleToAlternative", false);
     commit("setDiarySubtitleColor", "#978fc7");
-    commit("toggleIsDiaryCountingDays", true);
   }
 }

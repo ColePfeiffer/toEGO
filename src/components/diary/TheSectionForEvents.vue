@@ -11,25 +11,40 @@
         icon="bi-eye"
         label="view"
         :style="$store.state.layout.sTextAccentShadow"
-        @click-button="expandMore"></ButtonForDiarySection>
+        @click-button="expandMore">
+        <template v-slot:tooltip>
+          <BaseTooltip text="Turn on Event-Viewing-Mode"
+            :delay="15"></BaseTooltip>
+        </template>
+      </ButtonForDiarySection>
       <!-- Button: Leave Viewing-Mode -->
       <ButtonForDiarySection v-else
         textColor="white"
         icon="bi-chevron-left"
         label="back"
         :style="$store.state.layout.sTextAccentShadow"
-        @click-button="expandLess"></ButtonForDiarySection>
+        @click-button="expandLess">
+        <template v-slot:tooltip>
+          <BaseTooltip text="Back"
+            :delay="15"></BaseTooltip>
+        </template>
+      </ButtonForDiarySection>
     </template>
 
     <template v-if="isShowingButtons"
       v-slot:rightSideButton>
       <!-- Button: Create new event -->
-      <ButtonForDiarySection textColor="accent"
+      <ButtonForDiarySection textColor="white"
         icon="bi-plus-lg"
         class="q-mr-xs"
         label="new "
         :style="$store.state.layout.sTextAccentShadow"
-        @click-button="goToEventSetToCreationMode" />
+        @click-button="goToEventSetToCreationMode">
+        <template v-slot:tooltip>
+          <BaseTooltip text="Add new event"
+            :delay="15"></BaseTooltip>
+        </template>
+      </ButtonForDiarySection>
     </template>
 
     <template v-slot:content-in-scroll-area>
@@ -49,12 +64,14 @@
 import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
 import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
 import TheEventViewer from '../common/TheEventViewer.vue';
+import BaseTooltip from "../ui/BaseTooltip.vue"
 export default {
   name: "TheSectionForEvents",
   components: {
     BaseSectionForDiary,
     ButtonForDiarySection,
-    TheEventViewer
+    TheEventViewer,
+    BaseTooltip
   },
   emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "set-visibility-of-diarysection"],
   props: {

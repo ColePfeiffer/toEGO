@@ -3,13 +3,24 @@
     <div class="q-px-none  settings-panel-group-title"
       :style="getStyleForTitle">
       <div class="row justify-between items-center">
-        <p class="col-10 q-my-none">
+        <p class="col-9 q-my-none">
           {{title}}
         </p>
-        <BaseButtonExpandable class="col-2"
+        <div v-if="isShowingNavigationButton && isExpanded"
+          class="col-1">
+          <q-btn flat
+            padding="5px"
+            size="10px"
+            icon="bi-asterisk"
+            @click="navigationButtonClicked">
+          </q-btn>
+        </div>
+        <BaseButtonExpandable class="col-1"
           :isEventExpanded="isExpanded"
           @expand="expandGroup">
         </BaseButtonExpandable>
+
+
       </div>
     </div>
     <div class="q-mb-xl"
@@ -29,10 +40,14 @@
 import BaseButtonExpandable from '../ui/BaseButtonExpandable.vue';
 export default {
   name: "BaseSettingsTabPanelGroup",
-  emits: ["toggle-expand-state"],
+  emits: ["toggle-expand-state", "navigation-button-clicked"],
   props: {
     title: String,
     isExpanded: {
+      type: Boolean,
+      default: false
+    },
+    isShowingNavigationButton: {
       type: Boolean,
       default: false
     }
@@ -44,6 +59,9 @@ export default {
   methods: {
     expandGroup() {
       this.$emit("toggle-expand-state");
+    },
+    navigationButtonClicked() {
+      this.$emit("navigation-button-clicked");
     }
   },
   computed: {

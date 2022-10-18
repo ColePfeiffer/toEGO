@@ -13,6 +13,15 @@
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow"
           :icon="getIconForEditorButton"
           @click-button="toggleEditorView">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Toggle Editor-Mode"
+              :delay="15"></BaseTooltip>
+          </template>
+        </BaseButtonForTitleBar>
+        <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+          icon="bi-x"
+          size="10px"
+          @click-button="leavePage">
         </BaseButtonForTitleBar>
       </div>
     </template>
@@ -139,6 +148,7 @@ import BaseEditor from "src/components/ui/BaseEditor.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
 import BaseInput from "src/components/ui/BaseInput.vue";
+import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 
 export default {
   components: {
@@ -147,6 +157,7 @@ export default {
     BaseButtonForTitleBar,
     BaseButtonForDialogFooter,
     BaseInput,
+    BaseTooltip
   },
   data() {
     return {

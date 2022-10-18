@@ -1,13 +1,20 @@
 <template>
-  <BaseSettingsTabPanelGroup title="Page: Home"
+  <p class="info-paragraph q-pa-md text-justify"
+    :style="$store.getters['layout/getNonDefaultFont']">You can change the look of all main pages - <span
+      style="font-style: italic">home</span>, <span style="font-style: italic">diary</span> and
+    <span style="font-style: italic">new event</span> - here. If you want to reset everything to default, just pick a
+    theme via the design settings.
+  </p>
+  <BaseSettingsTabPanelGroup title="Home"
     :isExpanded="isHomeGroupExpanded"
     @toggle-expand-state="isHomeGroupExpanded = !isHomeGroupExpanded">
     <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Layout">
+      <BaseItemForSettingsTabPanel :title="getTitleForHome"
+        :isOnSameLine="false">
         <template v-slot:content>
           <q-btn-toggle v-model="homeMode"
             dense
-            class="my-custom-toggle"
+            class="my-custom-toggle q-mx-md"
             color="transparent"
             square
             unelevated
@@ -16,9 +23,9 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: 'retro', value: 'retro'},
-              {label: 'border', value: 'border'},
-              {label: 'clear', value: 'clear'},
+              {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
+              {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
+              {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
             ]" />
 
         </template>
@@ -52,11 +59,13 @@
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Page: Event"
+  <BaseSettingsTabPanelGroup title="Event"
+    :isShowingNavigationButton="true"
+    @navigation-button-clicked="goToEventPage"
     :isExpanded="isEventGroupExpanded"
     @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
     <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Layout"
+      <BaseItemForSettingsTabPanel :title="getTitleForEvent"
         :isOnSameLine="false">
         <template v-slot:content>
           <q-btn-toggle v-model="eventMode"
@@ -70,10 +79,10 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: 'default', value: 'default'},
-              {label: 'retro', value: 'retro'},
-              {label: 'border', value: 'border'},
-              {label: 'clear', value: 'clear'},
+               {label: '', icon: 'bi-flower1', padding: '10px', value: 'default'},
+              {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
+              {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
+              {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
             ]" />
 
         </template>
@@ -136,11 +145,11 @@
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Page: Diary"
+  <BaseSettingsTabPanelGroup title="Diary"
     :isExpanded="isDiaryGroupExpanded"
     @toggle-expand-state="isDiaryGroupExpanded = !isDiaryGroupExpanded">
     <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Layout">
+      <BaseItemForSettingsTabPanel :title="getTitleForDiary">
         <template v-slot:content>
           <q-btn-toggle v-model="diaryMode"
             dense
@@ -153,14 +162,13 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: 'clear', value: 'clear'},
-              {label: 'retro', value: 'retro'},
-              {label: 'border', value: 'border'},
+                            {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
+                            {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
+                            {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
             ]" />
 
         </template>
       </BaseItemForSettingsTabPanel>
-
       <BaseItemForSettingsTabPanel v-if="diaryMode != 'clear'"
         title="Background"
         caption="Set color and opacity.">
@@ -185,7 +193,6 @@
 
         </template>
       </BaseItemForSettingsTabPanel>
-
       <BaseItemForSettingsTabPanel title="Card Background"
         caption="Set color and opacity.">
         <template v-slot:content>
@@ -210,15 +217,27 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Change titlebar style"
-        caption="Days will be shown in the titlebar.">
+      <q-separator color="secondary"></q-separator>
+      <p class="q-pa-md text-justify">The following options change the way the date is displayed and affects the
+        titlebar.
+      </p>
+      <BaseItemForSettingsTabPanel title="Titlebar is showing date">
         <template v-slot:content>
           <q-toggle color="accent"
             v-model="isDiaryTitlebarShowingDay" />
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Date: Change Border"
+      <BaseItemForSettingsTabPanel title="Diary is counting days"
+        caption="">
+        <template v-slot:content>
+          <q-toggle color="accent"
+            v-model="isDiaryCountingDays" />
+        </template>
+      </BaseItemForSettingsTabPanel>
+
+      <BaseItemForSettingsTabPanel v-if="!(isDiaryTitlebarShowingDay && !isDiaryCountingDays) "
+        title="Day Counter is using alternative style"
         caption="Useful for bright or cluttered background images.">
         <template v-slot:content>
           <q-toggle color="accent"
@@ -249,13 +268,7 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Date: Counting Days"
-        caption="If turned off, diary will only show the date.">
-        <template v-slot:content>
-          <q-toggle color="accent"
-            v-model="isDiaryCountingDays" />
-        </template>
-      </BaseItemForSettingsTabPanel>
+
 
       <BaseItemForSettingsTabPanel title="Show expand button"
         caption="Show the button to expand individual events on the diary page.">
@@ -276,9 +289,9 @@ export default {
   components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup },
   data() {
     return {
-      isHomeGroupExpanded: true,
-      isEventGroupExpanded: true,
-      isDiaryGroupExpanded: true,
+      isHomeGroupExpanded: false,
+      isEventGroupExpanded: false,
+      isDiaryGroupExpanded: false,
       homeMode: this.$store.state.layout.homeMode,
       eventMode: this.$store.state.layout.eventMode,
       eventInputBackgroundColor: this.$store.state.layout.eventInputBackgroundColor,
@@ -290,6 +303,12 @@ export default {
       diarySubtitleColor: this.$store.state.layout.diarySubtitleColor,
       isDiarySubtitleStyleSetToAlternative: this.$store.state.layout.isDiarySubtitleStyleSetToAlternative,
     };
+  },
+  methods: {
+    goToEventPage() {
+      this.$store.commit("data/setModeForNewEvent", "CREATE");
+      this.$router.push("Event");
+    }
   },
   watch: {
     homeMode(mode) {
@@ -330,6 +349,37 @@ export default {
 
   },
   computed: {
+    getTitleForHome() {
+      if (this.homeMode === 'retro') {
+        return "Layout: Retro";
+      } else if (this.homeMode === 'border') {
+        return "Layout: Border";
+      } else {
+        return "Layout: Transparent";
+      }
+    },
+    getTitleForEvent() {
+      if (this.eventMode === 'default') {
+        return "Layout: Default";
+      } else if (this.eventMode === 'retro') {
+        return "Layout: Retro";
+      }
+      else if (this.eventMode === 'border') {
+        return "Layout: Border";
+      } else {
+        return "Layout: Transparent";
+      }
+    },
+    getTitleForDiary() {
+      if (this.diaryMode === 'retro') {
+        return "Layout: Retro";
+      }
+      else if (this.diaryMode === 'border') {
+        return "Layout: Border";
+      } else {
+        return "Layout: Transparent";
+      }
+    },
     eventBackgroundColor: {
       get() {
         return this.$store.getters['layout/getEventBackgroundColor'];
@@ -375,5 +425,9 @@ export default {
   border: 1px solid lightgrey;
   border-radius: 0px;
   border-style: solid;
+}
+
+.info-paragraph {
+  background-color: whitesmoke;
 }
 </style>

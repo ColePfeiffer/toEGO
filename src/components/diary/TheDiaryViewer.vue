@@ -30,7 +30,7 @@
               <q-btn flat
                 dense
                 color="accent"
-                icon="bi-plus"
+                icon="bi-journal-plus"
                 @click="createDiaryEntry" />
             </template>
           </BaseCard>

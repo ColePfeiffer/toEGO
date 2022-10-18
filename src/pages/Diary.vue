@@ -12,14 +12,24 @@
             class="no-box-shadow "
             icon="bi-chevron-left"
             size="12px"
-            @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
+            @click-button="subtractFromDate(1)">
+            <template v-slot:tooltip>
+              <BaseTooltip text="Go back"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
         </div>
         <div class="col-1 text-left">
           <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
             class="q-pl-xs q-mr-xs no-box-shadow col-1"
             icon="bi-dot"
             size="12px"
-            @click-button="setDateToToday()"></BaseButtonForTitleBar>
+            @click-button="setDateToToday()">
+            <template v-slot:tooltip>
+              <BaseTooltip text="Go to today"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
         </div>
         <!-- today, yesterday, x days ago, x days ahead... -->
         <div class="col-8 text-white">
@@ -51,14 +61,24 @@
             class="q-pl-none q-mr-xs no-box-shadow"
             icon="bi-dot"
             size="12px"
-            @click-button="setDateToToday()" />
+            @click-button="setDateToToday()">
+            <template v-slot:tooltip>
+              <BaseTooltip text="Go to today"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
         </div>
         <div class="col-1 text-right">
           <BaseButtonForTitleBar v-if="viewingMode === 'view'"
             class="q-pl-none q-mr-xs no-box-shadow"
             icon="bi-chevron-right"
             size="12px"
-            @click-button="addToDate(1)" />
+            @click-button="addToDate(1)">
+            <template v-slot:tooltip>
+              <BaseTooltip text="Go forward"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
 
         </div>
       </div>
@@ -103,6 +123,7 @@
                 </div>
               </q-date>
             </q-popup-proxy>
+
           </q-btn>
 
           <BaseButtonForTitleBar v-if="viewingMode === 'view'"
@@ -202,6 +223,7 @@ import { useQuasar } from "quasar";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseCard from "src/components/ui/BaseCard.vue";
+import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 
 export default {
   name: "diary",
@@ -210,7 +232,8 @@ export default {
     TheSectionForDiary,
     BasePage,
     BaseButtonForTitleBar,
-    BaseCard
+    BaseCard,
+    BaseTooltip
   },
   data() {
     return {

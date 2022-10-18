@@ -13,35 +13,52 @@
           icon="bi-chevron-left"
           label="back"
           :style="$store.state.layout.sTextAccentShadow"
-          @click-button="goBack"></ButtonForDiarySection>
+          @click-button="goBack">
+        </ButtonForDiarySection>
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
           icon="bi-eye"
           label="view"
           :style="$store.state.layout.sTextAccentShadow"
-          @click-button="openEntryInFullscreen"></ButtonForDiarySection>
+          @click-button="openEntryInFullscreen">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Turn Viewing-Mode on"
+              :delay="15"></BaseTooltip>
+          </template>
+        </ButtonForDiarySection>
       </template>
 
       <template v-if="isDiaryVisible"
         v-slot:rightSideButton>
         <!-- Button: Save changes to diaryentry -->
         <ButtonForDiarySection v-if="modeIsSetToEdit"
-          textColor="accent"
+          textColor="white"
           class="q-mr-xs"
           icon="fas fa-save"
           label="save"
           :style="$store.state.layout.sTextAccentShadow"
-          @click-button="saveChanges" />
+          @click-button="saveChanges">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Save"
+              :delay="15"></BaseTooltip>
+          </template>
+        </ButtonForDiarySection>
         <!-- Button: Edit diaryentry -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
-          textColor="accent"
+          textColor="white"
           icon="bi-pencil-square"
           class="q-mr-xs"
           label="save"
           size="9.5px"
           :style="$store.state.layout.sTextAccentShadow"
-          @click-button="editDiaryEntry" />
+          @click-button="editDiaryEntry">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Edit diary text"
+              :delay="15"></BaseTooltip>
+          </template>
+        </ButtonForDiarySection>
+
       </template>
 
       <template v-slot:content>
@@ -76,6 +93,7 @@ import BaseSectionForDiary from './Base/BaseSectionForDiary.vue';
 import ButtonForDiarySection from './Base/ButtonForDiarySection.vue';
 import TheDiaryViewer from './TheDiaryViewer.vue';
 import BaseEditor from '../ui/BaseEditor.vue';
+import BaseTooltip from '../ui/BaseTooltip.vue';
 
 export default {
   name: "TheSectionForEvents",
@@ -83,7 +101,8 @@ export default {
     BaseSectionForDiary,
     ButtonForDiarySection,
     TheDiaryViewer,
-    BaseEditor
+    BaseEditor,
+    BaseTooltip
   },
   emits: ["change-view", "enter-fullscreen-mode", "save-changes", "go-to-event-set-to-creation-mode"],
   props: {
