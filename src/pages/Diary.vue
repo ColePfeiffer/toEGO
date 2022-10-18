@@ -162,55 +162,82 @@
       </div>
 
       <div class="q-px-sm">
-        <!-- EVENT SECTION -->
-        <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-          :backgroundColor="getCardBackgroundColor"
-          :diaryEntry="getDiaryEntry"
-          :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
-          :isDiarySectionVisible="isDiarySectionVisible"
-          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-          @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-          @set-visibility-of-diarysection="setVisibilityOfDiarySection">
 
-        </TheSectionForEvents>
-        <!-- DIARY SECTION -->
-        <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
-          :backgroundColor="getCardBackgroundColor"
-          :class="getDiarySectionClass"
-          :diaryEntry="getDiaryEntry"
-          :viewingMode="viewingMode"
-          @change-view="changeViewMode"
-          @save-changes="saveChangesToEntry"
-          @enter-fullscreen-mode="enterFullscreenMode"
-          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
-
-        </TheSectionForDiary>
-      </div>
-
-      <!-- DIARY SECTION FULLSCREEN -->
-      <div v-if="isDiaryEntryShownInFullscreen"
-        class="q-pa-md">
-        <div class="row justify-end q-pb-md">
-          <div class="col-4 smallText text-right"></div>
-          <q-btn class="smallText text-right"
-            flat
-            dense
-            icon="bi-chevron-left"
-            label="back"
-            color="white"
-            size="10px"
-            @click="exitFullscreen"
-            :style="$store.state.layout.sTextAccentShadow"></q-btn>
-        </div>
-        <BaseCard :backgroundColor="getCardBackgroundColor"
-          class="text-justify">
-          <template v-slot:content>
-            <q-item>
-              <q-item-section v-html="editorHTMLContent"> </q-item-section>
-            </q-item>
+        <q-splitter v-model="splitterModel"
+          horizontal
+          :limits="[1, 100]"
+          color="transparent"
+          :style="getStyleForSplitter"
+          :separator-style="getStyleForSplitterSeparator">
+          <template v-slot:before>
+            <div>
+              <!-- EVENT SECTION -->
+              <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
+                :backgroundColor="getCardBackgroundColor"
+                :diaryEntry="getDiaryEntry"
+                :splitterModel="splitterModel"
+                :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
+                :isDiarySectionVisible="isDiarySectionVisible"
+                @hide-events="hideEvents"
+                @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+                @set-visibility-of-diarysection="setVisibilityOfDiarySection">
+              </TheSectionForEvents>
+            </div>
           </template>
-        </BaseCard>
+          <template v-slot:separator>
+            <q-avatar v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
+              color="primary"
+              text-color="white"
+              size="40px"
+              icon="drag_indicator" />
+          </template>
+          <template v-slot:after>
+
+            <!-- DIARY SECTION -->
+            <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
+              :backgroundColor="getCardBackgroundColor"
+              :class="getDiarySectionClass"
+              :diaryEntry="getDiaryEntry"
+              :viewingMode="viewingMode"
+              @change-view="changeViewMode"
+              @save-changes="saveChangesToEntry"
+              @enter-fullscreen-mode="enterFullscreenMode"
+              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
+            </TheSectionForDiary>
+
+            <!-- DIARY SECTION FULLSCREEN -->
+            <div v-if="isDiaryEntryShownInFullscreen"
+              class="q-pa-md">
+              <div class="row justify-end q-pb-md">
+                <div class="col-4 smallText text-right"></div>
+                <q-btn class="smallText text-right"
+                  flat
+                  dense
+                  icon="bi-chevron-left"
+                  label="back"
+                  color="white"
+                  size="10px"
+                  @click="exitFullscreen"
+                  :style="$store.state.layout.sTextAccentShadow"></q-btn>
+              </div>
+              <BaseCard :backgroundColor="getCardBackgroundColor"
+                class="text-justify">
+                <template v-slot:content>
+                  <q-item>
+                    <q-item-section v-html="editorHTMLContent"> </q-item-section>
+                  </q-item>
+                </template>
+              </BaseCard>
+            </div>
+          </template>
+
+        </q-splitter>
+
+
+
       </div>
+
     </template>
   </BasePage>
 </template>
@@ -243,10 +270,28 @@ export default {
       editorHTMLContent: "",
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
-
+      splitterModel: 1,
+      splitterModelDefaultHeight: 7,
     };
   },
   watch: {
+    getStyleForSplitterSeparator(style) {
+      if (style["display"] === "none") {
+        this.splitterModel = 1;
+      } else {
+        this.splitterModel = this.splitterModelDefaultHeight;
+      };
+    },
+    splitterModel(procent) {
+      console.log(procent);
+    },
+    areEventsShownInFullscreen(areEventsShownInFullscreen) {
+      if (areEventsShownInFullscreen) {
+        this.splitterModel = 100;
+      } else {
+        this.splitterModel = this.splitterModelDefaultHeight;
+      }
+    },
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
     getDate(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
@@ -268,6 +313,25 @@ export default {
     },
   },
   computed: {
+    getStyleForSplitter() {
+      let style = {};
+      style["height"] = "85vh";
+
+      return style;
+    },
+    getStyleForSplitterSeparator() {
+      let style = {};
+      if (this.getDiaryEntry != undefined && !this.isDiaryEntryShownInFullscreen) {
+        if (this.viewingMode === 'edit') {
+          style["display"] = "none";
+        } else {
+          style["color"] = "red";
+        }
+      } else {
+        style["display"] = "none";
+      }
+      return style;
+    },
     getCardBackgroundColor() {
       return this.$store.state.layout.diaryCardBackgroundColor;
     },
@@ -414,6 +478,10 @@ export default {
     },
   },
   methods: {
+    hideEvents() {
+      console.log("hide events maaan");
+      this.splitterModel = 7;
+    },
     setVisibilityOfDiarySection(newValue) {
       this.isDiarySectionVisible = newValue;
     },

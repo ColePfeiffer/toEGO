@@ -3,11 +3,12 @@
     <BaseSectionForDiary :heightForScrollArea="heightForScrollArea">
       <template v-slot:nameOfTitle
         v-if="isDiaryVisible">
-        DIARY
+        DIARY ENTRY
       </template>
       <!-- Button: Go back (change mode to 'view') -->
       <template v-if="isDiaryVisible"
         v-slot:leftSideButton>
+
         <ButtonForDiarySection v-if="modeIsSetToEdit"
           textColor="white"
           icon="bi-chevron-left"
@@ -18,19 +19,21 @@
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
-          icon="bi-eye"
+          icon="bi-eye-fill"
           label="view"
           :style="$store.state.layout.sTextAccentShadow"
           @click-button="openEntryInFullscreen">
           <template v-slot:tooltip>
             <BaseTooltip text="Turn Viewing-Mode on"
-              :delay="15"></BaseTooltip>
+              :delay="
+              15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
       </template>
 
       <template v-if="isDiaryVisible"
         v-slot:rightSideButton>
+
         <!-- Button: Save changes to diaryentry -->
         <ButtonForDiarySection v-if="modeIsSetToEdit"
           textColor="white"
@@ -58,6 +61,7 @@
               :delay="15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
+
 
       </template>
 
