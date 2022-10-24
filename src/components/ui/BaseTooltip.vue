@@ -21,7 +21,6 @@ export default {
         getTextColor() {
             let style = {};
             style["color"] = this.$store.getters['layout/getTextColorOnSecondary'];
-            console.log(style)
             return style;
         }
     },

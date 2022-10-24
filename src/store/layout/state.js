@@ -27,6 +27,7 @@ export default function () {
     white: "#ffffff",
     lightgrey: "#d3d3d3",
     darkgrey: "#989898",
+    theme: "default",
     //  Opacity
     lowOpacity: "30",
     mediumOpacity: "a6",

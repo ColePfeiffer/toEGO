@@ -18,7 +18,7 @@
               toggle-text-color="white"
               no-caps
               :options="[
-                { label: '1', value: 'default', slot: 'lilac-dreams' },
+                { label: '1', value: 'Lilac Dreams', slot: 'lilac-dreams' },
                 { label: '2', value: 'Night Sky', slot: 'night-sky' },
                 { label: '3', value: 'Clouds', slot: 'clouds' },
               ]">
@@ -382,13 +382,12 @@ export default {
       backgroundColor: this.$store.state.layout.backgroundColor,
       isUsingFont: this.$store.state.layout.defaultFont,
       fontsize: 12,
-      theme: this.$store.state.layout.theme,
       customBackgroundImage: "",
+      theme: 'Lilac Dreams',
       isShowingBorderOptions: false,
     };
   },
   watch: {
-
     isDarkModeTurnedOn() {
       this.setDarkMode();
     },
@@ -398,6 +397,16 @@ export default {
     isUsingFont(newValue) {
       this.$store.commit("layout/setFont", newValue);
     },
+    storedTheme(newTheme) {
+      this.theme = newTheme;
+    },
+    theme(value) {
+      this.$store.dispatch(
+        "layout/setTheme",
+        value
+      );
+    },
+
     backgroundImageURL(newURL) {
       this.backgroundImage = newURL;
     },
@@ -407,15 +416,11 @@ export default {
         this.$store.commit("layout/changeBackgroundImage", imageURL);
       }
     },
+
     backgroundColor(color) {
       this.$store.commit("layout/changeBackgroundColor", color);
     },
-    theme(value) {
-      this.$store.dispatch(
-        "layout/setTheme",
-        value
-      );
-    }
+
   },
   methods: {
     ...mapMutations(["./store/data/showModal", "store/data/showModal"]),
@@ -439,6 +444,9 @@ export default {
         "font-size": this.fontsize + "px",
       };
     },
+    storedTheme() {
+      return this.$store.state.layout.theme;
+    },
     backgroundImageURL() {
       return this.$store.state.layout.backgroundImageURL;
     },
@@ -458,6 +466,7 @@ export default {
         this.$store.commit("layout/setAccent", value);
       },
     },
+
     accent2Color: {
       get() {
         return this.$store.state.layout.accent2;
