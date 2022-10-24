@@ -99,9 +99,7 @@ export default function () {
     ],
 
     newEventIsInCreationMode: true,
-    isShowingExpandButtonOfEventCardsOnDiaryPage: false,
     eventsOnDiaryPageAreExpanded: false,
-
     lastSelectedDate: new Date(),
     modalVisible: false,
     modalComponent: "",

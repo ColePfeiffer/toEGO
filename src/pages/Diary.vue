@@ -20,7 +20,7 @@
           </BaseButtonForTitleBar>
         </div>
         <div class="col-1 text-left">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday < 0"
             class="q-pl-xs q-mr-xs no-box-shadow col-1"
             icon="bi-dot"
             size="12px"
@@ -57,7 +57,7 @@
         </div>
         <!-- go forward button -->
         <div class="col-1 text-right">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday > 0"
             class="q-pl-none q-mr-xs no-box-shadow"
             icon="bi-dot"
             size="12px"
@@ -157,7 +157,7 @@
         <!-- today, yesterday, x days ago, x days ahead... -->
         <div class="col-12 q-pt-xs ">
           <div :style="getSubtitleStyle">
-            {{getSubtitle}}</div>
+            {{ getSubtitle }}</div>
         </div>
       </div>
 
@@ -176,7 +176,6 @@
                 :backgroundColor="getCardBackgroundColor"
                 :diaryEntry="getDiaryEntry"
                 :splitterModel="splitterModel"
-                :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
                 :isDiarySectionVisible="isDiarySectionVisible"
                 @hide-events="hideEvents"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
@@ -303,10 +302,16 @@ export default {
         this.getDiaryEntry != undefined &&
         this.getDiaryEntry.editor === ""
       ) {
+        console.log("events exist");
         this.editorHTMLContent =
           "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
         // if neither exists
       } else {
+        console.log("nothing exists");
+        if (this.getCountOfDaysAwayFromToday === -0) {
+          console.log("ITS TODAY MATE");
+          //this.viewingMode = 'edit';
+        }
         this.editorHTMLContent =
           "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
       }
@@ -391,10 +396,6 @@ export default {
     },
     diaryMode() {
       return this.$store.state.layout.diaryMode;
-    },
-    isShowingExpandButtonOfEventCard() {
-      return this.$store.state.data
-        .isShowingExpandButtonOfEventCardsOnDiaryPage;
     },
     areEventsShownInFullscreen() {
       return this.$store.state.data.eventsOnDiaryPageAreExpanded;

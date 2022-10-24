@@ -34,7 +34,7 @@
           size="12px"
           :style="$store.state.data.sTextAccentShadow"
           @click="subtractFromDate(1)"></q-btn>
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday<0"
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday < 0"
           class="text-white q-pl-none"
           size="12px"
           flat
@@ -50,7 +50,7 @@
       </div>
       <!-- go forward button -->
       <div class="col-3 text-right">
-        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday>0"
+        <q-btn v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday > 0"
           class="text-white q-pr-none"
           size="12px"
           flat
@@ -82,10 +82,6 @@ export default {
     isDiarySectionVisible: Boolean,
     diaryEntry: Object,
     showMessageIfThereAreNoEvents: {
-      type: Boolean,
-      default: true,
-    },
-    isShowingExpandButtonOfEventCard: {
       type: Boolean,
       default: true,
     },

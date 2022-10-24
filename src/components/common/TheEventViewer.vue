@@ -37,7 +37,6 @@
       <EventCard :style="styleForEventCard"
         :backgroundColor="backgroundColor"
         :eventData="event"
-        :isShowingExpandButtonOfEventCard="isShowingExpandButtonOfEventCard"
         @changeEventData="changeEventData"
         @editEvent="goToEventSetToEditingMode"
         @deleteEvent="showConfirmDeleteDialog" />
@@ -61,10 +60,6 @@ export default {
   props: {
     diaryEntry: Object,
     showMessageIfThereAreNoEvents: {
-      type: Boolean,
-      default: true,
-    },
-    isShowingExpandButtonOfEventCard: {
       type: Boolean,
       default: true,
     },

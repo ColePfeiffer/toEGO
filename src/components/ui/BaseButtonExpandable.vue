@@ -1,6 +1,7 @@
 <template>
   <q-btn flat
     dense
+    size="12px"
     :icon="getIcon"
     color="accent"
     @click="expand"></q-btn>

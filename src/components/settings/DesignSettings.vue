@@ -1,336 +1,366 @@
 <template>
-  <BaseSettingsTabPanelGroup title="General"
-    :isExpanded="isGeneralGroupExpanded"
-    @toggle-expand-state="isGeneralGroupExpanded = !isGeneralGroupExpanded">
-    <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Themes">
-        <template v-slot:content>
-          <q-btn-toggle v-model="theme"
-            class="my-custom-toggle"
-            color="transparent"
-            square
-            unelevated
-            toggle-color="accent"
-            text-color="lightgrey"
-            toggle-text-color="white"
-            no-caps
-            :options="[
-              {label: '1', value: 'default', slot: 'lilac-dreams'},
-              {label: '2', value: 'Night Sky', slot: 'night-sky'},
-              {label: '3', value: 'Clouds', slot: 'clouds'},
-            ]">
-            <template v-slot:lilac-dreams>
-              <BaseTooltip text="Lilac Dreams"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:night-sky>
-              <BaseTooltip text="Night Sky"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:clouds>
-              <BaseTooltip text="Clouds"
-                :delay="0"></BaseTooltip>
-            </template>
-          </q-btn-toggle>
-        </template>
-      </BaseItemForSettingsTabPanel>
+  <div class="q-pa-sm">
 
-      <BaseItemForSettingsTabPanel title="Background-Image"
-        :isOnSameLine="false">
-        <template v-slot:content>
-          <q-btn-toggle v-model="backgroundImage"
-            class="my-custom-toggle"
-            color="transparent"
-            square
-            unelevated
-            toggle-color="accent"
-            text-color="lightgrey"
-            toggle-text-color="white"
-            no-caps
-            :options="[
-              {label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed', slot: 'lilac-dreams'},
-              {label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat ', slot: 'growing'},
-              {label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center', slot: 'jellyfish'},
-              {label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)', slot: 'night-sky'},
-              {label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)', slot: 'clouds'},
-              {label: '', icon: 'bi-x', value: 'none', slot: 'none'},
-              {label: '', icon: 'bi-image', value: 'custom', slot: 'custom'},
-            ]">
-            <template v-slot:lilac-dreams>
-              <BaseTooltip text="Lilac Dreams"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:growing>
-              <BaseTooltip text="Growing"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:jellyfish>
-              <BaseTooltip text="Jellyfish"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:night-sky>
-              <BaseTooltip text="Night Sky"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:clouds>
-              <BaseTooltip text="Clouds"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:none>
-              <BaseTooltip text="Use a color instead"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:custom>
-              <BaseTooltip text="Set a custom image"
-                :delay="0"></BaseTooltip>
-            </template>
 
-          </q-btn-toggle>
+    <BaseSettingsTabPanelGroup title="General"
+      :isExpanded="isGeneralGroupExpanded"
+      @toggle-expand-state="isGeneralGroupExpanded = !isGeneralGroupExpanded">
+      <template v-slot:q-item-section-content>
+        <BaseItemForSettingsTabPanel title="Themes">
+          <template v-slot:content>
+            <q-btn-toggle v-model="theme"
+              class="my-custom-toggle"
+              color="transparent"
+              square
+              unelevated
+              toggle-color="accent"
+              text-color="lightgrey"
+              toggle-text-color="white"
+              no-caps
+              :options="[
+                { label: '1', value: 'default', slot: 'lilac-dreams' },
+                { label: '2', value: 'Night Sky', slot: 'night-sky' },
+                { label: '3', value: 'Clouds', slot: 'clouds' },
+              ]">
+              <template v-slot:lilac-dreams>
+                <BaseTooltip text="Lilac Dreams"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:night-sky>
+                <BaseTooltip text="Night Sky"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:clouds>
+                <BaseTooltip text="Clouds"
+                  :delay="0"></BaseTooltip>
+              </template>
+            </q-btn-toggle>
+          </template>
+        </BaseItemForSettingsTabPanel>
 
-        </template>
-      </BaseItemForSettingsTabPanel>
+        <BaseItemForSettingsTabPanel title="Background-Image"
+          :isOnSameLine="false">
+          <template v-slot:content>
+            <q-btn-toggle v-model="backgroundImage"
+              class="my-custom-toggle"
+              color="transparent"
+              square
+              padding="sm"
+              dense
+              unelevated
+              toggle-color="accent"
+              text-color="lightgrey"
+              toggle-text-color="white"
+              no-caps
+              :options="[
+                { label: '1', value: 'url(/images/background_wide2.jpg) no-repeat center center fixed', slot: 'lilac-dreams' },
+                { label: '2', value: 'url(https://i.imgur.com/RUstJjN.png) repeat ', slot: 'growing' },
+                { label: '3', value: 'url(https://i.imgur.com/xltwj7g.gif) repeat  center', slot: 'jellyfish' },
+                { label: '4', value: 'url(https://i.imgur.com/Dryps1y.png)', slot: 'night-sky' },
+                { label: '5', value: 'url(https://i.imgur.com/TPnaBOX.png)', slot: 'clouds' },
+                { label: '', icon: 'bi-x', value: 'none', slot: 'none' },
+                { label: '', icon: 'bi-image', value: 'custom', slot: 'custom' },
+              ]">
+              <template v-slot:lilac-dreams>
+                <BaseTooltip text="Lilac Dreams"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:growing>
+                <BaseTooltip text="Growing"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:jellyfish>
+                <BaseTooltip text="Jellyfish"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:night-sky>
+                <BaseTooltip text="Night Sky"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:clouds>
+                <BaseTooltip text="Clouds"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:none>
+                <BaseTooltip text="Use a color instead"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:custom>
+                <BaseTooltip text="Set a custom image"
+                  :delay="0"></BaseTooltip>
+              </template>
 
-      <BaseItemForSettingsTabPanel class="q-pa-md"
-        v-if="backgroundImage === 'custom'"
-        title="Use custom image"
-        caption="Upload your image somewhere and put the direct link here."
-        :isOnSameLine="false">
-        <template v-slot:content>
-          <q-input v-model="customBackgroundImage"
-            type="url"
-            hint="E.g.: https://someSite.myImage.png"
-            filled
-            bottom-slots>
-            <template v-slot:before>
-              <q-icon name="bi-image" />
-            </template>
+            </q-btn-toggle>
 
-            <template v-slot:append>
-              <q-btn round
+          </template>
+        </BaseItemForSettingsTabPanel>
+
+        <BaseItemForSettingsTabPanel class="q-pa-md"
+          v-if="backgroundImage === 'custom'"
+          title="Use custom image"
+          caption="Upload your image somewhere and put the direct link here."
+          :isOnSameLine="false">
+          <template v-slot:content>
+            <q-input v-model="customBackgroundImage"
+              type="url"
+              hint="E.g.: https://someSite.myImage.png"
+              filled
+              bottom-slots>
+              <template v-slot:before>
+                <q-icon name="bi-image" />
+              </template>
+
+              <template v-slot:append>
+                <q-btn round
+                  dense
+                  flat
+                  icon="add"
+                  @click="useCustomImage" />
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
+
+        <BaseItemForSettingsTabPanel v-if="backgroundImage === 'none'"
+          title="Color: Background">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              v-model="backgroundColor"
+              :rules="['anyColor']"
+              class="color-picker-input ">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="backgroundColor" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
+        <BaseItemForSettingsTabPanel title="Dark-Mode">
+          <template v-slot:content>
+            <q-toggle color="accent"
+              v-model="isDarkModeTurnedOn"
+              val="battery" />
+          </template>
+        </BaseItemForSettingsTabPanel>
+
+        <div v-if="isDarkModeTurnedOn"
+          class="row justify-between items-center q-pa-md">
+          <div class="col-10">
+            Borders around cards
+          </div>
+          <BaseButtonExpandable class="col-1"
+            :isEventExpanded="isShowingBorderOptions"
+            @expand="isShowingBorderOptions = !isShowingBorderOptions">
+          </BaseButtonExpandable>
+        </div>
+        <div v-if="isShowingBorderOptions">
+          <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
+            :color="borderColorLeft"
+            icon="bi-square-fill"
+            title="Left Color">
+            <template v-slot:content>
+              <q-input filled
                 dense
-                flat
-                icon="add"
-                @click="useCustomImage" />
+                hide-bottom-space
+                v-model="borderColorLeft"
+                :rules="['anyColor']"
+                class="color-picker-input ">
+                <template v-slot:append>
+                  <q-icon name="colorize"
+                    class="cursor-pointer">
+                    <q-popup-proxy cover
+                      transition-show="scale"
+                      transition-hide="scale">
+                      <q-color v-model="borderColorLeft" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
             </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
+          </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel v-if="backgroundImage === 'none'"
-        title="Color: Background">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="backgroundColor"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="backgroundColor" />
-                </q-popup-proxy>
-              </q-icon>
+          <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
+            :color="borderColorRight"
+            icon="bi-square-fill"
+            title="Right Color">
+            <template v-slot:content>
+              <q-input filled
+                dense
+                hide-bottom-space
+                v-model="borderColorRight"
+                :rules="['anyColor']"
+                class="color-picker-input ">
+                <template v-slot:append>
+                  <q-icon name="colorize"
+                    class="cursor-pointer">
+                    <q-popup-proxy cover
+                      transition-show="scale"
+                      transition-hide="scale">
+                      <q-color v-model="borderColorRight" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
             </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-      <BaseItemForSettingsTabPanel title="Dark-Mode">
-        <template v-slot:content>
-          <q-toggle color="accent"
-            v-model="isDarkModeTurnedOn"
-            val="battery" />
-        </template>
-      </BaseItemForSettingsTabPanel>
-
-      <p v-if="isDarkModeTurnedOn"
-        class="q-pa-md text-justify">You can change the color of the event border here.
-      </p>
-      <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-        title="Left Color">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="borderColorLeft"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="borderColorLeft" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-
-      <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-        title="Right Color">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="borderColorRight"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="borderColorRight" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
+          </BaseItemForSettingsTabPanel>
+        </div>
 
 
-    </template>
-  </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Colors"
-    :isExpanded="isColorGroupExpanded"
-    @toggle-expand-state="isColorGroupExpanded = !isColorGroupExpanded">
-    <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel title="Secondary">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            color="secondary"
-            v-model="secondaryColor"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="secondaryColor" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
+      </template>
+    </BaseSettingsTabPanelGroup>
 
-      <BaseItemForSettingsTabPanel title="Accent">
-        <template v-slot:content>
+    <BaseSettingsTabPanelGroup title="Colors"
+      :isExpanded="isColorGroupExpanded"
+      @toggle-expand-state="isColorGroupExpanded = !isColorGroupExpanded">
+      <template v-slot:q-item-section-content>
+        <BaseItemForSettingsTabPanel title="Main Color"
+          :color="secondaryColor"
+          icon="bi-square-fill">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              color="secondary"
+              v-model="secondaryColor"
+              :rules="['anyColor']"
+              class="color-picker-input ">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="secondaryColor" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
 
-          <q-input filled
-            dense
-            hide-bottom-space
-            color="accent"
-            v-model="accentColor"
-            :rules="['anyColor']"
-            class="color-picker-input ">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="accentColor" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
+        <BaseItemForSettingsTabPanel title="Buttons"
+          :color="accentColor"
+          icon="bi-square-fill">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              color="accent"
+              v-model="accentColor"
+              :rules="['anyColor']"
+              class="color-picker-input ">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="accentColor" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Shadows">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            color="info"
-            hide-bottom-space
-            v-model="accent2Color"
-            :rules="['anyColor']"
-            class="color-picker-input">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="accent2Color" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-    </template>
-  </BaseSettingsTabPanelGroup>
+        <BaseItemForSettingsTabPanel title="Shadows"
+          caption="used for some headers and icons"
+          :color="accent2Color"
+          icon="bi-square-fill">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              color="info"
+              hide-bottom-space
+              v-model="accent2Color"
+              :rules="['anyColor']"
+              class="color-picker-input">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="accent2Color" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
+      </template>
+    </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Font"
-    :isExpanded="isFontGroupExpanded"
-    @toggle-expand-state="isFontGroupExpanded = !isFontGroupExpanded">
-    <template v-slot:q-item-section-content>
-      <p class="q-pa-md text-justify">You can change the style and size of the font. Click on 'home' or 'diary' to see
-        the effects.
-      </p>
-      <BaseItemForSettingsTabPanel title="Font-Style"
-        caption="Change text style.">
-        <template v-slot:content>
-          <q-btn-toggle v-model="isUsingFont"
-            class="my-custom-toggle"
-            color="transparent"
-            square
-            unelevated
-            toggle-color="accent"
-            text-color="lightgrey"
-            toggle-text-color="white"
-            no-caps
-            :options="[
-              {label: '1', value: 'PressStart', slot: 'pressStart'},
-              {label: '2', value: 'Inter', slot: 'inter'},
-              {label: '3', value: 'Munro', slot: 'munro'},
-            ]">
-            <template v-slot:pressStart>
-              <BaseTooltip text="Pixelfont: Default"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:inter>
-              <BaseTooltip text="Clean: Inter"
-                :delay="0"></BaseTooltip>
-            </template>
-            <template v-slot:munro>
-              <BaseTooltip text="Pixelfont: Munro"
-                :delay="0"></BaseTooltip>
-            </template>
-          </q-btn-toggle>
+    <BaseSettingsTabPanelGroup title="Font"
+      :isExpanded="isFontGroupExpanded"
+      @toggle-expand-state="isFontGroupExpanded = !isFontGroupExpanded">
+      <template v-slot:q-item-section-content>
+        <p class="q-pa-md text-justify">You can change the style and size of the font here. Below is a preview:</p>
+        <blockquote class="text-justify q-ma-md q-pa-md"
+          :style="getStyleForTextPreview">
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </blockquote>
+        <BaseItemForSettingsTabPanel title="Font-Style"
+          caption="Change text style.">
+          <template v-slot:content>
+            <q-btn-toggle v-model="isUsingFont"
+              class="my-custom-toggle"
+              color="transparent"
+              square
+              unelevated
+              toggle-color="accent"
+              text-color="lightgrey"
+              toggle-text-color="white"
+              no-caps
+              :options="[
+                { label: '1', value: 'PressStart', slot: 'pressStart' },
+                { label: '2', value: 'Inter', slot: 'inter' },
+                { label: '3', value: 'Munro', slot: 'munro' },
+              ]">
+              <template v-slot:pressStart>
+                <BaseTooltip text="Pixelfont: Default"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:inter>
+                <BaseTooltip text="Clean: Inter"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:munro>
+                <BaseTooltip text="Pixelfont: Munro"
+                  :delay="0"></BaseTooltip>
+              </template>
+            </q-btn-toggle>
 
-        </template>
-      </BaseItemForSettingsTabPanel>
+          </template>
+        </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel title="Font-Size"
-        caption="Change text size (px).">
-        <template v-slot:content>
-          <q-input v-model.number="fontsize"
-            type="number"
-            filled
-            hide-bottom-space
-            dense
-            square
-            style="max-height: 55px" />
-        </template>
-      </BaseItemForSettingsTabPanel>
+        <BaseItemForSettingsTabPanel title="Font-Size"
+          caption="Change text size (px).">
+          <template v-slot:content>
+            <q-input v-model.number="fontsize"
+              type="number"
+              filled
+              hide-bottom-space
+              dense
+              square
+              style="max-height: 55px" />
+          </template>
+        </BaseItemForSettingsTabPanel>
 
-    </template>
-  </BaseSettingsTabPanelGroup>
+      </template>
+    </BaseSettingsTabPanelGroup>
+
+  </div>
 </template>
 
 <script>
@@ -338,9 +368,10 @@ import { mapMutations } from "vuex";
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
 import BaseTooltip from '../ui/BaseTooltip.vue';
+import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
 
 export default {
-  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip },
+  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip, BaseButtonExpandable },
   data() {
     return {
       isGeneralGroupExpanded: true,
@@ -353,6 +384,7 @@ export default {
       fontsize: 12,
       theme: this.$store.state.layout.theme,
       customBackgroundImage: "",
+      isShowingBorderOptions: false,
     };
   },
   watch: {
@@ -395,8 +427,18 @@ export default {
       let url = "url(" + this.customBackgroundImage + ")";
       this.$store.commit("layout/changeBackgroundImage", url);
     },
+    showBorderOptions() {
+      this.isShowingBorderOptions = !this.isShshowBorderOptions;
+    }
   },
   computed: {
+    getStyleForTextPreview() {
+      return {
+        "border-left": "3px solid var(--q-secondary)",
+        "font-family": this.isUsingFont,
+        "font-size": this.fontsize + "px",
+      };
+    },
     backgroundImageURL() {
       return this.$store.state.layout.backgroundImageURL;
     },

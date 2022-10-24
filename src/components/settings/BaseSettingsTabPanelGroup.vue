@@ -4,15 +4,18 @@
       :style="getStyleForTitle">
       <div class="row justify-between items-center">
         <p class="col-9 q-my-none">
-          {{title}}
+          {{ title }}
         </p>
         <div v-if="isShowingNavigationButton && isExpanded"
           class="col-1">
           <q-btn flat
+            color="secondary"
             padding="5px"
             size="10px"
             icon="bi-asterisk"
             @click="navigationButtonClicked">
+            <BaseTooltip text="Will take you to the dialog, so you can see made changes.">
+            </BaseTooltip>
           </q-btn>
         </div>
         <BaseButtonExpandable class="col-1"
@@ -38,6 +41,8 @@
 
 <script>
 import BaseButtonExpandable from '../ui/BaseButtonExpandable.vue';
+import BaseTooltip from "../ui/BaseTooltip.vue";
+
 export default {
   name: "BaseSettingsTabPanelGroup",
   emits: ["toggle-expand-state", "navigation-button-clicked"],
@@ -80,18 +85,22 @@ export default {
     },
     getStyleForTitle() {
       let style = this.$store.getters["layout/getNonDefaultFont"];
+
+      style["font-size"] = "12.5px";
+      style["font-weight"] = "600";
+
       if (this.$store.getters["layout/isDarkModeActive"]) {
-        style["color"] = this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity;
+        style["color"] = "whitesmoke";
         style["border-bottom"] = "1px solid " + this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity;
       }
       else {
-        style["color"] = "lightgrey";
+        style["color"] = this.$store.state.layout.blacksmoke;
         style["border-bottom"] = "1px solid lightgrey";
       }
       return style;
     }
   },
-  components: { BaseButtonExpandable }
+  components: { BaseButtonExpandable, BaseTooltip }
 };
 </script>
 

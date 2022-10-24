@@ -14,18 +14,15 @@
             </div>
             <div class="col-10 text-left  q-pl-md">
               <q-item-label class="card-title">{{
-              eventData.title
+                  eventData.title
               }}</q-item-label>
             </div>
-            <div v-if="isShowingExpandButtonOfEventCard === true"
-              class="col-1 text-right ">
+            <div class="col-1 text-right ">
               <BaseButtonExpandable color="secondary"
                 dense
                 :isEventExpanded="eventData.expanded"
                 @expand="expand"></BaseButtonExpandable>
             </div>
-            <div v-else
-              class="col-1"></div>
           </div>
 
 
@@ -119,10 +116,6 @@ export default {
   },
   props: {
     eventData: Object,
-    isShowingExpandButtonOfEventCard: {
-      type: Boolean,
-      default: true,
-    },
     backgroundColor: {
       type: String,
       default: "#f5f5f5",

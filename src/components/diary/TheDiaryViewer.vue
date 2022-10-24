@@ -61,7 +61,6 @@ export default {
   components: {
     BaseCard,
   },
-  // TODO:
   emits: ["create-diary-entry", "go-to-event-set-to-creation-mode"],
   props: {
     diaryEntry: Object,

@@ -50,7 +50,6 @@
         :diaryEntry="diaryEntry"
         @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
         @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-        :isShowingExpandButtonOfEventCard="true"
         :showMessageIfThereAreNoEvents="false">
       </TheEventViewer>
     </template>

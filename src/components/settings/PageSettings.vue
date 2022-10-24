@@ -1,7 +1,7 @@
 <template>
-  <p class="info-paragraph q-pa-md text-justify"
-    :style="$store.getters['layout/getNonDefaultFont']">You can change the look of all main pages - <span
-      style="font-style: italic">home</span>, <span style="font-style: italic">diary</span> and
+  <p class="q-pa-md text-justify"
+    :style="getStyleForInfo">You can change the look of all main pages - <span style="font-style: italic">home</span>,
+    <span style="font-style: italic">diary</span> and
     <span style="font-style: italic">new event</span> - here. If you want to reset everything to default, just pick a
     theme via the design settings.
   </p>
@@ -23,9 +23,9 @@
             toggle-text-color="white"
             no-caps
             :options="[
-              {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
-              {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
-              {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
+              { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
+              { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
+              { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
             ]" />
 
         </template>
@@ -79,10 +79,10 @@
             toggle-text-color="white"
             no-caps
             :options="[
-               {label: '', icon: 'bi-flower1', padding: '10px', value: 'default'},
-              {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
-              {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
-              {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
+              { label: '', icon: 'bi-flower1', padding: '10px', value: 'default' },
+              { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
+              { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
+              { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
             ]" />
 
         </template>
@@ -162,9 +162,9 @@
             toggle-text-color="white"
             no-caps
             :options="[
-                            {label: '', icon: 'bi-square', padding: '10px', value: 'clear'},
-                            {label: '', icon: 'bi-window', padding: '10px', value: 'retro'},
-                            {label: '', icon: 'bi-square-fill', padding: '10px', value: 'border'},
+              { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
+              { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
+              { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
             ]" />
 
         </template>
@@ -236,7 +236,7 @@
         </template>
       </BaseItemForSettingsTabPanel>
 
-      <BaseItemForSettingsTabPanel v-if="!(isDiaryTitlebarShowingDay && !isDiaryCountingDays) "
+      <BaseItemForSettingsTabPanel v-if="!(isDiaryTitlebarShowingDay && !isDiaryCountingDays)"
         title="Day Counter is using alternative style"
         caption="Useful for bright or cluttered background images.">
         <template v-slot:content>
@@ -349,6 +349,18 @@ export default {
 
   },
   computed: {
+    getStyleForInfo() {
+      let style = {};
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = this.$store.state.layout.blacksmoke;
+        style["color"] = "white";
+      } else {
+        style["background-color"] = "whitesmoke";
+        style["color"] = "black";
+      }
+      return style;
+    },
     getTitleForHome() {
       if (this.homeMode === 'retro') {
         return "Layout: Retro";
@@ -425,9 +437,5 @@ export default {
   border: 1px solid lightgrey;
   border-radius: 0px;
   border-style: solid;
-}
-
-.info-paragraph {
-  background-color: whitesmoke;
 }
 </style>
