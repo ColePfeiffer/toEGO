@@ -27,7 +27,7 @@ export default {
     getStyleForCard() {
       let style = {};
       let fontColor = this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor);
-      style["border-radius"] = "0px";
+      //style["border-radius"] = "0px";
       style["border-style"] = "solid";
       style["font-size"] = this.$store.state.layout.fontsize + "px";
 

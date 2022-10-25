@@ -117,13 +117,11 @@ export const changeBackgroundColor = (state, color) => {
 };
 
 export const setSize = (state, size) => {
-  console.log("Size changed to ", size.height, " x ", size.width);
   state.width = size.width;
   state.height = size.height;
 };
 
 export const setInnerSize = (state, size) => {
-  console.log("Inner size changed to ", size.height, " x ", size.width);
   state.innerWidth = size.width;
   state.innerHeight = size.height;
 };

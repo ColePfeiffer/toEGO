@@ -4,9 +4,8 @@
       {{ getTextForFirstHeadline }}
     </template>
     <!-- Button: Initiate Viewing-Mode -->
-    <template v-if="isShowingButtons"
-      v-slot:leftSideButton>
-      <ButtonForDiarySection v-if="splitterModel >= 8"
+    <template v-slot:leftSideButton>
+      <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 9"
         textColor="white"
         icon="bi-eye-slash"
         label="view"
@@ -17,7 +16,7 @@
             :delay="15"></BaseTooltip>
         </template>
       </ButtonForDiarySection>
-      <ButtonForDiarySection v-if="!$store.state.data.eventsOnDiaryPageAreExpanded"
+      <ButtonForDiarySection v-if="!$store.state.data.eventsOnDiaryPageAreExpanded && hasEvents"
         textColor="white"
         icon="bi-eye-fill"
         label="view"
@@ -70,7 +69,7 @@ export default {
     TheEventViewer,
     BaseTooltip
   },
-  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "set-visibility-of-diarysection", "hide-events"],
+  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "hide-events"],
   props: {
     isDiarySectionVisible: Boolean,
     diaryEntry: Object,
@@ -89,13 +88,6 @@ export default {
     };
   },
   computed: {
-    isShowingButtons() {
-      if (this.hasEvents || this.isDiarySectionVisible === false) {
-        return true;
-      } else {
-        return false;
-      }
-    },
     getTextForFirstHeadline() {
       if (this.diaryEntry != undefined) {
         return this.diaryEntry.events.length + " EVENTS";
@@ -126,12 +118,10 @@ export default {
     expandMore() {
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
       this.toggleExpansedStatusOfAllEvents(true);
-      this.setVisibilityOfDiarySection(false);
     },
     expandLess() {
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
       this.toggleExpansedStatusOfAllEvents(false);
-      this.setVisibilityOfDiarySection(true);
     },
     toggleExpansedStatusOfAllEvents(isExpanded) {
       let payload = {
@@ -139,9 +129,6 @@ export default {
         isExpanded: isExpanded,
       };
       this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
-    },
-    setVisibilityOfDiarySection(newValue) {
-      this.$emit("set-visibility-of-diarysection", newValue);
     },
   },
 

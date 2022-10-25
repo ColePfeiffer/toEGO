@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-md q-px-xs">
+  <div class="q-py-md">
     <div v-if="viewingMode === 'view'">
       <!-- Case 1: There is no entry for the selected day. -->
       <div v-if="diaryEntry === undefined">
@@ -111,3 +111,23 @@ export default {
   },
 };
 </script>
+
+<style>
+a:link {
+  color: var(--q-accent);
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: darkgrey;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--q-accent);
+  background-color: transparent;
+  text-decoration: underline;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-px-sm q-pb-none q-mt-lg noBorderRadius"
+  <q-card class="q-px-sm q-pb-none q-mt-lg "
     :style="$store.getters['layout/getStyleForTransparentCard']">
     <q-card-section class="cardSection">
       <slot name="content">

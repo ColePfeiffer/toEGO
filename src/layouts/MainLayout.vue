@@ -16,7 +16,7 @@
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <div class="row justify-center"
           :style="boxShadowStyle">
-          <div class="col-12 col-xs-10 col-sm-8 col-md-4 col-xl-3 q-pt-xs">
+          <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 q-pt-xs">
             <router-view v-slot="{ Component }"
               v-if="
                 $store.state.data.dialogSettings.isVisible == false ||
@@ -34,8 +34,8 @@
     <!-- Bottom Navigation bar -->
     <q-footer v-if="
       ($store.state.data.dialogSettings.isVisible == false) |
-        (($store.state.data.dialogSettings.isVisible == true) &
-          ($store.state.data.dialogSettings.isBackgroundVisible == true))
+      (($store.state.data.dialogSettings.isVisible == true) &
+        ($store.state.data.dialogSettings.isBackgroundVisible == true))
     "
       elevated
       class="primary">
@@ -49,20 +49,20 @@
           text-color="white"
           @click="clickNavigationItem"
           :options="[
-            { label: '', value: 'home', icon: getIconForHome, slot: 'home'},
+            { label: '', value: 'home', icon: getIconForHome, slot: 'home' },
             {
               label: '',
               value: 'diary',
               icon: getIconForDiary,
               slot: 'diary',
-
+          
             },
             {
               label: '',
               value: 'templates',
               slot: 'templates',
             },
-            { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings'  },
+            { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings' },
           ]">
           <template v-slot:home>
             <BaseTooltip text="Home"></BaseTooltip>
@@ -303,6 +303,10 @@ export default {
 </script>
 
 <style lang="sass">
+
+.a
+  color: var(--q-accent) !important
+
 ::-webkit-scrollbar
     display: none
 

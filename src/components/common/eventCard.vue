@@ -35,15 +35,13 @@
         <!-- Expanded: False -->
         <q-card-section v-if="!eventData.expanded"
           class="row justify-left items-center">
-          <div>
+          <div v-if="eventData.text.length >= maxLengthOfCardText">
             <!-- Text is shortened -->
-            <p v-if="eventData.text.length >= maxLengthOfCardText">
-              {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
-            </p>
-            <!-- Text can be used as is -->
-            <p v-else>
-              {{ eventData.text }}
-            </p>
+            {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
+          </div>
+          <!-- Text can be used as is -->
+          <div v-else>
+            {{ eventData.text }}
           </div>
           <!-- Indicator whether or not this event holds editor-content -->
           <span v-if="!isEventEditorEmpty"
@@ -61,9 +59,7 @@
           <!-- Full event text + editor content (if not empty)-->
           <q-card-section>
             <!-- Event text -->
-            <p>
-              <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
-            </p>
+            <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
             <!-- If Editor isn't empty, show content here -->
             <div v-if="!isEventEditorEmpty"
               style="white-space: pre-wrap"

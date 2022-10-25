@@ -7,8 +7,7 @@
     <!-- row -->
     <div class="row justify-center items-center q-pa-none"
       :style="boxShadowStyle">
-
-      <div class="col-12 col-sm-7 col-md-4 col-xl-3">
+      <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3">
         <div class="window dialogBox row"
           :style="getStyleForDialog">
 

@@ -33,6 +33,8 @@
 
       <BaseItemForSettingsTabPanel v-if="homeMode === 'retro' || homeMode === 'border'"
         title="Background"
+        :color="homeBackgroundColor"
+        icon="bi-square-fill"
         caption="Set color and opacity.">
         <template v-slot:content>
           <q-input filled
@@ -88,6 +90,8 @@
         </template>
       </BaseItemForSettingsTabPanel>
       <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
+        :color="eventBackgroundColor"
+        icon="bi-square-fill"
         title="Background"
         :caption="(eventMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
         <template v-slot:content>
@@ -114,6 +118,8 @@
       <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
         class="q-pb-sm"
         title="Input Fields"
+        :color="eventInputBackgroundColor"
+        icon="bi-square-fill"
         caption="Set color and opacity.">
         <template v-slot:content>
           <q-input filled
@@ -170,6 +176,8 @@
         </template>
       </BaseItemForSettingsTabPanel>
       <BaseItemForSettingsTabPanel v-if="diaryMode != 'clear'"
+        :color="diaryBackgroundColor"
+        icon="bi-square-fill"
         title="Background"
         caption="Set color and opacity.">
         <template v-slot:content>
@@ -194,6 +202,8 @@
         </template>
       </BaseItemForSettingsTabPanel>
       <BaseItemForSettingsTabPanel title="Card Background"
+        :color="diaryCardBackgroundColor"
+        icon="bi-square-fill"
         caption="Set color and opacity.">
         <template v-slot:content>
           <q-input filled
@@ -246,6 +256,8 @@
       </BaseItemForSettingsTabPanel>
 
       <BaseItemForSettingsTabPanel title="Border Color"
+        :color="diarySubtitleColor"
+        icon="bi-square-fill"
         v-if="isDiarySubtitleStyleSetToAlternative">
         <template v-slot:content>
           <q-input filled

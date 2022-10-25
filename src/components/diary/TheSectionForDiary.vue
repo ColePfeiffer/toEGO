@@ -3,7 +3,7 @@
     <BaseSectionForDiary>
       <template v-slot:nameOfTitle
         v-if="isDiaryVisible">
-        DIARY ENTRY
+        DIARY
       </template>
       <!-- Button: Go back (change mode to 'view') -->
       <template v-if="isDiaryVisible"
@@ -142,7 +142,6 @@ export default {
       return this.$store.state.data.pastedText;
     },
     isDiaryVisible() {
-      console.log(this.diaryEntry, this.isCreatingNewDiaryEntry)
       if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {
         return true;
       } else {

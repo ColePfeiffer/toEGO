@@ -13,12 +13,9 @@
     </HeaderForDiarySections>
   </div>
   <!-- Content -->
-  <div>
+  <div class="q-px-xs">
     <slot name="content">
-      <q-scroll-area :style="getHeightForScrollArea"
-        ref="scrollArea">
-        <slot name="content-in-scroll-area"></slot>
-      </q-scroll-area>
+      <slot name="content-in-scroll-area"></slot>
     </slot>
   </div>
 </template>
@@ -30,17 +27,6 @@ export default {
   emits: [],
   components: {
     HeaderForDiarySections,
-  },
-  props: {
-    heightForScrollArea: {
-      type: Number,
-      default: 175
-    },
-  },
-  computed: {
-    getHeightForScrollArea() {
-      return { height: this.heightForScrollArea + "px" };
-    },
   },
 }
 </script>

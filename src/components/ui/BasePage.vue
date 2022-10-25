@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-sm">
+  <q-page class="q-pa-xs">
     <div class="row justify-center items-center q-pa-md q-pt-lg">
       <!-- Header / Titlebar-->
       <div class="title-bar col-md-11 col-12 row justify-center shadow-1"
@@ -28,14 +28,18 @@
 
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
-        :style="$store.getters['layout/getStyleForBasePage']({'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor})">
+        :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
+
         <div :style="getHeightForContent">
           <q-resize-observer @resize="onResize" />
-          <q-scroll-area :thumb-style="thumbStyle"
-            :bar-style="barStyle"
-            :style="getStyleForScrollArea">
-            <slot name="content"></slot>
-          </q-scroll-area>
+          <slot name="content-without-scrollarea">
+            <BaseScrollArea :style="getStyleForScrollArea"
+              :positionToTheRight="1">
+              <template v-slot:content>
+                <slot name="content"></slot>
+              </template>
+            </BaseScrollArea>
+          </slot>
         </div>
 
       </div>
@@ -51,8 +55,11 @@
 </template>
 
 <script>
+import BaseScrollArea from "./BaseScrollArea.vue";
+
 export default {
   name: "BasePage",
+  components: { BaseScrollArea },
   props: {
     titleOfPage: String,
     mode: {
@@ -71,20 +78,7 @@ export default {
   },
   data() {
     return {
-      thumbStyle: {
-        right: '1px',
-        borderRadius: '5px',
-        backgroundColor: 'var(--q-secondary)',
-        width: '8px',
-        opacity: 0.75
-      },
-      barStyle: {
-        right: '1px',
-        borderRadius: '9px',
-        backgroundColor: "var(--q-info)",
-        width: '11px',
-        opacity: 0.2
-      }
+
     }
   },
   methods: {

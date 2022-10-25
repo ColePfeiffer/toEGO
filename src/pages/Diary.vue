@@ -3,10 +3,9 @@
     heightForContent="80vh"
     titleOfPage="Diary"
     :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
-
     <template v-if="isDiaryTitlebarShowingDay"
       v-slot:titlebar>
-      <div class="row justify-center items-center text-center no-wrap q-px-xs full-width title-bar-height q-py-none">
+      <div class="row justify-center items-center text-center no-wrap  full-width title-bar-height q-py-none">
         <div class="col-1 text-left">
           <BaseButtonForTitleBar v-if="viewingMode === 'view'"
             class="no-box-shadow "
@@ -162,7 +161,6 @@
       </div>
 
       <div class="q-px-sm">
-
         <q-splitter v-model="splitterModel"
           horizontal
           :limits="[1, 100]"
@@ -179,22 +177,13 @@
                 :isDiarySectionVisible="isDiarySectionVisible"
                 @hide-events="hideEvents"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-                @set-visibility-of-diarysection="setVisibilityOfDiarySection">
+                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode">
               </TheSectionForEvents>
             </div>
           </template>
-          <template v-slot:separator>
-            <q-avatar v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
-              color="primary"
-              text-color="white"
-              size="40px"
-              icon="drag_indicator" />
-          </template>
           <template v-slot:after>
-
             <!-- DIARY SECTION -->
-            <TheSectionForDiary v-if="!areEventsShownInFullscreen && !isDiaryEntryShownInFullscreen"
+            <TheSectionForDiary v-if="!isDiaryEntryShownInFullscreen"
               :backgroundColor="getCardBackgroundColor"
               :class="getDiarySectionClass"
               :diaryEntry="getDiaryEntry"
@@ -207,7 +196,7 @@
 
             <!-- DIARY SECTION FULLSCREEN -->
             <div v-if="isDiaryEntryShownInFullscreen"
-              class="q-pa-md">
+              class="q-pa-xs">
               <div class="row justify-end q-pb-md">
                 <div class="col-4 smallText text-right"></div>
                 <q-btn class="smallText text-right"
@@ -270,11 +259,12 @@ export default {
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
       splitterModel: 1,
-      splitterModelDefaultHeight: 7,
+      splitterModelDefaultHeight: 8,
     };
   },
   watch: {
     getStyleForSplitterSeparator(style) {
+      console.log("getStyleForSplitterSeparator changed")
       if (style["display"] === "none") {
         this.splitterModel = 1;
       } else {
@@ -286,7 +276,12 @@ export default {
     },
     areEventsShownInFullscreen(areEventsShownInFullscreen) {
       if (areEventsShownInFullscreen) {
-        this.splitterModel = 100;
+        let eventCount = this.getEventCount;
+        if (eventCount === 1) {
+          this.splitterModel = 44;
+        } else {
+          this.splitterModel = 75;
+        }
       } else {
         this.splitterModel = this.splitterModelDefaultHeight;
       }
@@ -294,20 +289,21 @@ export default {
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
     getDate(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
-      // if entry exists, show entries text
+      // Case 1: Entry exists
       if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor != "") {
+        console.log("entry exists");
+        if (this.getEventCount > 0) {
+          this.splitterModel = 39;
+        }
         this.editorHTMLContent = this.getDiaryEntry.editor;
-        // if no entry exists, but event(s) do.
-      } else if (
-        this.getDiaryEntry != undefined &&
-        this.getDiaryEntry.editor === ""
-      ) {
+        // Case 2: No Diary Entry, but events exist.
+      } else if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor === "") {
         console.log("events exist");
         this.editorHTMLContent =
           "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
-        // if neither exists
+        this.splitterModel = 39;
+        // Case 3: No events, no diary entry.
       } else {
-        console.log("nothing exists");
         if (this.getCountOfDaysAwayFromToday === -0) {
           console.log("ITS TODAY MATE");
           //this.viewingMode = 'edit';
@@ -318,10 +314,17 @@ export default {
     },
   },
   computed: {
+    getEventCount() {
+      if (this.getDiaryEntry != undefined) {
+        return this.getDiaryEntry.events.length;
+      }
+      else {
+        return 0;
+      }
+    },
     getStyleForSplitter() {
       let style = {};
-      style["height"] = "85vh";
-
+      style["height"] = "70vh";
       return style;
     },
     getStyleForSplitterSeparator() {
@@ -480,11 +483,7 @@ export default {
   },
   methods: {
     hideEvents() {
-      console.log("hide events maaan");
-      this.splitterModel = 7;
-    },
-    setVisibilityOfDiarySection(newValue) {
-      this.isDiarySectionVisible = newValue;
+      this.splitterModel = this.splitterModelDefaultHeight;
     },
     setDateToToday() {
       this.getDate = Date.now();
