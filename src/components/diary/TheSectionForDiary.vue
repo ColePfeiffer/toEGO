@@ -19,7 +19,8 @@
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
-          icon="bi-eye-fill"
+          icon="bi-fullscreen"
+          size="9.5px"
           label="view"
           :style="$store.state.layout.sTextAccentShadow"
           @click-button="openEntryInFullscreen">
@@ -53,7 +54,7 @@
           icon="bi-pencil-square"
           class="q-mr-xs"
           label="save"
-          size="9.5px"
+          size="10px"
           :style="$store.state.layout.sTextAccentShadow"
           @click-button="editDiaryEntry">
           <template v-slot:tooltip>

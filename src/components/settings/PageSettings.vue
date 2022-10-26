@@ -5,7 +5,7 @@
     <span style="font-style: italic">new event</span> - here. If you want to reset everything to default, just pick a
     theme via the design settings.
   </p>
-  <BaseSettingsTabPanelGroup title="Home"
+  <BaseSettingsTabPanelGroup title="Notes"
     :isExpanded="isHomeGroupExpanded"
     @toggle-expand-state="isHomeGroupExpanded = !isHomeGroupExpanded">
     <template v-slot:q-item-section-content>
@@ -61,95 +61,7 @@
     </template>
   </BaseSettingsTabPanelGroup>
 
-  <BaseSettingsTabPanelGroup title="Event"
-    :isShowingNavigationButton="true"
-    @navigation-button-clicked="goToEventPage"
-    :isExpanded="isEventGroupExpanded"
-    @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
-    <template v-slot:q-item-section-content>
-      <BaseItemForSettingsTabPanel :title="getTitleForEvent"
-        :isOnSameLine="false">
-        <template v-slot:content>
-          <q-btn-toggle v-model="eventMode"
-            dense
-            class="my-custom-toggle"
-            color="transparent"
-            square
-            unelevated
-            toggle-color="accent"
-            text-color="lightgrey"
-            toggle-text-color="white"
-            no-caps
-            :options="[
-              { label: '', icon: 'bi-flower1', padding: '10px', value: 'default' },
-              { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
-              { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
-              { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
-            ]" />
 
-        </template>
-      </BaseItemForSettingsTabPanel>
-      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
-        :color="eventBackgroundColor"
-        icon="bi-square-fill"
-        title="Background"
-        :caption="(eventMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="eventBackgroundColor"
-            :rules="['anyColor']"
-            class="color-picker-input">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="eventBackgroundColor" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-
-        </template>
-      </BaseItemForSettingsTabPanel>
-      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
-        class="q-pb-sm"
-        title="Input Fields"
-        :color="eventInputBackgroundColor"
-        icon="bi-square-fill"
-        caption="Set color and opacity.">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="eventInputBackgroundColor"
-            :rules="['anyColor']"
-            class="color-picker-input">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="eventInputBackgroundColor"
-                    :palette="[
-                      '#24242469', '#fffcfc91', '#dfd4f587', '#00000087',
-                      '#f5f5f5fc'
-                    ]" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </template>
-      </BaseItemForSettingsTabPanel>
-      <q-separator v-if="eventMode != 'default'"
-        color="whitestorm" />
-
-    </template>
-  </BaseSettingsTabPanelGroup>
 
   <BaseSettingsTabPanelGroup title="Diary"
     :isExpanded="isDiaryGroupExpanded"
@@ -289,6 +201,96 @@
             v-model="isShowingExpandButtonForEventsViaDiary" />
         </template>
       </BaseItemForSettingsTabPanel>
+    </template>
+  </BaseSettingsTabPanelGroup>
+
+  <BaseSettingsTabPanelGroup title="Events"
+    :isShowingNavigationButton="true"
+    @navigation-button-clicked="goToEventPage"
+    :isExpanded="isEventGroupExpanded"
+    @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
+    <template v-slot:q-item-section-content>
+      <BaseItemForSettingsTabPanel :title="getTitleForEvent"
+        :isOnSameLine="false">
+        <template v-slot:content>
+          <q-btn-toggle v-model="eventMode"
+            dense
+            class="my-custom-toggle"
+            color="transparent"
+            square
+            unelevated
+            toggle-color="accent"
+            text-color="lightgrey"
+            toggle-text-color="white"
+            no-caps
+            :options="[
+              { label: '', icon: 'bi-flower1', padding: '10px', value: 'default' },
+              { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
+              { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
+              { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
+            ]" />
+
+        </template>
+      </BaseItemForSettingsTabPanel>
+      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
+        :color="eventBackgroundColor"
+        icon="bi-square-fill"
+        title="Background"
+        :caption="(eventMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="eventBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="eventBackgroundColor" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+
+        </template>
+      </BaseItemForSettingsTabPanel>
+      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
+        class="q-pb-sm"
+        title="Input Fields"
+        :color="eventInputBackgroundColor"
+        icon="bi-square-fill"
+        caption="Set color and opacity.">
+        <template v-slot:content>
+          <q-input filled
+            dense
+            hide-bottom-space
+            v-model="eventInputBackgroundColor"
+            :rules="['anyColor']"
+            class="color-picker-input">
+            <template v-slot:append>
+              <q-icon name="colorize"
+                class="cursor-pointer">
+                <q-popup-proxy cover
+                  transition-show="scale"
+                  transition-hide="scale">
+                  <q-color v-model="eventInputBackgroundColor"
+                    :palette="[
+                      '#24242469', '#fffcfc91', '#dfd4f587', '#00000087',
+                      '#f5f5f5fc'
+                    ]" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </template>
+      </BaseItemForSettingsTabPanel>
+      <q-separator v-if="eventMode != 'default'"
+        color="whitestorm" />
+
     </template>
   </BaseSettingsTabPanelGroup>
 </template>

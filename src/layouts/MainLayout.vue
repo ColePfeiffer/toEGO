@@ -16,7 +16,7 @@
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <div class="row justify-center"
           :style="boxShadowStyle">
-          <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 q-pt-xs">
+          <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 ">
             <router-view v-slot="{ Component }"
               v-if="
                 $store.state.data.dialogSettings.isVisible == false ||
@@ -39,60 +39,92 @@
     "
       elevated
       class="primary">
-      <q-toolbar>
+      <q-toolbar class="row items-center align-center justify-center navigation-toolbar">
         <q-space />
         <q-btn-toggle v-model="navButtonToggleModel"
+          class="items-center row justify-center navigation-toggle"
           flat
           stretch
-          padding="ml"
+          padding="5px"
+          size="13.5px"
           toggle-color="white"
           text-color="white"
           @click="clickNavigationItem"
           :options="[
-            { label: '', value: 'home', icon: getIconForHome, slot: 'home' },
+            { value: 'home', slot: 'home' },
             {
-              label: '',
-              value: 'diary',
-              icon: getIconForDiary,
-              slot: 'diary',
-          
+              value: 'diary', slot: 'diary',
             },
+          
+            { value: 'settings', slot: 'settings' },
             {
               label: '',
               value: 'templates',
               slot: 'templates',
             },
-            { label: '', value: 'settings', icon: getIconForSettings, slot: 'settings' },
           ]">
           <template v-slot:home>
-            <BaseTooltip text="Home"></BaseTooltip>
+            <div class="row justify-center items-center align-center ">
+              <q-icon class="col-12 navigation-bar-icon"
+                :name="getIconForHome" />
+              <span class="navigation-button-label col-12">Notes</span>
+            </div>
           </template>
           <template v-slot:diary>
-            <BaseTooltip text="Diary"></BaseTooltip>
-          </template>
-          <template v-slot:templates>
-            <!-- TODO: icon slot to set icon size -->
-            <q-fab v-model="templatesFabButton"
-              vertical-actions-align="center"
-              icon="bi-fonts"
-              square
-              padding="none"
-              direction="up"
-              @click="toggleFabButton">
-              <q-fab-action @click="openDialogViewDiaryTemplates"
-                icon="bi-journal-bookmark"
-                color="primary"
-                label="Diary Templates" />
-              <q-fab-action color="primary"
-                dense
-                @click="openDialogViewEventTemplates"
-                icon="bi-sticky"
-                label="Event Templates" />
-            </q-fab>
+            <div class="row justify-center items-center ">
+              <q-icon class="col-12 navigation-bar-icon"
+                :name="getIconForDiary" />
+              <span class="navigation-button-label col-12">Diary</span>
+            </div>
           </template>
           <template v-slot:settings>
-            <BaseTooltip text="Settings"></BaseTooltip>
+            <div class="row justify-center items-center">
+              <q-icon class="col-12 navigation-bar-icon"
+                :name="getIconForSettings" />
+              <span class="navigation-button-label col-12">Options</span>
+            </div>
           </template>
+          <template v-slot:templates>
+            <div class="row justify-center items-center align-center ">
+              <q-fab v-model="templatesFabButton"
+                class="col-12 navigation-bar-icon"
+                vertical-actions-align="center"
+                square
+                padding="none"
+                direction="up"
+                @click="toggleFabButton">
+
+                <template v-slot:icon="{ opened }">
+                  <q-icon :class="{ 'example-fab-animate--hover': opened !== true }"
+                    size="22px"
+                    name="bi-eye" />
+                </template>
+
+                <template v-slot:active-icon="{ opened }">
+                  <q-icon :class="{ 'example-fab-animate': opened === true }"
+                    size="13.5px"
+                    name="close" />
+                </template>
+
+                <q-fab-action @click="openDialogViewDiaryTemplates"
+                  icon="bi-journal-bookmark"
+                  color="primary"
+                  label="Diary Templates" />
+                <q-fab-action color="primary"
+                  dense
+                  @click="openDialogViewEventTemplates"
+                  icon="bi-sticky"
+                  label="Event Templates" />
+              </q-fab>
+
+
+              <span class="navigation-button-label col-12">*</span>
+            </div>
+
+
+
+          </template>
+
         </q-btn-toggle>
         <q-space />
         <q-btn flat
@@ -191,9 +223,9 @@ export default {
     },
     getIconForHome() {
       if (this.isNavigationSetTo('home')) {
-        return 'bi-eye-fill'
+        return 'bi-sticky-fill'
       } else {
-        return 'bi-eye';
+        return 'bi-sticky';
       }
     },
   },
@@ -304,8 +336,14 @@ export default {
 
 <style lang="sass">
 
-.a
-  color: var(--q-accent) !important
+.navigation-bar-icon
+  padding-top: 2px
+
+.navigation-toolbar
+  height: 51px
+
+.navigation-button-label
+  font-size: 10px
 
 ::-webkit-scrollbar
     display: none

@@ -37,7 +37,8 @@
         </div>
         <!-- Case 2.1.2: Showing journal-entrie's text. -->
         <div v-else>
-          <BaseCard :backgroundColor="backgroundColor"
+          <BaseCard class="diary-card"
+            :backgroundColor="backgroundColor"
             :isTextSetToCentered="false">
             <template v-slot:contentInsideSection>
               <div v-html="editor">
@@ -113,6 +114,11 @@ export default {
 </script>
 
 <style>
+.diary-card {
+  min-height: 250px;
+
+}
+
 a:link {
   color: var(--q-accent);
   background-color: transparent;

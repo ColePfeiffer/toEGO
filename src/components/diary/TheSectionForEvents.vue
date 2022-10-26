@@ -1,13 +1,13 @@
 <template>
   <BaseSectionForDiary>
     <template v-slot:nameOfTitle>
-      {{ getTextForFirstHeadline }}
+      {{ getTitle }}
     </template>
     <!-- Button: Initiate Viewing-Mode -->
     <template v-slot:leftSideButton>
-      <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 9"
+      <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 41"
         textColor="white"
-        icon="bi-eye-slash"
+        icon="bi-chevron-bar-up"
         label="view"
         :style="$store.state.layout.sTextAccentShadow"
         @click-button="hideEvents">
@@ -18,7 +18,7 @@
       </ButtonForDiarySection>
       <ButtonForDiarySection v-if="!$store.state.data.eventsOnDiaryPageAreExpanded && hasEvents"
         textColor="white"
-        icon="bi-eye-fill"
+        icon="bi-chevron-bar-down"
         label="view"
         :style="$store.state.layout.sTextAccentShadow"
         @click-button="expandMore">
@@ -45,12 +45,14 @@
     </template>
 
     <template v-slot:content>
-      <TheEventViewer :backgroundColor="backgroundColor"
-        :diaryEntry="diaryEntry"
-        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-        :showMessageIfThereAreNoEvents="false">
-      </TheEventViewer>
+      <div ref="test">
+        <TheEventViewer :backgroundColor="backgroundColor"
+          :diaryEntry="diaryEntry"
+          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+          @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+          :showMessageIfThereAreNoEvents="false">
+        </TheEventViewer>
+      </div>
     </template>
   </BaseSectionForDiary>
 </template>
@@ -69,7 +71,7 @@ export default {
     TheEventViewer,
     BaseTooltip
   },
-  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "hide-events"],
+  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "hide-events", "show-events"],
   props: {
     isDiarySectionVisible: Boolean,
     diaryEntry: Object,
@@ -88,7 +90,7 @@ export default {
     };
   },
   computed: {
-    getTextForFirstHeadline() {
+    getTitle() {
       if (this.diaryEntry != undefined) {
         return this.diaryEntry.events.length + " EVENTS";
       } else {
@@ -116,6 +118,9 @@ export default {
       this.$emit("hide-events");
     },
     expandMore() {
+      let yPosition = this.$refs["test"].getBoundingClientRect().bottom;
+      console.log("Position: ", yPosition);
+      this.$emit("show-events", yPosition - 95);
       this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
       this.toggleExpansedStatusOfAllEvents(true);
     },

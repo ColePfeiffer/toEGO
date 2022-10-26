@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-xs">
+  <q-page>
     <div class="row justify-center items-center q-pa-md q-pt-lg">
       <!-- Header / Titlebar-->
       <div class="title-bar col-md-11 col-12 row justify-center shadow-1"
@@ -29,7 +29,6 @@
       <!-- Content -->
       <div class="col-md-11 col-12 q-mt-sm shadow-2"
         :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
-
         <div :style="getHeightForContent">
           <q-resize-observer @resize="onResize" />
           <slot name="content-without-scrollarea">

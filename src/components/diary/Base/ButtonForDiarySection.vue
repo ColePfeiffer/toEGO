@@ -7,7 +7,7 @@
       :label="getLabel(label)"
       @click="clickButton(label)"
       :style="style"
-      size="10px">
+      :size="size">
       <slot name="tooltip">
       </slot>
     </q-btn>
@@ -22,7 +22,11 @@ export default {
     textColor: String,
     icon: String,
     label: String,
-    style: Object
+    style: Object,
+    size: {
+      type: String,
+      default: "10px"
+    }
   },
   data() {
     return {
