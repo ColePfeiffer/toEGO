@@ -23,6 +23,12 @@
                 ($store.state.data.dialogSettings.isVisible == true &&
                   $store.state.data.dialogSettings.isBackgroundVisible == true)
               ">
+              <div v-if="isShowingStepper"
+                class="row justify-center items-center align-center">
+                <div class="col-12">
+                  <BaseStepper @finish="finish"></BaseStepper>
+                </div>
+              </div>
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -85,40 +91,44 @@
             </div>
           </template>
           <template v-slot:templates>
-            <div class="row justify-center items-center align-center ">
+            <div class="row justify-center items-center align-center q-px-md navigation-bar-fab-button">
               <q-fab v-model="templatesFabButton"
-                class="col-12 navigation-bar-icon"
+                class="col-12 navigation-bar-icon "
                 vertical-actions-align="center"
-                square
+                round
+                text-color="accent"
                 padding="none"
                 direction="up"
                 @click="toggleFabButton">
-
                 <template v-slot:icon="{ opened }">
                   <q-icon :class="{ 'example-fab-animate--hover': opened !== true }"
                     size="22px"
-                    name="bi-eye" />
+                    name="bi-plus-lg" />
                 </template>
-
                 <template v-slot:active-icon="{ opened }">
                   <q-icon :class="{ 'example-fab-animate': opened === true }"
                     size="13.5px"
                     name="close" />
                 </template>
-
+                <q-fab-action @click="goToPageEvent"
+                  icon="bi-plus-lg"
+                  color="primary"
+                  label="create Note" />
                 <q-fab-action @click="openDialogViewDiaryTemplates"
                   icon="bi-journal-bookmark"
                   color="primary"
                   label="Diary Templates" />
                 <q-fab-action color="primary"
-                  dense
                   @click="openDialogViewEventTemplates"
                   icon="bi-sticky"
                   label="Event Templates" />
+                <q-fab-action v-if="isHelpVisible"
+                  @click="showHelp"
+                  icon="bi-question"
+                  color="primary"
+                  label="Help" />
               </q-fab>
-
-
-              <span class="navigation-button-label col-12">*</span>
+              <span class="navigation-button-label col-12 q-pb-md"></span>
             </div>
 
 
@@ -143,6 +153,7 @@ import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
 import { date } from "quasar";
 import BaseDialogTemplateViewer from "../components/dialogs/BaseDialogTemplateViewer.vue";
 import BaseTooltip from "../components/ui/BaseTooltip.vue";
+import BaseStepper from "../components/ui/BaseStepper.vue";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>
@@ -165,18 +176,27 @@ export default {
         "box-shadow": "none",
       },
       templatesFabButton: false,
+      isShowingStepper: true,
     };
   },
   components: {
     DialogNameAndCreate,
     BaseDialogTemplateViewer,
-    BaseTooltip
+    BaseTooltip,
+    BaseStepper
   },
   mounted() {
     // sets our v-models initital value to the path of the url we are starting the app from
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    isHelpVisible() {
+      if (this.currentRouterPath != "/settings") {
+        return true;
+      } else {
+        return false;
+      }
+    },
     nameOfCurrentDialog() {
       return this.$store.state.data.dialogSettings.nameOfCurrentDialog;
     },
@@ -249,11 +269,33 @@ export default {
     this.$store.commit("data/initiateDay");
   },
   methods: {
+    finish() {
+      this.isShowingStepper = false;
+    },
+    showHelp() {
+      this.isShowingStepper = !this.isShowingStepper;
+      switch (this.currentRouterPath) {
+        case "/home":
+          console.log("show help for notes");
+          break;
+        case "/diary":
+          console.log("show help for diary");
+          break;
+        case "/event":
+          console.log("show help for events");
+          break;
+        default:
+          break;
+      }
+    },
+    goToPageEvent() {
+      this.$store.commit("data/setModeForNewEvent", "CREATE");
+      this.$router.push("Event");
+    },
     toggleFabButton() {
       this.templatesFabButton = !this.templatesFabButton;
     },
     clickNavigationItem() {
-      console.log("model: ", this.navButtonToggleModel);
       if (this.navButtonToggleModel != 'templates') {
         this.templatesFabButton = false;
         this.goToPage();
@@ -335,6 +377,9 @@ export default {
 </script>
 
 <style lang="sass">
+
+.navigation-bar-fab-button
+  padding-top: 7px
 
 .navigation-bar-icon
   padding-top: 2px
