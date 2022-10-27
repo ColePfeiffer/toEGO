@@ -134,6 +134,5 @@ a:visited {
 a:hover {
   color: var(--q-accent);
   background-color: transparent;
-  text-decoration: underline;
 }
 </style>

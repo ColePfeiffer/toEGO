@@ -7,9 +7,10 @@
     <template v-slot:leftSideButton>
       <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 41"
         textColor="white"
-        icon="bi-chevron-bar-up"
-        label="view"
-        :style="$store.state.layout.sTextAccentShadow"
+        icon="bi-eye-slash"
+        size="9.2px"
+        label=""
+        :style="$store.getters['layout/getStyleForDiarySectionButton']"
         @click-button="hideEvents">
         <template v-slot:tooltip>
           <BaseTooltip text="Hide Events"
@@ -18,9 +19,10 @@
       </ButtonForDiarySection>
       <ButtonForDiarySection v-if="!$store.state.data.eventsOnDiaryPageAreExpanded && hasEvents"
         textColor="white"
-        icon="bi-chevron-bar-down"
-        label="view"
-        :style="$store.state.layout.sTextAccentShadow"
+        icon="bi-eye"
+        size="9.2px"
+        label=""
+        :style="$store.getters['layout/getStyleForDiarySectionButton']"
         @click-button="expandMore">
         <template v-slot:tooltip>
           <BaseTooltip text="Show Events"
@@ -34,8 +36,8 @@
       <ButtonForDiarySection textColor="white"
         icon="bi-plus-lg"
         class="q-mr-xs"
-        label="new "
-        :style="$store.state.layout.sTextAccentShadow"
+        label=""
+        :style="$store.getters['layout/getStyleForDiarySectionButton']"
         @click-button="goToEventSetToCreationMode">
         <template v-slot:tooltip>
           <BaseTooltip text="Add new event"
@@ -92,7 +94,12 @@ export default {
   computed: {
     getTitle() {
       if (this.diaryEntry != undefined) {
-        return this.diaryEntry.events.length + " EVENTS";
+        if (this.diaryEntry.events.length === 1) {
+          return this.diaryEntry.events.length + " NOTE";
+        } else {
+          return this.diaryEntry.events.length + " NOTES";
+        }
+
       } else {
         return "";
       }

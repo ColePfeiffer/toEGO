@@ -193,6 +193,10 @@ export const setModeForNewEvent = (state, mode) => {
   }
 };
 
+export const setMessageToMyself = (state, text) => {
+  state.messageToMyself = text;
+};
+
 /*
 export const updateExpandedStatusOfEventViaEventID = (state, eventID) => {
   let event = state.events.find((event) => event.id === eventID);

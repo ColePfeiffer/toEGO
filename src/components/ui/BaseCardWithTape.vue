@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: "TheHeader",
+  name: "BaseCardWithTape",
   props: {
     text: {
       type: String,

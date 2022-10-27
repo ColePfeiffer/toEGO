@@ -13,16 +13,17 @@
           textColor="white"
           icon="bi-chevron-left"
           label="back"
-          :style="$store.state.layout.sTextAccentShadow"
+          :isShowingLabel="true"
+          :style="$store.getters['layout/getStyleForDiarySectionButton']"
           @click-button="goBack">
         </ButtonForDiarySection>
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
           textColor="white"
           icon="bi-fullscreen"
-          size="9.5px"
-          label="view"
-          :style="$store.state.layout.sTextAccentShadow"
+          size="8.6px"
+          label=""
+          :style="$store.getters['layout/getStyleForDiarySectionButton']"
           @click-button="openEntryInFullscreen">
           <template v-slot:tooltip>
             <BaseTooltip text="Turn Viewing-Mode on"
@@ -30,6 +31,8 @@
               15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
+
+
       </template>
 
       <template v-if="isDiaryVisible"
@@ -40,8 +43,9 @@
           textColor="white"
           class="q-mr-xs"
           icon="fas fa-save"
+          :isShowingLabel="true"
           label="save"
-          :style="$store.state.layout.sTextAccentShadow"
+          :style="$store.getters['layout/getStyleForDiarySectionButton']"
           @click-button="saveChanges">
           <template v-slot:tooltip>
             <BaseTooltip text="Save"
@@ -53,9 +57,9 @@
           textColor="white"
           icon="bi-pencil-square"
           class="q-mr-xs"
-          label="save"
+          label="edit"
           size="10px"
-          :style="$store.state.layout.sTextAccentShadow"
+          :style="$store.getters['layout/getStyleForDiarySectionButton']"
           @click-button="editDiaryEntry">
           <template v-slot:tooltip>
             <BaseTooltip text="Edit diary text"

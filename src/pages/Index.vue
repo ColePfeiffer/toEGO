@@ -30,8 +30,9 @@
     </template>
     <template v-slot:content>
       <div>
-        <TheHeader v-if="isLetterVisible"
-          class="q-px-md "></TheHeader>
+        <MessageToMyself v-if="isLetterVisible"
+          class="q-px-md "
+          @hide-message="isLetterVisible = false"></MessageToMyself>
         <TheEventViewer :diaryEntry="getDiaryEntry"
           :marginBottom="22"
           @goToEventSetToCreationMode="goToEventSetToCreationMode"
@@ -44,7 +45,7 @@
 
 
 <script>
-import TheHeader from "src/components/home/TheHeader.vue";
+import MessageToMyself from "src/components/home/MessageToMyself.vue";
 import TheEventViewer from "src/components/common/TheEventViewer.vue";
 import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
@@ -57,7 +58,7 @@ export default {
     };
   },
   components: {
-    TheHeader,
+    MessageToMyself,
     TheEventViewer,
     BasePage,
     BaseButtonForTitleBar,

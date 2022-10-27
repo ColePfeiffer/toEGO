@@ -5,6 +5,7 @@ export default function () {
     pastedText: "",
     editorText: "",
     isShowingLabelsForDiarySection: false,
+    messageToMyself: "",
     // all templates for events are in here
     diaryTemplates: [
       {

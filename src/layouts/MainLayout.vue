@@ -23,10 +23,12 @@
                 ($store.state.data.dialogSettings.isVisible == true &&
                   $store.state.data.dialogSettings.isBackgroundVisible == true)
               ">
-              <div v-if="isShowingStepper"
-                class="row justify-center items-center align-center">
+              <div class="row justify-center items-center align-center">
                 <div class="col-12">
-                  <BaseStepper @finish="finish"></BaseStepper>
+                  <TheHelpStepperForHome v-if="isHelpForNotesVisible && currentRouterPath === '/home'"
+                    @finish="finish"></TheHelpStepperForHome>
+                  <TheHelpStepperForDiary v-if="isHelpForDiaryVisible && currentRouterPath === '/diary'"
+                    @finish="finish"></TheHelpStepperForDiary>
                 </div>
               </div>
               <keep-alive>
@@ -153,7 +155,8 @@ import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
 import { date } from "quasar";
 import BaseDialogTemplateViewer from "../components/dialogs/BaseDialogTemplateViewer.vue";
 import BaseTooltip from "../components/ui/BaseTooltip.vue";
-import BaseStepper from "../components/ui/BaseStepper.vue";
+import TheHelpStepperForHome from "../components/home/TheHelpStepperForHome.vue";
+import TheHelpStepperForDiary from "../components/diary/TheHelpStepperForDiary.vue";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>
@@ -176,14 +179,16 @@ export default {
         "box-shadow": "none",
       },
       templatesFabButton: false,
-      isShowingStepper: true,
+      isHelpForNotesVisible: true,
+      isHelpForDiaryVisible: true,
     };
   },
   components: {
     DialogNameAndCreate,
     BaseDialogTemplateViewer,
     BaseTooltip,
-    BaseStepper
+    TheHelpStepperForHome,
+    TheHelpStepperForDiary
   },
   mounted() {
     // sets our v-models initital value to the path of the url we are starting the app from
@@ -270,15 +275,29 @@ export default {
   },
   methods: {
     finish() {
-      this.isShowingStepper = false;
+      switch (this.currentRouterPath) { //
+        case "/home":
+          this.isHelpForNotesVisible = false;
+          break;
+        case "/diary":
+          this.isHelpForDiaryVisible = false;
+          break;
+        case "/event":
+          console.log("möpp");
+          break;
+        default:
+          break;
+      }
+
     },
     showHelp() {
-      this.isShowingStepper = !this.isShowingStepper;
-      switch (this.currentRouterPath) {
+      switch (this.currentRouterPath) { //
         case "/home":
+          this.isHelpForNotesVisible = !this.isHelpForNotesVisible;
           console.log("show help for notes");
           break;
         case "/diary":
+          this.isHelpForDiaryVisible = !this.isHelpForDiaryVisible;
           console.log("show help for diary");
           break;
         case "/event":

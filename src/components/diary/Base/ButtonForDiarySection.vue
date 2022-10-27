@@ -26,6 +26,10 @@ export default {
     size: {
       type: String,
       default: "10px"
+    },
+    isShowingLabel: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -37,7 +41,7 @@ export default {
       this.$emit("click-button", this.label);
     },
     getLabel(labelname) {
-      if (this.$q.screen.lt.sm === true && this.$store.state.data.isShowingLabelsForDiarySection) {
+      if (this.isShowingLabel) {
         return labelname;
       } else {
         return "";

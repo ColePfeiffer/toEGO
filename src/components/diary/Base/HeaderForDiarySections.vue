@@ -1,8 +1,8 @@
 <template>
   <div class="q-pt-md">
     <div class="row justify-between items-center no-wrap ">
-      <div class="col-8 smallText text-left text-white"
-        :style="$store.state.layout.headlineStyle">
+      <div class="col-8  text-left "
+        :style="$store.getters['layout/getStyleForDiarySectionHeadline']">
         <slot name="nameOfTitle">
         </slot>
       </div>

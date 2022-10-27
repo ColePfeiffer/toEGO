@@ -64,10 +64,7 @@ export default function () {
       "https://64.media.tumblr.com/8b250bb0b90cbb3667071d88f3555c70/tumblr_inline_n9qgx3Si4l1qak244.png",
     ],
     dialogWidth: "width: 300px;",
-    headlineStyle: {
-      color: "white",
-      "text-shadow": "var(--q-info) 2px 2px 2px",
-    },
+
     buttonFlatStyleTransparent: {
       "box-shadow": "none",
       "background-color": "transparent",

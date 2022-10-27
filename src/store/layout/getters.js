@@ -241,6 +241,23 @@ export const getStyleForHeadline = (state, getters) => {
   return style;
 };
 
+export const getStyleForDiarySectionHeadline = (state) => {
+  let style = {};
+  style["font-family"] = state.nonDefaultFont;
+  style["font-size"] = state.fontsize + "px";
+  style["color"] = "white";
+  style["text-shadow"] = "var(--q-info) 2px 2px 2px";
+  style["margin-top"] = "4px";
+  return style;
+};
+
+export const getStyleForDiarySectionButton = (state) => {
+  let style = {};
+  style["text-shadow"] = "var(--q-info) 2px 2px 2px";
+  style["font-family"] = state.nonDefaultFont;
+  return style;
+};
+
 export const getNonDefaultFont = (state) => {
   return { "font-family": state.nonDefaultFont };
 };

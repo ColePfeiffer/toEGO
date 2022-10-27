@@ -204,18 +204,16 @@
 
             <!-- DIARY SECTION FULLSCREEN -->
             <div v-if="isDiaryEntryShownInFullscreen"
-              class="q-pa-xs">
+              class="q-px-xs q-pt-md">
               <div class="row justify-end q-pb-md">
-                <div class="col-4 smallText text-right"></div>
-                <q-btn class="smallText text-right"
-                  flat
-                  dense
+                <div class="col-4  text-right"></div>
+                <ButtonForDiarySection textColor="white"
                   icon="bi-chevron-left"
                   label="back"
-                  color="white"
-                  size="10px"
-                  @click="exitFullscreen"
-                  :style="$store.state.layout.sTextAccentShadow"></q-btn>
+                  :isShowingLabel="true"
+                  class="text-right"
+                  :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                  @click-button="exitFullscreen"></ButtonForDiarySection>
               </div>
               <BaseCard :backgroundColor="getCardBackgroundColor"
                 class="text-justify">
@@ -247,6 +245,7 @@ import BasePage from "src/components/ui/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseCard from "src/components/ui/BaseCard.vue";
 import BaseTooltip from "src/components/ui/BaseTooltip.vue";
+import ButtonForDiarySection from "src/components/diary/Base/ButtonForDiarySection.vue";
 
 export default {
   name: "diary",
@@ -256,7 +255,8 @@ export default {
     BasePage,
     BaseButtonForTitleBar,
     BaseCard,
-    BaseTooltip
+    BaseTooltip,
+    ButtonForDiarySection
   },
   data() {
     return {
