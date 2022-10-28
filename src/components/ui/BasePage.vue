@@ -55,6 +55,8 @@
 
 <script>
 import BaseScrollArea from "./BaseScrollArea.vue";
+import { Platform } from 'quasar'
+
 
 export default {
   name: "BasePage",
@@ -88,6 +90,7 @@ export default {
     },
   },
   computed: {
+    //TODO: remove later, when developing as PWA
     getHeightForContent() {
       return { "height": this.heightForContent }
     },

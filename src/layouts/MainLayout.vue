@@ -2,53 +2,14 @@
   <q-layout view="hHh lpR fFf">
     <q-resize-observer @resize="onResize" />
     <!-- Dialogs -->
-    <DialogNameAndCreate @create="createTemplate"
-      @closeDialog="closeDialog">
-    </DialogNameAndCreate>
 
-    <BaseDialogTemplateViewer :type="type"
-      :templateList="templates"
-      @pasteTemplate="pasteTemplate"
-      @closeDialog="closeDialog">
-    </BaseDialogTemplateViewer>
-    <!-- Router-view -->
-    <q-page-container>
-      <q-page :style="$store.getters['layout/getStyleForPage']">
-        <div class="row justify-center"
-          :style="boxShadowStyle">
-          <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 ">
-            <router-view v-slot="{ Component }"
-              v-if="
-                $store.state.data.dialogSettings.isVisible == false ||
-                ($store.state.data.dialogSettings.isVisible == true &&
-                  $store.state.data.dialogSettings.isBackgroundVisible == true)
-              ">
-              <div class="row justify-center items-center align-center">
-                <div class="col-12">
-                  <TheHelpStepperForHome v-if="isHelpForNotesVisible && currentRouterPath === '/home'"
-                    @finish="finish"></TheHelpStepperForHome>
-                  <TheHelpStepperForDiary v-if="isHelpForDiaryVisible && currentRouterPath === '/diary'"
-                    @finish="finish"></TheHelpStepperForDiary>
-                </div>
-              </div>
-              <keep-alive>
-                <component :is="Component" />
-              </keep-alive>
-            </router-view>
-          </div>
-        </div>
-      </q-page>
-    </q-page-container>
     <!-- Bottom Navigation bar -->
     <q-footer v-if="
       ($store.state.data.dialogSettings.isVisible == false) |
       (($store.state.data.dialogSettings.isVisible == true) &
         ($store.state.data.dialogSettings.isBackgroundVisible == true))
-    "
-      elevated
-      class="primary">
+    ">
       <q-toolbar class="row items-center align-center justify-center navigation-toolbar">
-        <q-space />
         <q-btn-toggle v-model="navButtonToggleModel"
           class="items-center row justify-center navigation-toggle"
           flat
@@ -138,15 +99,46 @@
           </template>
 
         </q-btn-toggle>
-        <q-space />
-        <q-btn flat
-          v-if="false"
-          round
-          dense
-          icon="bi-gear"
-          class="q-mr-sm" />
       </q-toolbar>
     </q-footer>
+    <!-- Router-view -->
+    <q-page-container>
+      <q-page :style="$store.getters['layout/getStyleForPage']">
+        <DialogNameAndCreate @create="createTemplate"
+          @closeDialog="closeDialog">
+        </DialogNameAndCreate>
+        <BaseDialogTemplateViewer :type="type"
+          :templateList="templates"
+          @pasteTemplate="pasteTemplate"
+          @closeDialog="closeDialog">
+        </BaseDialogTemplateViewer>
+        <div class="row justify-center"
+          :style="boxShadowStyle">
+          <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 ">
+            <router-view v-slot="{ Component }"
+              v-if="
+                $store.state.data.dialogSettings.isVisible == false ||
+                ($store.state.data.dialogSettings.isVisible == true &&
+                  $store.state.data.dialogSettings.isBackgroundVisible == true)
+              ">
+              <div class="row justify-center items-center align-center">
+                <div class="col-12">
+                  <TheHelpStepperForHome v-if="isHelpForNotesVisible && currentRouterPath === '/home'"
+                    @finish="finish"></TheHelpStepperForHome>
+                  <TheHelpStepperForDiary v-if="isHelpForDiaryVisible && currentRouterPath === '/diary'"
+                    @finish="finish"></TheHelpStepperForDiary>
+                </div>
+              </div>
+              <keep-alive>
+                <component :is="Component" />
+              </keep-alive>
+            </router-view>
+          </div>
+        </div>
+      </q-page>
+
+    </q-page-container>
+
   </q-layout>
 </template>
 

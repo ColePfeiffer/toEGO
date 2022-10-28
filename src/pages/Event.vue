@@ -105,13 +105,29 @@
 
         <!-- Input: What happened -->
         <div class="col-12">
-          <BaseInput v-model="text"
+          <BaseInput v-if="!isShowingEditorForInput"
+            v-model="text"
             class="q-mb-lg"
             title="What happened?"
             autogrow
+            @click="testMe"
             :eventMode="getEventMode"
             :inputStyle="getInputStyleForWhatHappened">
           </BaseInput>
+          <div v-else>
+            <BaseEditor class="no-border-radius no-box-shadow"
+              ref="editorRef1"
+              v-model="editor"
+              minHeight="535px"
+              type="EVENT"
+              @show-dialog-template-creator="openDialogCreateTemplate"
+              @show-dialog-template-viewer="openDialogViewTemplates"
+              @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
+          </div>
+          <div class="q-mb-lg"
+            :style="getInputStyleForWhatHappened">What happened?</div>
+
+
         </div>
       </div>
       <!-- Content: Editor -->
@@ -161,6 +177,7 @@ export default {
   },
   data() {
     return {
+      isShowingEditorForInput: false,
       isShowingEditor: false,
       editor: this.$store.state.data.eventData.editor,
       title: this.$store.state.data.eventData.title,
@@ -188,6 +205,10 @@ export default {
     }
   },
   methods: {
+    testMe() {
+      console.log("OK HMMM click", this.isShowingEditorForInput);
+      this.isShowingEditorForInput = !this.isShowingEditorForInput;
+    },
     setEventData() {
       this.editor = this.$store.state.data.eventData.editor;
       this.title = this.$store.state.data.eventData.title;
