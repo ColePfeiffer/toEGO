@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-resize-observer @resize="onResize" />
+  <q-layout view="hHh lpR fFf"
+    :style="$store.getters['layout/getStyleForLayout']">
     <!-- Dialogs -->
 
     <!-- Bottom Navigation bar -->
@@ -314,9 +314,7 @@ export default {
         this.toggleFabButton();
       }
     },
-    onResize(size) {
-      this.$store.commit("layout/setSize", size);
-    },
+
     isNavigationSetTo(path) {
       let test = this.currentRouterPath.substring(1).toLowerCase();
       if (test === path) {

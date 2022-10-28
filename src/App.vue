@@ -1,11 +1,19 @@
 <template>
+  <q-resize-observer @resize="onResize" />
   <router-view />
+
 </template>
 
 <script>
 
 export default {
   name: "App",
+  methods: {
+    onResize(size) {
+      console.log(size.height, size.width);
+      this.$store.commit("layout/setSize", size);
+    },
+  }
 };
 </script>
 

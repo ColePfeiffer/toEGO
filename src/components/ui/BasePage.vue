@@ -1,62 +1,58 @@
 <template>
-  <q-page>
-    <div class="row justify-center items-center q-pa-md q-pt-lg">
-      <!-- Header / Titlebar-->
-      <div class="title-bar col-md-11 col-12 row justify-center shadow-1"
-        :style="$store.getters['layout/getStyleForTitleBar'](mode)">
-        <slot name="titlebar">
-          <div class="title-bar-text"
-            :style="getMargin">
-            <div class="q-pr-lg row justify-between items-center no-wrap"
-              :style="getPadding">
-              <slot name="title-bar-icon"
-                class="q-pl-xl"></slot>
-              <slot name="title">
-                <div class="q-pl-sm">
-                  {{ titleOfPage }}
-                </div>
-              </slot>
-            </div>
+  <div class="row justify-center items-center q-pa-md q-pt-lg">
+    <!-- Header / Titlebar-->
+    <div class="title-bar col-md-11 col-12 row justify-center shadow-1"
+      :style="$store.getters['layout/getStyleForTitleBar'](mode)">
+      <slot name="titlebar">
+        <div class="title-bar-text"
+          :style="getMargin">
+          <div class="q-pr-lg row justify-between items-center no-wrap"
+            :style="getPadding">
+            <slot name="title-bar-icon"
+              class="q-pl-xl"></slot>
+            <slot name="title">
+              <div class="q-pl-sm">
+                {{ titleOfPage }}
+              </div>
+            </slot>
           </div>
-          <div class="title-bar-controls"
-            :style="getMargin">
-            <slot name="title-bar-controls"></slot>
-          </div>
+        </div>
+        <div class="title-bar-controls"
+          :style="getMargin">
+          <slot name="title-bar-controls"></slot>
+        </div>
+      </slot>
+    </div>
+
+
+    <!-- Content -->
+    <div class="col-md-11 col-12 q-mt-sm shadow-2"
+      :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
+      <div :style="getHeightForContent">
+        <q-resize-observer @resize="onResize" />
+        <slot name="content-without-scrollarea">
+          <BaseScrollArea :style="getStyleForScrollArea"
+            :positionToTheRight="1">
+            <template v-slot:content>
+              <slot name="content"></slot>
+            </template>
+          </BaseScrollArea>
         </slot>
       </div>
 
+    </div>
 
-      <!-- Content -->
-      <div class="col-md-11 col-12 q-mt-sm shadow-2"
-        :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
-        <div :style="getHeightForContent">
-          <q-resize-observer @resize="onResize" />
-          <slot name="content-without-scrollarea">
-            <BaseScrollArea :style="getStyleForScrollArea"
-              :positionToTheRight="1">
-              <template v-slot:content>
-                <slot name="content"></slot>
-              </template>
-            </BaseScrollArea>
-          </slot>
-        </div>
-
-      </div>
-
-      <!-- Footer / Buttons -->
-      <div class="col-md-11 col-12 q-mt-md">
-        <div class="row justify-end items-center no-wrap">
-          <slot name="footer"></slot>
-        </div>
+    <!-- Footer / Buttons -->
+    <div class="col-md-11 col-12 q-mt-md">
+      <div class="row justify-end items-center no-wrap">
+        <slot name="footer"></slot>
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
 import BaseScrollArea from "./BaseScrollArea.vue";
-import { Platform } from 'quasar'
-
 
 export default {
   name: "BasePage",

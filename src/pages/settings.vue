@@ -1,56 +1,53 @@
 <template>
-  <q-page>
-    <BasePage titleOfPage="Settings"
-      mode="default"
-      heightForContent="77vh"
-      :isUsingBackgroundColorAsDefaultColor="true"
-      backgroundColor="white">
-      <template v-slot:title-bar-icon>
-        <div style="padding: 4px">
-          <q-icon name="bi-menu-button-wide-fill"
-            size="19px" />
-        </div>
-      </template>
-      <template v-slot:title-bar-controls></template>
-      <template v-slot:content-without-scrollarea>
-        <div :style="getBackgroundColor"
-          class="fit no-margin">
-          <q-tabs v-model="settingsTab"
-            :style="getStyleForTabsNavigation"
-            dense
-            indicator-color="accent"
-            align="justify"
-            no-caps
-            narrow-indicator>
-            <q-tab name="view"
-              label="Design" />
-            <q-tab name="other"
-              label="Page Layout" />
-          </q-tabs>
+  <BasePage titleOfPage="Settings"
+    mode="default"
+    heightForContent="77vh"
+    :isUsingBackgroundColorAsDefaultColor="true"
+    backgroundColor="white">
+    <template v-slot:title-bar-icon>
+      <div style="padding: 4px">
+        <q-icon name="bi-menu-button-wide-fill"
+          size="19px" />
+      </div>
+    </template>
+    <template v-slot:title-bar-controls></template>
+    <template v-slot:content-without-scrollarea>
+      <div :style="getBackgroundColor"
+        class="fit no-margin">
+        <q-tabs v-model="settingsTab"
+          :style="getStyleForTabsNavigation"
+          dense
+          indicator-color="accent"
+          align="justify"
+          no-caps
+          narrow-indicator>
+          <q-tab name="view"
+            label="Design" />
+          <q-tab name="other"
+            label="Page Layout" />
+        </q-tabs>
 
-          <BaseScrollArea :style="styleForScrollArea">
-            <template v-slot:content>
-              <q-tab-panels v-model="settingsTab"
-                animated>
-                <q-tab-panel name="view">
-                  <DesignSettings></DesignSettings>
-                </q-tab-panel>
+        <BaseScrollArea :style="styleForScrollArea">
+          <template v-slot:content>
+            <q-tab-panels v-model="settingsTab"
+              animated>
+              <q-tab-panel name="view">
+                <DesignSettings></DesignSettings>
+              </q-tab-panel>
 
-                <q-tab-panel name="other">
-                  <PageSettings></PageSettings>
-                </q-tab-panel>
-              </q-tab-panels>
-            </template>
+              <q-tab-panel name="other">
+                <PageSettings></PageSettings>
+              </q-tab-panel>
+            </q-tab-panels>
+          </template>
 
-          </BaseScrollArea>
+        </BaseScrollArea>
 
-        </div>
+      </div>
 
-      </template>
-      <template v-slot:footer></template>
-    </BasePage>
-
-  </q-page>
+    </template>
+    <template v-slot:footer></template>
+  </BasePage>
 </template>
 
 <script>

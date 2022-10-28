@@ -76,11 +76,10 @@ export const getDiaryBackgroundColor = (state, getters) => {
   }
 };
 
-export const getStyleForPage = (state) => {
+export const getStyleForLayout = (state) => {
   let style = {};
   let background = state.backgroundImageURL;
 
-  style["font-family"] = state.defaultFont;
   if (background != "none") {
     style["background"] = background;
   } else {
@@ -90,6 +89,12 @@ export const getStyleForPage = (state) => {
   style["margin"] = "auto";
   style["padding"] = "auto";
 
+  return style;
+};
+
+export const getStyleForPage = (state) => {
+  let style = {};
+  style["font-family"] = state.defaultFont;
   return style;
 };
 
