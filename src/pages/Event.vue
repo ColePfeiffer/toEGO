@@ -91,43 +91,36 @@
           </q-btn-toggle>
         </div>
         <!-- Input: Title -->
-        <div class="col-12">
-          <BaseInput class="q-mb-md q-mt-sm"
+        <div class="col-12 q-mb-md q-mt-sm">
+          <q-input class="no-border-radius no-box-shadow"
+            color="secondary"
             v-model="title"
-            title="Title"
+            label="Title"
             autofocus
-            :eventMode="getEventMode"
-            :inputStyle="getInputStyleForTitle"
+            borderless
+            stack-label
+            :label-color="labelColor"
+            @focus="setFocus"
+            @blur="loseFocus"
+            :style="getStyleForInput"
+            :input-style="getInputStyleForTitle"
+            hide-bottom-space
             :rules="[
               (val) => val.length <= 50 || 'Please use maximum 50 characters',
-            ]"></BaseInput>
+            ]" />
         </div>
 
         <!-- Input: What happened -->
-        <div class="col-12">
-          <BaseInput v-if="!isShowingEditorForInput"
-            v-model="text"
-            class="q-mb-lg"
-            title="What happened?"
-            autogrow
-            @click="testMe"
-            :eventMode="getEventMode"
-            :inputStyle="getInputStyleForWhatHappened">
-          </BaseInput>
-          <div v-else>
-            <BaseEditor class="no-border-radius no-box-shadow"
-              ref="editorRef1"
-              v-model="editor"
-              minHeight="535px"
-              type="EVENT"
-              @show-dialog-template-creator="openDialogCreateTemplate"
-              @show-dialog-template-viewer="openDialogViewTemplates"
-              @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
-          </div>
-          <div class="q-mb-lg"
-            :style="getInputStyleForWhatHappened">What happened?</div>
-
-
+        <div class="col-12 q-mb-lg"
+          :style="getInputStyleForWhatHappened">
+          <BaseEditor class="no-border-radius no-box-shadow"
+            ref="editorRef1"
+            v-model="editor"
+            minHeight="250px"
+            type="EVENT"
+            @show-dialog-template-creator="openDialogCreateTemplate"
+            @show-dialog-template-viewer="openDialogViewTemplates"
+            @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
         </div>
       </div>
       <!-- Content: Editor -->
@@ -163,7 +156,6 @@ import BasePage from "src/components/ui/BasePage.vue";
 import BaseEditor from "src/components/ui/BaseEditor.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
-import BaseInput from "src/components/ui/BaseInput.vue";
 import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 
 export default {
@@ -172,11 +164,11 @@ export default {
     BaseEditor,
     BaseButtonForTitleBar,
     BaseButtonForDialogFooter,
-    BaseInput,
     BaseTooltip
   },
   data() {
     return {
+      labelColor: 'lightgrey',
       isShowingEditorForInput: false,
       isShowingEditor: false,
       editor: this.$store.state.data.eventData.editor,
@@ -205,6 +197,14 @@ export default {
     }
   },
   methods: {
+    // for Input
+    setFocus() {
+      this.labelColor = "darkgrey";
+    },
+    loseFocus() {
+      this.labelColor = "lightgrey";
+    },
+
     testMe() {
       console.log("OK HMMM click", this.isShowingEditorForInput);
       this.isShowingEditorForInput = !this.isShowingEditorForInput;
@@ -295,6 +295,21 @@ export default {
 
   },
   computed: {
+    getStyleForInput() {
+      let style = {};
+      style["font-size"] = this.$store.state.layout.fontsize + "px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["width"] = this.$store.state.layout.innerWidth * 0.8 + "px";
+      style["padding"] = "0 12px";
+      style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
+      style["border-radius"] = "0px";
+      if (this.eventMode === "default") {
+        style["background-color"] = "transparent";
+      } else {
+        style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
+      }
+      return style;
+    },
     pastedText() {
       return this.$store.state.data.pastedText;
     },
@@ -343,12 +358,12 @@ export default {
     },
     getInputStyleForWhatHappened() {
       let style = {};
-      style["min-height"] = this.$store.state.layout.height * 0.4 + "px";
-      style["font-size"] = "12.5px";
+
+      style["font-size"] = this.$store.state.layout.fontsize + "px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["color"] = this.$store.getters[
-        "layout/getColorBasedOnBackgroundColor"
-      ](this.$store.state.layout.eventInputBackgroundColor);
+      style["width"] = this.$store.state.layout.innerWidth * 0.8 + "px";
+
+      style["min-height"] = this.$store.state.layout.height * 0.4 + "px";
       return style;
     },
     getBackgroundColor() {
