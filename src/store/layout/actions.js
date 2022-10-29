@@ -5,6 +5,10 @@ export function changeFontsize(context, fontsize) {
   context.commit("setFontsize", fontsize);
 }
 
+export function setSize(context, size) {
+  context.commit("setSize", size);
+}
+
 export function setSecondaryColor({ commit, dispatch }, color) {
   commit("setSecondary", color);
   dispatch("setShadowForTitle");

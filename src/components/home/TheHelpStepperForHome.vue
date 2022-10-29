@@ -1,5 +1,6 @@
 <template>
-    <BaseStepper :step="step"
+    <BaseStepper :style="getStyle"
+        :step="step"
         :numberOfSteps="numberOfSteps"
         @go-step-forward="goStepForward"
         @go-step-backward="goStepBackward"
@@ -33,7 +34,7 @@
         </template>
         <template v-slot:step-content>
             <!-- Step 1: Welcome to toEGO -->
-            <div class="col-12 q-pa-md"
+            <div class="col-12 "
                 v-if="step === 1">
                 <div class="text-justify">
                     Hi!
@@ -45,10 +46,10 @@
                 </div>
             </div>
             <!-- Step 2: What are Notes? -->
-            <div class="col-12 q-pa-md"
+            <div class="col-12 "
                 v-else-if="step === 2">
                 <div>
-                    <span style="font-size: 14px; font-weight: 600;">Notes are used to keep track of</span>
+                    Notes are used to keep track of
 
                     <ul style="list-style: none">
                         <li>
@@ -66,10 +67,10 @@
                 </div>
             </div>
             <!-- Step 3: Create a Note -->
-            <div class="col-12 q-px-md q-pb-md"
+            <div class="col-12 "
                 v-else-if="step === 3">
                 <div>
-                    <span style="font-size: 14px; font-weight: 600;">Create a note via</span>
+                    Create a note by clicking on
                     <ul style="list-style: none">
                         <li>
                             <q-btn size="8px"
@@ -97,7 +98,7 @@
                 </div>
             </div>
             <!-- Step 4: Message to Myself -->
-            <div class="col-12 q-px-md "
+            <div class="col-12 "
                 v-else-if="step === 4">
                 Have you spotted
                 <q-btn size="8px"
@@ -106,27 +107,25 @@
                     unelevated
                     color="secondary"
                     icon="bi-envelope"
-                    class="text-white q-mr-sm"></q-btn>?
-                <div class="q-mt-md q-mb-md">There you can leave <span
-                        style="font-size: 14px; font-weight: 600;">messages for yourself</span> via the
-                    <q-btn size="8px"
-                        round
-                        padding="4px"
-                        color="transparent"
-                        text-color="secondary"
-                        unelevated
-                        icon="bi-pencil-square"
-                        class="text-secondary q-mx-xs"></q-btn> symbol.
-                </div>
+                    class="text-white q-mr-sm"></q-btn>? There you can leave <span
+                    style="font-size: 14px; font-weight: 600;">messages for yourself</span> via the
+                <q-btn size="8px"
+                    round
+                    padding="4px"
+                    color="transparent"
+                    text-color="secondary"
+                    unelevated
+                    icon="bi-pencil-square"
+                    class="text-secondary q-mx-xs"></q-btn> symbol. I use it for writing...
                 <div class="q-mt-md q-mb-md">
-                    I use it for writing down...
-                    <ul>
+
+                    <ul style="list-style: none">
                         <li>
-                            a <span :style="getStyleForEmphasisedText">goal</span> or an <span
+                            - a <span :style="getStyleForEmphasisedText">goal</span> or an <span
                                 :style="getStyleForEmphasisedText">important task</span>
                         </li>
                         <li>
-                            a positive <span :style="getStyleForEmphasisedText">reminder</span>
+                            - a positive <span :style="getStyleForEmphasisedText">reminder</span>
                             <q-icon class="q-ml-md"
                                 color="secondary"
                                 name="bi-suit-heart" />
@@ -179,31 +178,11 @@ export default {
             //style["text-shadow"] = this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity + " 2px 2px 2px"
             return style;
         },
+        getStyle() {
+            let style = {};
+            style["height"] = this.$store.state.layout.height * 0.5 + "px";
+            return style;
+        }
     }
 };
 </script>
-
-<style lang="sass">
-.my-stepper
-  .q-stepper__nav
-    padding-top: 0px
-    padding-bottom: 5px
-
-.my-stepper
-  .q-stepper__step-inner
-    padding: 0px
-.stepper-container 
-    position: absolute
-    z-index: 1
-    left: 50%
-
-
-
-.close-button-for-stepper
-    margin-top: 25px
-    margin-right: 20px
-    padding: 10px
-    z-index: 1
-    
-
-</style>

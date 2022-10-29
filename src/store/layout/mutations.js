@@ -121,7 +121,12 @@ export const setSize = (state, size) => {
   state.height = size.height;
 };
 
-export const setInnerSize = (state, size) => {
-  state.innerWidth = size.width;
-  state.innerHeight = size.height;
+export const setInnerHeight = (state, height) => {
+  state.innerHeight = height;
+  console.log("setting inner height ", height);
+};
+
+export const setInnerWidth = (state, width) => {
+  state.innerWidth = width;
+  console.log("setting inner width ", width);
 };

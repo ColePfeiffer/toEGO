@@ -1,9 +1,11 @@
 <template>
-    <div class="q-px-md q-mt-xl q-pt-lg stepper-container"
+    <div class="q-px-sm q-mt-xl q-pt-lg stepper-container"
         :style="getStepperStyle">
+
         <q-stepper v-model="computedStep"
             class="my-stepper"
             vertical
+            padding="xs"
             ref="stepper"
             color="primary"
             done-color="secondary"
@@ -22,10 +24,16 @@
 
             </slot>
 
-            <div class="q-pa-md row justify-center items-center">
-                <slot name="step-content">
-                </slot>
+            <BaseScrollArea :style="getStyleForScrollArea">
+                <template v-slot:content>
+                    <div class="q-pt-sm   row justify-center items-center">
+                        <slot name="step-content">
+                        </slot>
+                    </div>
+                </template>
+            </BaseScrollArea>
 
+            <div class="q-pt-md   row justify-center items-center">
                 <div class="col-12">
                     <slot name="stepper-navigation">
                         <q-stepper-navigation>
@@ -44,11 +52,11 @@
                                     v-else>
                                 </div>
                                 <q-btn v-if="step != numberOfSteps"
-                                    class="col-3 q-mr-sm"
+                                    class="col-3"
                                     @click="goStepForward"
                                     color="primary"
                                     label="Next" />
-                                <q-btn class="col-3 q-mr-sm"
+                                <q-btn class="col-3"
                                     v-else
                                     @click="finish"
                                     color="primary"
@@ -59,26 +67,30 @@
                 </div>
             </div>
         </q-stepper>
+
+
+
     </div>
 </template>
 
 <script>
+import BaseScrollArea from "../ui/BaseScrollArea.vue";
+
 export default {
     name: "BaseStepper",
     emits: ["go-step-forward", "go-step-backward", "finish"],
+    components: { BaseScrollArea },
     props: {
         numberOfSteps: Number,
         step: Number
     },
     data() {
-        return {
-        }
+        return {};
     },
     methods: {
         goStepForward() {
             if (this.step != this.numberOfSteps) {
                 this.$emit("go-step-forward");
-
             }
         },
         goStepBack() {
@@ -91,13 +103,18 @@ export default {
         }
     },
     computed: {
+        getStyleForScrollArea() {
+            let style = {};
+            style['height'] = this.$store.state.layout.height * 0.22 + "px";
+            return style;
+        },
         getStepperStyle() {
             let style = {};
             let width = this.$store.state.layout.innerWidth;
+            //style["height"] = this.$store.state.layout.height * 0.7 + "px";
             style["font-family"] = "Inter";
-            style["min-height"] = "400px";
             style["width"] = width + "px";
-            style["margin-left"] = -width / 2 + "px"
+            style["margin-left"] = -width / 2 + "px";
             return style;
         },
         computedStep: {
@@ -107,7 +124,8 @@ export default {
             set() {
             }
         }
-    }
+    },
+
 };
 </script>
 
@@ -115,23 +133,37 @@ export default {
 .my-stepper
   .q-stepper__nav
     padding-top: 0px
-    padding-bottom: 5px
+
+.my-stepper
+    padding-top: 12px
+    padding-bottom: 12px
+    padding-left: 30px
+    padding-right: 25px
+    
 
 .my-stepper
   .q-stepper__step-inner
     padding: 0px
+
+.my-stepper
+    .q-stepper__tab    
+        padding-left: 0px
+        padding-right: 0px
+        padding-top: 10px
+        padding-bottom: 10px
+   
 .stepper-container 
     position: absolute
-    z-index: 1
+    z-index: 2
     left: 50%
 
 
 
 .close-button-for-stepper
     margin-top: 25px
-    margin-right: 20px
+    margin-right: 7px
     padding: 10px
-    z-index: 1
+    z-index: 2
     
 
 </style>

@@ -1,7 +1,6 @@
 <template>
   <BasePage titleOfPage="Diary"
     :mode="diaryMode"
-    heightForContent="77vh"
     :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
     <template v-if="isDiaryTitlebarShowingDay"
       v-slot:titlebar>
@@ -320,6 +319,11 @@ export default {
     },
   },
   computed: {
+    getStyleForDiaryContainer() {
+      let style = {};
+      style['height'] = this.$store.state.layout.height * 0.55 + "px";
+      return style;
+    },
     getEventCount() {
       if (this.getDiaryEntry != undefined) {
         return this.getDiaryEntry.events.length;
@@ -330,7 +334,7 @@ export default {
     },
     getStyleForSplitter() {
       let style = {};
-      style["height"] = "77vh";
+      style['height'] = this.$store.state.layout.height * 0.74 + "px";
       return style;
     },
     getStyleForSplitterSeparator() {
@@ -339,7 +343,7 @@ export default {
         if (this.viewingMode === 'edit') {
           style["display"] = "none";
         } else {
-          style["color"] = "red";
+          style["z-index"] = "1";
         }
       } else {
         style["display"] = "none";

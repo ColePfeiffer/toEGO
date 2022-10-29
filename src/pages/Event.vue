@@ -343,7 +343,7 @@ export default {
     },
     getInputStyleForWhatHappened() {
       let style = {};
-      style["min-height"] = this.$store.state.layout.innerHeight * 0.4 + "px";
+      style["min-height"] = this.$store.state.layout.height * 0.4 + "px";
       style["font-size"] = "12.5px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["color"] = this.$store.getters[

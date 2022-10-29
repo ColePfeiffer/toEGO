@@ -28,17 +28,16 @@
     <!-- Content -->
     <div class="col-md-11 col-12 q-mt-sm shadow-2"
       :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
-      <div :style="getHeightForContent">
-        <q-resize-observer @resize="onResize" />
-        <slot name="content-without-scrollarea">
-          <BaseScrollArea :style="getStyleForScrollArea"
-            :positionToTheRight="1">
-            <template v-slot:content>
-              <slot name="content"></slot>
-            </template>
-          </BaseScrollArea>
-        </slot>
-      </div>
+
+      <q-resize-observer @resize="onResize" />
+      <slot name="content-without-scrollarea">
+        <BaseScrollArea :style="getStyleForScrollArea"
+          :positionToTheRight="1">
+          <template v-slot:content>
+            <slot name="content"></slot>
+          </template>
+        </BaseScrollArea>
+      </slot>
 
     </div>
 
@@ -68,9 +67,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    heightForContent: {
-      type: String,
-      default: "70vh",
+    heightForContentMultiplier: {
+      type: Number,
+      default: 0.72,
     }
   },
   data() {
@@ -81,22 +80,24 @@ export default {
   methods: {
     onResize(size) {
       if (size.height != 0) {
-        this.$store.commit("layout/setInnerSize", size);
+        if (this.$store.state.layout.width != size.width) {
+          console.log("stored width: ", this.$store.state.layout.width);
+          console.log("new width: ", size.width);;
+          this.$store.commit("layout/setInnerWidth", size.width);
+        }
       }
     },
   },
   computed: {
-    //TODO: remove later, when developing as PWA
-    getHeightForContent() {
-      return { "height": this.heightForContent }
-    },
     getStyleForScrollArea() {
       let style = {};
-      style["height"] = this.$store.state.layout.innerHeight * .97 + "px";
+      style["height"] = this.$store.state.layout.height * this.heightForContentMultiplier + "px";
       if (this.mode === 'retro') {
         style["margin-top"] = "6px";
+        style["margin-bottom"] = "6px";
       } else {
         style["margin-top"] = "0px";
+        style["margin-bottom"] = "0px";
       }
       return style;
     },

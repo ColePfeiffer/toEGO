@@ -1,7 +1,6 @@
 <template>
   <BasePage titleOfPage="Settings"
     mode="default"
-    heightForContent="77vh"
     :isUsingBackgroundColorAsDefaultColor="true"
     backgroundColor="white">
     <template v-slot:title-bar-icon>
@@ -66,9 +65,10 @@ export default {
   computed: {
     styleForScrollArea() {
       let style = {};
-      style['height'] = this.$store.state.layout.innerHeight * 0.96 + "px";
+
+      style['height'] = this.$store.state.layout.height * .7 + "px";
       if (this.$store.getters['layout/isDarkModeActive']) {
-        style["background-color"] = "black";
+        style["background-color"] = this.$store.state.layout.blacksmoke;
       } else {
         style["background-color"] = "white";
       }

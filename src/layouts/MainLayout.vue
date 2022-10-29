@@ -103,7 +103,8 @@
     </q-footer>
     <!-- Router-view -->
     <q-page-container>
-      <q-page :style="$store.getters['layout/getStyleForPage']">
+      <q-page class="test3"
+        :style="$store.getters['layout/getStyleForPage']">
         <DialogNameAndCreate @create="createTemplate"
           @closeDialog="closeDialog">
         </DialogNameAndCreate>
@@ -386,6 +387,11 @@ export default {
 </script>
 
 <style lang="sass">
+
+.test3
+  margin: 0
+  height: 100%
+  overflow: hidden
 
 .navigation-bar-fab-button
   padding-top: 7px

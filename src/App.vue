@@ -11,7 +11,10 @@ export default {
   methods: {
     onResize(size) {
       console.log(size.height, size.width);
-      this.$store.commit("layout/setSize", size);
+      this.$store.dispatch(
+        "layout/setSize",
+        size
+      );
     },
   }
 };

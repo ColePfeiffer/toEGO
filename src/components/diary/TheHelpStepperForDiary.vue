@@ -14,19 +14,18 @@
                 :done="getDoneFor(1)">
             </q-step>
             <q-step :name="2"
-                title="Writing a diary entry"
-                caption="Part 1"
+                title="Diary's Buttons"
                 icon="bi-plus-lg"
                 :done="getDoneFor(2)">
             </q-step>
             <q-step :name="3"
                 title="Writing a diary entry"
-                caption="Part 2"
                 icon="bi-plus-lg"
                 :done="getDoneFor(3)">
             </q-step>
             <q-step :name="4"
                 title="Navigating your diary"
+                caption="Titlebar's Buttons"
                 icon="bi-sticky"
                 :done="getDoneFor(4)">
             </q-step>
@@ -35,7 +34,7 @@
         </template>
         <template v-slot:step-content>
             <!-- Step 1 -->
-            <div class="col-12 q-px-md q-pb-md"
+            <div class="col-12 "
                 v-if="step === 1">
                 <div class="text-justify">
                     This is where you can look through your diary, where you get to plan and review.
@@ -54,10 +53,10 @@
                 </div>
             </div>
             <!-- Step 2 -->
-            <div class="col-12 q-px-md q-pb-md"
+            <div class="col-12"
                 v-else-if="step === 2">
                 <div>
-                    <span style="font-size: 14px; font-weight: 600;">Buttons</span>
+
                     <ul style="list-style: none">
                         <li class="list-item">
                             <q-btn size="10px"
@@ -107,10 +106,9 @@
 
             </div>
             <!-- Step 3 -->
-            <div class="col-12 q-px-md q-pb-md"
+            <div class="col-12 "
                 v-else-if="step === 3">
                 <div>
-                    <span style="font-size: 14px; font-weight: 600;">What to write about?</span>
                     <p>
                         Notes you create during the day will show up in your diary.<br>
                     <ul style="list-style: none">
@@ -130,7 +128,6 @@
             <!-- Step 4 -->
             <div class="col-12 q-px-md q-pb-md"
                 v-else-if="step === 4">
-                <span style="font-size: 14px; font-weight: 600;">Titlebar's buttons</span>
                 <div class="q-mt-md">
                     <ul style="list-style: none">
                         <li>
@@ -231,27 +228,6 @@ export default {
 </script>
 
 <style lang="sass">
-.my-stepper
-  .q-stepper__nav
-    padding-top: 0px
-    padding-bottom: 5px
-
-.my-stepper
-  .q-stepper__step-inner
-    padding: 0px
-.stepper-container 
-    position: absolute
-    z-index: 1
-    left: 50%
-
-
-
-.close-button-for-stepper
-    margin-top: 25px
-    margin-right: 20px
-    padding: 10px
-    z-index: 1
-    
 .list-item
     margin-bottom: 6px
 
