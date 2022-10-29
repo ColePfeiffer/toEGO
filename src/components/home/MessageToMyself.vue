@@ -120,10 +120,9 @@ export default {
       this.$emit("hide-message");
     },
     createNewNote() {
-      this.$store.commit("data/updateEditor", ""); //TODO: remove
+      this.$store.commit("data/updateEditor", this.editableMessageToMyself);
       this.$store.commit("data/updateTitle", "Message to Myself");
       this.$store.commit("data/updateMood", "bi-envelope");
-      this.$store.commit("data/updateText", this.editableMessageToMyself);
 
       this.$store.commit("data/addEventToEvents", new Date());
 

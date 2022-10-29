@@ -151,7 +151,7 @@ export default function () {
             methods: [],
             mood: "las la-grin",
             tags: "",
-            text: "bop",
+            editor: "Read a book. I'm very smart now.",
             title: "biep",
           },
         ],

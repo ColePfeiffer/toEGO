@@ -35,34 +35,25 @@
         <!-- Expanded: False -->
         <q-card-section v-if="!eventData.expanded"
           class="row justify-left items-center">
-          <div v-if="eventData.text.length >= maxLengthOfCardText">
+          <div v-if="eventData.editor.length >= maxLengthOfCardText">
             <!-- Text is shortened -->
-            {{ eventData.text.substring(0, this.maxLengthOfCardText) + "..." }}
+            <div style="white-space: pre-wrap"
+              v-html="eventData.editor.substring(0, this.maxLengthOfCardText) + '...'">
+            </div>
           </div>
           <!-- Text can be used as is -->
           <div v-else>
-            {{ eventData.text }}
+            <div style="white-space: pre-wrap"
+              v-html="eventData.editor">
+            </div>
           </div>
-          <!-- Indicator whether or not this event holds editor-content -->
-          <span v-if="!isEventEditorEmpty"
-            class="q-ml-xs"
-            style="color: var(--q-secondary)">
-            (<q-icon size="22.5px"
-              name="bi-three-dots"
-              text-color="secondary"
-              color="secondary">
-            </q-icon>)
-          </span>
         </q-card-section>
         <!-- Expanded: True -->
         <div v-else>
-          <!-- Full event text + editor content (if not empty)-->
+          <!-- Full event text -->
           <q-card-section>
             <!-- Event text -->
-            <span style="white-space: pre-wrap"> {{ eventData.text }} </span>
-            <!-- If Editor isn't empty, show content here -->
-            <div v-if="!isEventEditorEmpty"
-              style="white-space: pre-wrap"
+            <div style="white-space: pre-wrap"
               v-html="eventData.editor">
             </div>
           </q-card-section>
@@ -159,9 +150,9 @@ export default {
       this.$emit("changeEventData", this.eventData);
     },
     mergeText(eventData) {
-      let output = eventData.text;
+      let output = eventData.editor;
       // check if text is empty; if so show title
-      if (eventData.text == "") {
+      if (eventData.editor == "") {
         output = eventData.title;
         // später löschen, nur zum testen
         //output = this.lorem;

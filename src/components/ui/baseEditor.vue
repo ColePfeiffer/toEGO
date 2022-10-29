@@ -1,7 +1,7 @@
 <template>
   <q-editor ref="editorRef"
     class="editor text-justify"
-    :content-style="getStyleForEditor"
+    :content-style="getStyleForEditorContent"
     :style="getStyleForEditor"
     :toolbar-text-color="$store.getters['layout/getToolbarIconColor']"
     :toolbar-color="$store.getters['layout/getToolbarIconColor']"
@@ -16,17 +16,6 @@
       times_new_roman: 'Times New Roman',
       verdana: 'Verdana',
     }">
-    <template v-slot:fullscreenButton>
-      <q-btn flat
-        no-wrap
-        icon="bi-fullscreen"
-        :style="$store.state.layout.buttonFlatOnlyIcon"
-        :ripple="false"
-        :text-color="$store.getters['layout/getToolbarIconColor']"
-        size="xs"
-        @click="toggleFullscreen">
-      </q-btn>
-    </template>
 
     <template v-slot:placeholderElementSmall>
       <div class="placeholderElementContainer">
@@ -35,71 +24,100 @@
       </div>
     </template>
 
-    <template v-slot:toggleMoreOptionsButton>
-      <BaseButtonForDialogFooter :buttonText="getLabelForToggleToolbarButton"
-        :hasShadow="false"
-        @click-button="changeToolbarMode">>
-      </BaseButtonForDialogFooter>
-
+    <template v-slot:breakLine>
+      <span class="break-line"
+        style="flex-basis:100%; height:0; margin:0; padding:0"></span>
     </template>
 
-    <template v-slot:templatesMenuButton>
-      <BaseButtonForDialogFooter buttonText="Templates"
-        :hasShadow="false">
-        <template v-slot:content>
-          <q-menu>
-            <q-list style="min-width: 100px">
-              <q-item clickable
-                v-close-popup
-                @click="openDialogViewTemplates">
-                <q-item-section>Show Templates</q-item-section>
-              </q-item>
-              <q-item clickable
-                v-close-popup
-                @click="openDialogCreateTemplate">
-                <q-item-section>Save as new template</q-item-section>
-              </q-item>
-              <q-separator />
+    <template v-slot:title>
+      <div class="row justify-between  items-center no-wrap"
+        :style="styleForToolbarGroupTitle">
+        <div class="col"
+          :style="getStyleForTitle">
+          {{ editorTitle }}
+        </div>
+        <div class="col">
+          <div class="row justify-end">
+            <q-btn flat
+              no-wrap
+              icon="bi-file-earmark-font"
+              :style="$store.state.layout.buttonFlatOnlyIcon"
+              :ripple="false"
+              :text-color="$store.getters['layout/getToolbarIconColor']"
+              size="xs">
+              <q-menu>
+                <q-list style="min-width: 100px">
+                  <q-item clickable
+                    v-close-popup
+                    @click="openDialogViewTemplates">
+                    <q-item-section>Show Templates</q-item-section>
+                  </q-item>
+                  <q-item clickable
+                    v-close-popup
+                    @click="openDialogCreateTemplate">
+                    <q-item-section>Save as new template</q-item-section>
+                  </q-item>
+                  <q-separator />
 
-              <q-item clickable
-                :style="pasteQuicklistTextStyle"
-                :disable="isQuicklistDisabled">
-                <q-item-section>Paste Quick-List</q-item-section>
-                <q-item-section side>
-                  <q-icon name="bi-chevron-down"
-                    size="15px" />
-                </q-item-section>
-                <!-- Submenu -->
-                <q-menu auto-close>
-                  <q-list>
-                    <q-item v-for="template in $store.getters[
-                      'data/getQuickListContent'
-                    ](type)"
-                      :key="template"
-                      dense
-                      clickable
-                      @click="pasteTemplateFromQuicklist(template)">
-                      <q-item-section avatar>
-                        <q-icon dense
-                          size="xs"
-                          name="bi-file-font"
-                          color="secondary" />
-                      </q-item-section>
-                      <q-item-section>{{ template.name }}</q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-menu>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </template>
-      </BaseButtonForDialogFooter>
+                  <q-item clickable
+                    :style="pasteQuicklistTextStyle"
+                    :disable="isQuicklistDisabled">
+                    <q-item-section>Paste Quick-List</q-item-section>
+                    <q-item-section side>
+                      <q-icon name="bi-chevron-down"
+                        size="15px" />
+                    </q-item-section>
+                    <!-- Submenu -->
+                    <q-menu auto-close>
+                      <q-list>
+                        <q-item v-for="template in $store.getters[
+                          'data/getQuickListContent'
+                        ](type)"
+                          :key="template"
+                          dense
+                          clickable
+                          @click="pasteTemplateFromQuicklist(template)">
+                          <q-item-section avatar>
+                            <q-icon dense
+                              size="xs"
+                              name="bi-file-font"
+                              color="secondary" />
+                          </q-item-section>
+                          <q-item-section>{{ template.name }}</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+            <q-btn flat
+              no-wrap
+              :icon="getIconForToggleToolbarButton"
+              :style="$store.state.layout.buttonFlatOnlyIcon"
+              :ripple="false"
+              :text-color="$store.getters['layout/getToolbarIconColor']"
+              size="xs"
+              @click="changeToolbarMode">
+            </q-btn>
+            <q-btn flat
+              no-wrap
+              :icon="getIconForFullscreenBtn"
+              :style="$store.state.layout.buttonFlatOnlyIcon"
+              :ripple="false"
+              :text-color="$store.getters['layout/getToolbarIconColor']"
+              size="xs"
+              @click="toggleFullscreen">
+            </q-btn>
+          </div>
+
+        </div>
+      </div>
     </template>
   </q-editor>
 </template>
 
 <script>
-import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
 export default {
   name: "baseEditor",
   emits: [
@@ -109,35 +127,33 @@ export default {
   ],
   props: {
     type: String,
+    editorWidth: Number,
+    editorTitle: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
-      styleForToolbarDark: { background: "black" },
-      styleForToolbar: { background: "white" },
       isShowingFullToolbar: false,
       isInFullscreenMode: false,
-      templateHolder: "",
-      moreOptions: [
-        ["templatesMenuButton", "toggleMoreOptionsButton"],
+      lessOptions: [
         [
+          "title",
+        ],
+      ],
+      allOptions: [
+        [
+          "title",
+        ],
+        [
+          "breakLine",
           {
             label: "Style",
             icon: this.$q.iconSet.editor.bold,
             fixedLabel: true,
             fixedIcon: true,
             options: ["bold", "italic", "strike", "underline"],
-          },
-          {
-            label: this.$q.lang.editor.align,
-            icon: this.$q.iconSet.editor.align,
-            fixedLabel: true,
-            options: ["left", "center", "right", "justify"],
-          },
-          {
-            label: "Lists",
-            icon: "list",
-            fixedLabel: true,
-            options: ["unordered", "ordered", "outdent", "indent"],
           },
           {
             label: "Font",
@@ -168,28 +184,34 @@ export default {
               "size-6",
             ],
           },
+          "removeFormat",
+        ],
+        [
+          {
+            label: this.$q.lang.editor.align,
+            icon: this.$q.iconSet.editor.align,
+            fixedLabel: true,
+            options: ["left", "center", "right", "justify"],
+          },
+          {
+            label: "Lists",
+            icon: "list",
+            fixedLabel: true,
+            options: ["unordered", "ordered", "outdent", "indent"],
+          },
         ],
         [
           "undo",
           "redo",
-          "fullscreenButton",
           "link",
           "hr",
           "viewsource",
-          "removeFormat",
+
         ],
-      ],
-      lessOptions: [
-        [
-          "placeholderElementSmall",
-          "templatesMenuButton",
-          "toggleMoreOptionsButton",
-        ],
-        ["placeholderElementSmall"],
-        ["undo", "redo", "fullscreenButton"],
       ],
     };
   },
+
   methods: {
     changeToolbarMode() {
       this.isShowingFullToolbar = !this.isShowingFullToolbar;
@@ -221,9 +243,32 @@ export default {
     },
   },
   computed: {
+    getEditorWidth() {
+      if (this.isInFullscreenMode) {
+        return this.$store.state.layout.width;
+      } else {
+        return this.editorWidth;
+      }
+    },
+    styleForToolbarGroupTitle() {
+      let style = {};
+      style["width"] = this.getEditorWidth - 2 + "px";
+      style["padding-left"] = "12px";
+      style["padding-right"] = "0px";
+      return style;
+    },
+    getStyleForTitle() {
+      let style = {};
+      style["font-size"] = "11px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = "#d3d3d3 ";
+      style["margin-top"] = "1px";
+      return style;
+    },
     getStyleForEditor() {
       let style = {};
-      style["font-size"] = this.$store.state.layout.fontsize + "px";
+      style["font-size"] = "12.5px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
 
       if (this.$store.getters["layout/isDarkModeActive"]) {
         style["background-color"] = "blacksmoke";
@@ -231,6 +276,21 @@ export default {
         style["background-color"] = "whitesmoke";
       }
       return style;
+    },
+    getStyleForEditorContent() {
+      let style = {};
+      style["font-size"] = "12.5px";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["padding-top"] = "12px";
+      style["padding-left"] = "12px";
+      style["padding-right"] = "12px";
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = "blacksmoke";
+      } else {
+        style["background-color"] = "whitesmoke";
+      }
+      return style;
+
     },
     pasteQuicklistTextStyle() {
       if (this.isQuicklistDisabled) {
@@ -257,10 +317,10 @@ export default {
 
     getStyleForToolbar() {
       if (this.$store.getters["layout/isDarkModeActive"]) {
-        return this.styleForToolbarDark;
+        return { background: "black" };
       }
       else {
-        return this.styleForToolbar;
+        return { background: "white" };
       }
     },
     getLabelForToggleToolbarButton() {
@@ -269,6 +329,14 @@ export default {
       }
       else {
         return "Toolbar [+]";
+      }
+    },
+    getIconForFullscreenBtn() {
+      if (this.isInFullscreenMode) {
+        return "bi-fullscreen-exit";
+      }
+      else {
+        return "bi-fullscreen";
       }
     },
     getIconForToggleToolbarButton() {
@@ -284,38 +352,33 @@ export default {
         return this.lessOptions;
       }
       else {
-        return this.moreOptions;
+        return this.allOptions;
       }
     },
   },
-  components: { BaseButtonForDialogFooter }
 };
 </script>
 <style>
+.q-editor__toolbar {
+  flex-wrap: wrap;
+}
+
+
 .q-editor__toolbar-group {
-  width: 95px !important;
+  margin: 0px;
+  flex-wrap: wrap;
 }
 </style>
 <style scoped src="98.css">
-.q-editor__toolbar-group {
-  width: 20px;
-}
+.q-editor__toolbar-group {}
 
 .editor :deep(.q-editor__toolbars-container) {
   display: none;
 }
 
-.placeholderElementContainer {
-  width: 20px;
-  height: 20px;
-  background-color: red;
-}
-
-.placeholderElement {
-  background-color: green;
-}
 
 .button.no-icon i {
   display: none;
 }
 </style>
+s

@@ -262,10 +262,6 @@ export const updateTitle = (state, value) => {
   state.eventData.title = value;
 };
 
-export const updateText = (state, value) => {
-  state.eventData.text = value;
-};
-
 export const updateEditor = (state, value) => {
   state.eventData.editor = value;
 };
@@ -385,12 +381,9 @@ export const addEventToEvents = (state, dateEventIsCreatedFor) => {
 // saves the changes of an edited event
 export const saveChangesToEditedEvent = (state) => {
   let id = state.eventData.id;
-  console.log("ID: ", id);
   let index = state.diaryEntryRef.events.findIndex((event) => {
     return event.id === id;
   });
-  console.log("Index: ", index);
-  console.log("ID: ", state.diaryEntryRef.events[index]);
   state.diaryEntryRef.events[index] = state.eventData;
 };
 
@@ -414,22 +407,6 @@ export const showModal = (state, componentName) => {
 };
 export const hideModal = (state) => {
   state.modalVisible = false;
-};
-
-// METHODS
-// Handling Emotions
-export const updateTextWhatICanDo = (state, { value, id }) => {
-  let methodInEvent = state.eventData.methods.find(
-    (method) => method.id === id
-  );
-  methodInEvent.textWhatICanDo = value;
-};
-
-export const updateRadioButtonIsBeyondControl = (state, { value, id }) => {
-  let methodInEvent = state.eventData.methods.find(
-    (method) => method.id === id
-  );
-  methodInEvent.radioButtonIsBeyondControl = value;
 };
 
 export const setPastedText = (state, text) => {

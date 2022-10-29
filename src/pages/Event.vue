@@ -1,5 +1,5 @@
 <template>
-  <BasePage titleOfPage="Creating a new event"
+  <BasePage titleOfPage="Writing a note"
     :mode="getEventMode"
     :backgroundColor="$store.getters['layout/getEventBackgroundColor']">
     <template v-slot:title-bar-icon>
@@ -94,26 +94,32 @@
         <div class="col-12 q-mb-md q-mt-sm">
           <q-input class="no-border-radius no-box-shadow"
             color="secondary"
+            label-slot
             v-model="title"
-            label="Title"
             autofocus
             borderless
             stack-label
             :label-color="labelColor"
-            @focus="setFocus"
-            @blur="loseFocus"
             :style="getStyleForInput"
             :input-style="getInputStyleForTitle"
             hide-bottom-space
             :rules="[
               (val) => val.length <= 50 || 'Please use maximum 50 characters',
-            ]" />
+            ]">
+            <template v-slot:label>
+              <div style="font-family: Inter; font-size: 15px; margin-bottom: 15px">
+                Title
+              </div>
+            </template>
+          </q-input>
         </div>
 
         <!-- Input: What happened -->
         <div class="col-12 q-mb-lg"
           :style="getInputStyleForWhatHappened">
-          <BaseEditor class="no-border-radius no-box-shadow"
+          <BaseEditor editorTitle="What happened?"
+            :editorWidth="getWidthForInputFields"
+            class="no-border-radius no-box-shadow"
             ref="editorRef1"
             v-model="editor"
             minHeight="250px"
@@ -174,7 +180,6 @@ export default {
       editor: this.$store.state.data.eventData.editor,
       title: this.$store.state.data.eventData.title,
       mood: this.$store.state.data.eventData.mood,
-      text: this.$store.state.data.eventData.text
     };
   },
   // gets called anytime this component is set to active
@@ -197,14 +202,6 @@ export default {
     }
   },
   methods: {
-    // for Input
-    setFocus() {
-      this.labelColor = "darkgrey";
-    },
-    loseFocus() {
-      this.labelColor = "lightgrey";
-    },
-
     testMe() {
       console.log("OK HMMM click", this.isShowingEditorForInput);
       this.isShowingEditorForInput = !this.isShowingEditorForInput;
@@ -213,7 +210,6 @@ export default {
       this.editor = this.$store.state.data.eventData.editor;
       this.title = this.$store.state.data.eventData.title;
       this.mood = this.$store.state.data.eventData.mood;
-      this.text = this.$store.state.data.eventData.text;
     },
     resetEventData() {
       this.isShowingEditor = false;
@@ -224,7 +220,6 @@ export default {
       this.$store.commit("data/updateEditor", this.editor);
       this.$store.commit("data/updateTitle", this.title);
       this.$store.commit("data/updateMood", this.mood);
-      this.$store.commit("data/updateText", this.text);
     },
     leavePage() {
       let lastPath = this.$router.options.history.state.back;
@@ -297,13 +292,13 @@ export default {
   computed: {
     getStyleForInput() {
       let style = {};
-      style["font-size"] = this.$store.state.layout.fontsize + "px";
+      style["font-size"] = "12.5px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["width"] = this.$store.state.layout.innerWidth * 0.8 + "px";
+      style["width"] = this.getWidthForInputFields + "px";
       style["padding"] = "0 12px";
       style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
       style["border-radius"] = "0px";
-      if (this.eventMode === "default") {
+      if (this.getEventMode === "default") {
         style["background-color"] = "transparent";
       } else {
         style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
@@ -356,12 +351,15 @@ export default {
       ](this.$store.state.layout.eventInputBackgroundColor);
       return style;
     },
+    getWidthForInputFields() {
+      return this.$store.state.layout.innerWidth * 0.8;
+    },
     getInputStyleForWhatHappened() {
       let style = {};
 
       style["font-size"] = this.$store.state.layout.fontsize + "px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["width"] = this.$store.state.layout.innerWidth * 0.8 + "px";
+      style["width"] = this.getWidthForInputFields + "px";
 
       style["min-height"] = this.$store.state.layout.height * 0.4 + "px";
       return style;

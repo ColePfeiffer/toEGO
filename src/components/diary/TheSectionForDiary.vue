@@ -80,7 +80,9 @@
           @create-diary-entry="createDiaryEntry"
           @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
           <template v-slot:editor>
-            <BaseEditor ref="editorRef1"
+            <BaseEditor editorTitle="Log"
+              :editorWidth="editorWidth"
+              ref="editorRef1"
               class="no-border-radius no-box-shadow q-pa-none"
               v-model="changeData.editor"
               @show-dialog-template-creator="showTemplateCreator"
@@ -143,6 +145,9 @@ export default {
     };
   },
   computed: {
+    editorWidth() {
+      return this.$store.state.layout.innerWidth - 10
+    },
     pastedText() {
       return this.$store.state.data.pastedText;
     },
