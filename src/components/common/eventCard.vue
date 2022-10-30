@@ -5,20 +5,20 @@
       <!-- Mood, Title, Expand Button -->
       <q-item>
         <q-item-section>
-          <div class="row justify-between items-center q-pa-none">
+          <div class="row justify-between items-center q-pa-none"
+            :style="styleForHeader">
             <div class="col-1 ">
               <q-icon size="22.5px"
-                :name="eventData.mood"
-                text-color="secondary"
-                color="secondary"></q-icon>
+                :name="eventData.mood"></q-icon>
             </div>
             <div class="col-10 text-left  q-pl-md">
-              <q-item-label class="card-title">{{
+              <q-item-label>{{
                   eventData.title
               }}</q-item-label>
             </div>
             <div class="col-1 text-right ">
               <BaseButtonExpandable color="secondary"
+                style="font-size: 11px"
                 dense
                 :isEventExpanded="eventData.expanded"
                 @expand="expand"></BaseButtonExpandable>
@@ -29,30 +29,20 @@
         </q-item-section>
       </q-item>
 
-      <q-separator color="whitestorm" />
-      <!-- Text, Extras -->
+      <q-separator />
+
+      <!-- Text, Buttons -->
       <div :style="styleForEventContent">
         <!-- Expanded: False -->
         <q-card-section v-if="!eventData.expanded"
           class="row justify-left items-center">
-          <div v-if="nonExpandedEditor.length >= maxLengthOfCardText">
-            <!-- Text is shortened -->
-            <div style="white-space: no-wrap"
-              v-html="nonExpandedEditor.substring(0, this.maxLengthOfCardText) + '...'">
-            </div>
-          </div>
-          <!-- Text can be used as is -->
-          <div v-else>
-            <div style="white-space: pre-wrap"
-              v-html="nonExpandedEditor">
-            </div>
+          <div style="white-space: pre-wrap"
+            v-html="nonExpandedEditor">
           </div>
         </q-card-section>
         <!-- Expanded: True -->
         <div v-else>
-          <!-- Full event text -->
           <q-card-section>
-            <!-- Event text -->
             <div style="white-space: pre-wrap"
               v-html="clearEditor">
             </div>
@@ -82,20 +72,16 @@
             </div>
           </q-card-section>
         </div>
-
       </div>
     </template>
   </BaseCard>
-
 </template>
 
 <script>
 import DOMPurify from 'dompurify';
-
 import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
 import { date } from "quasar";
 import BaseCard from "../ui/BaseCard.vue";
-//import TimeAgo from "vue3-timeago";
 
 export default {
   name: "eventCard",
@@ -122,9 +108,24 @@ export default {
   },
 
   computed: {
+    isTextShortened() {
+      if (this.clearEditorNonExpanded.length >= this.maxLengthOfCardText) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    styleForHeader() {
+      if (this.$store.getters["layout/isTitleAndEmojiColorSetToSecondary"]) {
+        return { "color": this.$store.getters['layout/getTextColorBasedOnDarkMode'] };
+      } else {
+        return { 'color': this.$store.state.layout.secondary }
+      }
+    },
     styleForEventContent() {
       return {
-        'width': this.$store.state.layout.innerWidth * 0.91 + "px",
+        //TODO: check if this is right for all resolutions... should be close tho.
+        'width': this.$store.state.layout.innerWidth * 0.87 + "px",
         'min-height': '80px'
       };
     },
@@ -134,30 +135,26 @@ export default {
       console.log("only allow safe html: ", sanitazedEditor);
       return sanitazedEditor;
     },
-    nonExpandedEditor() {
-      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { ALLOWED_TAGS: ['b', 'i', 'br'], ALLOWED_ATTR: [] });
+    clearEditorNonExpanded() {
+
+
+      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { ALLOWED_TAGS: ['b', 'i', 'br', 'div'], ALLOWED_ATTR: [] });
+      console.log(sanitazedEditor);
       sanitazedEditor = sanitazedEditor.replaceAll("<br>", " ");
+      sanitazedEditor = sanitazedEditor.replaceAll("<div>", " ");
+      sanitazedEditor = sanitazedEditor.replaceAll("</div>", "");
+      console.log(this.eventData.editor);
+      console.log(sanitazedEditor);
       return sanitazedEditor;
     },
-    isEventEditorEmpty() {
-      if (this.eventData.editor != undefined && this.eventData.editor != "") {
-        return false;
+    nonExpandedEditor() {
+      if (this.isTextShortened) {
+        return this.clearEditorNonExpanded.substring(0, this.maxLengthOfCardText) + "<b>...</b>";
       } else {
-        return true;
+        return this.clearEditorNonExpanded;
       }
     },
-
-    /*
-    expanded: {
-      get() {
-        return this.$store.state.data.eventData.expanded;
-      },
-      set(value) {
-        this.$store.commit("data/updateExpanded", value);
-      },
-    },*/
   },
-
   methods: {
     deleteEvent() {
       this.$emit("deleteEvent", this.eventData);
@@ -183,9 +180,5 @@ export default {
   color: var(--q-secondary);
   padding-bottom: 2px;
   padding-top: 2px;
-}
-
-.card-title {
-  color: var(--q-secondary);
 }
 </style>

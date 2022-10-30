@@ -39,7 +39,8 @@ export default function () {
     homeMode: "retro",
     homeBackgroundColor: "#ffffff54",
     homeBackgroundColorDark: "#000000ad",
-    //  - Event
+    //  - Note
+    noteTitleAndEmojiColorIsSetToSecondary: true,
     eventMode: "default",
     eventBackgroundColor: "#f5f5f5fc",
     eventBackgroundColorDark: "#000000ad",

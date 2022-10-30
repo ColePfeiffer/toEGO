@@ -13,6 +13,14 @@ export const isDarkModeActive = (state) => {
   return state.isDarkModeOn;
 };
 
+export const getTextColorBasedOnDarkMode = (getters) => {
+  if(getters.isDarkModeActive){
+    return "white";
+  }else{
+    return 'black';
+  }
+};
+
 export const getStyleForTransparentCard = (state, getters) => {
   if (getters.isDarkModeActive) {
     return {

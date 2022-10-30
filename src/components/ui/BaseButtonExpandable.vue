@@ -14,7 +14,6 @@ export default {
   props: { isEventExpanded: Boolean },
   data() {
     return {
-      expandIcon: "bi-chevron-down",
     };
   },
   computed: {
