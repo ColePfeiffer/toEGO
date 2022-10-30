@@ -31,6 +31,7 @@ export default {
       style["border-style"] = "solid";
       style["font-size"] = this.$store.state.layout.fontsize + "px";
 
+
       if (this.$store.getters["layout/isDarkModeActive"]) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
         style["color"] = "white";

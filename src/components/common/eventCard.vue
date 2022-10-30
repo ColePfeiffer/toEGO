@@ -31,20 +31,20 @@
 
       <q-separator color="whitestorm" />
       <!-- Text, Extras -->
-      <div style="min-height: 80px">
+      <div :style="styleForEventContent">
         <!-- Expanded: False -->
         <q-card-section v-if="!eventData.expanded"
           class="row justify-left items-center">
-          <div v-if="eventData.editor.length >= maxLengthOfCardText">
+          <div v-if="nonExpandedEditor.length >= maxLengthOfCardText">
             <!-- Text is shortened -->
-            <div style="white-space: pre-wrap"
-              v-html="eventData.editor.substring(0, this.maxLengthOfCardText) + '...'">
+            <div style="white-space: no-wrap"
+              v-html="nonExpandedEditor.substring(0, this.maxLengthOfCardText) + '...'">
             </div>
           </div>
           <!-- Text can be used as is -->
           <div v-else>
             <div style="white-space: pre-wrap"
-              v-html="eventData.editor">
+              v-html="nonExpandedEditor">
             </div>
           </div>
         </q-card-section>
@@ -54,7 +54,7 @@
           <q-card-section>
             <!-- Event text -->
             <div style="white-space: pre-wrap"
-              v-html="eventData.editor">
+              v-html="clearEditor">
             </div>
           </q-card-section>
           <q-card-section class="q-pa-xs q-pl-md">
@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import DOMPurify from 'dompurify';
+
 import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
 import { date } from "quasar";
 import BaseCard from "../ui/BaseCard.vue";
@@ -120,6 +122,23 @@ export default {
   },
 
   computed: {
+    styleForEventContent() {
+      return {
+        'width': this.$store.state.layout.innerWidth * 0.91 + "px",
+        'min-height': '80px'
+      };
+    },
+    clearEditor() {
+      console.log("dirty: ", this.eventData.editor);
+      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { USE_PROFILES: { html: true } }, { FORBID_TAGS: ['style'] }, { FORBID_ATTR: ['style'] });
+      console.log("only allow safe html: ", sanitazedEditor);
+      return sanitazedEditor;
+    },
+    nonExpandedEditor() {
+      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { ALLOWED_TAGS: ['b', 'i', 'br'], ALLOWED_ATTR: [] });
+      sanitazedEditor = sanitazedEditor.replaceAll("<br>", " ");
+      return sanitazedEditor;
+    },
     isEventEditorEmpty() {
       if (this.eventData.editor != undefined && this.eventData.editor != "") {
         return false;
@@ -148,16 +167,6 @@ export default {
     },
     expand() {
       this.$emit("changeEventData", this.eventData);
-    },
-    mergeText(eventData) {
-      let output = eventData.editor;
-      // check if text is empty; if so show title
-      if (eventData.editor == "") {
-        output = eventData.title;
-        // später löschen, nur zum testen
-        //output = this.lorem;
-      }
-      return [output][0];
     },
   },
 };
