@@ -73,6 +73,8 @@ export function setTheme({ commit }, theme) {
     commit("setSecondary", "#7689b0");
     commit("setAccent", "#cdb1de");
     commit("setAccent2", "#060754");
+    commit("setBorderColorLeft", "#7689b0");
+    commit("setBorderColorRight", "#7689b0");
 
     commit("setHomeMode", "retro");
     commit("setHomeBackgroundColor", "#ebebeb59");
@@ -90,6 +92,8 @@ export function setTheme({ commit }, theme) {
     commit("setSecondary", "#bacbde");
     commit("setAccent", "#FF7E6B");
     commit("setAccent2", "#deb4db");
+    commit("setBorderColorLeft", "#57a3eb");
+    commit("setBorderColorRight", "#6bafcf");
 
     commit("setHomeMode", "retro");
     commit("setHomeBackgroundColor", "#ffffff82");

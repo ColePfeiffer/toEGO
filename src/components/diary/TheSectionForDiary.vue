@@ -15,6 +15,7 @@
                         ref="editorRef1"
                         class="no-border-radius no-box-shadow q-pa-none"
                         v-model="editor"
+                        @save="saveEditor"
                         @show-dialog-template-creator="showTemplateCreator"
                         @show-dialog-template-viewer="showTemplateViewer"
                         @paste-template-from-quicklist="pasteTemplateFromQuicklist"
@@ -33,7 +34,7 @@ import BaseEditor from "../ui/BaseEditor.vue";
 export default {
     name: "TheSectionForNotes",
     components: { DiaryBaseSection, TheDiaryViewer, BaseEditor },
-    emits: ["set-change-data-editor", "go-to-event-set-to-creation-mode", "create-diary-entry"],
+    emits: ["save-editor", "set-change-data-editor", "go-to-event-set-to-creation-mode", "create-diary-entry"],
     data() {
         return {
         }
@@ -69,6 +70,9 @@ export default {
         },
     },
     methods: {
+        saveEditor() {
+            this.$emit("save-editor");
+        },
         goToEventSetToCreationMode() {
             this.$emit("go-to-event-set-to-creation-mode");
         },

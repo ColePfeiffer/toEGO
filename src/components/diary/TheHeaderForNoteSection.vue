@@ -6,7 +6,7 @@
         <template v-slot:buttons>
             <!-- Buttons: Left -->
             <div class="row no-wrap">
-                <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 41"
+                <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 10"
                     textColor="white"
                     icon="bi-eye-slash"
                     size="9.2px"

@@ -137,8 +137,7 @@ export default {
             this.$emit("enter-fullscreen-mode", this.editor);
         },
         saveChanges() {
-            this.$emit("change-view", "view");
-            this.$emit("save-changes", this.changeData);
+            this.$emit("save-changes");
         },
         editDiaryEntry() {
             this.changeView("edit");

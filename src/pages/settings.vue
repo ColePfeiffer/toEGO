@@ -68,7 +68,7 @@ export default {
 
       style['height'] = this.$store.state.layout.height * .7 + "px";
       if (this.$store.getters['layout/isDarkModeActive']) {
-        style["background-color"] = this.$store.state.layout.blacksmoke;
+        style["background-color"] = "var(--q-dark)";
       } else {
         style["background-color"] = "white";
       }

@@ -33,8 +33,8 @@ export default function () {
     mediumOpacity: "a6",
     //  Page Settings
     isDarkModeOn: false,
-    borderColorLeft: "#80d2f2",
-    borderColorRight: "#7d5fb8",
+    borderColorLeft: "#dfd4f5",
+    borderColorRight: "#dfd4f5",
     //  - Home
     homeMode: "retro",
     homeBackgroundColor: "#ffffff54",

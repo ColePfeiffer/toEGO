@@ -5,14 +5,16 @@
       <div v-if="diaryEntry === undefined">
         <BaseCard :backgroundColor="backgroundColor">
           <template v-slot:contentInsideSection>
-            Nothing here yet. Add an event
-            <q-btn color="accent"
-              flat
-              dense
-              icon="bi-plus"
-              @click="goToEventSetToCreationMode" />
+            Nothing here yet.
+            <span @click="goToEventSetToCreationMode">Add an event
+              <q-btn color="accent"
+                flat
+                dense
+                icon="bi-plus"
+                @click="goToEventSetToCreationMode" />
+            </span>
             <br />
-            or create an entry.
+            or <span @click="createDiaryEntry">create an entry</span>.
             <q-btn color="accent"
               flat
               dense

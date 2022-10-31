@@ -46,12 +46,13 @@ export default {
           "repeating-radial-gradient(circle at 10px,turquoise, pink 2px, greenyellow 4px, pink 2px) 1";
         */
       } else {
+        style["border"] = "2px solid";
+        style["border-image-slice"] = "1";
+        style["border-width"] = "1px";
+        style["border-image-source"] = "linear-gradient(to left, " + this.$store.state.layout.borderColorRight + ", " + this.$store.state.layout.borderColorLeft + ")";
         style["background-color"] = this.backgroundColor;
         style["color"] = fontColor;
         //style["color"] = "black";
-        style["border-width"] = "1.5px";
-        style["border-color"] =
-          this.backgroundColor + " #4a4a4a24 #4a4a4a24 " + this.backgroundColor;
       }
 
       if (fontColor === 'white') {

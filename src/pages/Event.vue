@@ -10,14 +10,6 @@
     </template>
     <template v-slot:title-bar-controls>
       <div class="row justify-between items-center">
-        <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow"
-          :icon="getIconForEditorButton"
-          @click-button="toggleEditorView">
-          <template v-slot:tooltip>
-            <BaseTooltip text="Toggle Editor-Mode"
-              :delay="15"></BaseTooltip>
-          </template>
-        </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
           icon="bi-x"
           size="10px"
@@ -27,8 +19,7 @@
     </template>
     <template v-slot:content>
       <!-- Emoji-Selection, Title, What happened? -->
-      <div v-if="isShowingEditor === false"
-        class="row justify-center items-center text-center q-px-md">
+      <div class="row justify-center items-center text-center q-px-md">
         <!-- How are you feeling? -->
         <p class="col-10 text-center q-mt-lg"
           :style="getStyleForHeadline">
@@ -124,22 +115,7 @@
             v-model="editor"
             minHeight="250px"
             type="EVENT"
-            @show-dialog-template-creator="openDialogCreateTemplate"
-            @show-dialog-template-viewer="openDialogViewTemplates"
-            @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
-        </div>
-      </div>
-      <!-- Content: Editor -->
-      <div v-else
-        class="row justify-center items-center text-center q-pa-none"
-        :style="getPaddingForEditor">
-        <!-- Editor -->
-        <div class="col-12">
-          <BaseEditor class="no-border-radius no-box-shadow"
-            ref="editorRef1"
-            v-model="editor"
-            minHeight="535px"
-            type="EVENT"
+            @save="saveChanges"
             @show-dialog-template-creator="openDialogCreateTemplate"
             @show-dialog-template-viewer="openDialogViewTemplates"
             @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
@@ -162,7 +138,6 @@ import BasePage from "src/components/ui/BasePage.vue";
 import BaseEditor from "src/components/ui/BaseEditor.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
-import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 
 export default {
   components: {
@@ -170,13 +145,10 @@ export default {
     BaseEditor,
     BaseButtonForTitleBar,
     BaseButtonForDialogFooter,
-    BaseTooltip
   },
   data() {
     return {
       labelColor: 'lightgrey',
-      isShowingEditorForInput: false,
-      isShowingEditor: false,
       editor: this.$store.state.data.eventData.editor,
       title: this.$store.state.data.eventData.title,
       mood: this.$store.state.data.eventData.mood,
@@ -202,17 +174,12 @@ export default {
     }
   },
   methods: {
-    testMe() {
-      console.log("OK HMMM click", this.isShowingEditorForInput);
-      this.isShowingEditorForInput = !this.isShowingEditorForInput;
-    },
     setEventData() {
       this.editor = this.$store.state.data.eventData.editor;
       this.title = this.$store.state.data.eventData.title;
       this.mood = this.$store.state.data.eventData.mood;
     },
     resetEventData() {
-      this.isShowingEditor = false;
       this.$store.commit("data/resetEventData");
       this.setEventData();
     },
@@ -252,16 +219,6 @@ export default {
 
       }
       this.leavePage();
-    },
-    // TODO: maybe put this into editor or somewhere else, as it appears to be used in multiple places
-    toggleEditorView() {
-      // Applying default template
-      let defaultTemplate =
-        this.$store.getters["data/getDefaultTemplate"]("EVENT");
-      if (defaultTemplate != undefined) {
-        this.$store.commit("data/updateEditor", defaultTemplate);
-      }
-      this.isShowingEditor = !this.isShowingEditor;
     },
     pasteTemplateFromQuicklist(template) {
       if (this.editor != "") {

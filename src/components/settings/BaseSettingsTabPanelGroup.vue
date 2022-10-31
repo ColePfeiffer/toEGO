@@ -2,7 +2,8 @@
   <div class="q-mb-xl">
     <div class="q-px-none  settings-panel-group-title"
       :style="getStyleForTitle">
-      <div class="row justify-between items-center">
+      <div class="row justify-between items-center"
+        @click="expandGroup">
         <p class="col-9 q-my-none">
           {{ title }}
         </p>
@@ -19,8 +20,7 @@
           </q-btn>
         </div>
         <BaseButtonExpandable class="col-1"
-          :isEventExpanded="isExpanded"
-          @expand="expandGroup">
+          :isEventExpanded="isExpanded">
         </BaseButtonExpandable>
 
 

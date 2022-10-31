@@ -58,7 +58,69 @@
 
         </template>
       </BaseItemForSettingsTabPanel>
+
+
+      <div class="row justify-between items-center q-pa-md">
+        <div class="col-10">
+          Borders around cards
+        </div>
+        <BaseButtonExpandable class="col-1"
+          :isEventExpanded="isShowingBorderOptions"
+          @expand="isShowingBorderOptions = !isShowingBorderOptions">
+        </BaseButtonExpandable>
+      </div>
+      <div v-if="isShowingBorderOptions">
+        <BaseItemForSettingsTabPanel :color="borderColorLeft"
+          icon="bi-square-fill"
+          title="Left Color">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              v-model="borderColorLeft"
+              :rules="['anyColor']"
+              class="color-picker-input ">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="borderColorLeft" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
+
+        <BaseItemForSettingsTabPanel :color="borderColorRight"
+          icon="bi-square-fill"
+          title="Right Color">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              v-model="borderColorRight"
+              :rules="['anyColor']"
+              class="color-picker-input ">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="borderColorRight" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
+      </div>
     </template>
+
+
   </BaseSettingsTabPanelGroup>
 
 
@@ -298,9 +360,10 @@
 <script>
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
+import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
 
 export default {
-  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup },
+  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseButtonExpandable },
   data() {
     return {
       isHomeGroupExpanded: false,
@@ -316,9 +379,13 @@ export default {
       diaryCardBackgroundColor: this.$store.state.layout.diaryCardBackgroundColor,
       diarySubtitleColor: this.$store.state.layout.diarySubtitleColor,
       isDiarySubtitleStyleSetToAlternative: this.$store.state.layout.isDiarySubtitleStyleSetToAlternative,
+      isShowingBorderOptions: false,
     };
   },
   methods: {
+    showBorderOptions() {
+      this.isShowingBorderOptions = !this.isShshowBorderOptions;
+    },
     goToEventPage() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
@@ -363,6 +430,22 @@ export default {
 
   },
   computed: {
+    borderColorLeft: {
+      get() {
+        return this.$store.state.layout.borderColorLeft;
+      },
+      set(value) {
+        this.$store.commit("layout/setBorderColorLeft", value);
+      },
+    },
+    borderColorRight: {
+      get() {
+        return this.$store.state.layout.borderColorRight;
+      },
+      set(value) {
+        this.$store.commit("layout/setBorderColorRight", value);
+      },
+    },
     getStyleForInfo() {
       let style = {};
       style["font-family"] = this.$store.state.layout.nonDefaultFont;

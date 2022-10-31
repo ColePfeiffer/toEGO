@@ -75,6 +75,7 @@
                 </template>
                 <q-fab-action @click="goToPageEvent"
                   icon="bi-plus-lg"
+                  style="padding-right: 33px"
                   color="primary"
                   label="create Note" />
                 <q-fab-action @click="openDialogViewDiaryTemplates"

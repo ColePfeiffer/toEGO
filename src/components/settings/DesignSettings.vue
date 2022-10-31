@@ -6,6 +6,13 @@
       :isExpanded="isGeneralGroupExpanded"
       @toggle-expand-state="isGeneralGroupExpanded = !isGeneralGroupExpanded">
       <template v-slot:q-item-section-content>
+        <BaseItemForSettingsTabPanel title="Dark-Mode">
+          <template v-slot:content>
+            <q-toggle color="accent"
+              v-model="darkMode"
+              val="battery" />
+          </template>
+        </BaseItemForSettingsTabPanel>
         <BaseItemForSettingsTabPanel title="Themes">
           <template v-slot:content>
             <q-btn-toggle v-model="theme"
@@ -143,75 +150,7 @@
             </q-input>
           </template>
         </BaseItemForSettingsTabPanel>
-        <BaseItemForSettingsTabPanel title="Dark-Mode">
-          <template v-slot:content>
-            <q-toggle color="accent"
-              v-model="isDarkModeTurnedOn"
-              val="battery" />
-          </template>
-        </BaseItemForSettingsTabPanel>
 
-        <div v-if="isDarkModeTurnedOn"
-          class="row justify-between items-center q-pa-md">
-          <div class="col-10">
-            Borders around cards
-          </div>
-          <BaseButtonExpandable class="col-1"
-            :isEventExpanded="isShowingBorderOptions"
-            @expand="isShowingBorderOptions = !isShowingBorderOptions">
-          </BaseButtonExpandable>
-        </div>
-        <div v-if="isShowingBorderOptions">
-          <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-            :color="borderColorLeft"
-            icon="bi-square-fill"
-            title="Left Color">
-            <template v-slot:content>
-              <q-input filled
-                dense
-                hide-bottom-space
-                v-model="borderColorLeft"
-                :rules="['anyColor']"
-                class="color-picker-input ">
-                <template v-slot:append>
-                  <q-icon name="colorize"
-                    class="cursor-pointer">
-                    <q-popup-proxy cover
-                      transition-show="scale"
-                      transition-hide="scale">
-                      <q-color v-model="borderColorLeft" />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </template>
-          </BaseItemForSettingsTabPanel>
-
-          <BaseItemForSettingsTabPanel v-if="isDarkModeTurnedOn"
-            :color="borderColorRight"
-            icon="bi-square-fill"
-            title="Right Color">
-            <template v-slot:content>
-              <q-input filled
-                dense
-                hide-bottom-space
-                v-model="borderColorRight"
-                :rules="['anyColor']"
-                class="color-picker-input ">
-                <template v-slot:append>
-                  <q-icon name="colorize"
-                    class="cursor-pointer">
-                    <q-popup-proxy cover
-                      transition-show="scale"
-                      transition-hide="scale">
-                      <q-color v-model="borderColorRight" />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </template>
-          </BaseItemForSettingsTabPanel>
-        </div>
 
 
 
@@ -368,29 +307,25 @@ import { mapMutations } from "vuex";
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
 import BaseTooltip from '../ui/BaseTooltip.vue';
-import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
+
 
 export default {
-  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip, BaseButtonExpandable },
+  components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip },
   data() {
     return {
       isGeneralGroupExpanded: true,
-      isColorGroupExpanded: true,
-      isFontGroupExpanded: true,
-      isDarkModeTurnedOn: false,
+      isColorGroupExpanded: false,
+      isFontGroupExpanded: false,
       backgroundImage: this.$store.state.layout.backgroundImageURL,
       backgroundColor: this.$store.state.layout.backgroundColor,
       isUsingFont: this.$store.state.layout.defaultFont,
       fontsize: 12,
       customBackgroundImage: "",
       theme: 'Lilac Dreams',
-      isShowingBorderOptions: false,
+
     };
   },
   watch: {
-    isDarkModeTurnedOn() {
-      this.setDarkMode();
-    },
     fontsize(newValue) {
       this.$store.commit("layout/setFontsize", newValue);
     },
@@ -424,7 +359,7 @@ export default {
   },
   methods: {
     ...mapMutations(["./store/data/showModal", "store/data/showModal"]),
-    setDarkMode() {
+    toggleDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
       this.$store.commit("layout/toggleDarkMode");
     },
@@ -432,11 +367,17 @@ export default {
       let url = "url(" + this.customBackgroundImage + ")";
       this.$store.commit("layout/changeBackgroundImage", url);
     },
-    showBorderOptions() {
-      this.isShowingBorderOptions = !this.isShshowBorderOptions;
-    }
+
   },
   computed: {
+    darkMode: {
+      get() {
+        return this.$store.getters["layout/isDarkModeActive"];
+      },
+      set() {
+        this.toggleDarkMode();
+      },
+    },
     getStyleForTextPreview() {
       return {
         "border-left": "3px solid var(--q-secondary)",
@@ -475,22 +416,7 @@ export default {
         this.$store.commit("layout/setAccent2", value);
       },
     },
-    borderColorLeft: {
-      get() {
-        return this.$store.state.layout.borderColorLeft;
-      },
-      set(value) {
-        this.$store.commit("layout/setBorderColorLeft", value);
-      },
-    },
-    borderColorRight: {
-      get() {
-        return this.$store.state.layout.borderColorRight;
-      },
-      set(value) {
-        this.$store.commit("layout/setBorderColorRight", value);
-      },
-    },
+
   }
 };
 </script>

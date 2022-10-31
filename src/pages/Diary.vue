@@ -218,6 +218,7 @@
               :class="styleForDiarySection"
               :changeData="changeData"
               :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
+              @save-editor="saveChangesToEntry"
               @set-change-data-editor="setChangeDataEditor"
               @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
               @create-diary-entry="createDiaryEntry">
@@ -509,7 +510,6 @@ export default {
       this.changeData = value;
     },
     setChangeDataEditor(text) {
-      console.log("setting editor text in change data... ", text)
       this.changeData.editor = text;
     },
     resetChangeData() {
@@ -566,16 +566,17 @@ export default {
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");
     },
-    saveChangesToEntry(changeData) {
+    saveChangesToEntry() {
+      this.changeViewMode('view');
       this.isCreatingNewDiaryEntry = false;
       let payload;
       if (this.getDiaryEntry === undefined) {
 
-        let cleanedEditorText = changeData.editor.replaceAll("&nbsp;", '');
+        let cleanedEditorText = this.changeData.editor.replaceAll("&nbsp;", '');
         cleanedEditorText = cleanedEditorText.replaceAll(" ", '');
         if (cleanedEditorText != "") {
           // if editor isn't empty and doesn't just contain whitespace
-          let newEntry = changeData;
+          let newEntry = this.changeData;
           console.log("new Entry: ", newEntry);
           newEntry.date = this.getDate;
           this.$store.commit("data/addEntryToDiaryEntries", newEntry);
@@ -590,7 +591,7 @@ export default {
       } else {
         payload = {
           diaryEntryRef: this.getDiaryEntry,
-          newData: changeData,
+          newData: this.changeData,
         };
         this.$store.commit("data/updateDiaryEntry", payload);
       }
