@@ -10,7 +10,6 @@ export default {
   name: "App",
   methods: {
     onResize(size) {
-      console.log(size.height, size.width);
       this.$store.dispatch(
         "layout/setSize",
         size

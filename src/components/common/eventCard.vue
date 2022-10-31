@@ -136,15 +136,10 @@ export default {
       return sanitazedEditor;
     },
     clearEditorNonExpanded() {
-
-
       let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { ALLOWED_TAGS: ['b', 'i', 'br', 'div'], ALLOWED_ATTR: [] });
-      console.log(sanitazedEditor);
       sanitazedEditor = sanitazedEditor.replaceAll("<br>", " ");
       sanitazedEditor = sanitazedEditor.replaceAll("<div>", " ");
       sanitazedEditor = sanitazedEditor.replaceAll("</div>", "");
-      console.log(this.eventData.editor);
-      console.log(sanitazedEditor);
       return sanitazedEditor;
     },
     nonExpandedEditor() {

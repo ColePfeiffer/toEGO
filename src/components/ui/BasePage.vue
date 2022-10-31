@@ -81,8 +81,6 @@ export default {
     onResize(size) {
       if (size.height != 0) {
         if (this.$store.state.layout.width != size.width) {
-          console.log("stored width: ", this.$store.state.layout.width);
-          console.log("new width: ", size.width);;
           this.$store.commit("layout/setInnerWidth", size.width);
         }
       }

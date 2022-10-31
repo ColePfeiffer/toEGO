@@ -18,7 +18,7 @@
           </BaseButtonForTitleBar>
         </div>
         <div class="col-1 text-left">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday < 0"
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday < 0"
             class="q-pl-xs q-mr-xs no-box-shadow col-1"
             icon="bi-dot"
             size="12px"
@@ -35,7 +35,7 @@
             no-wrap
             flat
             icon-right="event"
-            :style="getStyleForDayInTitlebar"
+            :style="styleForDayInTitlebar"
             :label="formatDate(getDate)">
             <q-popup-proxy cover
               transition-show="scale"
@@ -55,7 +55,7 @@
         </div>
         <!-- go forward button -->
         <div class="col-1 text-right">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getCountOfDaysAwayFromToday > 0"
+          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday > 0"
             class="q-pl-none q-mr-xs no-box-shadow"
             icon="bi-dot"
             size="12px"
@@ -88,12 +88,12 @@
 
           <div style="padding: 4px">
             <q-icon name="bi-journal"
-              :style="getStyleForTitlebar"
+              :style="styleForTitlebar"
               size="19px" />
           </div>
 
           <div class="q-pl-sm"
-            :style="getStyleForTitlebar">
+            :style="styleForTitlebar">
             Diary
           </div>
         </div>
@@ -152,53 +152,75 @@
       <div class="row justify-center items-center text-center ">
         <!-- today, yesterday, x days ago, x days ahead... -->
         <div class="col-12 q-pt-xs ">
-          <div :style="getSubtitleStyle">
-            {{ getSubtitle }}</div>
+          <div :style="subtitleStyle">
+            {{ subtitle }}</div>
         </div>
       </div>
-
+      <!-- Header for Note Section -->
+      <TheHeaderForNoteSection
+        v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
+        class="q-px-sm"
+        :style="width"
+        :diaryEntry="getDiaryEntry"
+        :splitterModel="splitterModel"
+        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+        @show-events="showEvents"
+        @hide-events="hideEvents" />
+      <!-- Q-Splitter -->
       <div class="q-px-sm">
         <q-splitter v-model="splitterModel"
           :limits="[1, Infinity]"
           unit="px"
           horizontal
           color="transparent"
-          :style="getStyleForSplitter"
-          :separator-style="getStyleForSplitterSeparator">
+          :style="styleForSplitter"
+          :separator-style="styleForSplitterSeparator">
+          <!-- Section for Notes -->
           <template v-slot:before>
-            <div>
-              <!-- EVENT SECTION -->
-              <TheSectionForEvents v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-                :backgroundColor="getCardBackgroundColor"
-                :diaryEntry="getDiaryEntry"
-                :splitterModel="splitterModel"
-                :isDiarySectionVisible="isDiarySectionVisible"
-                @hide-events="hideEvents"
-                @show-events="showEvents"
-                @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode">
-              </TheSectionForEvents>
-            </div>
+            <TheSectionForNotes
+              v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined && viewingMode != 'edit'"
+              :backgroundColor="cardBackgroundColor"
+              :diaryEntry="getDiaryEntry"
+              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+              @go-to-event-set-to-editing-mode="goToEventSetToEditingMode" />
           </template>
-
+          <!-- Q-Seperator, including Header for Diary Section -->
           <template v-slot:separator>
-            <q-avatar flat
+            <div v-if="this.viewingMode != 'edit'"
+              :style="styleForBorderSeparator"></div>
+            <q-avatar v-if="this.viewingMode != 'edit'"
+              flat
+              class="grab-button"
               text-color="white"
               size="40px"
               icon="bi-grip-horizontal" />
-          </template>
-
-          <template v-slot:after>
-            <!-- DIARY SECTION -->
-            <TheSectionForDiary v-if="!isDiaryEntryShownInFullscreen"
-              :backgroundColor="getCardBackgroundColor"
-              :class="getDiarySectionClass"
+            <TheHeaderForDiarySection class="q-px-sm"
+              :style="styleForDiaryHeader"
               :diaryEntry="getDiaryEntry"
               :viewingMode="viewingMode"
+              :changeData="changeData"
+              :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
+              @set-change-data="setChangeData"
               @change-view="changeViewMode"
+              @reset-change-data="resetChangeData"
+              @create-diary-entry="createDiaryEntry"
               @save-changes="saveChangesToEntry"
-              @enter-fullscreen-mode="enterFullscreenMode"
-              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
+              @set-change-data-editor="setChangeDataEditor"
+              @enter-fullscreen-mode="enterFullscreenMode"></TheHeaderForDiarySection>
+          </template>
+          <!-- Section for Diary -->
+          <template v-slot:after>
+            <TheSectionForDiary v-if="!isDiaryEntryShownInFullscreen"
+              :backgroundColor="cardBackgroundColor"
+              :diaryEntry="getDiaryEntry"
+              :viewingMode="viewingMode"
+              :class="styleForDiarySection"
+              :changeData="changeData"
+              :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
+              @set-change-data-editor="setChangeDataEditor"
+              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+              @create-diary-entry="createDiaryEntry">
             </TheSectionForDiary>
 
             <!-- DIARY SECTION FULLSCREEN -->
@@ -214,7 +236,7 @@
                   :style="$store.getters['layout/getStyleForDiarySectionButton']"
                   @click-button="exitFullscreen"></ButtonForDiarySection>
               </div>
-              <BaseCard :backgroundColor="getCardBackgroundColor"
+              <BaseCard :backgroundColor="cardBackgroundColor"
                 class="text-justify">
                 <template v-slot:content>
                   <q-item>
@@ -224,20 +246,15 @@
               </BaseCard>
             </div>
           </template>
-
         </q-splitter>
-
-
-
       </div>
-
     </template>
   </BasePage>
 </template>
 
 <script>
 import { date } from "quasar";
-import TheSectionForEvents from "src/components/diary/TheSectionForEvents.vue";
+import TheSectionForNotes from "src/components/diary/TheSectionForNotes.vue";
 import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
 import { useQuasar } from "quasar";
 import BasePage from "src/components/ui/BasePage.vue";
@@ -245,71 +262,76 @@ import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseCard from "src/components/ui/BaseCard.vue";
 import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 import ButtonForDiarySection from "src/components/diary/Base/ButtonForDiarySection.vue";
+import TheHeaderForNoteSection from "src/components/diary/TheHeaderForNoteSection.vue";
+import TheHeaderForDiarySection from "src/components/diary/TheHeaderForDiarySection.vue";
 
 export default {
   name: "diary",
   components: {
-    TheSectionForEvents,
+    TheSectionForNotes,
     TheSectionForDiary,
     BasePage,
     BaseButtonForTitleBar,
     BaseCard,
     BaseTooltip,
-    ButtonForDiarySection
+    ButtonForDiarySection,
+    TheHeaderForNoteSection,
+    TheHeaderForDiarySection
   },
   data() {
     return {
       viewingMode: "view", // is either set to 'view' or 'edit'
       isDiaryEntryShownInFullscreen: false,
-      isDiarySectionVisible: true, //if false, status section is shown
       editorHTMLContent: "",
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
       splitterModel: 1,
-      splitterModelDefaultHeight: 40,
+      splitterHeightDefault: 1,
+      splitterHeightShowingNonExpandedNote: 156,
+      // TODO:
+      isCreatingNewDiaryEntry: false,
+      changeData: {},
+      isHidingEvents: false,
+      isShowingEvents: false,
     };
   },
   watch: {
-    /* Whenever the amount of event 
-    */
-    getEventCount(newLength) {
-      console.log("created or deleted event... setting stuff:");
-      if (newLength > 0) {
-        this.splitterModel = 208;
-      } else {
-        this.splitterModel = this.splitterModelDefaultHeight + 100;
+    pastedText(text) {
+      if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === true && text != "") {
+        if (this.changeData.editor != "") {
+          this.changeData.editor = this.changeData.editor + "<br>" + text;
+        } else {
+          this.changeData.editor = text;
+        }
+        this.$store.commit("data/setPastedText", "");
       }
     },
-    // whenever splitter style changes, we adjust the height
-    getStyleForSplitterSeparator(style) {
-      if (style["display"] === "none") {
-        this.splitterModel = 1;
+    // whenever note count changes, the splitter height gets adjusted. 9999 stands for "there is no diary entry for the day yet."
+    numberOfNotes(newCount) {
+      if (newCount === 9999) {
+        this.splitterModel = this.splitterHeightDefault;
+      } else if (newCount > 0) {
+        console.log("Notes > 0 __ setting height");
+        this.splitterModel = this.splitterHeightShowingNonExpandedNote;
       } else {
-        this.splitterModel = this.splitterModelDefaultHeight;
-      };
+        console.log("Notes === 0 __ height: 1");
+        this.splitterModel = this.splitterHeightDefault;
+      }
     },
-    // TODO: kann nachher weg
-    splitterModel(procent) {
-      console.log("Splitter px: ", procent);
-    },
-    // TODO: set to edit mode on today
     // whenever getDate gets updated, it updates lastSelectedDate inside the store
     getDate(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
       // Case 1: Entry exists
       if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor != "") {
-        if (this.getEventCount > 0) {
-          this.splitterModel = 40 + 130 + 30; //132 card size
-        }
         this.editorHTMLContent = this.getDiaryEntry.editor;
         // Case 2: No Diary Entry, but events exist.
       } else if (this.getDiaryEntry != undefined && this.getDiaryEntry.editor === "") {
         this.editorHTMLContent =
           "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
-        this.splitterModel = 40;
         // Case 3: No events, no diary entry.
       } else {
-        if (this.getCountOfDaysAwayFromToday === -0) {
+        if (this.getNumberOfDaysAwayFromToday === -0) {
+          //TODO: set to edit mode on today
           console.log("ITS TODAY MATE");
           //this.viewingMode = 'edit';
         }
@@ -319,60 +341,41 @@ export default {
     },
   },
   computed: {
-    getStyleForDiaryContainer() {
-      let style = {};
-      style['height'] = this.$store.state.layout.height * 0.55 + "px";
-      return style;
+    pastedText() {
+      return this.$store.state.data.pastedText;
     },
-    getEventCount() {
-      if (this.getDiaryEntry != undefined) {
-        return this.getDiaryEntry.events.length;
-      }
-      else {
-        return 0;
-      }
+    getDiaryEntry() {
+      return this.$store.getters["data/getDiaryEntryByDate"](this.getDate);
     },
-    getStyleForSplitter() {
-      let style = {};
-      style['height'] = this.$store.state.layout.height * 0.74 + "px";
-      return style;
-    },
-    getStyleForSplitterSeparator() {
-      let style = {};
-      if (this.getDiaryEntry != undefined && !this.isDiaryEntryShownInFullscreen) {
-        if (this.viewingMode === 'edit') {
-          style["display"] = "none";
-        } else {
-          style["z-index"] = "1";
-        }
+    getDay() {
+      let today = Date.now();
+      let yesterday = date.subtractFromDate(Date.now(), { days: 1 });
+      let tomorrow = date.addToDate(Date.now(), { days: 1 });
+      let unit = "day";
+
+      let diff = this.getNumberOfDaysAwayFromToday;
+      // date.isSameDate returns true when date1 and date2 are on the same day
+      if (date.isSameDate(this.getDate, today, unit)) {
+        return "Today";
+      } else if (date.isSameDate(this.getDate, yesterday, unit)) {
+        return "Yesterday";
+      } else if (date.isSameDate(this.getDate, tomorrow, unit)) {
+        return "Tomorrow";
       } else {
-        style["display"] = "none";
+        if (diff < -1) {
+          return Math.abs(diff) + " days from now";
+        }
+        return diff + " days ago";
       }
-      return style;
     },
-    getCardBackgroundColor() {
-      return this.$store.state.layout.diaryCardBackgroundColor;
+    getNumberOfDaysAwayFromToday() {
+      // returns the number of days away from today... minus means its in the future, positive number means its in the past. zero means today.
+      let unit = "day";
+      let diff = date.getDateDiff(this.getDate, Date.now(), unit);
+      diff = diff * -1;
+      return diff;
     },
-    getStyleForDayInTitlebar() {
-      let style = {};
-      style["font-size"] = "1.15em";
-      style["font-family"] = "Pixelated MS Sans Serif";
-      style["font-weight"] = 700;
-      style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
-      return style;
-    },
-    getStyleForTitlebar() {
-      let style = {};
-      style["text-shadow"] = this.$store.state.layout.accent2 + this.$store.state.layout.lowOpacity + " 2px 2px 2px";
-      //style["text-family"] = this.$store.state.layout.nonDefaultFont;
-      style["color"] = "white";
-      style["font-weight"] = "700";
-      return style;
-    },
-    isDiaryTitlebarShowingDay() {
-      return this.$store.state.layout.isDiaryTitlebarShowingDay;
-    },
-    getSubtitle() {
+    subtitle() {
       let subtitle = this.formatDate(this.getDate);
       subtitle = subtitle.substring(0, subtitle.length - 6);
 
@@ -389,7 +392,100 @@ export default {
         }
       }
     },
-    getSubtitleStyle() {
+    numberOfNotes() {
+      if (this.getDiaryEntry != undefined) {
+        return this.getDiaryEntry.events.length;
+      }
+      else {
+        return 9999;
+      }
+    },
+    formattedDate: {
+      get() {
+        return date.formatDate(this.getDate, "YYYY/MM/DD");
+      },
+      set(value) {
+        this.getDate = value;
+      },
+    },
+    // For Styling
+    isDiaryTitlebarShowingDay() {
+      return this.$store.state.layout.isDiaryTitlebarShowingDay;
+    },
+    diaryMode() {
+      return this.$store.state.layout.diaryMode;
+    },
+    areEventsShownInFullscreen() {
+      return this.$store.state.data.eventsOnDiaryPageAreExpanded;
+    },
+    // Styles
+    width() {
+      return { "width": this.$store.state.layout.innerWidth + "px" };
+    },
+    styleForDiaryHeader() {
+      return {
+        "width": this.$store.state.layout.innerWidth + "px",
+        "margin-top": "-8px"
+      }
+    },
+    styleForDiarySection() { // adjusts the top padding
+      if (this.getDiaryEntry === undefined) {
+        return {
+          "padding-top": "20px",
+          "margin-top": "16px",
+          "padding-bottom": "16px",
+        };
+      } else {
+        return {
+          "padding-top": "48px",
+          "margin-top": "16px",
+          "padding-bottom": "16px",
+        };
+      }
+    },
+    styleForBorderSeparator() {
+      return {
+        "width": this.$store.state.layout.innerWidth * 0.97 + "px",
+        "border-top": "0.8px solid whitesmoke",
+        "margin-top": "-15px",
+      };
+    },
+    styleForSplitter() {
+      let style = {};
+      style['height'] = this.$store.state.layout.height * 0.74 + "px";
+      style['margin-top'] = "-5px";
+      return style;
+    },
+    styleForSplitterSeparator() {
+      let style = {};
+      if ((this.getDiaryEntry != undefined || this.viewingMode === 'edit') && !this.isDiaryEntryShownInFullscreen) {
+        style["z-index"] = "1";
+        style["height"] = "45px";
+        style["background-color"] = "transparent";
+      } else {
+        style["display"] = "none";
+      }
+      return style;
+    },
+    cardBackgroundColor() {
+      return this.$store.state.layout.diaryCardBackgroundColor;
+    },
+    styleForDayInTitlebar() {
+      let style = {};
+      style["font-size"] = "1.15em";
+      style["font-family"] = "Pixelated MS Sans Serif";
+      style["font-weight"] = 700;
+      style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
+      return style;
+    },
+    styleForTitlebar() {
+      let style = {};
+      style["text-shadow"] = this.$store.state.layout.accent2 + this.$store.state.layout.lowOpacity + " 2px 2px 2px";
+      style["color"] = "white";
+      style["font-weight"] = "700";
+      return style;
+    },
+    subtitleStyle() {
       let style = {};
       style["font-size"] = "1.15em";
       style["color"] = "white";
@@ -407,93 +503,38 @@ export default {
       }
       return style;
     },
-    diaryMode() {
-      return this.$store.state.layout.diaryMode;
-    },
-    areEventsShownInFullscreen() {
-      return this.$store.state.data.eventsOnDiaryPageAreExpanded;
-    },
-    // adjusts the top padding
-    getEventSectionClass() {
-      if (this.getDiaryEntry === undefined) {
-        return {
-          "padding-top": "20px",
-          "margin-top": "16px",
-          "padding-bottom": "16px",
-        };
-      } else {
-        return {
-          "padding-top": "48px",
-          "margin-top": "16px",
-          "padding-bottom": "16px",
-        };
-      }
-    },
-    // adjusts the top padding
-    getDiarySectionClass() {
-      if (this.getDiaryEntry === undefined) {
-        return {
-          "padding-top": "20px",
-          "margin-top": "16px",
-          "padding-bottom": "16px",
-        };
-      } else {
-        return {
-          "padding-top": "48px",
-          "margin-top": "16px",
-          "padding-bottom": "16px",
-        };
-      }
-    },
-
-
-    formattedDate: {
-      get() {
-        return date.formatDate(this.getDate, "YYYY/MM/DD");
-      },
-      set(value) {
-        this.getDate = value;
-      },
-    },
-    getCurrentEvent() {
-      return 0;
-    },
-    getDiaryEntry() {
-      return this.$store.getters["data/getDiaryEntryByDate"](this.getDate);
-    },
-    getCountOfDaysAwayFromToday() {
-      // returns the number of days away from today... minus means its in the future, positive number means its in the past. zero means today.
-      let unit = "day";
-      let diff = date.getDateDiff(this.getDate, Date.now(), unit);
-      diff = diff * -1;
-      return diff;
-    },
-    getDay() {
-      //const date1 = new Date(2017, 2, 5);
-      let today = Date.now();
-      let yesterday = date.subtractFromDate(Date.now(), { days: 1 });
-      let tomorrow = date.addToDate(Date.now(), { days: 1 });
-      let unit = "day";
-
-      let diff = this.getCountOfDaysAwayFromToday;
-      // date.isSameDate returns true when date1 and date2 are on the same day
-      if (date.isSameDate(this.getDate, today, unit)) {
-        return "Today";
-      } else if (date.isSameDate(this.getDate, yesterday, unit)) {
-        return "Yesterday";
-      } else if (date.isSameDate(this.getDate, tomorrow, unit)) {
-        return "Tomorrow";
-      } else {
-        if (diff < -1) {
-          return Math.abs(diff) + " days from now";
-        }
-        return diff + " days ago";
-      }
-    },
   },
   methods: {
+    setChangeData(value) {
+      this.changeData = value;
+    },
+    setChangeDataEditor(text) {
+      console.log("setting editor text in change data... ", text)
+      this.changeData.editor = text;
+    },
+    resetChangeData() {
+      this.changeData = {
+        id: "",
+        date: "",
+        editor: "",
+        events: [],
+      };
+    },
+    createDiaryEntry() {
+      console.log("creating new diary entry...")
+      this.isCreatingNewDiaryEntry = true;
+      this.viewingMode = "edit";
+      this.resetChangeData();
+
+      // applying default template
+      let defaultTemplate =
+        this.$store.getters["data/getDefaultTemplate"]("DIARY");
+      if (defaultTemplate != undefined) {
+        this.changeData.editor = defaultTemplate;
+      }
+    },
     hideEvents() {
-      this.splitterModel = this.splitterModelDefaultHeight;
+      this.splitterModel = this.splitterHeightDefault;
     },
     showEvents() {
       this.splitterModel = 570;
@@ -502,6 +543,7 @@ export default {
       this.getDate = Date.now();
     },
     enterFullscreenMode(editor) {
+      // TODO: splitter action!
       this.isDiaryEntryShownInFullscreen = true;
       this.editorHTMLContent = editor;
     },
@@ -525,6 +567,7 @@ export default {
       this.$router.push("Event");
     },
     saveChangesToEntry(changeData) {
+      this.isCreatingNewDiaryEntry = false;
       let payload;
       if (this.getDiaryEntry === undefined) {
 
@@ -551,6 +594,7 @@ export default {
         };
         this.$store.commit("data/updateDiaryEntry", payload);
       }
+      this.resetChangeData();
     },
     subtractFromDate(days) {
       this.getDate = date.subtractFromDate(this.getDate, { days: days });
@@ -566,15 +610,25 @@ export default {
     },
 
     changeViewMode(mode) {
+      if (mode === "edit") {
+        this.splitterModel = this.splitterHeightDefault;
+        //this.createDiaryEntry();
+      } else {
+        this.isCreatingNewDiaryEntry = false;
+      }
       this.viewingMode = mode;
     },
   },
 };
 </script>
 
-<style scoped>
-.editorCard {
-  font-size: 12.5px;
+<style>
+.grab-button {
+  margin-top: -14px;
+}
+
+.q-splitter__separator-area {
+  margin-top: 13px;
 }
 
 .title-bar-height {
@@ -584,37 +638,6 @@ export default {
 .date-picker-button {
   text-transform: none;
   font-size: 1.2em;
-}
-
-.subtitle {
-  margin-top: -8px;
-}
-
-.selected-date {
-  font-size: 12.5px;
-  margin-top: 1px;
-}
-
-
-.maxHeight {
-  max-height: 80px;
-}
-
-.smallText {
-  font-size: 12.5px;
-}
-
-.q-btn :deep(.q-icon) {
-  font-size: 1.2em;
-}
-
-.alignHeight {
-  vertical-align: middle;
-}
-
-.underlined {
-  border-bottom: 1px solid black;
-  padding: 0 0 4px;
 }
 
 *,
