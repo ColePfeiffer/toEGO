@@ -2,6 +2,7 @@
   <BasePage titleOfPage="Diary"
     :mode="diaryMode"
     :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
+    <!-- Titlebar-Option: 1 -->
     <template v-if="isDiaryTitlebarShowingDay"
       v-slot:titlebar>
       <div class="row justify-center items-center text-center no-wrap  full-width title-bar-height q-py-none">
@@ -81,6 +82,7 @@
         </div>
       </div>
     </template>
+    <!-- Titlebar-Option: 2 -->
     <template v-else
       v-slot:titlebar>
       <div class="title-bar-text">
@@ -289,7 +291,6 @@ export default {
       splitterModel: 1,
       splitterHeightDefault: 1,
       splitterHeightShowingNonExpandedNote: 156,
-      // TODO:
       isCreatingNewDiaryEntry: false,
       changeData: {},
       isHidingEvents: false,
@@ -297,6 +298,12 @@ export default {
     };
   },
   watch: {
+    splitterModel(number) {
+      console.log("Splitter: ", number);
+      if (number <= 93) {
+        this.splitterModel = this.splitterHeightDefault;
+      }
+    },
     pastedText(text) {
       if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === true && text != "") {
         if (this.changeData.editor != "") {
@@ -332,9 +339,7 @@ export default {
         // Case 3: No events, no diary entry.
       } else {
         if (this.getNumberOfDaysAwayFromToday === -0) {
-          //TODO: set to edit mode on today
           console.log("ITS TODAY MATE");
-          //this.viewingMode = 'edit';
         }
         this.editorHTMLContent =
           "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
@@ -523,7 +528,7 @@ export default {
     createDiaryEntry() {
       console.log("creating new diary entry...")
       this.isCreatingNewDiaryEntry = true;
-      this.viewingMode = "edit";
+      this.changeViewMode('edit');
       this.resetChangeData();
 
       // applying default template

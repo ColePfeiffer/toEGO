@@ -8,14 +8,11 @@
             <!-- Buttons: Left -->
             <div v-if="isDiaryVisible"
                 class="col-auto">
-                <ButtonForDiarySection v-if="isDiaryInEditMode"
-                    textColor="white"
-                    icon="bi-chevron-left"
-                    label="back"
-                    :isShowingLabel="true"
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                <BaseButtonForDialogFooter v-if="isDiaryInEditMode"
+                    buttonText="Discard"
+                    style="font-size: 11px; border-radius: 0px; max-height: 25px;"
                     @click-button="goBack">
-                </ButtonForDiarySection>
+                </BaseButtonForDialogFooter>
                 <!-- Button: Enter Fullscreen Button -->
                 <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
                     textColor="white"
@@ -34,19 +31,13 @@
             <!-- Buttons: Right -->
             <div v-if="isDiaryVisible"
                 class="col-auto">
-                <!-- Button: Save changes to diaryentry -->
-                <ButtonForDiarySection v-if="isDiaryInEditMode"
-                    textColor="white"
-                    icon="fas fa-save"
-                    :isShowingLabel="true"
-                    label="save"
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+
+                <BaseButtonForDialogFooter v-if="isDiaryInEditMode"
+                    style="font-size: 11px; border-radius: 0px; max-height: 25px;"
+                    buttonText="Save"
                     @click-button="saveChanges">
-                    <template v-slot:tooltip>
-                        <BaseTooltip text="Save"
-                            :delay="15"></BaseTooltip>
-                    </template>
-                </ButtonForDiarySection>
+                </BaseButtonForDialogFooter>
+
                 <!-- Button: Edit diaryentry -->
                 <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
                     textColor="white"
@@ -70,6 +61,7 @@
 import DiaryBaseHeader from "./Base/DiaryBaseHeader.vue";
 import BaseTooltip from "../ui/BaseTooltip.vue";
 import ButtonForDiarySection from "./Base/ButtonForDiarySection.vue";
+import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
 
 export default {
     name: "TheHeaderForDiarySection",
@@ -77,6 +69,7 @@ export default {
         DiaryBaseHeader,
         BaseTooltip,
         ButtonForDiarySection,
+        BaseButtonForDialogFooter
     },
     emits: ["set-change-data", "change-view", "set-change-data-editor", "enter-fullscreen-mode", "create-diary-entry", "save-changes", "reset-change-data"],
     props: {
