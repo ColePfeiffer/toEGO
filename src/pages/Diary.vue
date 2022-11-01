@@ -161,7 +161,6 @@
       <!-- Header for Note Section -->
       <TheHeaderForNoteSection
         v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-        class="q-px-sm"
         :style="width"
         :diaryEntry="getDiaryEntry"
         :splitterModel="splitterModel"
@@ -170,7 +169,7 @@
         @show-events="showEvents"
         @hide-events="hideEvents" />
       <!-- Q-Splitter -->
-      <div class="q-px-sm">
+      <div>
         <q-splitter v-model="splitterModel"
           :limits="[1, Infinity]"
           unit="px"
@@ -197,8 +196,7 @@
               text-color="white"
               size="40px"
               icon="bi-grip-horizontal" />
-            <TheHeaderForDiarySection class="q-px-sm"
-              :style="styleForDiaryHeader"
+            <TheHeaderForDiarySection :style="styleForDiaryHeader"
               :diaryEntry="getDiaryEntry"
               :viewingMode="viewingMode"
               :changeData="changeData"
@@ -228,7 +226,7 @@
 
             <!-- DIARY SECTION FULLSCREEN -->
             <div v-if="isDiaryEntryShownInFullscreen"
-              class="q-px-xs q-pt-md">
+              class="q-pt-md">
               <div class="row justify-end q-pb-md">
                 <div class="col-4  text-right"></div>
                 <ButtonForDiarySection textColor="white"
@@ -451,14 +449,15 @@ export default {
     },
     styleForBorderSeparator() {
       return {
-        "width": this.$store.state.layout.innerWidth * 0.97 + "px",
+        "width": this.$store.state.layout.innerWidth * 0.99 + "px",
         "border-top": "0.8px solid whitesmoke",
         "margin-top": "-15px",
       };
     },
     styleForSplitter() {
       let style = {};
-      style['height'] = this.$store.state.layout.height * 0.74 + "px";
+
+      style['height'] = this.$store.state.layout.height * 0.70 + "px";
       style['margin-top'] = "-5px";
       return style;
     },

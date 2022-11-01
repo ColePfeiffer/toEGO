@@ -113,7 +113,7 @@
             class="no-border-radius no-box-shadow"
             ref="editorRef1"
             v-model="editor"
-            minHeight="250px"
+            :style="editorHeight"
             type="EVENT"
             @save="saveChanges"
             @show-dialog-template-creator="openDialogCreateTemplate"
@@ -266,6 +266,9 @@ export default {
       return this.$store.state.data.pastedText;
     },
     // Styling _____________________
+    editorHeight() {
+      return { 'min-height': this.$store.state.layout.height * 0.35 + "px" };
+    },
     getEventMode() {
       return this.$store.state.layout.eventMode;
     },
@@ -317,8 +320,6 @@ export default {
       style["font-size"] = this.$store.state.layout.fontsize + "px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["width"] = this.getWidthForInputFields + "px";
-
-      style["min-height"] = this.$store.state.layout.height * 0.4 + "px";
       return style;
     },
     getBackgroundColor() {

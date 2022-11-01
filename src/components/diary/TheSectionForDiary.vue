@@ -13,7 +13,7 @@
                     <BaseEditor editorTitle="Log"
                         :editorWidth="editorWidth"
                         ref="editorRef1"
-                        class="no-border-radius no-box-shadow q-pa-none"
+                        class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
                         v-model="editor"
                         @save="saveEditor"
                         @show-dialog-template-creator="showTemplateCreator"
@@ -51,7 +51,7 @@ export default {
     },
     computed: {
         editorWidth() {
-            return this.$store.state.layout.innerWidth * 0.94
+            return this.$store.state.layout.innerWidth * 0.99
         },
         isDiaryVisible() {
             if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {

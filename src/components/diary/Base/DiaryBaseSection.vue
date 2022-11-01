@@ -1,5 +1,5 @@
 <template>
-    <div class="q-px-xs">
+    <div>
         <slot name="content">
             <slot name="content-in-scroll-area"></slot>
         </slot>
