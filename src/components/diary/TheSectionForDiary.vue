@@ -51,7 +51,11 @@ export default {
     },
     computed: {
         editorWidth() {
-            return this.$store.state.layout.innerWidth * 0.99
+            if (this.$store.state.layout.diaryMode != 'retro') {
+                return this.$store.state.layout.innerWidth * 0.99;
+            } else {
+                return this.$store.state.layout.innerWidth * 0.88;
+            }
         },
         isDiaryVisible() {
             if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {

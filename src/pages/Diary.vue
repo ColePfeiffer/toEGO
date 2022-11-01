@@ -148,107 +148,120 @@
     </template>
 
     <template v-slot:content-without-scrollarea>
-      <div class="bookmark"
-        v-if="viewingMode === 'view' && false"></div>
-      <!-- DAY SELECTION -->
-      <div class="row justify-center items-center text-center ">
-        <!-- today, yesterday, x days ago, x days ahead... -->
-        <div class="col-12 q-pt-xs ">
-          <div :style="subtitleStyle">
-            {{ subtitle }}</div>
+      <div class="diary-content"
+        :style="styleForDiaryContent">
+        <!-- Only visible, if showing day. -->
+        <div class="row justify-center items-center text-center ">
+          <!-- today, yesterday, x days ago, x days ahead... -->
+          <div class="col-12 q-pt-xs ">
+            <div :style="subtitleStyle">
+              {{ subtitle }}</div>
+          </div>
+        </div>
+        <!-- Header for Note Section -->
+        <TheHeaderForNoteSection
+          v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
+          :style="styleHeaderNotes"
+          :diaryEntry="getDiaryEntry"
+          :splitterModel="splitterModel"
+          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+          @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+          @show-events="showEvents"
+          @hide-events="hideEvents" />
+        <!-- Q-Splitter -->
+        <div>
+          <q-splitter v-model="splitterModel"
+            :limits="[1, Infinity]"
+            unit="px"
+            horizontal
+            color="transparent"
+            :style="styleForSplitter"
+            :separator-style="styleForSplitterSeparator">
+            <!-- Section for Notes -->
+            <template v-slot:before>
+              <TheSectionForNotes
+                v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined && viewingMode != 'edit'"
+                :backgroundColor="cardBackgroundColor"
+                :diaryEntry="getDiaryEntry"
+                @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode" />
+            </template>
+            <!-- Q-Seperator, including Header for Diary Section -->
+            <template v-slot:separator>
+              <div v-if="this.viewingMode != 'edit'"
+                :style="styleForBorderSeparator"></div>
+              <q-avatar v-if="this.viewingMode != 'edit'"
+                flat
+                class="grab-button"
+                text-color="white"
+                size="40px"
+                icon="bi-grip-horizontal" />
+              <TheHeaderForDiarySection :style="styleHeaderDiary"
+                :diaryEntry="getDiaryEntry"
+                :viewingMode="viewingMode"
+                :changeData="changeData"
+                :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
+                @set-change-data="setChangeData"
+                @change-view="changeViewMode"
+                @reset-change-data="resetChangeData"
+                @create-diary-entry="createDiaryEntry"
+                @set-change-data-editor="setChangeDataEditor"
+                @enter-fullscreen-mode="enterFullscreenMode"></TheHeaderForDiarySection>
+            </template>
+            <!-- Section for Diary -->
+            <template v-slot:after>
+              <TheSectionForDiary v-if="!isDiaryEntryShownInFullscreen"
+                :backgroundColor="cardBackgroundColor"
+                :diaryEntry="getDiaryEntry"
+                :viewingMode="viewingMode"
+                :class="styleForDiarySection"
+                :changeData="changeData"
+                :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
+                @save-editor="saveChangesToEntry"
+                @set-change-data-editor="setChangeDataEditor"
+                @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+                @create-diary-entry="createDiaryEntry">
+              </TheSectionForDiary>
+
+              <!-- DIARY SECTION FULLSCREEN -->
+              <div v-if="isDiaryEntryShownInFullscreen"
+                class="q-pt-md">
+                <div class="row justify-end q-pb-md">
+                  <div class="col-4  text-right"></div>
+                  <ButtonForDiarySection textColor="white"
+                    icon="bi-chevron-left"
+                    label="back"
+                    :isShowingLabel="true"
+                    class="text-right"
+                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                    @click-button="exitFullscreen"></ButtonForDiarySection>
+                </div>
+                <BaseCard :backgroundColor="cardBackgroundColor"
+                  class="text-justify">
+                  <template v-slot:content>
+                    <q-item>
+                      <q-item-section v-html="editorHTMLContent"> </q-item-section>
+                    </q-item>
+                  </template>
+                </BaseCard>
+              </div>
+            </template>
+          </q-splitter>
         </div>
       </div>
-      <!-- Header for Note Section -->
-      <TheHeaderForNoteSection
-        v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
-        :style="width"
-        :diaryEntry="getDiaryEntry"
-        :splitterModel="splitterModel"
-        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-        @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
-        @show-events="showEvents"
-        @hide-events="hideEvents" />
-      <!-- Q-Splitter -->
-      <div>
-        <q-splitter v-model="splitterModel"
-          :limits="[1, Infinity]"
-          unit="px"
-          horizontal
-          color="transparent"
-          :style="styleForSplitter"
-          :separator-style="styleForSplitterSeparator">
-          <!-- Section for Notes -->
-          <template v-slot:before>
-            <TheSectionForNotes
-              v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined && viewingMode != 'edit'"
-              :backgroundColor="cardBackgroundColor"
-              :diaryEntry="getDiaryEntry"
-              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-              @go-to-event-set-to-editing-mode="goToEventSetToEditingMode" />
-          </template>
-          <!-- Q-Seperator, including Header for Diary Section -->
-          <template v-slot:separator>
-            <div v-if="this.viewingMode != 'edit'"
-              :style="styleForBorderSeparator"></div>
-            <q-avatar v-if="this.viewingMode != 'edit'"
-              flat
-              class="grab-button"
-              text-color="white"
-              size="40px"
-              icon="bi-grip-horizontal" />
-            <TheHeaderForDiarySection :style="styleForDiaryHeader"
-              :diaryEntry="getDiaryEntry"
-              :viewingMode="viewingMode"
-              :changeData="changeData"
-              :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
-              @set-change-data="setChangeData"
-              @change-view="changeViewMode"
-              @reset-change-data="resetChangeData"
-              @create-diary-entry="createDiaryEntry"
-              @save-changes="saveChangesToEntry"
-              @set-change-data-editor="setChangeDataEditor"
-              @enter-fullscreen-mode="enterFullscreenMode"></TheHeaderForDiarySection>
-          </template>
-          <!-- Section for Diary -->
-          <template v-slot:after>
-            <TheSectionForDiary v-if="!isDiaryEntryShownInFullscreen"
-              :backgroundColor="cardBackgroundColor"
-              :diaryEntry="getDiaryEntry"
-              :viewingMode="viewingMode"
-              :class="styleForDiarySection"
-              :changeData="changeData"
-              :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
-              @save-editor="saveChangesToEntry"
-              @set-change-data-editor="setChangeDataEditor"
-              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-              @create-diary-entry="createDiaryEntry">
-            </TheSectionForDiary>
+    </template>
 
-            <!-- DIARY SECTION FULLSCREEN -->
-            <div v-if="isDiaryEntryShownInFullscreen"
-              class="q-pt-md">
-              <div class="row justify-end q-pb-md">
-                <div class="col-4  text-right"></div>
-                <ButtonForDiarySection textColor="white"
-                  icon="bi-chevron-left"
-                  label="back"
-                  :isShowingLabel="true"
-                  class="text-right"
-                  :style="$store.getters['layout/getStyleForDiarySectionButton']"
-                  @click-button="exitFullscreen"></ButtonForDiarySection>
-              </div>
-              <BaseCard :backgroundColor="cardBackgroundColor"
-                class="text-justify">
-                <template v-slot:content>
-                  <q-item>
-                    <q-item-section v-html="editorHTMLContent"> </q-item-section>
-                  </q-item>
-                </template>
-              </BaseCard>
-            </div>
-          </template>
-        </q-splitter>
-      </div>
+    <template v-slot:footer>
+      <BaseButtonForDialogFooter v-if="viewingMode === 'edit'"
+        buttonText="Discard"
+        style="font-size: 11px; border-radius: 0px; max-height: 25px; margin-right: 5px"
+        @click-button="discard">
+      </BaseButtonForDialogFooter>
+      <BaseButtonForDialogFooter v-if="viewingMode === 'edit'"
+        style="font-size: 11px; border-radius: 0px; max-height: 25px;"
+        buttonText="Save"
+        @click-button="saveChangesToEntry">
+      </BaseButtonForDialogFooter>
     </template>
   </BasePage>
 </template>
@@ -265,6 +278,7 @@ import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 import ButtonForDiarySection from "src/components/diary/Base/ButtonForDiarySection.vue";
 import TheHeaderForNoteSection from "src/components/diary/TheHeaderForNoteSection.vue";
 import TheHeaderForDiarySection from "src/components/diary/TheHeaderForDiarySection.vue";
+import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
 
 export default {
   name: "diary",
@@ -277,7 +291,8 @@ export default {
     BaseTooltip,
     ButtonForDiarySection,
     TheHeaderForNoteSection,
-    TheHeaderForDiarySection
+    TheHeaderForDiarySection,
+    BaseButtonForDialogFooter
   },
   data() {
     return {
@@ -426,10 +441,49 @@ export default {
     width() {
       return { "width": this.$store.state.layout.innerWidth + "px" };
     },
-    styleForDiaryHeader() {
-      return {
-        "width": this.$store.state.layout.innerWidth + "px",
-        "margin-top": "-8px"
+    isDiaryModeSetToRetro() {
+      if (this.diaryMode === 'retro') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    styleForDiaryContent() {
+      if (this.isDiaryModeSetToRetro) {
+        return { "padding-left": "20px", "padding-right": "20px" };
+      } else {
+        return {
+          "padding-left": "0px",
+          "padding-right": "0px"
+        }
+      }
+    },
+    styleHeaderDiary() {
+      if (this.isDiaryModeSetToRetro) {
+        return {
+          "width": this.$store.state.layout.innerWidth * 0.93 + "px",
+          "margin-top": "-8px",
+
+        }
+      } else {
+        return {
+          "width": this.$store.state.layout.innerWidth + "px",
+          "margin-top": "-8px"
+        }
+      }
+
+    },
+    styleHeaderNotes() {
+      if (this.isDiaryModeSetToRetro) {
+        return {
+          "width": this.$store.state.layout.innerWidth * 0.93 + "px",
+          "margin-left": "-8px",
+          "margin-right": "8px"
+        }
+      } else {
+        return {
+          "width": this.$store.state.layout.innerWidth + "px",
+        }
       }
     },
     styleForDiarySection() { // adjusts the top padding
@@ -448,16 +502,27 @@ export default {
       }
     },
     styleForBorderSeparator() {
-      return {
-        "width": this.$store.state.layout.innerWidth * 0.99 + "px",
-        "border-top": "0.8px solid whitesmoke",
-        "margin-top": "-15px",
-      };
+      if (this.isDiaryModeSetToRetro) {
+        return {
+          "width": this.$store.state.layout.innerWidth * 0.93 + "px",
+          "border-top": "0.8px solid whitesmoke",
+          "margin-top": "-15px",
+        };
+      } else {
+        return {
+          "width": this.$store.state.layout.innerWidth * 0.99 + "px",
+          "border-top": "0.8px solid whitesmoke",
+          "margin-top": "-15px",
+        };
+      }
+
     },
     styleForSplitter() {
       let style = {};
-
       style['height'] = this.$store.state.layout.height * 0.70 + "px";
+      if (this.isDiaryModeSetToRetro) {
+        style['margin-bottom'] = "10px";
+      }
       style['margin-top'] = "-5px";
       return style;
     },
@@ -510,6 +575,10 @@ export default {
     },
   },
   methods: {
+    discard() {
+      this.changeViewMode('view');
+      this.resetChangeData();
+    },
     setChangeData(value) {
       this.changeData = value;
     },
@@ -651,18 +720,5 @@ export default {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-}
-
-.bookmark {
-  position: absolute;
-  right: 10px;
-  height: 90px;
-  width: 20px;
-  padding: 0px;
-  -webkit-transform: rotate(0deg) skew(0deg);
-  transform: rotate(0deg) skew(0deg);
-  border-left: 16px solid var(--q-accent);
-  border-right: 16px solid var(--q-accent);
-  border-bottom: 16px solid transparent;
 }
 </style>

@@ -8,13 +8,8 @@
             <!-- Buttons: Left -->
             <div v-if="isDiaryVisible"
                 class="col-auto">
-                <BaseButtonForDialogFooter v-if="isDiaryInEditMode"
-                    buttonText="Discard"
-                    style="font-size: 11px; border-radius: 0px; max-height: 25px;"
-                    @click-button="goBack">
-                </BaseButtonForDialogFooter>
                 <!-- Button: Enter Fullscreen Button -->
-                <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
+                <ButtonForDiarySection v-if="areEditAndFullscreenButtonVisible"
                     textColor="white"
                     icon="bi-fullscreen"
                     size="8.8px"
@@ -31,15 +26,8 @@
             <!-- Buttons: Right -->
             <div v-if="isDiaryVisible"
                 class="col-auto">
-
-                <BaseButtonForDialogFooter v-if="isDiaryInEditMode"
-                    style="font-size: 11px; border-radius: 0px; max-height: 25px;"
-                    buttonText="Save"
-                    @click-button="saveChanges">
-                </BaseButtonForDialogFooter>
-
                 <!-- Button: Edit diaryentry -->
-                <ButtonForDiarySection v-else-if="areEditAndFullscreenButtonVisible"
+                <ButtonForDiarySection v-if="areEditAndFullscreenButtonVisible"
                     textColor="white"
                     icon="bi-pencil-square"
                     class="q-mr-xs"
@@ -61,7 +49,7 @@
 import DiaryBaseHeader from "./Base/DiaryBaseHeader.vue";
 import BaseTooltip from "../ui/BaseTooltip.vue";
 import ButtonForDiarySection from "./Base/ButtonForDiarySection.vue";
-import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
+
 
 export default {
     name: "TheHeaderForDiarySection",
@@ -69,9 +57,8 @@ export default {
         DiaryBaseHeader,
         BaseTooltip,
         ButtonForDiarySection,
-        BaseButtonForDialogFooter
     },
-    emits: ["set-change-data", "change-view", "set-change-data-editor", "enter-fullscreen-mode", "create-diary-entry", "save-changes", "reset-change-data"],
+    emits: ["set-change-data", "change-view", "set-change-data-editor", "enter-fullscreen-mode", "create-diary-entry", "reset-change-data"],
     props: {
         diaryEntry: Object,
         viewingMode: String,
@@ -122,15 +109,8 @@ export default {
         resetChangeData() {
             this.$emit("reset-change-data");
         },
-        goBack() {
-            this.changeView('view');
-            this.resetChangeData();
-        },
         openEntryInFullscreen() {
             this.$emit("enter-fullscreen-mode", this.editor);
-        },
-        saveChanges() {
-            this.$emit("save-changes");
         },
         editDiaryEntry() {
             this.changeView("edit");

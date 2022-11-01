@@ -110,7 +110,7 @@
             </div>
             <!-- Step 4 -->
             <div class="col-12 q-px-md q-pb-md"
-                style="margin-top: 30px"
+                style="margin-top: 20px"
                 v-else-if="step === 4">
                 <div class="q-mt-md">
 
