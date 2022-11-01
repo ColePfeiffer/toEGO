@@ -18,294 +18,286 @@
     :isButton2Disabled="!isAtLeastOneTemplateCreated">
     <template v-slot:content>
       <div>
-        <div v-if="isAtLeastOneTemplateCreated === true"
-          class="row no-wrap full-width items-center justify-center q-pt-md">
-          <q-btn class="col-md-2 col-xs-1"
-            flat
-            style="touch-action: manipulation"
-            icon="keyboard_arrow_left"
-            :style="$store.state.layout.buttonFlatOnlyIcon"
-            :disable="isIndexAtZero"
-            :color="isIndexAtZero ? 'grey-3' : 'accent'"
-            @click="showTemplate('previous')">
-          </q-btn>
-          <div class="col-md-8 col-xs-9">
-            <!-- Template and Filter Dropdown Buttons -->
-            <div v-if="isInEditingMode"
-              class="row no-wrap justify-center items-center">
-              <q-input filled
-                label-slot
-                class="col-12 q-pa-none"
-                bg-color="white"
-                square
-                style="border-top: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9"
-                input-style="font-family: Inter; font-size: 12.5px;"
-                v-model="name"
-                label="Title">
-                <template v-slot:label>
-                  <span class="text-weight-bold text-secondary"
-                    :style="$store.getters['layout/getNonDefaultFont']">Name</span>
-                </template>
-              </q-input>
-            </div>
-
-            <div v-else
-              class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
-              <!-- Pick template Dropdown Button  -->
-              <q-btn :icon-right="expandIcon"
-                :ripple="false"
-                flat
-                no-caps
-                class="col-12 q-pa-none"
-                square
-                :style="getStyleForTemplatePickerButton"
-                color="transparent"
-                :text-color="this.$store.getters['layout/getTextColorOnSecondary']"
-                label="Pick Template">
-                <q-menu fit
-                  full-width
-                  class="no-border-radius "
-                  v-model="qMenuModel">
-                  <q-list>
-                    <FolderCategoryTemplateStructure :isShowingTemplates="true"
-                      categoryMode="EXPAND"
-                      :currentTemplate="currentTemplate"
-                      :folders="folders"
-                      :categories="categories"
-                      :templates="templateList"
-                      @click-template="pickTemplate" />
-                  </q-list>
-                </q-menu>
-              </q-btn>
-            </div>
-
-            <q-card flat
-              bordered
-              square
-              :style="getStyleForCard">
-
-              <div v-if="!isInEditingMode">
-                <q-card-section class="q-pb-xs">
-                  <div class="text-h6"
-                    style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
-                </q-card-section>
-
-                <q-card-section class="templateTextContainer q-pb-xs">
-                  <q-scroll-area :style="StyleTmplateTextScrollArea">
-                    <div v-if="
-                      currentTemplate.text.length >= maxNumberOfDisplayedChars
-                    ">
-                      <div v-html="
-                        currentTemplate.text.substring(
-                          0,
-                          maxNumberOfDisplayedChars
-                        ) + ' [...]'
-                      "></div>
-                    </div>
-                    <div v-else
-                      v-html="currentTemplate.text"></div>
-                  </q-scroll-area>
-                </q-card-section>
+        <div v-if="isShowingTemplateViewer">
+          <div v-if="isAtLeastOneTemplateCreated === true"
+            class="row no-wrap full-width items-center justify-center q-pt-md">
+            <q-btn class="col-md-2 col-xs-1"
+              flat
+              style="touch-action: manipulation"
+              icon="keyboard_arrow_left"
+              :style="$store.state.layout.buttonFlatOnlyIcon"
+              :disable="isIndexAtZero"
+              :color="isIndexAtZero ? 'grey-3' : 'accent'"
+              @click="showTemplate('previous')">
+            </q-btn>
+            <div class="col-md-8 col-xs-9">
+              <!-- Template and Filter Dropdown Buttons -->
+              <div v-if="isInEditingMode"
+                class="row no-wrap justify-center items-center">
+                <q-input filled
+                  label-slot
+                  class="col-12 q-pa-none"
+                  bg-color="white"
+                  square
+                  style="border-top: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9"
+                  input-style="font-family: Inter; font-size: 12.5px;"
+                  v-model="name"
+                  label="Title">
+                  <template v-slot:label>
+                    <span class="text-weight-bold text-secondary"
+                      :style="$store.getters['layout/getNonDefaultFont']">Name</span>
+                  </template>
+                </q-input>
               </div>
 
-              <div v-else>
-                <q-card-section class="q-px-none q-py-none">
-                  <q-resize-observer @resize="onResize" />
-                  <q-scroll-area :style="StyleTmplateTextScrollArea">
-                    <BaseEditor editorTitle="Editing Template"
-                      :editorWidth="editorWidth"
-                      ref="editorRef1"
-                      class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
-                      v-model="editor"
-                      @save="saveTemplate"
-                      minHeight="300px"
-                      type="TEMPLATE"></BaseEditor>
-                  </q-scroll-area>
-                </q-card-section>
-
+              <div v-else
+                class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
+                <!-- Pick template Dropdown Button  -->
+                <q-btn :icon-right="expandIcon"
+                  :ripple="false"
+                  flat
+                  no-caps
+                  class="col-12 q-pa-none"
+                  square
+                  :style="getStyleForTemplatePickerButton"
+                  color="transparent"
+                  :text-color="this.$store.getters['layout/getTextColorOnSecondary']"
+                  label="Pick Template">
+                  <q-menu fit
+                    full-width
+                    class="no-border-radius "
+                    v-model="qMenuModel">
+                    <q-list>
+                      <FolderCategoryTemplateStructure :isShowingTemplates="true"
+                        categoryMode="EXPAND"
+                        :currentTemplate="currentTemplate"
+                        :folders="folders"
+                        :categories="categories"
+                        :templates="templateList"
+                        @click-template="pickTemplate" />
+                    </q-list>
+                  </q-menu>
+                </q-btn>
               </div>
 
-              <q-card-actions class="row justify-center items-center no-wrap">
-                <div v-if="!isInEditingMode"
-                  class="row justify-center items-center no-wrap">
-                  <q-btn flat
-                    class="col-2 q-mx-sm"
-                    no-wrap
-                    dense
-                    stack
-                    icon="bi-tags"
-                    :style="styleForButton"
-                    :ripple="false"
-                    :text-color="$store.getters['layout/getToolbarIconColor']"
-                    label="manage"
-                    @click="setDefaultStatus">
-                    <CategoryOrTagQuickMenu @openDialogFolderManagement="openDialogFolderManagement"
-                      :currentTemplate="currentTemplate"
-                      :folders="folders"
-                      :categories="categories"
-                      :type="type"
-                      :quicklist="quicklist"
-                      :templates="templateList">
-                    </CategoryOrTagQuickMenu>
-                  </q-btn>
-                  <!-- Set default status button -->
-                  <q-btn flat
-                    class="col-2 q-mr-sm"
-                    no-wrap
-                    dense
-                    stack
-                    icon="bi-pencil"
-                    :style="styleForButton"
-                    :ripple="false"
-                    :text-color="$store.getters['layout/getToolbarIconColor']"
-                    label="edit"
-                    @click="editTemplate">
-                  </q-btn>
-                  <!-- Paste Template button -->
-                  <q-btn flat
-                    class="col-2 q-mr-sm"
-                    no-wrap
-                    stack
-                    dense
-                    icon="bi-clipboard-plus"
-                    :style="styleForButton"
-                    :ripple="false"
-                    :text-color="$store.getters['layout/getToolbarIconColor']"
-                    label="paste"
-                    @click="pasteTemplate">
-                  </q-btn>
-                  <!--Delete Templates button -->
-                  <div class="col-3 q-mx-xs">
-                    <div class="row no-wrap">
-                      <q-btn flat
-                        no-wrap
-                        stack
-                        dense
-                        :icon="iconForDeleteButton"
-                        :style="styleForDeleteButton"
-                        :ripple="false"
-                        :text-color="$store.getters['layout/getToolbarIconColor']"
-                        :label="labelForDeleteButton"
-                        @click="initiateDeletion" />
-                      <q-btn v-if="isDeletingTemplate"
-                        flat
-                        no-wrap
-                        stack
-                        dense
-                        icon="bi-check"
-                        style="margin-bottom: 10px"
-                        :style="styleForButton"
-                        :ripple="false"
-                        :text-color="$store.getters['layout/getToolbarIconColor']"
-                        @click="deleteTemplate">
-                      </q-btn>
+              <q-card flat
+                bordered
+                square
+                :style="getStyleForCard">
+
+                <div v-if="!isInEditingMode">
+                  <q-card-section class="q-pb-xs">
+                    <div class="text-h6"
+                      style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
+                  </q-card-section>
+
+                  <q-card-section class="templateTextContainer q-pb-xs">
+                    <q-scroll-area :style="StyleTmplateTextScrollArea">
+                      <div v-if="
+                        currentTemplate.text.length >= maxNumberOfDisplayedChars
+                      ">
+                        <div v-html="
+                          currentTemplate.text.substring(
+                            0,
+                            maxNumberOfDisplayedChars
+                          ) + ' [...]'
+                        "></div>
+                      </div>
+                      <div v-else
+                        v-html="currentTemplate.text"></div>
+                    </q-scroll-area>
+                  </q-card-section>
+                </div>
+
+                <div v-else>
+                  <q-card-section class="q-px-none q-py-none">
+                    <q-resize-observer @resize="onResize" />
+                    <q-scroll-area :style="StyleTmplateTextScrollArea">
+                      <BaseEditor editorTitle="Editing Template"
+                        :editorWidth="editorWidth"
+                        ref="editorRef1"
+                        class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
+                        v-model="editor"
+                        @save="saveTemplate"
+                        minHeight="300px"
+                        type="TEMPLATE"></BaseEditor>
+                    </q-scroll-area>
+                  </q-card-section>
+
+                </div>
+
+                <q-card-actions class="row justify-center items-center no-wrap">
+                  <div v-if="!isInEditingMode"
+                    class="row justify-center items-center no-wrap">
+                    <q-btn flat
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="bi-tags"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="manage"
+                      @click="setDefaultStatus">
+                      <CategoryOrTagQuickMenu @openDialogFolderManagement="openDialogFolderManagement"
+                        :currentTemplate="currentTemplate"
+                        :folders="folders"
+                        :categories="categories"
+                        :type="type"
+                        :quicklist="quicklist"
+                        :templates="templateList">
+                      </CategoryOrTagQuickMenu>
+                    </q-btn>
+                    <!-- Set default status button -->
+                    <q-btn flat
+                      class="col-2 q-mr-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="bi-pencil"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="edit"
+                      @click="editTemplate">
+                    </q-btn>
+                    <!-- Paste Template button -->
+                    <q-btn flat
+                      class="col-2 q-mr-sm"
+                      no-wrap
+                      stack
+                      dense
+                      icon="bi-clipboard-plus"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="paste"
+                      @click="pasteTemplate">
+                    </q-btn>
+                    <!--Delete Templates button -->
+                    <div class="col-3 q-mx-xs">
+                      <div class="row no-wrap">
+                        <q-btn flat
+                          no-wrap
+                          stack
+                          dense
+                          :icon="iconForDeleteButton"
+                          :style="styleForDeleteButton"
+                          :ripple="false"
+                          :text-color="$store.getters['layout/getToolbarIconColor']"
+                          :label="labelForDeleteButton"
+                          @click="initiateDeletion" />
+                        <q-btn v-if="isDeletingTemplate"
+                          flat
+                          no-wrap
+                          stack
+                          dense
+                          icon="bi-check"
+                          style="margin-bottom: 10px"
+                          :style="styleForButton"
+                          :ripple="false"
+                          :text-color="$store.getters['layout/getToolbarIconColor']"
+                          @click="deleteTemplate">
+                        </q-btn>
+                      </div>
                     </div>
+
+                  </div>
+                  <div v-else
+                    class="row justify-between items-center no-wrap">
+                    <q-btn flat
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="bi-chevron-left"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="discard"
+                      @click="toggleEditingMode">
+                    </q-btn>
+                    <q-btn flat
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="fas fa-save"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="save"
+                      @click="saveTemplate">
+                    </q-btn>
                   </div>
 
-                </div>
-                <div v-else
-                  class="row justify-between items-center no-wrap">
-                  <q-btn flat
-                    class="col-2 q-mx-sm"
-                    no-wrap
-                    dense
-                    stack
-                    icon="bi-chevron-left"
-                    :style="styleForButton"
-                    :ripple="false"
-                    :text-color="$store.getters['layout/getToolbarIconColor']"
-                    label="discard"
-                    @click="toggleEditingMode">
-                  </q-btn>
-                  <q-btn flat
-                    class="col-2 q-mx-sm"
-                    no-wrap
-                    dense
-                    stack
-                    icon="fas fa-save"
-                    :style="styleForButton"
-                    :ripple="false"
-                    :text-color="$store.getters['layout/getToolbarIconColor']"
-                    label="save"
-                    @click="saveTemplate">
-                  </q-btn>
-                </div>
-
-              </q-card-actions>
-            </q-card>
+                </q-card-actions>
+              </q-card>
+            </div>
+            <q-btn class="col-md-2 col-xs-1"
+              flat
+              icon="keyboard_arrow_right"
+              :style="$store.state.layout.buttonFlatOnlyIcon"
+              :disable="isIndexAtMaxLength"
+              :color="isIndexAtMaxLength ? 'grey-3' : 'accent'"
+              @click="showTemplate('next')">
+            </q-btn>
           </div>
-          <q-btn class="col-md-2 col-xs-1"
-            flat
-            icon="keyboard_arrow_right"
-            :style="$store.state.layout.buttonFlatOnlyIcon"
-            :disable="isIndexAtMaxLength"
-            :color="isIndexAtMaxLength ? 'grey-3' : 'accent'"
-            @click="showTemplate('next')">
-          </q-btn>
-        </div>
-
-        <div v-else
-          class="row full-width items-center justify-center q-px-md q-pt-md">
-          <div class="col-10 col-xs-12 q-pt-md q-px-md">
-            <q-card flat
-              bordered
-              class="templateCard bg-grey-1">
-              <q-card-section>
-                <div class="text-h6">There is nothing here.</div>
-              </q-card-section>
-              <div class="templateTextContainer">
-                <q-card-section class="q-pa-md">
-                  You have no saved templates.
+          <div v-else
+            class="row full-width items-center justify-center q-px-md q-pt-md">
+            <div class="col-10 col-xs-12 q-pt-md q-px-md">
+              <q-card flat
+                bordered
+                class="templateCard bg-grey-1">
+                <q-card-section>
+                  <div class="text-h6">There is nothing here.</div>
                 </q-card-section>
+                <div class="templateTextContainer">
+                  <q-card-section class="q-pa-md">
+                    You have no saved templates.
+                  </q-card-section>
 
-                <q-card-section class="row justify-center items-center">
-                  <div class="col-4"></div>
-                  <q-img class="col-7"
-                    :src="'/images/ghostcat_m.png'"
-                    style="height: 150px; max-width: 128px; opacity: 0.5"
-                    spinner-color="white" />
-                </q-card-section>
-              </div>
-            </q-card>
+                  <q-card-section class="row justify-center items-center">
+                    <div class="col-4"></div>
+                    <q-img class="col-7"
+                      :src="'/images/ghostcat_m.png'"
+                      style="height: 150px; max-width: 128px; opacity: 0.5"
+                      spinner-color="white" />
+                  </q-card-section>
+                </div>
+              </q-card>
+            </div>
           </div>
         </div>
-
+        <div v-else>
+          <div class="row items-center justify-center q-pt-md q-px-md q-mx-lg">
+            <!-- Outer Container -->
+            <div class="col-12">
+              <q-list bordered
+                padding>
+                <TheFolderSection :type="type"
+                  :itemsToDisplay="folders"></TheFolderSection>
+                <q-separator spaced />
+                <TheCategorySection :type="type"
+                  :itemsToDisplay="categories"
+                  @delete-category="deleteCategory"></TheCategorySection>
+              </q-list>
+            </div>
+          </div>
+        </div>
         <br />
-        <!-- make it so, that hoverups show up beneath the buttons or something instead of current's solution-->
-        <div v-if="isHelpShown"
-          class="col-12 text q-py-md">
-          <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm"
-              name="bi-bookmark-star"
-              size="15px"></q-icon>
-            Make default: Every new entry will start with this template.
-          </div>
-          <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm"
-              name="bi-journal-plus"
-              size="15px"></q-icon>
-            Paste template.
-          </div>
-          <div class="q-pa-sm q-ml-md">
-            <q-icon class="q-px-sm"
-              name="bi-trash"
-              size="15px"></q-icon>
-            Delete template.
-          </div>
-        </div>
       </div>
-
-
     </template>
     <template v-slot:footer-buttons>
       <div>
         <BaseButtonForDialogFooter class="q-mr-sm "
-          icon="bi-list-ul"
+          :icon="iconForToggleButton"
           background-color="black"
           color="black"
           text-color="white"
           style="font-size: 9.5px; min-height: 25px;  max-width: 100px"
-          @click-button="openDialogFolderManagement">
+          @click-button="toggleFolderManagement">
           Switch
         </BaseButtonForDialogFooter>
         <BaseButtonForDialogFooter class="q-mr-sm "
@@ -334,6 +326,8 @@ import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFold
 import FolderCategoryTemplateStructure from "./DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
 import BaseEditor from "../ui/BaseEditor.vue";
+import TheFolderSection from "./DialogCategoryFolderSettings/TheFolderSection.vue";
+import TheCategorySection from "./DialogCategoryFolderSettings/TheCategorySection.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -344,13 +338,25 @@ export default {
     DialogFolderManagement,
     FolderCategoryTemplateStructure,
     BaseButtonForDialogFooter,
-    BaseEditor
+    BaseEditor,
+    TheFolderSection,
+    TheCategorySection
   },
   props: { type: String, templateList: Array },
   data() {
     return {
+      // from management
+      isCreatingNewCategory: false,
+      isCreatingNewFolder: false,
+      newCategoryName: "",
+      newFolderName: "",
+      nameRules: [
+        (val) => (val && val.length > 0) || "Please name the folder.",
+      ],
+      //others...
       editor: "",
       name: "",
+      isShowingTemplateViewer: true,
       editorWidth: 200,
       currentTemplate: this.templateList[0],
       isDialogFolderManagementVisible: false,
@@ -380,6 +386,51 @@ export default {
     },
   },
   methods: {
+    // from manager...
+    deleteCategory(categoryToDelete) {
+      console.log("categoryToDelete: ", categoryToDelete);
+      let payload = {
+        parents: this.folders,
+        child: categoryToDelete,
+        type: this.type,
+      };
+      this.$store.dispatch(
+        "data/removeCategoryFromParentsAndDeleteIt",
+        payload
+      );
+    },
+    cancelCreatingNewFolder() {
+      this.isCreatingNewFolder = false;
+    },
+    initiateCreatingNewFolder() {
+      this.isCreatingNewFolder = true;
+    },
+    createNewFolder() { },
+    toggleNewCategoryCreation() {
+      this.isCreatingNewCategory = !this.isCreatingNewCategory;
+    },
+
+    closeAndResetNewCategoryCreation() {
+      this.$refs.nameRef.resetValidation();
+      this.isCreatingNewCategory = false;
+      this.newCategoryName = "";
+    },
+
+    createNewCategory() {
+      let payload = {
+        categoryName: this.newCategoryName,
+        type: this.type,
+      };
+      this.$store.commit("data/createCategory", payload);
+      this.closeAndResetNewCategoryCreation();
+    },
+    reset() {
+      this.templateName = "";
+    },
+    // end
+    toggleFolderManagement() {
+      this.isShowingTemplateViewer = !this.isShowingTemplateViewer;
+    },
     editTemplate() {
       this.toggleEditingMode();
       this.editor = this.currentTemplate.text;
@@ -473,6 +524,13 @@ export default {
     },
   },
   computed: {
+    iconForToggleButton() {
+      if (this.isShowingTemplateViewer) {
+        return 'bi-list-ul'
+      } else {
+        return 'bi-layout-text-window-reverse'
+      }
+    },
     iconForDeleteButton() {
       if (this.isDeletingTemplate) {
         return "bi-x"
