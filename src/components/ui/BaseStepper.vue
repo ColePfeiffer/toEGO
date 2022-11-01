@@ -7,9 +7,9 @@
             vertical
             padding="xs"
             ref="stepper"
-            color="primary"
+            :color="colorForStepper"
             done-color="secondary"
-            active-color="black"
+            :active-color="activeColorForStepper"
             inactive-color="grey-4"
             animated>
             <q-btn icon="bi-x"
@@ -40,13 +40,12 @@
                             <div class="row justify-end items-center">
                                 <q-img class="col-3 q-mr-sm"
                                     :src="'/images/ghost-pink-hue.gif'"
-                                    style="height: 50px; max-width: 50px; opacity: 0.5"
+                                    :style="styleForGhost"
                                     spinner-color="white" />
                                 <q-btn class="col-3 q-mr-sm"
                                     v-if="step != 1"
                                     flat
                                     @click="goStepBack"
-                                    color="primary"
                                     label="Back" />
                                 <div class="col-3 q-mr-sm"
                                     v-else>
@@ -103,9 +102,39 @@ export default {
         }
     },
     computed: {
+        colorForStepper() {
+            if (this.$store.getters["layout/isDarkModeActive"]) {
+                return "secondary"
+            } else {
+                return "black"
+            }
+        },
+        activeColorForStepper() {
+            if (this.$store.getters["layout/isDarkModeActive"]) {
+                return "white"
+            } else {
+                return "black"
+            }
+        },
+        styleForGhost() {
+            if (this.$store.getters["layout/isDarkModeActive"]) {
+                return {
+                    'height': "50px",
+                    'max-width': "50px",
+                    "opacity": "1"
+                }
+            } else {
+                return {
+                    'height': "50px",
+                    'max-width': "50px",
+                    "opacity": "0.5"
+                }
+            }
+
+        },
         getStyleForScrollArea() {
             let style = {};
-            style['height'] = this.$store.state.layout.height * 0.22 + "px";
+            style['height'] = this.$store.state.layout.height * 0.25 + "px";
             return style;
         },
         getStepperStyle() {

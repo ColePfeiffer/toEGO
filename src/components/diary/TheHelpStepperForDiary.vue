@@ -14,12 +14,13 @@
                 :done="getDoneFor(1)">
             </q-step>
             <q-step :name="2"
-                title="Diary's Buttons"
+                title="Editor Buttons"
                 icon="bi-plus-lg"
                 :done="getDoneFor(2)">
             </q-step>
             <q-step :name="3"
                 title="Writing a diary entry"
+                caption="What to write about?"
                 icon="bi-plus-lg"
                 :done="getDoneFor(3)">
             </q-step>
@@ -35,16 +36,17 @@
         <template v-slot:step-content>
             <!-- Step 1 -->
             <div class="col-12 "
+                style="margin-top: 30px"
                 v-if="step === 1">
                 <div class="text-justify">
                     This is where you can look through your diary, where you get to plan and review.
                 </div>
-                <div class="q-mt-md">
-                    You can start writing via
+                <div class="q-mt-md"> I will explain the buttons. You can start writing by clicking on
                     <q-btn size="12px"
                         padding="4px"
                         round
                         dense
+                        disable
                         unelevated
                         color="transparent"
                         text-color="accent"
@@ -54,54 +56,35 @@
             </div>
             <!-- Step 2 -->
             <div class="col-12"
+                style="margin-top: 30px"
                 v-else-if="step === 2">
                 <div>
-
-                    <ul style="list-style: none">
-                        <li class="list-item">
-                            <q-btn size="10px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="whitesmoke"
-                                icon="undo"
-                                class="text-black q-mr-sm"></q-btn>
-                            <q-btn size="10px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="whitesmoke"
-                                icon="redo"
-                                class="text-black q-mr-sm"></q-btn>
-
-                            undo and redo
-                        </li>
-                        <li class="list-item">
-                            <q-btn size="8px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="whitesmoke"
-                                icon="bi-fullscreen"
-                                class="text-black q-mr-sm"></q-btn> Fullscreen
-                        </li>
-                        <li class="list-item">
-                            <BaseButtonForDialogFooter style="font-size: 9.5px"
-                                buttonText="Templates"
-                                :hasShadow="false">
-                            </BaseButtonForDialogFooter> opens the <span
-                                style="font-style: italic">Template-Manager</span>
-                        </li>
-                        <li class="list-item">
-                            <BaseButtonForDialogFooter style="font-size: 9.5px"
-                                buttonText="
-                                Toolbar
-                                [+]"
-                                :hasShadow="false">
-                            </BaseButtonForDialogFooter> shows more options
-                        </li>
-
-                    </ul>
+                    <q-btn size="8px"
+                        padding="4px"
+                        round
+                        disable
+                        unelevated
+                        color="whitesmoke"
+                        icon="bi-plus-lg"
+                        class="text-black q-mr-sm"></q-btn> shows tools to style text
+                    <br />
+                    <q-btn size="8px"
+                        padding="4px"
+                        round
+                        disable
+                        unelevated
+                        color="whitesmoke"
+                        icon="bi-fullscreen"
+                        class="text-black q-mr-sm"></q-btn> Fullscreen
+                    <br />
+                    <q-btn size="8px"
+                        padding="4px"
+                        round
+                        disable
+                        unelevated
+                        color="whitesmoke"
+                        icon="bi-file-earmark-font"
+                        class="text-black q-mr-sm"></q-btn> opens the Template-Manager
                 </div>
 
             </div>
@@ -127,50 +110,50 @@
             </div>
             <!-- Step 4 -->
             <div class="col-12 q-px-md q-pb-md"
+                style="margin-top: 30px"
                 v-else-if="step === 4">
                 <div class="q-mt-md">
-                    <ul style="list-style: none">
-                        <li>
-                            <q-btn size="8px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="secondary"
-                                icon="bi-chevron-left"
-                                class="text-white q-mr-sm"></q-btn>
-                            <q-btn size="8px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="secondary"
-                                icon="bi-chevron-right"
-                                class="text-white q-mr-sm"></q-btn>
 
-                            <span :style="getStyleForEmphasisedTextSecondary">navigates</span> between days
-                        </li>
-                        <li>
-                            <q-btn size="8px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="secondary"
-                                icon="bi-calendar-event"
-                                class="text-white q-mr-sm"></q-btn> opens the <span
-                                :style="getStyleForEmphasisedTextSecondary">calendar</span>
-                        </li>
-                        <li>
-                            <q-btn size="8px"
-                                padding="4px"
-                                round
-                                unelevated
-                                color="secondary"
-                                icon="bi-dot"
-                                class="text-white q-mr-sm"></q-btn> brings you back to <span
-                                :style="getStyleForEmphasisedTextSecondary">today</span>
-                        </li>
-                    </ul>
+                    <q-btn size="8px"
+                        padding="4px"
+                        disable
+                        round
+                        unelevated
+                        color="secondary"
+                        icon="bi-chevron-left"
+                        class="text-white q-mr-sm"></q-btn>
+                    <q-btn size="8px"
+                        padding="4px"
+                        disable
+                        round
+                        unelevated
+                        color="secondary"
+                        icon="bi-chevron-right"
+                        class="text-white q-mr-sm"></q-btn>
+
+                    <span :style="getStyleForEmphasisedTextSecondary">navigates</span> between days
+                    <br />
+
+                    <q-btn size="8px"
+                        padding="4px"
+                        round
+                        disable
+                        unelevated
+                        color="secondary"
+                        icon="bi-calendar-event"
+                        class="text-white q-mr-sm"></q-btn> opens the <span
+                        :style="getStyleForEmphasisedTextSecondary">calendar</span>
+                    <br />
+                    <q-btn size="8px"
+                        padding="4px"
+                        round
+                        unelevated
+                        disable
+                        color="secondary"
+                        icon="bi-dot"
+                        class="text-white q-mr-sm"></q-btn> brings you back to <span
+                        :style="getStyleForEmphasisedTextSecondary">today</span>
                 </div>
-                <div class="q-mt-md"></div>
             </div>
 
         </template>
@@ -178,12 +161,11 @@
 </template>
 
 <script>
-import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
 import BaseStepper from "../ui/BaseStepper.vue"
 export default {
     name: "TheHelpStepperForHome",
     emits: ["finish"],
-    components: { BaseStepper, BaseButtonForDialogFooter },
+    components: { BaseStepper },
     data() {
         return {
             step: 1,

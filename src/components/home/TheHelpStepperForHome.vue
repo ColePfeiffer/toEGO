@@ -35,6 +35,7 @@
         <template v-slot:step-content>
             <!-- Step 1: Welcome to toEGO -->
             <div class="col-12 "
+                style="margin-top: 30px"
                 v-if="step === 1">
                 <div class="text-justify">
                     Hi!
@@ -47,6 +48,7 @@
             </div>
             <!-- Step 2: What are Notes? -->
             <div class="col-12 "
+                style="margin-top: 30px"
                 v-else-if="step === 2">
                 <div>
                     Notes are used to keep track of
@@ -68,6 +70,7 @@
             </div>
             <!-- Step 3: Create a Note -->
             <div class="col-12 "
+                style="margin-top: 30px"
                 v-else-if="step === 3">
                 <div>
                     Create a note by clicking on
@@ -75,6 +78,7 @@
                         <li>
                             <q-btn size="8px"
                                 padding="4px"
+                                disable
                                 round
                                 unelevated
                                 color="secondary"
@@ -84,6 +88,7 @@
                         <li>
                             <q-btn size="8px"
                                 round
+                                disable
                                 padding="4px"
                                 color="transparent"
                                 text-color="accent"
@@ -104,6 +109,7 @@
                 <q-btn size="8px"
                     padding="4px"
                     round
+                    disable
                     unelevated
                     color="secondary"
                     icon="bi-envelope"
@@ -112,6 +118,7 @@
                 <q-btn size="8px"
                     round
                     padding="4px"
+                    disable
                     color="transparent"
                     text-color="secondary"
                     unelevated
