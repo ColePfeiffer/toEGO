@@ -7,7 +7,8 @@
         </div>
         <div class="col">
             <div class="row justify-end">
-                <q-btn flat
+                <q-btn v-if="type != 'TEMPLATE'"
+                    flat
                     class="col-auto"
                     no-wrap
                     dense

@@ -413,6 +413,11 @@ export const setPastedText = (state, text) => {
   state.pastedText = text;
 };
 
+export const updateTemplate = (state, payload) => {
+  payload.template.name = payload.name;
+  payload.template.text = payload.text;
+};
+
 export const SetDialogTemplateViewerIsSetToDiaryMode = (state, bool) => {
   state.dialogTemplateViewerIsSetToDiaryMode = bool;
 };

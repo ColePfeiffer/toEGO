@@ -32,7 +32,9 @@ export default {
         "min-width": "83px",
         "max-width": "83px",
         "min-height": "23px",
+        "max-height": "25px",
         "box-shadow": "none",
+        "font-size": "11px",
         "background-color": "var(--q-secondary)"
       };
       style["font-family"] = this.$store.state.layout.nonDefaultFont;

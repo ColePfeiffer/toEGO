@@ -42,8 +42,9 @@
             </div>
           </div>
 
-          <!-- Content Slot -->
-          <div class="col-12">
+          <!-- Content -->
+          <div class="col-12"
+            style="styleForScrollArea">
             <slot name="content"></slot>
           </div>
 
@@ -80,6 +81,7 @@ import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
 import BaseButtonForTitleBar from './BaseButtonForTitleBar.vue';
 export default {
   name: "baseDialog",
+  components: { BaseButtonForDialogFooter, BaseButtonForTitleBar },
   emits: ["closeDialog", "save", "showHelp"],
   props: {
     dialogTitle: String,
@@ -118,6 +120,11 @@ export default {
     },
   },
   computed: {
+    styleForScrollArea() {
+      let style = {};
+      style["height"] = this.$store.state.layout.height * 0.65 + "px";
+      return style;
+    },
     getStyleForDialog() {
       let style = {};
       if (this.$store.getters["layout/isDarkModeActive"]) {
@@ -135,7 +142,7 @@ export default {
       return style;
     },
   },
-  components: { BaseButtonForDialogFooter, BaseButtonForTitleBar }
+
 };
 </script>
 

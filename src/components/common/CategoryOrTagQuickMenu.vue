@@ -47,18 +47,6 @@
             @click="onSubmit" />
         </q-item-section>
       </q-item>
-
-      <!-- Settings button -->
-      <q-item clickable
-        v-close-popup
-        @click="openDialogFolderManagement">
-        <q-item-section avatar>
-          <q-icon color="secondary"
-            size="xs"
-            name="bi-gear" />
-        </q-item-section>
-        <q-item-section>Settings</q-item-section>
-      </q-item>
       <!-- Unset all button -->
       <q-item clickable
         @click="unsetAllCategories">
@@ -109,7 +97,6 @@ import FolderCategoryTemplateStructure from "../dialogs/DialogTemplateViewer/Fol
 
 export default {
   name: "CategoryOrTagQuickMenu",
-  emits: ["openDialogFolderManagement"],
   props: {
     currentTemplate: Object,
     folders: Array,
@@ -150,10 +137,6 @@ export default {
         "max-height": "120px",
       };
       //report.value = size;
-    },
-    openDialogFolderManagement() {
-      // maybe emit type too
-      this.$emit("openDialogFolderManagement");
     },
     templateClicked(template) {
       console.log("template clicked!!!", template);

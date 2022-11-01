@@ -6,14 +6,14 @@
     @saveChanges="saveChanges"
     @setDialogVisibilty="setDialogVisibilty">
   </DialogFolderManagement>
-  <baseDialog v-model="isDialogVisible"
+  <BaseDialog v-model="isDialogVisible"
     @closeDialog="closeDialog"
     @save="pasteTemplateAndClose"
     @showHelp="showHelp"
     dialogTitle="Template Viewer"
     icon="bi-file-earmark-font"
-    :button1="{isShown: true, text: 'Close'}"
-    :button2="{isShown: true, text: 'Paste'}"
+    :button1="{ isShown: true, text: 'Close' }"
+    :button2="{ isShown: true, text: 'Paste' }"
     :hasHelpOption="true"
     :isButton2Disabled="!isAtLeastOneTemplateCreated">
     <template v-slot:content>
@@ -22,6 +22,7 @@
           class="row no-wrap full-width items-center justify-center q-pt-md">
           <q-btn class="col-md-2 col-xs-1"
             flat
+            style="touch-action: manipulation"
             icon="keyboard_arrow_left"
             :style="$store.state.layout.buttonFlatOnlyIcon"
             :disable="isIndexAtZero"
@@ -30,7 +31,26 @@
           </q-btn>
           <div class="col-md-8 col-xs-9">
             <!-- Template and Filter Dropdown Buttons -->
-            <div class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
+            <div v-if="isInEditingMode"
+              class="row no-wrap justify-center items-center">
+              <q-input filled
+                label-slot
+                class="col-12 q-pa-none"
+                bg-color="white"
+                square
+                style="border-top: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9"
+                input-style="font-family: Inter; font-size: 12.5px;"
+                v-model="name"
+                label="Title">
+                <template v-slot:label>
+                  <span class="text-weight-bold text-secondary"
+                    :style="$store.getters['layout/getNonDefaultFont']">Name</span>
+                </template>
+              </q-input>
+            </div>
+
+            <div v-else
+              class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
               <!-- Pick template Dropdown Button  -->
               <q-btn :icon-right="expandIcon"
                 :ripple="false"
@@ -63,79 +83,154 @@
               bordered
               square
               :style="getStyleForCard">
-              <q-card-section class="q-pb-xs">
-                <div class="text-h6">{{ currentTemplate.name }}</div>
-              </q-card-section>
 
-              <q-card-section class="templateTextContainer q-pb-xs">
-                <q-scroll-area :style="StyleTmplateTextScrollArea">
-                  <div v-if="
-                    currentTemplate.text.length >= maxNumberOfDisplayedChars
-                  ">
-                    <div v-html="
-                      currentTemplate.text.substring(
-                        0,
-                        maxNumberOfDisplayedChars
-                      ) + ' [...]'
-                    "></div>
+              <div v-if="!isInEditingMode">
+                <q-card-section class="q-pb-xs">
+                  <div class="text-h6"
+                    style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
+                </q-card-section>
+
+                <q-card-section class="templateTextContainer q-pb-xs">
+                  <q-scroll-area :style="StyleTmplateTextScrollArea">
+                    <div v-if="
+                      currentTemplate.text.length >= maxNumberOfDisplayedChars
+                    ">
+                      <div v-html="
+                        currentTemplate.text.substring(
+                          0,
+                          maxNumberOfDisplayedChars
+                        ) + ' [...]'
+                      "></div>
+                    </div>
+                    <div v-else
+                      v-html="currentTemplate.text"></div>
+                  </q-scroll-area>
+                </q-card-section>
+              </div>
+
+              <div v-else>
+                <q-card-section class="q-px-none q-py-none">
+                  <q-resize-observer @resize="onResize" />
+                  <q-scroll-area :style="StyleTmplateTextScrollArea">
+                    <BaseEditor editorTitle="Editing Template"
+                      :editorWidth="editorWidth"
+                      ref="editorRef1"
+                      class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
+                      v-model="editor"
+                      @save="saveTemplate"
+                      minHeight="300px"
+                      type="TEMPLATE"></BaseEditor>
+                  </q-scroll-area>
+                </q-card-section>
+
+              </div>
+
+              <q-card-actions class="row justify-center items-center no-wrap">
+                <div v-if="!isInEditingMode"
+                  class="row justify-center items-center no-wrap">
+                  <q-btn flat
+                    class="col-2 q-mx-sm"
+                    no-wrap
+                    dense
+                    stack
+                    icon="bi-tags"
+                    :style="styleForButton"
+                    :ripple="false"
+                    :text-color="$store.getters['layout/getToolbarIconColor']"
+                    label="manage"
+                    @click="setDefaultStatus">
+                    <CategoryOrTagQuickMenu @openDialogFolderManagement="openDialogFolderManagement"
+                      :currentTemplate="currentTemplate"
+                      :folders="folders"
+                      :categories="categories"
+                      :type="type"
+                      :quicklist="quicklist"
+                      :templates="templateList">
+                    </CategoryOrTagQuickMenu>
+                  </q-btn>
+                  <!-- Set default status button -->
+                  <q-btn flat
+                    class="col-2 q-mr-sm"
+                    no-wrap
+                    dense
+                    stack
+                    icon="bi-pencil"
+                    :style="styleForButton"
+                    :ripple="false"
+                    :text-color="$store.getters['layout/getToolbarIconColor']"
+                    label="edit"
+                    @click="editTemplate">
+                  </q-btn>
+                  <!-- Paste Template button -->
+                  <q-btn flat
+                    class="col-2 q-mr-sm"
+                    no-wrap
+                    stack
+                    dense
+                    icon="bi-clipboard-plus"
+                    :style="styleForButton"
+                    :ripple="false"
+                    :text-color="$store.getters['layout/getToolbarIconColor']"
+                    label="paste"
+                    @click="pasteTemplate">
+                  </q-btn>
+                  <!--Delete Templates button -->
+                  <div class="col-3 q-mx-xs">
+                    <div class="row no-wrap">
+                      <q-btn flat
+                        no-wrap
+                        stack
+                        dense
+                        :icon="iconForDeleteButton"
+                        :style="styleForDeleteButton"
+                        :ripple="false"
+                        :text-color="$store.getters['layout/getToolbarIconColor']"
+                        :label="labelForDeleteButton"
+                        @click="initiateDeletion" />
+                      <q-btn v-if="isDeletingTemplate"
+                        flat
+                        no-wrap
+                        stack
+                        dense
+                        icon="bi-check"
+                        style="margin-bottom: 10px"
+                        :style="styleForButton"
+                        :ripple="false"
+                        :text-color="$store.getters['layout/getToolbarIconColor']"
+                        @click="deleteTemplate">
+                      </q-btn>
+                    </div>
                   </div>
-                  <div v-else
-                    v-html="currentTemplate.text"></div>
-                </q-scroll-area>
-              </q-card-section>
 
-              <q-card-actions class="row justify-center items-center">
-                <q-btn class="cardButton"
-                  icon="bi-tags"
-                  flat
-                  :ripple="false">
-                  <CategoryOrTagQuickMenu @openDialogFolderManagement="openDialogFolderManagement"
-                    :currentTemplate="currentTemplate"
-                    :folders="folders"
-                    :categories="categories"
-                    :type="type"
-                    :quicklist="quicklist"
-                    :templates="templateList">
-                  </CategoryOrTagQuickMenu>
-                  <BaseTooltip text="Template Settings"></BaseTooltip>
-                </q-btn>
-
-                <!-- Set default status button -->
-                <q-btn class="cardButton"
-                  :icon="defaultTemplateIcon"
-                  @click="setDefaultStatus"
-                  flat>
-                  <BaseTooltip text="Set as default template"></BaseTooltip>
-                </q-btn>
-                <!-- Paste Template button -->
-                <q-btn class="cardButton"
-                  icon="bi-clipboard-plus"
-                  @click="pasteTemplate()"
-                  flat>
-                  <BaseTooltip text="Paste template"></BaseTooltip>
-                </q-btn>
-                <!--Delete Templates button -->
-                <div>
-                  <q-fab flat
-                    direction="right"
-                    padding="md">
-                    <template v-slot:icon="{ opened }">
-                      <q-icon :class="{
-                        'example-fab-animate--hover': opened !== true,
-                      }"
-                        name="bi-trash"
-                        size="20px"
-                        style="top: -1px" />
-                    </template>
-
-                    <q-fab-action style="left: -30px"
-                      class="fabButton"
-                      flat
-                      color="accent"
-                      @click="deleteTemplate()"
-                      icon="bi-check" />
-                  </q-fab>
                 </div>
+                <div v-else
+                  class="row justify-between items-center no-wrap">
+                  <q-btn flat
+                    class="col-2 q-mx-sm"
+                    no-wrap
+                    dense
+                    stack
+                    icon="bi-chevron-left"
+                    :style="styleForButton"
+                    :ripple="false"
+                    :text-color="$store.getters['layout/getToolbarIconColor']"
+                    label="discard"
+                    @click="toggleEditingMode">
+                  </q-btn>
+                  <q-btn flat
+                    class="col-2 q-mx-sm"
+                    no-wrap
+                    dense
+                    stack
+                    icon="fas fa-save"
+                    :style="styleForButton"
+                    :ripple="false"
+                    :text-color="$store.getters['layout/getToolbarIconColor']"
+                    label="save"
+                    @click="saveTemplate">
+                  </q-btn>
+                </div>
+
               </q-card-actions>
             </q-card>
           </div>
@@ -199,31 +294,64 @@
           </div>
         </div>
       </div>
+
+
     </template>
-  </baseDialog>
+    <template v-slot:footer-buttons>
+      <div>
+        <BaseButtonForDialogFooter class="q-mr-sm "
+          icon="bi-list-ul"
+          background-color="black"
+          color="black"
+          text-color="white"
+          style="font-size: 9.5px; min-height: 25px;  max-width: 100px"
+          @click-button="openDialogFolderManagement">
+          Switch
+        </BaseButtonForDialogFooter>
+        <BaseButtonForDialogFooter class="q-mr-sm "
+          buttonText="Close"
+          @click-button="closeDialog">
+        </BaseButtonForDialogFooter>
+        <BaseButtonForDialogFooter style="margin-right:2px; max-width: 120px"
+          buttonText="Create"
+          @click-button="saveChanges">
+        </BaseButtonForDialogFooter>
+      </div>
+
+
+
+
+
+    </template>
+  </BaseDialog>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
-import baseDialog from "../ui/baseDialog.vue";
+import BaseDialog from "../ui/ImprovedBaseDialog.vue";
 import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
 import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
 import FolderCategoryTemplateStructure from "./DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
-import BaseTooltip from "../ui/BaseTooltip.vue";
+import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
+import BaseEditor from "../ui/BaseEditor.vue";
 
 export default {
   name: "dialogViewTemplates",
   emits: ["pasteTemplate", "closeDialog"],
   components: {
-    baseDialog,
+    BaseDialog,
     CategoryOrTagQuickMenu,
     DialogFolderManagement,
     FolderCategoryTemplateStructure,
-    BaseTooltip
+    BaseButtonForDialogFooter,
+    BaseEditor
   },
   props: { type: String, templateList: Array },
   data() {
     return {
+      editor: "",
+      name: "",
+      editorWidth: 200,
       currentTemplate: this.templateList[0],
       isDialogFolderManagementVisible: false,
       qMenuModel: false,
@@ -232,8 +360,10 @@ export default {
       isHelpShown: false,
       maxNumberOfDisplayedChars: 1200,
       StyleTmplateTextScrollArea: {
-        height: "270px",
+        height: "350px",
       },
+      isDeletingTemplate: false,
+      isInEditingMode: false,
     };
   },
   watch: {
@@ -250,6 +380,28 @@ export default {
     },
   },
   methods: {
+    editTemplate() {
+      this.toggleEditingMode();
+      this.editor = this.currentTemplate.text;
+      this.name = this.currentTemplate.name;
+    },
+    onResize(size) {
+      this.editorWidth = size.width;
+    },
+    saveTemplate() {
+      let payload = { "templateID": this.currentTemplate.id, "type": this.type, "name": this.name, "text": this.editor };
+      this.$store.dispatch(
+        "data/updateTemplate",
+        payload
+      );
+      this.toggleEditingMode();
+    },
+    toggleEditingMode() {
+      this.isInEditingMode = !this.isInEditingMode;
+    },
+    initiateDeletion() {
+      this.isDeletingTemplate = !this.isDeletingTemplate;
+    },
     setDialogVisibilty(newValue) {
       this.isDialogFolderManagementVisible = newValue;
     },
@@ -321,9 +473,56 @@ export default {
     },
   },
   computed: {
+    iconForDeleteButton() {
+      if (this.isDeletingTemplate) {
+        return "bi-x"
+      } else {
+        return "bi-trash"
+      }
+    },
+    labelForDeleteButton() {
+      if (this.isDeletingTemplate) {
+        return "  "
+      } else {
+        return "delete"
+      }
+    },
+    styleForDeleteButton() {
+      if (this.isDeletingTemplate) {
+        return {
+          "font-family": this.$store.state.layout.nonDefaultFont,
+          "font-size": "9.5px",
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "60px",
+          "padding": "0px",
+          "margin-left": "10px",
+          "min-height": "20px",
+          "margin-bottom": "10px",
+        }
+      } else {
+        return this.styleForButton;
+      }
+    },
+    styleForButton() {
+      return {
+        "font-family": this.$store.state.layout.nonDefaultFont,
+        "font-size": "9.5px",
+        "background-color": "transparent",
+        "border-style": "unset",
+        "box-shadow": "none",
+        "min-width": "20px",
+        "max-width": "60px",
+        "padding": "0px",
+        "margin-left": "10px",
+        "min-height": "20px",
+      }
+    },
     getStyleForCard() {
       let style = {};
-
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
       if (this.$store.getters["layout/isDarkModeActive"]) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
         style["color"] = "white";
@@ -331,12 +530,12 @@ export default {
         style["background-color"] = "white";
         style["color"] = "black";
       }
-
       return style;
     },
     getStyleForTemplatePickerButton() {
       let style = {};
       style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
       return style;
     },
     getIndexOfCurrentTemplate() {
@@ -356,14 +555,6 @@ export default {
         return false;
       }
     },
-    getScreenWidth() {
-      // return this.$store.state.data.dialogWidth;
-      let width = this.$q.screen.height;
-      return {
-        width,
-      };
-    },
-
     isTypeSetToDiary() {
       if (this.type === "DIARY") {
         return true;
@@ -441,29 +632,12 @@ export default {
 </script>
 
 <style scoped>
-.buttonDummy {
-  min-width: 95px !important;
-}
-
 .containerForHeaderOfTemplateViewer {
   background-color: var(--q-secondary)
-}
-
-.fixedHeight {
-  height: 600px;
 }
 
 .templateTextContainer {
   min-height: 250px;
   max-height: 300px;
-}
-
-.fabButton {
-  font-size: 10px;
-  font-size: 88px !important;
-}
-
-.cardButton {
-  font-size: 11px;
 }
 </style>

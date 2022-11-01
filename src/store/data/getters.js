@@ -135,6 +135,16 @@ export const getTemplatesWithoutCategories = (state, getters) => {
   };
 };
 
+export const getTemplateByID = (state) => {
+  return (payload) => {
+    if (payload.type === "DIARY") {
+      return state.diaryTemplates.find((x) => x.id === payload.templateID);
+    } else {
+      return state.eventTemplates.find((x) => x.id === payload.templateID);
+    }
+  };
+};
+
 export const getTemplatesByType = (state) => {
   return (type) => {
     if (type === "DIARY") {
