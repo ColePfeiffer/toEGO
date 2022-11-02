@@ -2,21 +2,21 @@
   <BaseSection @create-new-item="createCategory">
     <template v-slot:headername>Categories</template>
     <template v-slot:itemsToDisplay>
-      <div v-for="category in itemsToDisplay" :key="category">
-        <BaseMenuForFolderManagement
-          childAsText="Templates: "
+      <div v-for="category in itemsToDisplay"
+        :key="category">
+        <BaseMenuForFolderManagement childAsText="Templates: "
           :item="category"
           icon="bi-collection"
+          dense
+          style="padding-bottom: 0px"
           @rename-item="renameCategory"
-          @delete-item="deleteCategory"
-        >
+          @delete-item="deleteCategory">
           <template v-slot:children>
-            <div v-for="template in templates" :key="template">
-              <BaseItemForFolderManagement
-                :item="template"
+            <div v-for="template in templates"
+              :key="template">
+              <BaseItemForFolderManagement :item="template"
                 icon="bi-file-earmark-font"
-                :parent="category"
-              >
+                :parent="category">
               </BaseItemForFolderManagement>
             </div>
           </template>

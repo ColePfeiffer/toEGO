@@ -1,11 +1,4 @@
 <template>
-  <!-- TODO: muss später eventuell gesondert behandelt werden, dunno yet.... also mit type -->
-  <DialogFolderManagement :isDialogFolderManagementVisible="isDialogFolderManagementVisible"
-    :type="type"
-    @closeDialog="setDialogVisibilty(false)"
-    @saveChanges="saveChanges"
-    @setDialogVisibilty="setDialogVisibilty">
-  </DialogFolderManagement>
   <BaseDialog v-model="isDialogVisible"
     @closeDialog="closeDialog"
     @save="pasteTemplateAndClose"
@@ -18,9 +11,9 @@
     :isButton2Disabled="!isAtLeastOneTemplateCreated">
     <template v-slot:content>
       <div>
-        <div v-if="isShowingTemplateViewer">
-          <div v-if="isAtLeastOneTemplateCreated === true"
-            class="row no-wrap full-width items-center justify-center q-pt-md">
+        <div v-if="isShowingTemplateViewer"
+          :style="styleForTemplateViewerContainer">
+          <div class="row no-wrap full-width items-center justify-center q-pt-md">
             <q-btn class="col-md-2 col-xs-1"
               flat
               style="touch-action: manipulation"
@@ -36,12 +29,16 @@
                 class="row no-wrap justify-center items-center">
                 <q-input filled
                   label-slot
+                  ref="nameRef"
                   class="col-12 q-pa-none"
-                  bg-color="white"
                   square
-                  style="border-top: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; border-right: 1px solid #d9d9d9"
+                  stack-label
+                  :bg-color="backgroundColorForInput"
+                  :style="styleForNameInput"
+                  :rules="nameRules"
                   input-style="font-family: Inter; font-size: 12.5px;"
                   v-model="name"
+                  lazy-rules
                   label="Title">
                   <template v-slot:label>
                     <span class="text-weight-bold text-secondary"
@@ -85,40 +82,17 @@
                 square
                 :style="getStyleForCard">
 
-                <div v-if="!isInEditingMode">
-                  <q-card-section class="q-pb-xs">
-                    <div class="text-h6"
-                      style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
-                  </q-card-section>
 
-                  <q-card-section class="templateTextContainer q-pb-xs">
-                    <q-scroll-area :style="StyleTmplateTextScrollArea">
-                      <div v-if="
-                        currentTemplate.text.length >= maxNumberOfDisplayedChars
-                      ">
-                        <div v-html="
-                          currentTemplate.text.substring(
-                            0,
-                            maxNumberOfDisplayedChars
-                          ) + ' [...]'
-                        "></div>
-                      </div>
-                      <div v-else
-                        v-html="currentTemplate.text"></div>
-                    </q-scroll-area>
-                  </q-card-section>
-                </div>
-
-                <div v-else>
+                <div v-if="isInEditingMode">
                   <q-card-section class="q-px-none q-py-none">
                     <q-resize-observer @resize="onResize" />
-                    <q-scroll-area :style="StyleTmplateTextScrollArea">
+                    <q-scroll-area style="height: 350px">
                       <BaseEditor editorTitle="Editing Template"
                         :editorWidth="editorWidth"
                         ref="editorRef1"
                         class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
                         v-model="editor"
-                        @save="saveTemplate"
+                        @save="onSubmit"
                         minHeight="300px"
                         type="TEMPLATE"></BaseEditor>
                     </q-scroll-area>
@@ -126,10 +100,72 @@
 
                 </div>
 
+                <div v-else-if="isAtLeastOneTemplateCreated">
+                  <q-card-section class="q-pb-xs">
+                    <div class="text-h6"
+                      style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
+                  </q-card-section>
+
+                  <q-card-section class="templateTextContainer q-pb-xs">
+                    <q-scroll-area style="height: 280px">
+                      <div v-html="currentTemplate.text"></div>
+                    </q-scroll-area>
+                  </q-card-section>
+                </div>
+
+                <div v-else>
+                  <q-card-section>
+                    <div class="text-h6">There is nothing here.</div>
+                  </q-card-section>
+                  <div class="templateTextContainer">
+                    <q-card-section class="q-pa-md">
+                      You have no saved templates.
+                    </q-card-section>
+
+                    <q-card-section class="row justify-center items-center">
+                      <div class="col-4"></div>
+                      <q-img class="col-7"
+                        :src="'/images/ghostcat_m.png'"
+                        style="height: 150px; max-width: 128px; opacity: 0.5"
+                        spinner-color="white" />
+                    </q-card-section>
+                  </div>
+                </div>
+
+
                 <q-card-actions class="row justify-center items-center no-wrap">
-                  <div v-if="!isInEditingMode"
-                    class="row justify-center items-center no-wrap">
+                  <div v-if="isInEditingMode"
+                    class="row justify-between items-center no-wrap">
                     <q-btn flat
+                      class="col-4 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="bi-chevron-left"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="discard"
+                      @click="toggleEditingMode">
+                    </q-btn>
+                    <q-btn flat
+                      class="col-4 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="fas fa-save"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="save"
+                      @click="onSubmit">
+                    </q-btn>
+                  </div>
+                  <div v-else-if="isAtLeastOneTemplateCreated"
+                    class="row justify-center items-center no-wrap">
+                    <!-- Button: Category Menu -->
+                    <q-btn v-if="isShowingManagingButtons"
+                      flat
                       class="col-2 q-mx-sm"
                       no-wrap
                       dense
@@ -138,10 +174,8 @@
                       :style="styleForButton"
                       :ripple="false"
                       :text-color="$store.getters['layout/getToolbarIconColor']"
-                      label="manage"
-                      @click="setDefaultStatus">
-                      <CategoryOrTagQuickMenu @openDialogFolderManagement="openDialogFolderManagement"
-                        :currentTemplate="currentTemplate"
+                      label="Categorize">
+                      <CategoryOrTagQuickMenu :currentTemplate="currentTemplate"
                         :folders="folders"
                         :categories="categories"
                         :type="type"
@@ -149,9 +183,37 @@
                         :templates="templateList">
                       </CategoryOrTagQuickMenu>
                     </q-btn>
-                    <!-- Set default status button -->
+                    <!-- Button: Set Favorite -->
                     <q-btn flat
-                      class="col-2 q-mr-sm"
+                      v-if="!isShowingManagingButtons"
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      :icon="iconForFavoriteButton"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="Favorite"
+                      @click="setFavorite">
+                    </q-btn>
+                    <!-- Button: Manage -->
+                    <q-btn flat
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      :icon="iconForManageButton"
+                      :style="styleForButton"
+                      :ripple="false"
+                      text-color="accent"
+                      :label="labelForManageButton"
+                      @click="manageTemplate">
+                    </q-btn>
+                    <!-- Button: Edit -->
+                    <q-btn flat
+                      v-if="isShowingManagingButtons"
+                      class="col-2 q-mx-sm"
                       no-wrap
                       dense
                       stack
@@ -162,21 +224,10 @@
                       label="edit"
                       @click="editTemplate">
                     </q-btn>
-                    <!-- Paste Template button -->
-                    <q-btn flat
-                      class="col-2 q-mr-sm"
-                      no-wrap
-                      stack
-                      dense
-                      icon="bi-clipboard-plus"
-                      :style="styleForButton"
-                      :ripple="false"
-                      :text-color="$store.getters['layout/getToolbarIconColor']"
-                      label="paste"
-                      @click="pasteTemplate">
-                    </q-btn>
-                    <!--Delete Templates button -->
-                    <div class="col-3 q-mx-xs">
+
+                    <!-- Button: Delete -->
+                    <div class="col-3 q-mx-xs"
+                      v-if="isShowingManagingButtons">
                       <div class="row no-wrap">
                         <q-btn flat
                           no-wrap
@@ -203,34 +254,56 @@
                       </div>
                     </div>
 
+                    <!-- Button: Paste -->
+                    <q-btn flat
+                      v-if="!isShowingManagingButtons"
+                      class="col-2 q-mr-sm"
+                      no-wrap
+                      stack
+                      dense
+                      icon="bi-clipboard-plus"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="paste"
+                      :disable="!isPasteAllowed"
+                      @click="pasteTemplate">
+                    </q-btn>
+                    <!-- Button: Create new -->
+                    <q-btn flat
+                      v-if="!isShowingManagingButtons"
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      icon="bi-plus-lg"
+                      :style="styleForButton"
+                      :ripple="false"
+                      :text-color="$store.getters['layout/getToolbarIconColor']"
+                      label="create"
+                      @click="createTemplate">
+                    </q-btn>
+
+
                   </div>
                   <div v-else
-                    class="row justify-between items-center no-wrap">
+                    class="row justify-center items-center no-wrap">
+                    <!-- Button: Create new -->
                     <q-btn flat
                       class="col-2 q-mx-sm"
                       no-wrap
                       dense
                       stack
-                      icon="bi-chevron-left"
+                      icon="bi-plus-lg"
                       :style="styleForButton"
                       :ripple="false"
                       :text-color="$store.getters['layout/getToolbarIconColor']"
-                      label="discard"
-                      @click="toggleEditingMode">
-                    </q-btn>
-                    <q-btn flat
-                      class="col-2 q-mx-sm"
-                      no-wrap
-                      dense
-                      stack
-                      icon="fas fa-save"
-                      :style="styleForButton"
-                      :ripple="false"
-                      :text-color="$store.getters['layout/getToolbarIconColor']"
-                      label="save"
-                      @click="saveTemplate">
+                      label="create"
+                      @click="createTemplate">
                     </q-btn>
                   </div>
+
+
 
                 </q-card-actions>
               </q-card>
@@ -244,37 +317,13 @@
               @click="showTemplate('next')">
             </q-btn>
           </div>
-          <div v-else
-            class="row full-width items-center justify-center q-px-md q-pt-md">
-            <div class="col-10 col-xs-12 q-pt-md q-px-md">
-              <q-card flat
-                bordered
-                class="templateCard bg-grey-1">
-                <q-card-section>
-                  <div class="text-h6">There is nothing here.</div>
-                </q-card-section>
-                <div class="templateTextContainer">
-                  <q-card-section class="q-pa-md">
-                    You have no saved templates.
-                  </q-card-section>
-
-                  <q-card-section class="row justify-center items-center">
-                    <div class="col-4"></div>
-                    <q-img class="col-7"
-                      :src="'/images/ghostcat_m.png'"
-                      style="height: 150px; max-width: 128px; opacity: 0.5"
-                      spinner-color="white" />
-                  </q-card-section>
-                </div>
-              </q-card>
-            </div>
-          </div>
         </div>
         <div v-else>
-          <div class="row items-center justify-center q-pt-md q-px-md q-mx-lg">
-            <!-- Outer Container -->
-            <div class="col-12">
+          <div class="row items-center justify-center q-pt-md q-px-md">
+
+            <div class="col-10 col-xs-12 col-sm-12 col-lg-9">
               <q-list bordered
+                :style="styleForFolderManagerContainer"
                 padding>
                 <TheFolderSection :type="type"
                   :itemsToDisplay="folders"></TheFolderSection>
@@ -293,20 +342,20 @@
       <div>
         <BaseButtonForDialogFooter class="q-mr-sm "
           :icon="iconForToggleButton"
-          background-color="black"
-          color="black"
-          text-color="white"
-          style="font-size: 9.5px; min-height: 25px;  max-width: 100px"
+          color="accent"
+          :button-text="labelForToggleButton"
+          :text-color="$store.getters['layout/isDarkModeActive'] ? 'black' : 'white'"
+          style="font-size: 9.5px; min-height: 25px;  max-width: 120px"
           @click-button="toggleFolderManagement">
-          Switch
         </BaseButtonForDialogFooter>
         <BaseButtonForDialogFooter class="q-mr-sm "
           buttonText="Close"
           @click-button="closeDialog">
         </BaseButtonForDialogFooter>
-        <BaseButtonForDialogFooter style="margin-right:2px; max-width: 120px"
-          buttonText="Create"
-          @click-button="saveChanges">
+        <BaseButtonForDialogFooter v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
+          style="margin-right:2px; max-width: 120px"
+          buttonText="Paste"
+          @click-button="pasteTemplateAndClose">
         </BaseButtonForDialogFooter>
       </div>
 
@@ -322,7 +371,6 @@
 import { useQuasar } from "quasar";
 import BaseDialog from "../ui/ImprovedBaseDialog.vue";
 import CategoryOrTagQuickMenu from "../common/CategoryOrTagQuickMenu.vue";
-import DialogFolderManagement from "./DialogCategoryFolderSettings/TheDialogFolderManagement.vue";
 import FolderCategoryTemplateStructure from "./DialogTemplateViewer/FolderCategoryTemplateStructure.vue";
 import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
 import BaseEditor from "../ui/BaseEditor.vue";
@@ -335,7 +383,6 @@ export default {
   components: {
     BaseDialog,
     CategoryOrTagQuickMenu,
-    DialogFolderManagement,
     FolderCategoryTemplateStructure,
     BaseButtonForDialogFooter,
     BaseEditor,
@@ -351,7 +398,7 @@ export default {
       newCategoryName: "",
       newFolderName: "",
       nameRules: [
-        (val) => (val && val.length > 0) || "Please name the folder.",
+        (val) => (val && val.length > 0) || "Please enter a name.",
       ],
       //others...
       editor: "",
@@ -359,20 +406,35 @@ export default {
       isShowingTemplateViewer: true,
       editorWidth: 200,
       currentTemplate: this.templateList[0],
-      isDialogFolderManagementVisible: false,
       qMenuModel: false,
       expandIcon: "expand_more",
       icon: true,
       isHelpShown: false,
       maxNumberOfDisplayedChars: 1200,
-      StyleTmplateTextScrollArea: {
-        height: "350px",
-      },
       isDeletingTemplate: false,
       isInEditingMode: false,
+      isShowingManagingButtons: false,
+      isCreatingNewTemplate: false,
+      isPasteAllowed: true,
     };
   },
   watch: {
+    nameOfCurrentDialog(newName) {
+      let firstPart = newName.substring(0, 15);
+      let secondPart = newName.substring(20);
+      console.log(firstPart, secondPart);
+      if (firstPart === 'template-viewer') {
+        if (secondPart === 'diary' || secondPart === 'events') {
+          // is showing via mainLayout, no paste function
+          this.isPasteAllowed = false;
+        } else {
+          // is showing for editor, so paste is functionable
+          this.isPasteAllowed = true;
+        }
+      }
+      console.log(this.$store.state.data.dialogSettings.nameOfCurrentDialog.substring(20));
+
+    },
     qMenuModel(newValue) {
       if (newValue === true) {
         this.expandIcon = "expand_less";
@@ -381,14 +443,53 @@ export default {
       }
     },
     // whenever the length of templates changes, this will reset the currentTemplate
-    lengthOfTemplates(newLength) {
-      this.currentTemplate = this.templateList[0];
+    lengthOfTemplates(newLength, oldLength) {
+      if (newLength != 0) {
+        this.currentTemplate = this.templateList[newLength - 1];
+      }
     },
   },
   methods: {
+    onSubmit() {
+      let nameInput = this.$refs.nameRef;
+      nameInput.validate();
+      // if form has error
+      if (nameInput.hasError) {
+        this.$q.notify({
+          icon: "bi-x",
+          color: "secondary",
+          textColor: this.$store.getters['layout/getTextColorOnSecondary'],
+          message: "Please enter a name.",
+        });
+      } else {
+        this.$q.notify({
+          icon: "bi-check",
+          color: "secondary",
+          textColor: this.$store.getters['layout/getTextColorOnSecondary'],
+          message: "Template created.",
+        });
+        this.saveTemplate();
+      }
+    },
+    createTemplate() {
+      this.isCreatingNewTemplate = true;
+      this.editor = "";
+      this.name = "";
+      this.toggleEditingMode();
+    },
+    setFavorite() {
+      let payload = {
+        templateID: this.currentTemplate.id,
+        quicklist: this.quicklist,
+        type: this.type,
+      };
+      this.$store.commit("data/manageQuicklistStatusOfTemplate", payload);
+    },
+    manageTemplate() {
+      this.isShowingManagingButtons = !this.isShowingManagingButtons;
+    },
     // from manager...
     deleteCategory(categoryToDelete) {
-      console.log("categoryToDelete: ", categoryToDelete);
       let payload = {
         parents: this.folders,
         child: categoryToDelete,
@@ -409,13 +510,12 @@ export default {
     toggleNewCategoryCreation() {
       this.isCreatingNewCategory = !this.isCreatingNewCategory;
     },
-
+    // TODO:
     closeAndResetNewCategoryCreation() {
       this.$refs.nameRef.resetValidation();
       this.isCreatingNewCategory = false;
       this.newCategoryName = "";
     },
-
     createNewCategory() {
       let payload = {
         categoryName: this.newCategoryName,
@@ -424,10 +524,15 @@ export default {
       this.$store.commit("data/createCategory", payload);
       this.closeAndResetNewCategoryCreation();
     },
-    reset() {
+    resetDialog() {
       this.templateName = "";
+      this.editor = "";
+      this.isShowingTemplateViewer = true;
+      this.isDeletingTemplate = false;
+      this.isInEditingMode = false;
+      this.isShowingManagingButtons = false;
+      this.isCreatingNewTemplate = false;
     },
-    // end
     toggleFolderManagement() {
       this.isShowingTemplateViewer = !this.isShowingTemplateViewer;
     },
@@ -440,11 +545,23 @@ export default {
       this.editorWidth = size.width;
     },
     saveTemplate() {
-      let payload = { "templateID": this.currentTemplate.id, "type": this.type, "name": this.name, "text": this.editor };
-      this.$store.dispatch(
-        "data/updateTemplate",
-        payload
-      );
+      console.log(this.editor);
+      // TODO: fullscreen
+      if (this.isCreatingNewTemplate) {
+        this.$store.commit("data/setEditorText", this.editor);
+        let payload = { 'name': this.name, "type": this.type };
+        this.$store.commit("data/createTemplateAndAddToList", payload);
+        console.log(this.currentTemplate);
+        console.log(this.templateList[this.lengthOfTemplates - 1]);
+        this.currentTemplate = this.templateList[this.lengthOfTemplates - 1];
+        this.isCreatingNewTemplate = false;
+      } else {
+        let payload = { "templateID": this.currentTemplate.id, "type": this.type, "name": this.name, "text": this.editor };
+        this.$store.dispatch(
+          "data/updateTemplate",
+          payload
+        );
+      }
       this.toggleEditingMode();
     },
     toggleEditingMode() {
@@ -452,14 +569,6 @@ export default {
     },
     initiateDeletion() {
       this.isDeletingTemplate = !this.isDeletingTemplate;
-    },
-    setDialogVisibilty(newValue) {
-      this.isDialogFolderManagementVisible = newValue;
-    },
-    // TODO: ???
-    saveChanges() { },
-    openDialogFolderManagement() {
-      this.setDialogVisibilty(true);
     },
     pickTemplate(template) {
       this.currentTemplate = template;
@@ -490,6 +599,13 @@ export default {
         "data/removeTemplateFromParentsAndDeleteIt",
         payload
       );
+      this.isDeletingTemplate = false;
+      this.$q.notify({
+        icon: "bi-check",
+        color: "secondary",
+        textColor: this.$store.getters['layout/getTextColorOnSecondary'],
+        message: "Template deleted.",
+      });
     },
     closeDialog() {
       let payload = {
@@ -499,6 +615,7 @@ export default {
         nameOfCurrentDialog:
           this.$store.state.data.dialogSettings.nameOfCurrentDialog,
       };
+      this.resetDialog();
       this.$store.commit("data/setDialogVisibility", payload);
     },
     setDefaultStatus() {
@@ -507,9 +624,6 @@ export default {
         templateList: this.templateList,
       };
       this.$store.commit("data/setDefaultStatusOfTemplate", payload);
-    },
-    setTemplate(index) {
-      this.currentTemplate = this.templates[index];
     },
     // for baseDialog
     showHelp() {
@@ -524,6 +638,81 @@ export default {
     },
   },
   computed: {
+    backgroundColorForInput() {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        return "dark"
+      } else {
+        return "white";
+      }
+    },
+    styleForNameInput() {
+      let style = {};
+      style['border-top'] = '1px solid #d9d9d9';
+      style['border-left'] = '1px solid #d9d9d9';
+      style['border-right'] = '1px solid #d9d9d9';
+
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["border-color"] = "#6d6d6d";
+      } else {
+        style["border-color"] = "#d9d9d9";
+      }
+      return style;
+    },
+    nameOfCurrentDialog() {
+      return this.$store.state.data.dialogSettings.nameOfCurrentDialog;
+    },
+    isTemplateInQuicklist() {
+      if (this.quicklist.storedIDs.includes(this.currentTemplate.id)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    iconForFavoriteButton() {
+      if (this.isTemplateInQuicklist) {
+        return 'bi-star-fill'
+      } else {
+        return 'bi-star'
+      }
+    },
+    iconForManageButton() {
+      if (this.isShowingManagingButtons) {
+        return 'bi-chevron-left'
+      } else {
+        return 'bi-gear'
+      }
+    },
+    labelForManageButton() {
+      if (this.isShowingManagingButtons) {
+        return 'back'
+      } else {
+        return 'manage'
+      }
+    },
+    styleForTemplateViewerContainer() {
+      let style = {};
+      style['max-height'] = this.$store.state.layout.height * 0.60 + "px";
+      return style;
+    },
+    styleForFolderManagerContainer() {
+      let style = {};
+      style['max-height'] = this.$store.state.layout.height * 0.55 + "px";
+      style["padding-bottom"] = "12px";
+      style['font-family'] = this.$store.state.layout.nonDefaultFont;
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        style["background-color"] = "var(--q-dark)";
+      } else {
+        style["background-color"] = "white";
+      }
+      return style;
+    },
+    labelForToggleButton() {
+      if (this.isShowingTemplateViewer) {
+        return 'Folders'
+      } else {
+        return 'Templates'
+      }
+    },
     iconForToggleButton() {
       if (this.isShowingTemplateViewer) {
         return 'bi-list-ul'
@@ -665,9 +854,8 @@ export default {
     isDialogVisible: {
       get() {
         let nameOfDialog = "template-viewer";
-        let nameOfCurrentDialog = this.$store.state.data.dialogSettings.nameOfCurrentDialog.substring(0, 15);
         if (
-          this.$store.state.data.dialogSettings.isVisible === true && nameOfCurrentDialog === nameOfDialog
+          this.$store.state.data.dialogSettings.isVisible === true && this.nameOfCurrentDialog.substring(0, 15) === nameOfDialog
         ) {
           return true;
         } else {
@@ -695,6 +883,7 @@ export default {
 }
 
 .templateTextContainer {
+  font-size: 12px;
   min-height: 250px;
   max-height: 300px;
 }

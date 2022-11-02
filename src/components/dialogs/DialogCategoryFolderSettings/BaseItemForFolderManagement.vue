@@ -3,6 +3,7 @@
     <BaseItemClickable :item="item"
       :parent="parent"
       :icon="icon"
+      style="padding-bottom: 0px"
       @click-item="clickItem"></BaseItemClickable>
   </div>
 

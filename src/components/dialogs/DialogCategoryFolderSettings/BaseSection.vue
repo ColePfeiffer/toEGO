@@ -5,6 +5,7 @@
     <div class="row justify-between items-center no-wrap">
       <!-- Header -->
       <div v-if="!isCreatingNewItem"
+        :style="styleForHeaderText"
         class="header col-10">
         <slot name="headername">Headername</slot>
       </div>
@@ -73,7 +74,7 @@
   <q-resize-observer @resize="onResize" />
 
   <!-- Content -->
-  <q-scroll-area style="height: 158px">
+  <q-scroll-area style="height: 134px">
     <div :style="styleForContent">
       <slot name="itemsToDisplay"></slot>
     </div>
@@ -96,6 +97,15 @@ export default {
         (val) => (val && val.length > 0) || "Please name the folder.",
       ],
     };
+  },
+  computed: {
+    styleForHeaderText() {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        return { 'color': 'white' };
+      } else {
+        return { 'color': 'black' };
+      }
+    }
   },
   methods: {
     onResize(size) {

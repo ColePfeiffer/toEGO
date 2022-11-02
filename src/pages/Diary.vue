@@ -154,8 +154,12 @@
         <div class="row justify-center items-center text-center ">
           <!-- today, yesterday, x days ago, x days ahead... -->
           <div class="col-12 q-pt-xs ">
-            <div :style="subtitleStyle">
-              {{ subtitle }}</div>
+            <div class="row items-center"
+              :style="subtitleStyle">
+              <div class="col-12">{{ subtitle }}</div>
+              <div class="col-12"
+                style="font-size: 12px">{{ dayCounter }}</div>
+            </div>
           </div>
         </div>
         <!-- Header for Note Section -->
@@ -308,6 +312,7 @@ export default {
       changeData: {},
       isHidingEvents: false,
       isShowingEvents: false,
+
     };
   },
   watch: {
@@ -360,6 +365,13 @@ export default {
     },
   },
   computed: {
+    dayCounter() {
+      if (this.$store.state.layout.isDiaryCountingDays) {
+        return this.getDay
+      } else {
+        return "";
+      }
+    },
     pastedText() {
       return this.$store.state.data.pastedText;
     },
@@ -398,18 +410,12 @@ export default {
       let subtitle = this.formatDate(this.getDate);
       subtitle = subtitle.substring(0, subtitle.length - 6);
 
-      if (this.$store.state.layout.isDiaryCountingDays) {
-        if (this.isDiaryTitlebarShowingDay) {
-          return this.getDay
-        };
-        return subtitle + " - " + this.getDay
+      if (this.isDiaryTitlebarShowingDay) {
+        return ""
       } else {
-        if (!this.isDiaryTitlebarShowingDay) {
-          return this.formatDate(this.getDate);
-        } else {
-          return "";
-        }
+        return this.formatDate(this.getDate);
       }
+
     },
     numberOfNotes() {
       if (this.getDiaryEntry != undefined) {
@@ -442,7 +448,7 @@ export default {
       return { "width": this.$store.state.layout.innerWidth + "px" };
     },
     isDiaryModeSetToRetro() {
-      if (this.diaryMode === 'retro') {
+      if (this.diaryMode === 'retro' || this.diaryMode === 'border') {
         return true;
       } else {
         return false;
@@ -522,6 +528,7 @@ export default {
       style['height'] = this.$store.state.layout.height * 0.70 + "px";
       if (this.isDiaryModeSetToRetro) {
         style['margin-bottom'] = "10px";
+        style['height'] = this.$store.state.layout.height * 0.67 + "px";
       }
       style['margin-top'] = "-5px";
       return style;
@@ -543,7 +550,7 @@ export default {
     styleForDayInTitlebar() {
       let style = {};
       style["font-size"] = "1.15em";
-      style["font-family"] = "Pixelated MS Sans Serif";
+      style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["font-weight"] = 700;
       style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
       return style;
@@ -559,6 +566,11 @@ export default {
       let style = {};
       style["font-size"] = "1.15em";
       style["color"] = "white";
+
+      if (this.diaryMode != 'clear') {
+        style["margin-top"] = "10px";
+      }
+
       if (this.$store.state.layout.isDiarySubtitleStyleSetToAlternative) {
         style["text-shadow"] = "2px 0 " + this.$store.state.layout.diarySubtitleColor
           + ", -2px 0 " + this.$store.state.layout.diarySubtitleColor

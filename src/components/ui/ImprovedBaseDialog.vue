@@ -124,7 +124,8 @@ export default {
         },
         styleForFooterButtons() {
             let style = {};
-            style["margin-bottom"] = "10px";
+            style["margin-top"] = "15px";
+            style["margin-bottom"] = "20px";
             style["margin-right"] = "15px";
             return style;
         },

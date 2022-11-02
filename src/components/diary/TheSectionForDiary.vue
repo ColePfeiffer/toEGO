@@ -93,7 +93,7 @@ export default {
             let payload = {
                 isVisible: true,
                 isBackgroundVisible: true,
-                nameOfCurrentDialog: "template-viewer-for-diary",
+                nameOfCurrentDialog: "template-viewer-for-diary-editor",
             };
             this.$store.commit("data/setDialogVisibility", payload);
         },

@@ -7,42 +7,66 @@ export default function () {
     isShowingLabelsForDiarySection: false,
     messageToMyself: "",
     // all templates for events are in here
+    quicklistForDiary: {
+      id: 0,
+      name: "Quick List",
+      storedIDs: [],
+    },
+    quicklistForEvents: {
+      id: 0,
+      name: "Quick List",
+      storedIDs: [],
+    },
     diaryTemplates: [
       {
         id: 0,
+        name: "Morning Prompts",
+        text: "<div>Intention of the day:<br></div><div>What do you need to get done today?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+      },
+      {
+        id: 4,
         name: "Evening",
-        text: "<div><b>Evening</b></div><div>What are you grateful for?<br></div><div>2. Something I accomplished</div><div>3. lesson I learned</div><div>4. Who did I help or connect with?</div>",
+        text: "<div><b>What am I grateful for today?</b><br></div><div><br></div><div><b>Something I accomplished...</b></div><div><br></div><div><b>Lesson I learned or something I could have done differently today?</b></div><div><br></div><div><b>Who did I help or connect with today?</b></div><div><br></div>",
         icon: "",
         isSetToDefault: false,
       },
       {
         id: 1,
         name: "Planning",
-        text: "<div><b>Imagining/Planning</b></div><div><div>Imagine you are having a great day. Describe in detail how you feel...</div></div><div>What are you scared of today and&nbsp;</div><div>Why is today an opportunity instead of another day to get through?<br></div>",
+        text: "<div>Imagine you are having a great day. Describe in detail how you feel...</div></div><div>What are you scared of today and&nbsp;</div><div>Why is today an opportunity instead of another day to get through?<br></div>",
         icon: "fas fa-sun",
         isSetToDefault: false,
       },
       {
         id: 2,
         name: "Reflecting",
-        text: "<div><b>Reflecting</b></div><div>How are my thoughts lately? Are they serving me or holding me back?<br></div><div>Are all of your obligations today real or are some imagined?<br></div>",
+        text: "<div>How are my thoughts lately? Are they serving me or holding me back?<br></div><div>Are all of your obligations today real or are some imagined?<br></div>",
         icon: "fas fa-sun",
         isSetToDefault: false,
       },
       {
         id: 3,
         name: "Venting",
-        text: "<div><b>Venting</b></div><div>Is there anything you need to get off your chest?<br></div><div>What are the words you need to hear?<br></div>",
+        text: "<div>Is there anything you need to get off your chest?<br></div><div>What are the words you need to hear?<br></div>",
         icon: "fas fa-sun",
         isSetToDefault: false,
       },
+    ],
+    foldersForDiary: [{ id: 0, name: "Journaling", storedIDs: [2, 3] }],
+    categoriesForDiary: [
+      { id: 2, name: "@Daytime", storedIDs: [0, 4] },
+      { id: 3, name: "@Topic", storedIDs: [1, 2, 3] },
+    ],
+    foldersForEvents: [{ id: 0, name: "Methods & Reminders", storedIDs: [0] }],
+    categoriesForEvents: [
       {
-        id: 4,
-        name: "Morning Prompts",
-        text: "<b>Morning</b><br><div>Intention of the day:<br></div><div>What do you need to get done today?<br></div>",
-        icon: "fas fa-sun",
-        isSetToDefault: false,
+        id: 0,
+        name: "Grounding Methods",
+        storedIDs: [0],
       },
+      { id: 1, name: "Tracker", storedIDs: [1] },
     ],
     eventTemplates: [
       {
@@ -60,45 +84,6 @@ export default function () {
         isSetToDefault: false,
       },
     ],
-    quicklistForDiary: {
-      id: 0,
-      name: "Quick List",
-      storedIDs: [],
-    },
-    quicklistForEvents: {
-      id: 0,
-      name: "Quick List",
-      storedIDs: [],
-    },
-    categoriesForDiary: [
-      {
-        id: 1,
-        name: "Methods & Reminders",
-        storedIDs: [],
-      },
-      { id: 2, name: "@Daytime", storedIDs: [0, 4] },
-      { id: 3, name: "@Topic", storedIDs: [1, 2, 3] },
-    ],
-    foldersForDiary: [
-      { id: 1, name: "Journaling", storedIDs: [2, 3] },
-      { id: 2, name: "Baby", storedIDs: [] },
-    ],
-    foldersForEvents: [{ id: 1, name: "Some folder I made", storedIDs: [1] }],
-    categoriesForEvents: [
-      {
-        id: 1,
-        name: "MUH!!!",
-        storedIDs: [],
-      },
-      { id: 2, name: "Tracker", storedIDs: [] },
-      { id: 3, name: "Other", storedIDs: [] },
-      {
-        id: 4,
-        name: "Grounding Methods",
-        storedIDs: [],
-      },
-    ],
-
     newEventIsInCreationMode: true,
     eventsOnDiaryPageAreExpanded: false,
     lastSelectedDate: new Date(),

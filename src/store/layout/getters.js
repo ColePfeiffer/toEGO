@@ -14,10 +14,10 @@ export const isDarkModeActive = (state) => {
 };
 
 export const getTextColorBasedOnDarkMode = (getters) => {
-  if(getters.isDarkModeActive){
+  if (getters.isDarkModeActive) {
     return "white";
-  }else{
-    return 'black';
+  } else {
+    return "black";
   }
 };
 
@@ -208,7 +208,7 @@ export const getStyleForTitleBar = (state, getters) => {
 
     style["background"] = "var(--q-secondary)";
     style["text-shadow"] = getters.getLowOpacityShadowForAccent2;
-    style["text-family"] = state.nonDefaultFont;
+    style["font-family"] = state.nonDefaultFont;
 
     if (mode === "retro") {
       style["min-height"] = "33px";

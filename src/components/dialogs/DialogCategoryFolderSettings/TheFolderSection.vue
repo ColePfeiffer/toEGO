@@ -2,21 +2,21 @@
   <BaseSection @create-new-item="createFolder">
     <template v-slot:headername>Folders</template>
     <template v-slot:itemsToDisplay>
-      <div v-for="folder in itemsToDisplay" :key="folder">
-        <BaseMenuForFolderManagement
-          childAsText="Categories: "
+      <div v-for="folder in itemsToDisplay"
+        :key="folder">
+        <BaseMenuForFolderManagement childAsText="Categories: "
           :item="folder"
+          dense
           icon="bi-folder"
+          style="padding-bottom: 0px"
           @rename-item="renameFolder"
-          @delete-item="deleteFolder"
-        >
+          @delete-item="deleteFolder">
           <template v-slot:children>
-            <div v-for="category in categories" :key="category">
-              <BaseItemForFolderManagement
-                :item="category"
+            <div v-for="category in categories"
+              :key="category">
+              <BaseItemForFolderManagement :item="category"
                 icon="bi-collection"
-                :parent="folder"
-              >
+                :parent="folder">
               </BaseItemForFolderManagement>
             </div>
           </template>

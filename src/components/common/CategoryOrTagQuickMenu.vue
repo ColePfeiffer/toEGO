@@ -13,7 +13,7 @@
             size="xs"
             name="bi-plus" />
         </q-item-section>
-        <q-item-section>New category</q-item-section>
+        <q-item-section>new category</q-item-section>
       </q-item>
       <q-item v-else>
         <q-item-section avatar>
@@ -55,7 +55,26 @@
             size="xs"
             name="bi-x" />
         </q-item-section>
-        <q-item-section>Unset all</q-item-section>
+        <q-item-section>unset all</q-item-section>
+      </q-item>
+      <!-- Set as default -->
+      <q-item clickable
+        @click="setAsDefault"
+        :style="getTextColorForDefault">
+        <q-item-section avatar>
+          <q-icon color="secondary"
+            size="xs"
+            :name="iconForDefaultItem" />
+        </q-item-section>
+        <q-item-section>{{ textForDefaultItem }} </q-item-section>
+        <q-item-section avatar>
+          <q-btn dense
+            :color="this.currentTemplate.isSetToDefault ? 'orange' : 'teal'"
+            round
+            flat
+            :icon="this.currentTemplate.isSetToDefault ? 'bi-dash' : 'bi-plus'">
+          </q-btn>
+        </q-item-section>
       </q-item>
       <!-- Add to/Remove from QuickList Button -->
       <q-item clickable
@@ -64,15 +83,15 @@
         <q-item-section avatar>
           <q-icon color="secondary"
             size="xs"
-            name="bi-star" />
+            :name="iconForQuicklistItem" />
         </q-item-section>
-        <q-item-section>Add to quick-list</q-item-section>
+        <q-item-section>{{ textForQuicklistItem }} </q-item-section>
         <q-item-section avatar>
           <q-btn dense
-            :color="isTemplateInQuicklist() === 'bi-dash' ? 'orange' : 'teal'"
+            :color="isTemplateInQuicklist === 'bi-dash' ? 'orange' : 'teal'"
             round
             flat
-            :icon="isTemplateInQuicklist()">
+            :icon="isTemplateInQuicklist">
           </q-btn>
         </q-item-section>
       </q-item>
@@ -117,8 +136,50 @@ export default {
     };
   },
   computed: {
+    isTemplateInQuicklist() {
+      if (this.quicklist.storedIDs.includes(this.currentTemplate.id)) {
+        return "bi-dash";
+      } else {
+        return "bi-plus";
+      }
+    },
+    iconForDefaultItem() {
+      if (this.currentTemplate.isSetToDefault) {
+        return "bi-suit-heart-fill"
+      } else {
+        return "bi-suit-heart"
+      }
+    },
+    iconForQuicklistItem() {
+      if (this.isTemplateInQuicklist === "bi-dash") {
+        return "bi-star-fill"
+      } else {
+        return "bi-star"
+      }
+    },
+    textForQuicklistItem() {
+      if (this.isTemplateInQuicklist === "bi-dash") {
+        return "is favorite"
+      } else {
+        return "not favorite"
+      }
+    },
+    textForDefaultItem() {
+      if (this.currentTemplate.isSetToDefault) {
+        return "is default"
+      } else {
+        return "not default"
+      }
+    },
+    getTextColorForDefault() {
+      if (this.currentTemplate.isSetToDefault) {
+        return { color: "var(--q-primary)" };
+      } else {
+        return { color: "#d3d3d3 " };
+      }
+    },
     getTextColorForQuicklist() {
-      if (this.isTemplateInQuicklist() === "bi-dash") {
+      if (this.isTemplateInQuicklist === "bi-dash") {
         return {
           color: "var(--q-primary)",
         };
@@ -130,6 +191,13 @@ export default {
     },
   },
   methods: {
+    setAsDefault() {
+      let payload = {
+        id: this.currentTemplate.id,
+        templateList: this.templates,
+      };
+      this.$store.commit("data/setDefaultStatusOfTemplate", payload);
+    },
     onResize(size) {
       this.styleForScrollArea = {
         height: size.height + "px",
@@ -181,13 +249,7 @@ export default {
       };
       this.$store.commit("data/resetCategorySettingsForTemplate", payload);
     },
-    isTemplateInQuicklist() {
-      if (this.quicklist.storedIDs.includes(this.currentTemplate.id)) {
-        return "bi-dash";
-      } else {
-        return "bi-plus";
-      }
-    },
+
     manageQuicklistStatus() {
       let payload = {
         templateID: this.currentTemplate.id,

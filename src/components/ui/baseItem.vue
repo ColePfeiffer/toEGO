@@ -3,6 +3,7 @@
     clickable
     @click="clickItem"
     color="white"
+    style="padding-bottom: 0px"
     :style="textColorStyle">
     <!-- Category/Template Icon -->
     <q-item-section avatar

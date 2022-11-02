@@ -240,7 +240,7 @@ export default {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "template-viewer-for-events",
+        nameOfCurrentDialog: "template-viewer-for-events-editor",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
