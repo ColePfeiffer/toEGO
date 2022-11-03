@@ -3,12 +3,12 @@
     <BaseItemClickable v-if="!isShowingTemplates"
       :item="template"
       :parent="parent"
-      icon="bi-file-earmark"
+      icon="bi-file-earmark-font"
       :currentTemplate="currentTemplate"
       @click-item="clickTemplate"></BaseItemClickable>
     <BaseItem v-else
       :item="template"
-      icon="bi-file-earmark"
+      icon="bi-file-earmark-font"
       :textColorStyle="textColorStyle"
       @click-item="clickTemplate">
       <template v-slot:buttonSection>

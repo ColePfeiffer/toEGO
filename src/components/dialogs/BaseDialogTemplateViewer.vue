@@ -1,20 +1,39 @@
 <template>
   <BaseDialog v-model="isDialogVisible"
-    @closeDialog="closeDialog"
     @save="pasteTemplateAndClose"
-    @showHelp="showHelp"
     dialogTitle="Template Viewer"
     icon="bi-file-earmark-font"
     :button1="{ isShown: true, text: 'Close' }"
     :button2="{ isShown: true, text: 'Paste' }"
     :hasHelpOption="true"
     :isButton2Disabled="!isAtLeastOneTemplateCreated">
+    <template v-slot:title-bar-controls>
+      <BaseButtonForTitleBar class="q-mr-xs text-accent"
+        :icon="iconForToggleButton"
+        :button-text="labelForToggleButton"
+        @click-button="toggleFolderManagement"
+        style="text-shadow: var(--q-info) 1px 1px 7px !important;"
+        size="11px">
+      </BaseButtonForTitleBar>
+      <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+        icon="bi-question"
+        size="10px"
+        @click-button="showHelp">
+      </BaseButtonForTitleBar>
+      <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+        icon="bi-x"
+        size="10px"
+        @click-button="closeDialog">
+      </BaseButtonForTitleBar>
+    </template>
     <template v-slot:content>
       <div>
+        <!-- Section: Template Viewer -->
         <div v-if="isShowingTemplateViewer"
           :style="styleForTemplateViewerContainer">
           <div class="row no-wrap full-width items-center justify-center q-pt-md">
-            <q-btn class="col-md-2 col-xs-1"
+            <q-btn v-if="isAtLeastOneTemplateCreated"
+              class="col-md-2 col-xs-1"
               flat
               style="touch-action: manipulation"
               icon="keyboard_arrow_left"
@@ -41,13 +60,13 @@
                   lazy-rules
                   label="Title">
                   <template v-slot:label>
-                    <span class="text-weight-bold text-secondary"
+                    <span class="text-weight-bold "
                       :style="$store.getters['layout/getNonDefaultFont']">Name</span>
                   </template>
                 </q-input>
               </div>
 
-              <div v-else
+              <div v-else-if="isAtLeastOneTemplateCreated"
                 class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
                 <!-- Pick template Dropdown Button  -->
                 <q-btn :icon-right="expandIcon"
@@ -92,6 +111,7 @@
                         ref="editorRef1"
                         class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
                         v-model="editor"
+                        style="border-left: none; border-top: none; border-right: none"
                         @save="onSubmit"
                         minHeight="300px"
                         type="TEMPLATE"></BaseEditor>
@@ -163,6 +183,19 @@
                   </div>
                   <div v-else-if="isAtLeastOneTemplateCreated"
                     class="row justify-center items-center no-wrap">
+                    <!-- Button: Manage -->
+                    <q-btn flat
+                      class="col-2 q-mx-sm"
+                      no-wrap
+                      dense
+                      stack
+                      :icon="iconForManageButton"
+                      :style="styleForButton"
+                      :ripple="false"
+                      text-color="accent"
+                      :label="labelForManageButton"
+                      @click="manageTemplate">
+                    </q-btn>
                     <!-- Button: Category Menu -->
                     <q-btn v-if="isShowingManagingButtons"
                       flat
@@ -197,19 +230,7 @@
                       label="Favorite"
                       @click="setFavorite">
                     </q-btn>
-                    <!-- Button: Manage -->
-                    <q-btn flat
-                      class="col-2 q-mx-sm"
-                      no-wrap
-                      dense
-                      stack
-                      :icon="iconForManageButton"
-                      :style="styleForButton"
-                      :ripple="false"
-                      text-color="accent"
-                      :label="labelForManageButton"
-                      @click="manageTemplate">
-                    </q-btn>
+
                     <!-- Button: Edit -->
                     <q-btn flat
                       v-if="isShowingManagingButtons"
@@ -308,7 +329,8 @@
                 </q-card-actions>
               </q-card>
             </div>
-            <q-btn class="col-md-2 col-xs-1"
+            <q-btn v-if="isAtLeastOneTemplateCreated"
+              class="col-md-2 col-xs-1"
               flat
               icon="keyboard_arrow_right"
               :style="$store.state.layout.buttonFlatOnlyIcon"
@@ -318,9 +340,9 @@
             </q-btn>
           </div>
         </div>
+        <!-- Section: Folder Management  -->
         <div v-else>
           <div class="row items-center justify-center q-pt-md q-px-md">
-
             <div class="col-10 col-xs-12 col-sm-12 col-lg-9">
               <q-list bordered
                 :style="styleForFolderManagerContainer"
@@ -340,19 +362,11 @@
     </template>
     <template v-slot:footer-buttons>
       <div>
-        <BaseButtonForDialogFooter class="q-mr-sm "
-          :icon="iconForToggleButton"
-          color="accent"
-          :button-text="labelForToggleButton"
-          :text-color="$store.getters['layout/isDarkModeActive'] ? 'black' : 'white'"
-          style="font-size: 9.5px; min-height: 25px;  max-width: 120px"
-          @click-button="toggleFolderManagement">
-        </BaseButtonForDialogFooter>
-        <BaseButtonForDialogFooter class="q-mr-sm "
-          buttonText="Close"
+        <BaseButtonForDialogFooter buttonText="Close"
           @click-button="closeDialog">
         </BaseButtonForDialogFooter>
-        <BaseButtonForDialogFooter v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
+        <BaseButtonForDialogFooter class="q-ml-sm"
+          v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
           style="margin-right:2px; max-width: 120px"
           buttonText="Paste"
           @click-button="pasteTemplateAndClose">
@@ -376,6 +390,7 @@ import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
 import BaseEditor from "../ui/BaseEditor.vue";
 import TheFolderSection from "./DialogCategoryFolderSettings/TheFolderSection.vue";
 import TheCategorySection from "./DialogCategoryFolderSettings/TheCategorySection.vue";
+import BaseButtonForTitleBar from "../ui/BaseButtonForTitleBar.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -387,7 +402,8 @@ export default {
     BaseButtonForDialogFooter,
     BaseEditor,
     TheFolderSection,
-    TheCategorySection
+    TheCategorySection,
+    BaseButtonForTitleBar
   },
   props: { type: String, templateList: Array },
   data() {
@@ -715,9 +731,9 @@ export default {
     },
     iconForToggleButton() {
       if (this.isShowingTemplateViewer) {
-        return 'bi-list-ul'
+        return 'bi-arrow-right-circle'
       } else {
-        return 'bi-layout-text-window-reverse'
+        return 'bi-arrow-left-circle'
       }
     },
     iconForDeleteButton() {

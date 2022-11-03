@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- Non-Empty-Folders -->
-    <div>
+    <div v-if="getNonEmptyFolders.length > 0">
+      <!-- Non-Empty-Folders -->
       <FolderItem v-for="folder in getNonEmptyFolders"
         :key="folder"
         :isShowingTemplates="isShowingTemplates"
@@ -12,21 +12,18 @@
         @click-folder="clickFolder"
         @click-category="clickCategoryInsideFolder"
         @click-template="clickTemplateInsideCategoryInsideFolder"></FolderItem>
+      <q-separator />
     </div>
-    <q-separator />
-    <!-- Categories -->
-    <div>
-      <!-- Categories which aren't stored in Folders -->
-      <CategoryItem v-for="category in displayedCategories"
-        :key="category"
-        :categoryMode="categoryMode"
-        :isShowingTemplates="isShowingTemplates"
-        :category="category"
-        :currentTemplate="currentTemplate"
-        :templates="templates"
-        @click-category="clickCategory"
-        @click-template="clickTemplateInsideCategory"></CategoryItem>
-    </div>
+    <!-- Categories which aren't stored in Folders -->
+    <CategoryItem v-for="category in displayedCategories"
+      :key="category"
+      :categoryMode="categoryMode"
+      :isShowingTemplates="isShowingTemplates"
+      :category="category"
+      :currentTemplate="currentTemplate"
+      :templates="templates"
+      @click-category="clickCategory"
+      @click-template="clickTemplateInsideCategory"></CategoryItem>
 
     <!-- templates which are not in categories -->
     <q-separator />
@@ -90,16 +87,23 @@ export default {
   computed: {
     displayedCategories() {
       if (this.isShowingTemplates) {
+        console.log("categories: ", this.getCategoriesWithoutFolders)
         return this.getCategoriesWithoutFoldersButWithTemplates
       } else {
+        console.log("categories: ", this.getCategoriesWithoutFolders)
         return this.getCategoriesWithoutFolders;
       }
     },
     getCategoriesWithoutFolders() {
-      return this.$store.getters["data/getCategoriesWithoutFolders"]({
-        folders: this.folders,
-        categories: this.categories,
-      });
+      if (this.getNonEmptyFolders.length > 0) {
+        return this.$store.getters["data/getCategoriesWithoutFolders"]({
+          folders: this.folders,
+          categories: this.categories,
+        });
+      } else {
+        return this.categories;
+      }
+
     },
     getNonEmptyFolders() {
       return this.$store.getters["data/getNonEmptyFolders"](
@@ -109,15 +113,26 @@ export default {
     },
     // only returns category-items that are not stored in any folder and hold at least one template-item
     getCategoriesWithoutFoldersButWithTemplates() {
-      return this.getCategoriesWithoutFolders.filter((category) => {
-        category.storedIDs.length > 0;
+      let test;
+
+      test = this.getCategoriesWithoutFolders.filter((category) => {
+        console.log(category);
+        return category.storedIDs.length > 0;
       });
+      return test;
     },
     getTemplatesWithoutCategories() {
-      return this.$store.getters["data/getTemplatesWithoutCategories"]({
-        templates: this.templates,
-        categories: this.categories,
-      });
+      console.log(this.displayedCategories.length);
+      console.log(this.getNonEmptyFolders.length);
+      if (this.displayedCategories.length > 0 || this.getNonEmptyFolders.length > 0) {
+        return this.$store.getters["data/getTemplatesWithoutCategories"]({
+          templates: this.templates,
+          categories: this.categories,
+        });
+      } else {
+        return this.templates;
+      }
+
     },
   }
 };

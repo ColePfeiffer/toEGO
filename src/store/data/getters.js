@@ -93,13 +93,26 @@ export const isItemChildToAnyParent = (state) => {
     let parents = payload.parents;
     let child = payload.child;
     let isChildFromParent;
-
     for (let i = 0; i < parents.length; i++) {
       // if we find a parent to our item, we leave the loop early.
       if (parents[i].storedIDs.includes(child.id)) {
+        console.log(
+          "Is ",
+          child.name,
+          " a child of parent ",
+          parents[i].name,
+          "? Yes!"
+        );
         isChildFromParent = true;
         return isChildFromParent;
       } else {
+        console.log(
+          "Is ",
+          child.name,
+          " a child of ",
+          parents[i].name,
+          "? No!"
+        );
         isChildFromParent = false;
       }
     }
@@ -120,6 +133,16 @@ export const getCategoriesWithoutFolders = (state, getters) => {
       let data = { parents: folders, child: category };
       return getters.isItemChildToAnyParent(data) === false;
     });
+  };
+};
+
+export const getCategoriesByType = (state) => {
+  return (type) => {
+    if (type === "DIARY") {
+      return state.categoriesForDiary;
+    } else {
+      return state.categoriesForEvents;
+    }
   };
 };
 
@@ -200,6 +223,7 @@ export const getNonEmptyFolders = (state, getters) => {
         array.push(folder);
       }
     });
+    console.log("Non Empty Folders: ", array);
     return array;
   };
 };

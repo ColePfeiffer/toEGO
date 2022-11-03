@@ -85,11 +85,17 @@ export const deleteFolder = (state, payload) => {
 
   // remove folder from array
   if (type === "DIARY") {
+    console.log("diary");
     let indexOfFolder = state.foldersForDiary.indexOf(folder);
+    console.log(state.foldersForDiary);
     state.foldersForDiary.splice(indexOfFolder, 1);
+    console.log(state.foldersForDiary);
   } else {
+    console.log("note");
     let indexOfFolder = state.foldersForEvents.indexOf(folder);
+    console.log(state.foldersForEvents);
     state.foldersForEvents.splice(indexOfFolder, 1);
+    console.log(state.foldersForEvents);
   }
 };
 

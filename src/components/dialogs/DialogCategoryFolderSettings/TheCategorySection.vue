@@ -6,7 +6,7 @@
         :key="category">
         <BaseMenuForFolderManagement childAsText="Templates: "
           :item="category"
-          icon="bi-collection"
+          icon="bi-tags"
           dense
           style="padding-bottom: 0px"
           @rename-item="renameCategory"

@@ -15,7 +15,7 @@
             <div v-for="category in categories"
               :key="category">
               <BaseItemForFolderManagement :item="category"
-                icon="bi-collection"
+                icon="bi-tags"
                 :parent="folder">
               </BaseItemForFolderManagement>
             </div>
