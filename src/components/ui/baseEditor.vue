@@ -1,10 +1,11 @@
 <template>
   <q-editor ref="editorRef"
     class="editor text-justify"
+    :placeholder="placeholderText"
     :content-style="getStyleForEditorContent"
     :style="getStyleForEditor"
-    :toolbar-text-color="$store.getters['layout/getToolbarIconColor']"
-    :toolbar-color="$store.getters['layout/getToolbarIconColor']"
+    :toolbar-text-color="getTextColor"
+    :toolbar-color="getTextColor"
     :toolbar="getToolbar"
     :fonts="{
       arial: 'Arial',
@@ -34,6 +35,7 @@
         :isInFullscreenMode="isInFullscreenMode"
         :editorWidth="editorWidth"
         :editorTitle="editorTitle"
+        :textColor="textColor"
         :type="type"
         @save="save"
         @toggle-toolbar="toggleToolbar"
@@ -60,7 +62,23 @@ export default {
   props: {
     type: String,
     editorWidth: Number,
+    textColor: {
+      type: String,
+      default: ""
+    },
+    backgroundColorDark: {
+      type: String,
+      default: ""
+    },
+    backgroundColor: {
+      type: String,
+      default: ""
+    },
     editorTitle: {
+      type: String,
+      default: ""
+    },
+    placeholderText: {
       type: String,
       default: ""
     }
@@ -182,31 +200,43 @@ export default {
     },
   },
   computed: {
+    getTextColor(){
+      console.log("textcoolor: ", this.textColor);
+      if(this.textColor === ''){
+        return this.$store.getters['layout/getToolbarIconColor'];
+      }else{
+        return this.textColor;
+      }
+    },
     getStyleForEditor() {
       let style = {};
-      style["font-size"] = "12.5px";
+      style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      if (this.$store.getters["layout/isDarkModeActive"]) {
-        style["background-color"] = "blacksmoke";
+
+        if (this.$store.getters["layout/isDarkModeActive"]) {
+          if(this.backgroundColorDark === ''){
+            style["background-color"] = this.$store.state.layout.blacksmoke;
+          }else{
+            style["background-color"] = this.backgroundColorDark;
+          }
+      }else {
+        if(this.backgroundColor === ''){
+          style["background-color"] = this.$store.state.layout.whitesmoke;
+        }else{
+
+          style["background-color"] = this.backgroundColor;
+        }
       }
-      else {
-        style["background-color"] = "whitesmoke";
-      }
+
       return style;
     },
     getStyleForEditorContent() {
       let style = {};
-      style["font-size"] = "12.5px";
+      style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["padding-top"] = "12px";
       style["padding-left"] = "12px";
       style["padding-right"] = "12px";
-      if (this.$store.getters["layout/isDarkModeActive"]) {
-        style["background-color"] = "blacksmoke";
-      }
-      else {
-        style["background-color"] = "whitesmoke";
-      }
       return style;
     },
     getToolbar() {
@@ -244,4 +274,3 @@ export default {
   display: none;
 }
 </style>
-s

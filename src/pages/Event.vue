@@ -31,7 +31,7 @@
             class="col-12 q-mb-md"
             toggle-color="accent"
             padding="none"
-            :color="getTextColor"
+            :style="getTextColor"
             flat
             :options="[
               { value: 'las la-angry', slot: 'angry' },
@@ -85,30 +85,27 @@
         <div class="col-12 q-mb-md q-mt-sm">
           <q-input class="no-border-radius no-box-shadow"
             color="secondary"
-            label-slot
             v-model="title"
+            dense
             autofocus
             borderless
-            stack-label
-            :label-color="labelColor"
+            placeholder="Title"
             :style="getStyleForInput"
             :input-style="getInputStyleForTitle"
             hide-bottom-space
             :rules="[
               (val) => val.length <= 50 || 'Please use maximum 50 characters',
             ]">
-            <template v-slot:label>
-              <div style="font-family: Inter; font-size: 15px; margin-bottom: 15px">
-                Title
-              </div>
-            </template>
           </q-input>
         </div>
 
         <!-- Input: What happened -->
         <div class="col-12 q-mb-lg"
           :style="getInputStyleForWhatHappened">
-          <BaseEditor editorTitle="What happened?"
+          <BaseEditor placeholderText="What happened?"
+            :textColor="editorTextColor"
+            :backgroundColor="editorBackgroundColor"
+            backgroundColorDark="transparent"
             :editorWidth="getWidthForInputFields"
             class="no-border-radius no-box-shadow"
             ref="editorRef1"
@@ -148,10 +145,9 @@ export default {
   },
   data() {
     return {
-      labelColor: 'lightgrey',
-      editor: this.$store.state.data.eventData.editor,
-      title: this.$store.state.data.eventData.title,
-      mood: this.$store.state.data.eventData.mood,
+      editor: "",
+      title: "",
+      mood: "",
     };
   },
   // gets called anytime this component is set to active
@@ -247,18 +243,36 @@ export default {
 
   },
   computed: {
+    editorBackgroundColor(){
+      if(this.getEventMode === 'default'){
+        if(this.$store.getters['layout/isDarkModeActive']){
+          return this.$store.state.layout.blacksmoke;
+        }else{
+          return this.$store.state.layout.whitesmoke;
+        }
+      }else{
+        return this.$store.state.layout.eventBackgroundColor;
+      }
+    },
     getStyleForInput() {
       let style = {};
-      style["font-size"] = "12.5px";
+      style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["width"] = this.getWidthForInputFields + "px";
       style["padding"] = "0 12px";
-      style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
       style["border-radius"] = "0px";
+
       if (this.getEventMode === "default") {
         style["background-color"] = "transparent";
+        if (this.$store.getters["layout/isDarkModeActive"]) {
+          style["border"] = "1px solid #ffffff1f";
+        } else {
+          style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
+        }
+
       } else {
         style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
+        style["border"] = "1px solid " + this.getColorBasedOnBackgroundColor + "52";
       }
       return style;
     },
@@ -266,8 +280,33 @@ export default {
       return this.$store.state.data.pastedText;
     },
     // Styling _____________________
+    editorTextColor() {
+      if (this.getEventMode != 'default') {
+        return this.getColorBasedOnBackgroundColorAsName;
+      } else {
+        if (this.$store.getters["layout/isDarkModeActive"]) {
+          return "white";
+          /*
+           style["color"] = this.$store.getters[
+                  "layout/getColorBasedOnBackgroundColor"
+                ](this.$store.state.layout.eventInputBackgroundColor);
+          */
+        } else {
+          return "black";
+        }
+
+      }
+    },
     editorHeight() {
-      return { 'min-height': this.$store.state.layout.height * 0.35 + "px" };
+      let style = {};
+      style["min-height"] = this.$store.state.layout.height * 0.35 + "px";
+      return style;
+    },
+    getColorBasedOnBackgroundColorAsName() {
+      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.$store.state.layout.eventBackgroundColor);
+    },
+    getColorBasedOnBackgroundColor() {
+      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.$store.state.layout.eventBackgroundColor);
     },
     getEventMode() {
       return this.$store.state.layout.eventMode;
@@ -295,20 +334,36 @@ export default {
       let style = {};
       style["box-shadow"] = "none";
       style["background-color"] = "transparent";
-      style["text-shadow"] =
-        this.$store.getters["layout/getTextColorForEvent"]["text-shadow"];
+      style["text-shadow"] = this.$store.getters["layout/getTextColorForEvent"]["text-shadow"];
+      style["color"] = this.$store.getters["layout/getTextColorForEvent"]["color"];
       return style;
     },
     getInputStyleForTitle() {
       let style = {};
       style["min-height"] = "25px";
       style["max-height"] = "50px";
-      style["font-size"] = "12.5px";
+      style["font-size"] = "12px";
       style["background-color"] = "transparent";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["color"] = this.$store.getters[
-        "layout/getColorBasedOnBackgroundColor"
-      ](this.$store.state.layout.eventInputBackgroundColor);
+
+      if (this.getEventMode != 'default') {
+        style["color"] = this.getColorBasedOnBackgroundColor + "!important";
+      } else {
+        if (this.$store.getters["layout/isDarkModeActive"]) {
+          style["color"] = "white";
+          /*
+           style["color"] = this.$store.getters[
+                  "layout/getColorBasedOnBackgroundColor"
+                ](this.$store.state.layout.eventInputBackgroundColor);
+          */
+        } else {
+          style["color"] = "black";
+        }
+
+      }
+
+
+
       return style;
     },
     getWidthForInputFields() {
@@ -316,8 +371,7 @@ export default {
     },
     getInputStyleForWhatHappened() {
       let style = {};
-
-      style["font-size"] = this.$store.state.layout.fontsize + "px";
+      style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["width"] = this.getWidthForInputFields + "px";
       return style;
@@ -355,5 +409,15 @@ export default {
 <style scoped>
 .topMargin {
   margin-top: 20px;
+}
+
+.my_class input::placeholder {
+  font-weight: 600;
+  color: black;
+}
+
+.my_class input::-ms-input-placeholder {
+  font-weight: 600;
+  color: black;
 }
 </style>

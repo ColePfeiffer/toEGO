@@ -92,6 +92,10 @@ export const toggleDarkMode = (state) => {
   state.isDarkModeOn = !state.isDarkModeOn;
 };
 
+export const setNoteTextShadowColor = (state, color) => {
+  state.noteTextShadowColor = color;
+};
+
 export const setEventInputBackgroundColor = (state, color) => {
   state.eventInputBackgroundColor = color;
 };
@@ -104,12 +108,20 @@ export const setBorderColorRight = (state, color) => {
   state.borderColorRight = color;
 };
 
+export const setNoteTitleRowIsColored = (state, color) => {
+  state.noteTitleRowIsColored = color;
+};
+
 export const toggleIsDiaryTitleBarShowingDay = (state, bool) => {
   state.isDiaryTitlebarShowingDay = bool;
 };
 
 export const toggleIsDiaryCountingDays = (state, bool) => {
   state.isDiaryCountingDays = bool;
+};
+
+export const setNoteBackgroundColor = (state, color) => {
+  state.noteBackgroundColor = color;
 };
 
 export const changeBackgroundColor = (state, color) => {

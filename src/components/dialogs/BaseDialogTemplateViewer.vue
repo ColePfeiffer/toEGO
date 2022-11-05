@@ -1,4 +1,5 @@
 <template>
+
   <BaseDialog v-model="isDialogVisible"
     @save="pasteTemplateAndClose"
     dialogTitle="Template Viewer"
@@ -7,6 +8,7 @@
     :button2="{ isShown: true, text: 'Paste' }"
     :hasHelpOption="true"
     :isButton2Disabled="!isAtLeastOneTemplateCreated">
+
     <template v-slot:title-bar-controls>
       <BaseButtonForTitleBar class="q-mr-xs text-accent"
         :icon="iconForToggleButton"
@@ -29,10 +31,18 @@
     <template v-slot:content>
       <div>
         <!-- Section: Template Viewer -->
-        <div v-if="isShowingTemplateViewer"
+        <div v-if="isHelpVisible">
+          <div class="row justify-center items-center">
+            <div class="col-10">
+              <TheHelpStepperForTemplateViewer class="q-mt-none"
+                @finish="finish"></TheHelpStepperForTemplateViewer>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="isShowingTemplateViewer"
           :style="styleForTemplateViewerContainer">
           <div class="row no-wrap full-width items-center justify-center q-pt-md">
-            <q-btn v-if="isAtLeastOneTemplateCreated"
+            <q-btn v-if="isAtLeastOneTemplateCreated && !isInEditingMode"
               class="col-md-2 col-xs-1"
               flat
               style="touch-action: manipulation"
@@ -65,7 +75,6 @@
                   </template>
                 </q-input>
               </div>
-
               <div v-else-if="isAtLeastOneTemplateCreated"
                 class="row no-wrap justify-center items-center containerForHeaderOfTemplateViewer">
                 <!-- Pick template Dropdown Button  -->
@@ -106,7 +115,9 @@
                   <q-card-section class="q-px-none q-py-none">
                     <q-resize-observer @resize="onResize" />
                     <q-scroll-area style="height: 350px">
-                      <BaseEditor editorTitle="Editing Template"
+                      <BaseEditor placeholderText="Template"
+                        :backgroundColorDark="$store.state.layout.blacksmoke"
+                        backgroundColor="white"
                         :editorWidth="editorWidth"
                         ref="editorRef1"
                         class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
@@ -120,14 +131,62 @@
 
                 </div>
 
-                <div v-else-if="isAtLeastOneTemplateCreated">
-                  <q-card-section class="q-pb-xs">
-                    <div class="text-h6"
-                      style="font-family: 'Inter'">{{ currentTemplate.name }}</div>
+                <div class="q-mx-none q-px-none"
+                  v-else-if="isAtLeastOneTemplateCreated">
+                  <q-card-section class="q-mx-none q-px-none q-pb-xs row items-center ">
+                    <!-- Button: Category Menu -->
+                    <div class="col-12 row items-center no-wrap">
+                      <q-btn flat
+                        class="col-1 q-mx-none q-mr-xs"
+                        no-wrap
+                        dense
+                        stack
+                        icon="bi-tags"
+                        :style="styleForButton"
+                        :ripple="false"
+                        :text-color="$store.getters['layout/getToolbarIconColor']">
+                        <CategoryOrTagQuickMenu :currentTemplate="currentTemplate"
+                          :folders="folders"
+                          :categories="categories"
+                          :type="type"
+                          :quicklist="quicklist"
+                          :templates="templateList">
+                        </CategoryOrTagQuickMenu>
+                      </q-btn>
+
+                      <div class="column">
+                        <span class="text-h6 fit"
+                          style="font-size: 16.5px; font-family: 'Inter'; display: block">
+                          {{ currentTemplate.name }}
+                        </span>
+                      </div>
+                    </div>
+                  </q-card-section>
+
+                  <q-card-section class=" q-pb-xs q-pt-none">
+                    <div class="col-12">
+                      <div class="row "
+                        style="max-width: 300px; margin-left: -4px"
+                        :class="{ 'truncate-chip-labels': true }">
+                        <div v-for="category in templatesCategories"
+                          :key="category.id">
+                          <q-chip removable
+                            style="font-size: 11px"
+                            value="category"
+                            color="secondary"
+                            outline
+                            text-color="white"
+                            @remove="removeCategoryFromTemplate(category)"
+                            :label="category.name" />
+                        </div>
+
+                      </div>
+                    </div>
+
                   </q-card-section>
 
                   <q-card-section class="templateTextContainer q-pb-xs">
-                    <q-scroll-area style="height: 280px">
+                    <q-scroll-area :style="heightForScrollAreaForTemplateText">
                       <div v-html="currentTemplate.text"></div>
                     </q-scroll-area>
                   </q-card-section>
@@ -192,30 +251,10 @@
                       :icon="iconForManageButton"
                       :style="styleForButton"
                       :ripple="false"
-                      text-color="accent"
                       :label="labelForManageButton"
                       @click="manageTemplate">
                     </q-btn>
-                    <!-- Button: Category Menu -->
-                    <q-btn v-if="isShowingManagingButtons"
-                      flat
-                      class="col-2 q-mx-sm"
-                      no-wrap
-                      dense
-                      stack
-                      icon="bi-tags"
-                      :style="styleForButton"
-                      :ripple="false"
-                      :text-color="$store.getters['layout/getToolbarIconColor']"
-                      label="Categorize">
-                      <CategoryOrTagQuickMenu :currentTemplate="currentTemplate"
-                        :folders="folders"
-                        :categories="categories"
-                        :type="type"
-                        :quicklist="quicklist"
-                        :templates="templateList">
-                      </CategoryOrTagQuickMenu>
-                    </q-btn>
+
                     <!-- Button: Set Favorite -->
                     <q-btn flat
                       v-if="!isShowingManagingButtons"
@@ -329,7 +368,7 @@
                 </q-card-actions>
               </q-card>
             </div>
-            <q-btn v-if="isAtLeastOneTemplateCreated"
+            <q-btn v-if="isAtLeastOneTemplateCreated && !isInEditingMode"
               class="col-md-2 col-xs-1"
               flat
               icon="keyboard_arrow_right"
@@ -362,15 +401,19 @@
     </template>
     <template v-slot:footer-buttons>
       <div>
-        <BaseButtonForDialogFooter buttonText="Close"
-          @click-button="closeDialog">
-        </BaseButtonForDialogFooter>
-        <BaseButtonForDialogFooter class="q-ml-sm"
-          v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
-          style="margin-right:2px; max-width: 120px"
-          buttonText="Paste"
-          @click-button="pasteTemplateAndClose">
-        </BaseButtonForDialogFooter>
+        <div v-if="!isHelpVisible">
+          <BaseButtonForDialogFooter buttonText="
+          Close"
+            @click-button="closeDialog">
+          </BaseButtonForDialogFooter>
+          <BaseButtonForDialogFooter class="q-ml-sm"
+            v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
+            style="margin-right:2px; max-width: 120px"
+            buttonText="Paste"
+            @click-button="pasteTemplateAndClose">
+          </BaseButtonForDialogFooter>
+        </div>
+
       </div>
 
 
@@ -391,6 +434,7 @@ import BaseEditor from "../ui/BaseEditor.vue";
 import TheFolderSection from "./DialogCategoryFolderSettings/TheFolderSection.vue";
 import TheCategorySection from "./DialogCategoryFolderSettings/TheCategorySection.vue";
 import BaseButtonForTitleBar from "../ui/BaseButtonForTitleBar.vue";
+import TheHelpStepperForTemplateViewer from "./TheHelpStepperForTemplateViewer.vue";
 
 export default {
   name: "dialogViewTemplates",
@@ -403,11 +447,13 @@ export default {
     BaseEditor,
     TheFolderSection,
     TheCategorySection,
-    BaseButtonForTitleBar
+    BaseButtonForTitleBar,
+    TheHelpStepperForTemplateViewer
   },
   props: { type: String, templateList: Array },
   data() {
     return {
+      isHelpVisible: false,
       // from management
       isCreatingNewCategory: false,
       isCreatingNewFolder: false,
@@ -503,6 +549,10 @@ export default {
     },
     manageTemplate() {
       this.isShowingManagingButtons = !this.isShowingManagingButtons;
+    },
+    removeCategoryFromTemplate(category) {
+      let payload = { "category": category, "template": this.currentTemplate };
+      this.$store.commit("data/removeTemplateFromCategory", payload);
     },
     // from manager...
     deleteCategory(categoryToDelete) {
@@ -643,7 +693,11 @@ export default {
     },
     // for baseDialog
     showHelp() {
-      this.isHelpShown = !this.isHelpShown;
+      this.isHelpVisible = !this.isHelpVisible;
+      console.log(this.isHelpVisible);
+    },
+    finish() {
+      this.isHelpVisible = false;
     },
     pasteTemplate() {
       this.$emit("pasteTemplate", this.currentTemplate);
@@ -654,9 +708,20 @@ export default {
     },
   },
   computed: {
+    heightForScrollAreaForTemplateText() {
+      return { "height": this.$store.state.layout.height * 0.33 + "px" }
+    },
+    templatesCategories() {
+      let data = { parents: this.categories, child: this.currentTemplate };
+      console.log(data);
+      let output = this.$store.getters['data/getParentsOfChild'](data);
+      console.log(output)
+      return output;
+
+    },
     backgroundColorForInput() {
       if (this.$store.getters["layout/isDarkModeActive"]) {
-        return "dark"
+        return this.$store.state.layout.blacksmoke;
       } else {
         return "white";
       }
@@ -707,12 +772,12 @@ export default {
     },
     styleForTemplateViewerContainer() {
       let style = {};
-      style['max-height'] = this.$store.state.layout.height * 0.60 + "px";
+      style['max-height'] = this.$store.state.layout.height * 0.80 + "px";
       return style;
     },
     styleForFolderManagerContainer() {
       let style = {};
-      style['max-height'] = this.$store.state.layout.height * 0.55 + "px";
+      style['max-height'] = this.$store.state.layout.height * 0.75 + "px";
       style["padding-bottom"] = "12px";
       style['font-family'] = this.$store.state.layout.nonDefaultFont;
       if (this.$store.getters["layout/isDarkModeActive"]) {
@@ -799,6 +864,7 @@ export default {
       let style = {};
       style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["font-size"] = "12.5px";
       return style;
     },
     getIndexOfCurrentTemplate() {
@@ -901,6 +967,6 @@ export default {
 .templateTextContainer {
   font-size: 12px;
   min-height: 250px;
-  max-height: 300px;
+  max-height: 500px;
 }
 </style>

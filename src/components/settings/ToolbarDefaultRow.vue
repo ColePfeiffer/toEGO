@@ -16,7 +16,6 @@
           :style="styleForButton"
           :ripple="false"
           :label="labelForTemplateButton"
-          :text-color="$store.getters['layout/getToolbarIconColor']"
           size="xs">
           <q-menu>
             <q-list style="min-width: 100px">
@@ -118,6 +117,7 @@ export default {
     editorWidth: Number,
     editorTitle: String,
     type: String,
+    textColor: String,
   },
   data() {
     return {
@@ -202,28 +202,28 @@ export default {
       }
     },
     styleForButton() {
-      if (this.isInFullscreenMode) {
-        return {
-          "background-color": "transparent",
-          "border-style": "unset",
-          "box-shadow": "none",
-          "min-width": "20px",
-          "max-width": "60px",
-          "padding": "0px",
-          "margin-left": "10px",
-          "min-height": "20px",
-        }
-      } else {
-        return {
-          "background-color": "transparent",
-          "border-style": "unset",
-          "box-shadow": "none",
-          "min-width": "20px",
-          "max-width": "20px",
-          "min-height": "20px",
-          "margin-right": "5px"
-        }
+      let style = {};
+      if(this.textColor === ''){
+        style["color"] = this.$store.getters['layout/getToolbarIconColor'];
+      }else{
+        style["color"] = this.textColor;
       }
+
+      style["background-color"] = "transparent";
+      style["border-style"] = "unset";
+      style["box-shadow"] = "none";
+      style["min-width"] = "20px";
+      style["max-width"] = "60px";
+
+      style["padding"] = "0px";
+      style["margin-left"] = "10px";
+      style["min-height"] = "20px";
+
+      if (!this.isInFullscreenMode) {
+        style["max-width"] = "20px";
+        style["margin-right"] = "5px";
+      }
+      return style;
     },
     styleForQuickListText() {
       if (this.isQuicklistDisabled) {
@@ -241,7 +241,12 @@ export default {
       let style = {};
       style["font-size"] = "11px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["color"] = "#d3d3d3 ";
+      if(this.$store.getters['layout/isDarkModeActive']){
+        style["color"] = "white";
+      }else{
+        style["color"] = "black";
+      }
+      style["font-weight"] = "600";
       style["margin-top"] = "1px";
       return style;
     },

@@ -40,9 +40,11 @@ export default function () {
     homeBackgroundColor: "#ffffff54",
     homeBackgroundColorDark: "#000000ad",
     //  - Note
-    noteTitleAndEmojiColorIsSetToSecondary: true,
+    noteTitleRowIsColored: true,
     eventMode: "default",
     eventBackgroundColor: "#f5f5f5fc",
+    noteTextShadowColor: "#c42d2d00",
+    noteBackgroundColor: "#f5f5f5FF",
     eventBackgroundColorDark: "#000000ad",
     eventInputBackgroundColor: "#f7f7f700",
     eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated

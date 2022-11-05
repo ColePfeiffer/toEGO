@@ -2,166 +2,36 @@
   <BasePage titleOfPage="Diary"
     :mode="diaryMode"
     :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
-    <!-- Titlebar-Option: 1 -->
-    <template v-if="isDiaryTitlebarShowingDay"
-      v-slot:titlebar>
-      <div class="row justify-center items-center text-center no-wrap  full-width title-bar-height q-py-none">
-        <div class="col-1 text-left">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-            class="no-box-shadow "
-            icon="bi-chevron-left"
-            size="12px"
-            @click-button="subtractFromDate(1)">
-            <template v-slot:tooltip>
-              <BaseTooltip text="Go back"
-                :delay="15"></BaseTooltip>
-            </template>
-          </BaseButtonForTitleBar>
-        </div>
-        <div class="col-1 text-left">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday < 0"
-            class="q-pl-xs q-mr-xs no-box-shadow col-1"
-            icon="bi-dot"
-            size="12px"
-            @click-button="setDateToToday()">
-            <template v-slot:tooltip>
-              <BaseTooltip text="Go to today"
-                :delay="15"></BaseTooltip>
-            </template>
-          </BaseButtonForTitleBar>
-        </div>
-        <!-- today, yesterday, x days ago, x days ahead... -->
-        <div class="col-8 text-white">
-          <q-btn class="date-picker-button text-white"
-            no-wrap
-            flat
-            icon-right="event"
-            :style="styleForDayInTitlebar"
-            :label="formatDate(getDate)">
-            <q-popup-proxy cover
-              transition-show="scale"
-              transition-hide="scale">
-              <q-date v-model="formattedDate">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup
-                    label="Close"
-                    flat />
-                  <q-btn label="today"
-                    flat
-                    @click="setDateToToday()" />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
-        </div>
-        <!-- go forward button -->
-        <div class="col-1 text-right">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday > 0"
-            class="q-pl-none q-mr-xs no-box-shadow"
-            icon="bi-dot"
-            size="12px"
-            @click-button="setDateToToday()">
-            <template v-slot:tooltip>
-              <BaseTooltip text="Go to today"
-                :delay="15"></BaseTooltip>
-            </template>
-          </BaseButtonForTitleBar>
-        </div>
-        <div class="col-1 text-right">
-          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-            class="q-pl-none q-mr-xs no-box-shadow"
-            icon="bi-chevron-right"
-            size="12px"
-            @click-button="addToDate(1)">
-            <template v-slot:tooltip>
-              <BaseTooltip text="Go forward"
-                :delay="15"></BaseTooltip>
-            </template>
-          </BaseButtonForTitleBar>
-
-        </div>
-      </div>
-    </template>
-    <!-- Titlebar-Option: 2 -->
-    <template v-else
-      v-slot:titlebar>
-      <div class="title-bar-text">
-        <div class="q-pr-lg row justify-between items-center no-wrap">
-
-          <div style="padding: 4px">
-            <q-icon name="bi-journal"
-              :style="styleForTitlebar"
-              size="19px" />
-          </div>
-
-          <div class="q-pl-sm"
-            :style="styleForTitlebar">
-            Diary
-          </div>
-        </div>
-      </div>
-      <div class="title-bar-controls">
-        <div class="row justify-between items-center no-wrap text-center">
-          <q-btn class="no-box-shadow q-mr-xs text-center"
-            icon="bi-calendar-event"
-            :ripple="false"
-            size="12px"
-            unelevated
-            color="
-            transparent">
-            <q-popup-proxy transition-show="scale"
-              transition-hide="scale">
-              <q-date v-model="formattedDate">
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup
-                    label="Close"
-                    flat />
-                  <q-btn label="today"
-                    flat
-                    @click="setDateToToday()" />
-
-                </div>
-              </q-date>
-            </q-popup-proxy>
-
-          </q-btn>
-
-          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-            class="no-box-shadow q-mr-xs"
-            icon="bi-chevron-left"
-            size="12px"
-            @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
-          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-            class="no-box-shadow q-mr-xs"
-            icon="bi-dot"
-            size="12px"
-            @click-button="setDateToToday()"></BaseButtonForTitleBar>
-
-          <BaseButtonForTitleBar v-if="viewingMode === 'view'"
-            class="no-box-shadow q-mr-xs"
-            icon="bi-chevron-right"
-            size="12px"
-            @click-button="addToDate(1)"></BaseButtonForTitleBar>
-
-        </div>
-      </div>
+    <template v-slot:titlebar>
+      <TheToolbarForDiary :isDiaryTitlebarShowingDay="isDiaryTitlebarShowingDay"
+        :viewingMode="viewingMode"
+        :getNumberOfDaysAwayFromToday="getNumberOfDaysAwayFromToday"
+        :dateForLabel="dateForLabel"
+        @subtract-from-date="subtractFromDate"
+        @set-today="setDateToToday"
+        @add-to-date="addToDate">
+        <template v-slot:calendar>
+          <q-date v-model="formattedDate">
+            <div class="row items-center justify-end">
+              <q-btn v-close-popup
+                label="Close"
+                flat />
+              <q-btn label="today"
+                flat
+                @click="setDateToToday()" />
+            </div>
+          </q-date>
+        </template>
+      </TheToolbarForDiary>
     </template>
 
     <template v-slot:content-without-scrollarea>
       <div class="diary-content"
         :style="styleForDiaryContent">
         <!-- Only visible, if showing day. -->
-        <div class="row justify-center items-center text-center ">
-          <!-- today, yesterday, x days ago, x days ahead... -->
-          <div class="col-12 q-pt-xs ">
-            <div class="row items-center"
-              :style="subtitleStyle">
-              <div class="col-12">{{ subtitle }}</div>
-              <div class="col-12"
-                style="font-size: 12px">{{ dayCounter }}</div>
-            </div>
-          </div>
-        </div>
+        <TheDiaryDayCounter :day="getDay"
+          :dateForSubtitle="dateForLabel"
+          :diaryMode="diaryMode"></TheDiaryDayCounter>
         <!-- Header for Note Section -->
         <TheHeaderForNoteSection
           v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && getDiaryEntry != undefined"
@@ -283,6 +153,8 @@ import ButtonForDiarySection from "src/components/diary/Base/ButtonForDiarySecti
 import TheHeaderForNoteSection from "src/components/diary/TheHeaderForNoteSection.vue";
 import TheHeaderForDiarySection from "src/components/diary/TheHeaderForDiarySection.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
+import TheToolbarForDiary from "src/components/diary/TheToolbarForDiary.vue";
+import TheDiaryDayCounter from "src/components/diary/TheDiaryDayCounter.vue";
 
 export default {
   name: "diary",
@@ -290,19 +162,19 @@ export default {
     TheSectionForNotes,
     TheSectionForDiary,
     BasePage,
-    BaseButtonForTitleBar,
     BaseCard,
-    BaseTooltip,
     ButtonForDiarySection,
     TheHeaderForNoteSection,
     TheHeaderForDiarySection,
-    BaseButtonForDialogFooter
+    BaseButtonForDialogFooter,
+    TheToolbarForDiary,
+    TheDiaryDayCounter
   },
   data() {
     return {
       viewingMode: "view", // is either set to 'view' or 'edit'
-      isDiaryEntryShownInFullscreen: false,
       editorHTMLContent: "",
+      isDiaryEntryShownInFullscreen: false,
       getDate: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
       splitterModel: 1,
@@ -365,13 +237,10 @@ export default {
     },
   },
   computed: {
-    dayCounter() {
-      if (this.$store.state.layout.isDiaryCountingDays) {
-        return this.getDay
-      } else {
-        return "";
-      }
+    dateForLabel() {
+      return this.formatDate(this.getDate);
     },
+
     pastedText() {
       return this.$store.state.data.pastedText;
     },
@@ -406,17 +275,7 @@ export default {
       diff = diff * -1;
       return diff;
     },
-    subtitle() {
-      let subtitle = this.formatDate(this.getDate);
-      subtitle = subtitle.substring(0, subtitle.length - 6);
 
-      if (this.isDiaryTitlebarShowingDay) {
-        return ""
-      } else {
-        return this.formatDate(this.getDate);
-      }
-
-    },
     numberOfNotes() {
       if (this.getDiaryEntry != undefined) {
         return this.getDiaryEntry.events.length;
@@ -547,44 +406,9 @@ export default {
     cardBackgroundColor() {
       return this.$store.state.layout.diaryCardBackgroundColor;
     },
-    styleForDayInTitlebar() {
-      let style = {};
-      style["font-size"] = "1.15em";
-      style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["font-weight"] = 700;
-      style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
-      return style;
-    },
-    styleForTitlebar() {
-      let style = {};
-      style["text-shadow"] = this.$store.state.layout.accent2 + this.$store.state.layout.lowOpacity + " 2px 2px 2px";
-      style["color"] = "white";
-      style["font-weight"] = "700";
-      return style;
-    },
-    subtitleStyle() {
-      let style = {};
-      style["font-size"] = "1.15em";
-      style["color"] = "white";
 
-      if (this.diaryMode != 'clear') {
-        style["margin-top"] = "10px";
-      }
 
-      if (this.$store.state.layout.isDiarySubtitleStyleSetToAlternative) {
-        style["text-shadow"] = "2px 0 " + this.$store.state.layout.diarySubtitleColor
-          + ", -2px 0 " + this.$store.state.layout.diarySubtitleColor
-          + ", 0 2px " + this.$store.state.layout.diarySubtitleColor
-          + ", 0 -2px " + this.$store.state.layout.diarySubtitleColor
-          + ", 1px 1px " + this.$store.state.layout.diarySubtitleColor
-          + ", -1px -1px " + this.$store.state.layout.diarySubtitleColor
-          + ", 1px -1px " + this.$store.state.layout.diarySubtitleColor
-          + ", -1px 1px " + this.$store.state.layout.diarySubtitleColor;
-      } else {
-        style["text-shadow"] = "var(--q-info) 2px 2px 2px"; // für helle hintergründe, standard
-      }
-      return style;
-    },
+
   },
   methods: {
     discard() {
@@ -697,6 +521,7 @@ export default {
 
     changeViewMode(mode) {
       if (mode === "edit") {
+        // set a var in store ala "isHelpClickable" false
         this.splitterModel = this.splitterHeightDefault;
         //this.createDiaryEntry();
       } else {

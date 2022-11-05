@@ -29,9 +29,11 @@ export const renameCategory = (state, payload) => {
 };
 
 export const resetCategorySettingsForTemplate = (state, payload) => {
-  let templateID = payload.templateID;
+  let template = payload.template;
+  let templateID = payload.template.id;
   let categories = payload.categories;
   let quicklist = payload.quicklist;
+  template.isSetToDefault = false;
 
   categories.forEach((category) => {
     // if template id exists in category, delete it

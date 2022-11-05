@@ -29,7 +29,8 @@
     <div class="col-md-11 col-12 q-mt-sm shadow-2"
       :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
 
-      <q-resize-observer @resize="onResize" />
+      <q-resize-observer v-if="isResizing"
+        @resize="onResize" />
       <slot name="content-without-scrollarea">
         <BaseScrollArea :style="getStyleForScrollArea"
           :positionToTheRight="1">
@@ -58,6 +59,10 @@ export default {
   components: { BaseScrollArea },
   props: {
     titleOfPage: String,
+    isResizing: {
+      type: Boolean,
+      default: true,
+    },
     mode: {
       type: String,
       default: "solid",

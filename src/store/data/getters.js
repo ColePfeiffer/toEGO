@@ -87,6 +87,20 @@ export const getQuickListContent = (state) => {
   };
 };
 
+export const getParentsOfChild = (state) => {
+  return (payload) => {
+    let possibleParents = payload.parents;
+    let child = payload.child;
+    let parentsOfChild = [];
+    for (let i = 0; i < possibleParents.length; i++) {
+      if (possibleParents[i].storedIDs.includes(child.id)) {
+        parentsOfChild.push(possibleParents[i]);
+      }
+    }
+    return parentsOfChild;
+  };
+};
+
 // checks if the provided item is a child of any parent of the parents-array and returns true if so
 export const isItemChildToAnyParent = (state) => {
   return (payload) => {
@@ -96,23 +110,9 @@ export const isItemChildToAnyParent = (state) => {
     for (let i = 0; i < parents.length; i++) {
       // if we find a parent to our item, we leave the loop early.
       if (parents[i].storedIDs.includes(child.id)) {
-        console.log(
-          "Is ",
-          child.name,
-          " a child of parent ",
-          parents[i].name,
-          "? Yes!"
-        );
         isChildFromParent = true;
         return isChildFromParent;
       } else {
-        console.log(
-          "Is ",
-          child.name,
-          " a child of ",
-          parents[i].name,
-          "? No!"
-        );
         isChildFromParent = false;
       }
     }

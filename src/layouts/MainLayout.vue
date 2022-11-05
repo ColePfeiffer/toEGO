@@ -24,7 +24,7 @@
             {
               value: 'diary', slot: 'diary',
             },
-          
+
             { value: 'settings', slot: 'settings' },
             {
               label: '',
@@ -36,7 +36,7 @@
             <div class="row justify-center items-center align-center ">
               <q-icon class="col-12 navigation-bar-icon"
                 :name="getIconForHome" />
-              <span class="navigation-button-label col-12">Notes</span>
+              <span class="navigation-button-label col-12">Today</span>
             </div>
           </template>
           <template v-slot:diary>

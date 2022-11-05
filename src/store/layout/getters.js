@@ -15,9 +15,9 @@ export const isDarkModeActive = (state) => {
 
 export const getTextColorBasedOnDarkMode = (getters) => {
   if (getters.isDarkModeActive) {
-    return "white";
+    return "#FFFFFF";
   } else {
-    return "black";
+    return "#000000";
   }
 };
 
@@ -106,13 +106,24 @@ export const getStyleForPage = (state) => {
   return style;
 };
 
-export const getColorBasedOnBackgroundColor = (state, getters) => {
+export const getColorBasedOnBackgroundColorAsName = (state, getters) => {
   return (backgroundColor) => {
     // if dark-mode is active, there is no custom-colored background, so the color gets set to white.
     if (getters.getBrightness(backgroundColor) <= 168) {
       return "white";
     } else {
       return "black";
+    }
+  };
+};
+
+export const getColorBasedOnBackgroundColor = (state, getters) => {
+  return (backgroundColor) => {
+    // if dark-mode is active, there is no custom-colored background, so the color gets set to white.
+    if (getters.getBrightness(backgroundColor) <= 168) {
+      return "#FFFFFF";
+    } else {
+      return "#000000";
     }
   };
 };
@@ -138,7 +149,12 @@ export const getTextColorForEvent = (state, getters) => {
   }
 
   style["color"] = textColor;
-  if (textColor === "white") {
+  console.log("textcolor: ", textColor);
+  if (
+    textColor === "white" ||
+    textColor === "#ffffff" ||
+    textColor === "#FFFFFF"
+  ) {
     style["text-shadow"] = state.accent2 + " 2px 2px 2px";
   } else {
     style["text-shadow"] = state.eventTextShadow;
@@ -250,7 +266,7 @@ export const getStyleForHeadline = (state, getters) => {
     ...style,
     ...textColor,
   };
-  console.log(style);
+
   return style;
 };
 
@@ -279,9 +295,23 @@ export const getFontsize = (state) => {
   return { "font-size": state.fontsize + "px" };
 };
 
+export const textColorForNotesEditor = (state, getters) => {
+  if (state.eventMode === "default") {
+    if (getters.isDarkModeActive) {
+      return "white";
+    } else {
+      return "black";
+    }
+  } else {
+    return getters.getColorBasedOnBackgroundColorAsName(
+      state.eventBackgroundColor
+    );
+  }
+};
+
 export const getToolbarIconColor = (state, getters) => {
   if (getters.isDarkModeActive) {
-    return "secondary";
+    return "white";
   } else {
     return "black";
   }

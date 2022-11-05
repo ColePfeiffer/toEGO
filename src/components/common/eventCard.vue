@@ -5,14 +5,14 @@
       <!-- Mood, Title, Expand Button -->
       <q-item>
         <q-item-section>
-          <div class="row justify-between items-center q-pa-none"
-            :style="styleForHeader">
+          <div class="row justify-between items-center q-pa-none">
             <div class="col-1 ">
               <q-icon size="22.5px"
+                :style="styleForTitleRow"
                 :name="eventData.mood"></q-icon>
             </div>
-            <div class="col-10 text-left  q-pl-md">
-              <q-item-label>{{
+            <div class="col-10 text-left q-pl-md">
+              <q-item-label :style="styleForTitleRow">{{
                   eventData.title
               }}</q-item-label>
             </div>
@@ -32,7 +32,8 @@
       <q-separator />
 
       <!-- Text, Buttons -->
-      <div :style="styleForEventContent">
+      <div class="fit"
+        :style="styleForEventContent">
         <!-- Expanded: False -->
         <q-card-section v-if="!eventData.expanded"
           class="row justify-left items-center">
@@ -84,7 +85,7 @@ import { date } from "quasar";
 import BaseCard from "../ui/BaseCard.vue";
 
 export default {
-  name: "eventCard",
+  name: "EventCard",
   components: {
     BaseButtonExpandable,
     BaseCard
@@ -115,16 +116,32 @@ export default {
         return false;
       }
     },
-    styleForHeader() {
-      if (this.$store.getters["layout/isTitleAndEmojiColorSetToSecondary"]) {
-        return { "color": this.$store.getters['layout/getTextColorBasedOnDarkMode'] };
+    isNoteTitleColorful() {
+      return this.$store.state.layout.noteTitleRowIsColored;
+    },
+    isDarkModeActive() {
+      return this.$store.getters['layout/isDarkModeActive'];
+    },
+    styleForTitleRow() {
+      let style = {};
+      style["text-shadow"] = "2px 2px 3px " + this.$store.state.layout.noteTextShadowColor;
+
+      if (this.isDarkModeActive & this.isNoteTitleColorful) {
+        style["color"] = this.$store.state.layout.secondary + " !important";
+      } else if (this.isDarkModeActive & !this.isNoteTitleColorful) {
+        style["color"] = "white !important";
+      } else if (!this.isDarkModeActive & !this.isNoteTitleColorful) {
+        style["color"] = this.getColorBasedOnBackgroundColor["color"] + " !important";
       } else {
-        return { 'color': this.$store.state.layout.secondary }
+        style["color"] = this.$store.state.layout.secondary + " !important"
       }
+      return style;
+    },
+    getColorBasedOnBackgroundColor() {
+      return { "color": this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor) };
     },
     styleForEventContent() {
       return {
-        //TODO: check if this is right for all resolutions... should be close tho.
         'width': this.$store.state.layout.innerWidth * 0.87 + "px",
         'min-height': '80px'
       };

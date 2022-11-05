@@ -1,9 +1,55 @@
 <template>
-  <q-menu dense
-    anchor="top middle"
-    self="bottom middle"
-    class="no-border-radius">
+  <q-menu class="no-border-radius">
     <q-list dense>
+      <!-- Add to/Remove from QuickList Button -->
+      <q-item clickable
+        @click="manageQuicklistStatus"
+        :style="getTextColorForQuicklist">
+        <q-item-section avatar>
+          <q-icon color="secondary"
+            size="xs"
+            :name="iconForQuicklistItem" />
+        </q-item-section>
+        <q-item-section>{{ textForQuicklistItem }} </q-item-section>
+        <q-item-section avatar>
+          <q-btn dense
+            :color="isTemplateInQuicklist === 'bi-dash' ? 'orange' : 'teal'"
+            round
+            flat
+            :icon="isTemplateInQuicklist">
+          </q-btn>
+        </q-item-section>
+      </q-item>
+      <!-- Set as default -->
+      <q-item clickable
+        @click="setAsDefault"
+        :style="getTextColorForDefault">
+        <q-item-section avatar>
+          <q-icon color="secondary"
+            size="xs"
+            :name="iconForDefaultItem" />
+        </q-item-section>
+        <q-item-section>{{ textForDefaultItem }} </q-item-section>
+        <q-item-section avatar>
+          <q-btn dense
+            :color="this.currentTemplate.isSetToDefault ? 'orange' : 'teal'"
+            round
+            flat
+            :icon="this.currentTemplate.isSetToDefault ? 'bi-dash' : 'bi-plus'">
+          </q-btn>
+        </q-item-section>
+      </q-item>
+      <!-- Unset all button -->
+      <q-item clickable
+        @click="unsetAllCategories">
+        <q-item-section avatar>
+          <q-icon color="secondary"
+            size="xs"
+            name="bi-x" />
+        </q-item-section>
+        <q-item-section>unset all</q-item-section>
+      </q-item>
+      <q-separator color="secondary" />
       <!-- new category button -->
       <q-item v-if="!isCreatingNewCategory"
         clickable
@@ -13,7 +59,7 @@
             size="xs"
             name="bi-plus" />
         </q-item-section>
-        <q-item-section>new category</q-item-section>
+        <q-item-section>create category</q-item-section>
       </q-item>
       <q-item v-else>
         <q-item-section avatar>
@@ -47,55 +93,8 @@
             @click="onSubmit" />
         </q-item-section>
       </q-item>
-      <!-- Unset all button -->
-      <q-item clickable
-        @click="unsetAllCategories">
-        <q-item-section avatar>
-          <q-icon color="secondary"
-            size="xs"
-            name="bi-x" />
-        </q-item-section>
-        <q-item-section>unset all</q-item-section>
-      </q-item>
-      <!-- Set as default -->
-      <q-item clickable
-        @click="setAsDefault"
-        :style="getTextColorForDefault">
-        <q-item-section avatar>
-          <q-icon color="secondary"
-            size="xs"
-            :name="iconForDefaultItem" />
-        </q-item-section>
-        <q-item-section>{{ textForDefaultItem }} </q-item-section>
-        <q-item-section avatar>
-          <q-btn dense
-            :color="this.currentTemplate.isSetToDefault ? 'orange' : 'teal'"
-            round
-            flat
-            :icon="this.currentTemplate.isSetToDefault ? 'bi-dash' : 'bi-plus'">
-          </q-btn>
-        </q-item-section>
-      </q-item>
-      <!-- Add to/Remove from QuickList Button -->
-      <q-item clickable
-        @click="manageQuicklistStatus"
-        :style="getTextColorForQuicklist">
-        <q-item-section avatar>
-          <q-icon color="secondary"
-            size="xs"
-            :name="iconForQuicklistItem" />
-        </q-item-section>
-        <q-item-section>{{ textForQuicklistItem }} </q-item-section>
-        <q-item-section avatar>
-          <q-btn dense
-            :color="isTemplateInQuicklist === 'bi-dash' ? 'orange' : 'teal'"
-            round
-            flat
-            :icon="isTemplateInQuicklist">
-          </q-btn>
-        </q-item-section>
-      </q-item>
       <q-separator color="secondary" />
+
       <q-scroll-area :style="styleForScrollArea">
         <q-resize-observer @resize="onResize" />
         <!-- FIXME: this has to be adjusted to the new format -->
@@ -243,7 +242,7 @@ export default {
     },
     unsetAllCategories() {
       let payload = {
-        templateID: this.currentTemplate.id,
+        template: this.currentTemplate,
         categories: this.categories,
         quicklist: this.quicklist,
       };

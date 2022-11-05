@@ -26,7 +26,7 @@
       @click-template="clickTemplateInsideCategory"></CategoryItem>
 
     <!-- templates which are not in categories -->
-    <q-separator />
+    <q-separator v-if="isShowingTemplates" />
     <div v-if="isShowingTemplates">
       <TemplateItem v-for="template in getTemplatesWithoutCategories"
         :key="template"
