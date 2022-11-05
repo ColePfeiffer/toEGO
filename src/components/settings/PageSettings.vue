@@ -232,7 +232,7 @@
     :isExpanded="isDiaryGroupExpanded"
     @toggle-expand-state="isDiaryGroupExpanded = !isDiaryGroupExpanded">
     <template v-slot:q-item-section-content>
-
+      <!-- Preview -->
       <div :style="styleForPreviewContainer"
         class="row justify-center items-center fit">
         <BasePage titleOfPage="Today"
@@ -249,6 +249,7 @@
             </TheToolbarForDiary>
           </template>
           <template v-slot:content-without-scrollarea>
+
             <div class="row justify-center items-center text-center ">
               <TheDiaryDayCounter day="yesterday"
                 dateForSubtitle="November 5th, 2022"
@@ -279,7 +280,7 @@
           </template>
         </BasePage>
       </div>
-
+      <!-- Section: Layout -->
       <div class="row justify-between items-center q-pa-md">
         <div class="col-10"
           style="font-weight: 600">
@@ -351,6 +352,45 @@
           </template>
         </BaseItemForSettingsTabPanel>
 
+
+      </div>
+      <q-separator></q-separator>
+      <!-- Section: Content -->
+      <div class="row justify-between items-center q-pa-md">
+        <div class="col-10"
+          style="font-weight: 600">
+          Content
+        </div>
+        <BaseButtonExpandable class="col-1"
+          :isEventExpanded="isShowingSettingsForDiaryContent"
+          @expand="isShowingSettingsForDiaryContent = !isShowingSettingsForDiaryContent">
+        </BaseButtonExpandable>
+      </div>
+      <div v-if="isShowingSettingsForDiaryContent">
+        <BaseItemForSettingsTabPanel title="Card Background"
+          :color="diaryCardBackgroundColor"
+          icon="bi-square-fill"
+          caption="Set color and opacity.">
+          <template v-slot:content>
+            <q-input filled
+              dense
+              hide-bottom-space
+              v-model="diaryCardBackgroundColor"
+              :rules="['anyColor']"
+              class="color-picker-input">
+              <template v-slot:append>
+                <q-icon name="colorize"
+                  class="cursor-pointer">
+                  <q-popup-proxy cover
+                    transition-show="scale"
+                    transition-hide="scale">
+                    <q-color v-model="diaryCardBackgroundColor" />
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+          </template>
+        </BaseItemForSettingsTabPanel>
         <BaseItemForSettingsTabPanel title="Diary is counting days"
           caption="">
           <template v-slot:content>
@@ -392,34 +432,9 @@
             </q-input>
           </template>
         </BaseItemForSettingsTabPanel>
+
       </div>
 
-      <q-separator></q-separator>
-      <BaseItemForSettingsTabPanel title="Card Background"
-        :color="diaryCardBackgroundColor"
-        icon="bi-square-fill"
-        caption="Set color and opacity.">
-        <template v-slot:content>
-          <q-input filled
-            dense
-            hide-bottom-space
-            v-model="diaryCardBackgroundColor"
-            :rules="['anyColor']"
-            class="color-picker-input">
-            <template v-slot:append>
-              <q-icon name="colorize"
-                class="cursor-pointer">
-                <q-popup-proxy cover
-                  transition-show="scale"
-                  transition-hide="scale">
-                  <q-color v-model="diaryCardBackgroundColor" />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-
-        </template>
-      </BaseItemForSettingsTabPanel>
       <q-separator color="secondary"></q-separator>
 
 
@@ -560,6 +575,7 @@ export default {
       isShowingSettingsForNotes: false,
       isNotesGroupExpanded: true,
       isShowingSettingsForDiaryPage: false,
+      isShowingSettingsForDiaryContent: false,
     };
   },
   methods: {

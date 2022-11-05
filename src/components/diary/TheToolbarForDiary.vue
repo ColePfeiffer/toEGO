@@ -35,13 +35,10 @@
           icon-right="event"
           :style="styleForDayInTitlebar"
           :label="dateForLabel">
-          <q-popup-proxy cover
-            transition-show="scale"
-            transition-hide="scale">
-            <slot name="calendar">
+          <slot name="calendar">
 
-            </slot>
-          </q-popup-proxy>
+
+          </slot>
         </q-btn>
       </div>
       <!-- go forward button -->

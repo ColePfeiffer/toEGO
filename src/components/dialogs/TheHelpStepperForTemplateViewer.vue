@@ -41,9 +41,14 @@
         style="margin-top: 30px"
         v-if="step === 1">
         <div class="text-justify">
-          This is where you can create, organize and paste templates into your text.
+          You can create, organize and insert templates from here. Templates can be used to save a couple of questions
         </div>
-        <div class="q-mt-md">manage, favorite, paste, create
+        <div class="q-mt-md">What are templates used for?
+
+
+          Pick Template
+          Tag Menu Name
+          manage, favorite, paste, create
           <q-btn size="12px"
             padding="4px"
             round

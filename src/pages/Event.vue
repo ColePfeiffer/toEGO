@@ -105,7 +105,6 @@
           <BaseEditor placeholderText="What happened?"
             :textColor="editorTextColor"
             :backgroundColor="editorBackgroundColor"
-            backgroundColorDark="transparent"
             :editorWidth="getWidthForInputFields"
             class="no-border-radius no-box-shadow"
             ref="editorRef1"
@@ -251,6 +250,7 @@ export default {
           return this.$store.state.layout.whitesmoke;
         }
       }else{
+        //TODO: HERE!!
         return this.$store.state.layout.eventBackgroundColor;
       }
     },

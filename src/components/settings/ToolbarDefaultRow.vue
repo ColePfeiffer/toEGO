@@ -209,6 +209,8 @@ export default {
         style["color"] = this.textColor;
       }
 
+      // TODO: here???
+      if (!this.isInFullscreenMode) {
       style["background-color"] = "transparent";
       style["border-style"] = "unset";
       style["box-shadow"] = "none";
@@ -218,12 +220,35 @@ export default {
       style["padding"] = "0px";
       style["margin-left"] = "10px";
       style["min-height"] = "20px";
-
-      if (!this.isInFullscreenMode) {
+      }
+      else{
         style["max-width"] = "20px";
-        style["margin-right"] = "5px";
+      style["margin-right"] = "5px";
       }
       return style;
+
+      if (this.isInFullscreenMode) {
+        return {
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "60px",
+          "padding": "0px",
+          "margin-left": "10px",
+          "min-height": "20px",
+        }
+      } else {
+        return {
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "20px",
+          "min-height": "20px",
+          "margin-right": "5px"
+        }
+      }
     },
     styleForQuickListText() {
       if (this.isQuicklistDisabled) {

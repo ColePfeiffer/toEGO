@@ -11,16 +11,22 @@
         @set-today="setDateToToday"
         @add-to-date="addToDate">
         <template v-slot:calendar>
-          <q-date v-model="formattedDate">
-            <div class="row items-center justify-end">
-              <q-btn v-close-popup
-                label="Close"
-                flat />
-              <q-btn label="today"
-                flat
-                @click="setDateToToday()" />
-            </div>
-          </q-date>
+          <q-popup-proxy cover
+            transition-show="scale"
+            transition-hide="scale">
+            <q-date v-model="formattedDate">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup
+                  label="Close"
+                  flat />
+                <q-btn label="today"
+                  flat
+                  @click="setDateToToday()" />
+              </div>
+            </q-date>
+
+          </q-popup-proxy>
+
         </template>
       </TheToolbarForDiary>
     </template>
