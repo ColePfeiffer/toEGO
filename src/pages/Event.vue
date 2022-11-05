@@ -20,102 +20,16 @@
     <template v-slot:content>
       <!-- Emoji-Selection, Title, What happened? -->
       <div class="row justify-center items-center text-center q-px-md">
-        <!-- How are you feeling? -->
-        <p class="col-10 text-center q-mt-lg"
-          :style="getStyleForHeadline">
-          How are you feeling?
-        </p>
-        <!-- Mood Selection -->
-        <div class="col-12">
-          <q-btn-toggle v-model="mood"
-            class="col-12 q-mb-md"
-            toggle-color="accent"
-            padding="none"
-            :style="getTextColor"
-            flat
-            :options="[
-              { value: 'las la-angry', slot: 'angry' },
-              { value: 'las la-sad-tear', slot: 'sad' },
-              { value: 'las la-meh', slot: 'meh' },
-              { value: 'las la-smile', slot: 'content' },
-              { value: 'las la-grin-alt', slot: 'happy' },
-            ]">
-            <template v-slot:angry>
-              <q-btn padding="xs"
-                :style="getStyleForEmojiButton"
-                flat
-                size="15px"
-                icon="las la-angry" />
-            </template>
-
-            <template v-slot:sad>
-              <q-btn padding="xs"
-                :style="getStyleForEmojiButton"
-                flat
-                size="15px"
-                icon="las la-sad-tear" />
-            </template>
-
-            <template v-slot:meh>
-              <q-btn padding="xs"
-                :style="getStyleForEmojiButton"
-                flat
-                size="15px"
-                icon="las la-meh" />
-            </template>
-
-            <template v-slot:content>
-              <q-btn padding="xs"
-                :style="getStyleForEmojiButton"
-                flat
-                size="15px"
-                icon="las la-smile" />
-            </template>
-
-            <template v-slot:happy>
-              <q-btn padding="xs"
-                :style="getStyleForEmojiButton"
-                flat
-                size="15px"
-                icon="las la-grin-alt" />
-            </template>
-          </q-btn-toggle>
-        </div>
-        <!-- Input: Title -->
-        <div class="col-12 q-mb-md q-mt-sm">
-          <q-input class="no-border-radius no-box-shadow"
-            color="secondary"
-            v-model="title"
-            dense
-            autofocus
-            borderless
-            placeholder="Title"
-            :style="getStyleForInput"
-            :input-style="getInputStyleForTitle"
-            hide-bottom-space
-            :rules="[
-              (val) => val.length <= 50 || 'Please use maximum 50 characters',
-            ]">
-          </q-input>
-        </div>
-
-        <!-- Input: What happened -->
-        <div class="col-12 q-mb-lg"
-          :style="getInputStyleForWhatHappened">
-          <BaseEditor placeholderText="What happened?"
-            :textColor="editorTextColor"
-            :backgroundColor="editorBackgroundColor"
-            :editorWidth="getWidthForInputFields"
-            class="no-border-radius no-box-shadow"
-            ref="editorRef1"
-            v-model="editor"
-            :style="editorHeight"
-            type="EVENT"
-            @save="saveChanges"
-            @show-dialog-template-creator="openDialogCreateTemplate"
-            @show-dialog-template-viewer="openDialogViewTemplates"
-            @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
-        </div>
+        <NoteSectionHowAreYouFeeling :mood="mood"
+          @set-mood="setMood"></NoteSectionHowAreYouFeeling>
+        <NoteSectionInputTitle :title="title"
+          :width="getWidthForInputFields"
+          :layoutMode="getEventMode"
+          @set-title="setTitle"></NoteSectionInputTitle>
+        <NoteSectionInputEditor :editor="editor"
+          :width="getWidthForInputFields"
+          :layoutMode="getEventMode"
+          @set-editor="setEditor"></NoteSectionInputEditor>
       </div>
     </template>
     <template v-slot:footer>
@@ -131,16 +45,20 @@
 
 <script>
 import BasePage from "src/components/ui/BasePage.vue";
-import BaseEditor from "src/components/ui/BaseEditor.vue";
 import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseButtonForDialogFooter from "src/components/ui/BaseButtonForDialogFooter.vue";
+import NoteSectionHowAreYouFeeling from "src/components/NoteCreator/NoteSectionHowAreYouFeeling.vue";
+import NoteSectionInputTitle from "src/components/NoteCreator/NoteSectionInputTitle.vue";
+import NoteSectionInputEditor from "src/components/NoteCreator/NoteSectionInputEditor.vue";
 
 export default {
   components: {
     BasePage,
-    BaseEditor,
     BaseButtonForTitleBar,
     BaseButtonForDialogFooter,
+    NoteSectionHowAreYouFeeling,
+    NoteSectionInputTitle,
+    NoteSectionInputEditor
   },
   data() {
     return {
@@ -169,6 +87,15 @@ export default {
     }
   },
   methods: {
+    setMood(value) {
+      this.mood = value;
+    },
+    setTitle(value) {
+      this.title = value;
+    },
+    setEditor(value) {
+      this.editor = value;
+    },
     setEventData() {
       this.editor = this.$store.state.data.eventData.editor;
       this.title = this.$store.state.data.eventData.title;
@@ -242,156 +169,20 @@ export default {
 
   },
   computed: {
-    editorBackgroundColor(){
-      if(this.getEventMode === 'default'){
-        if(this.$store.getters['layout/isDarkModeActive']){
-          return this.$store.state.layout.blacksmoke;
-        }else{
-          return this.$store.state.layout.whitesmoke;
-        }
-      }else{
-        //TODO: HERE!!
-        return this.$store.state.layout.eventBackgroundColor;
-      }
-    },
-    getStyleForInput() {
-      let style = {};
-      style["font-size"] = "12px";
-      style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["width"] = this.getWidthForInputFields + "px";
-      style["padding"] = "0 12px";
-      style["border-radius"] = "0px";
-
-      if (this.getEventMode === "default") {
-        style["background-color"] = "transparent";
-        if (this.$store.getters["layout/isDarkModeActive"]) {
-          style["border"] = "1px solid #ffffff1f";
-        } else {
-          style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
-        }
-
-      } else {
-        style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
-        style["border"] = "1px solid " + this.getColorBasedOnBackgroundColor + "52";
-      }
-      return style;
-    },
     pastedText() {
       return this.$store.state.data.pastedText;
-    },
-    // Styling _____________________
-    editorTextColor() {
-      if (this.getEventMode != 'default') {
-        return this.getColorBasedOnBackgroundColorAsName;
-      } else {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
-          return "white";
-          /*
-           style["color"] = this.$store.getters[
-                  "layout/getColorBasedOnBackgroundColor"
-                ](this.$store.state.layout.eventInputBackgroundColor);
-          */
-        } else {
-          return "black";
-        }
-
-      }
-    },
-    editorHeight() {
-      let style = {};
-      style["min-height"] = this.$store.state.layout.height * 0.35 + "px";
-      return style;
-    },
-    getColorBasedOnBackgroundColorAsName() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.$store.state.layout.eventBackgroundColor);
-    },
-    getColorBasedOnBackgroundColor() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.$store.state.layout.eventBackgroundColor);
     },
     getEventMode() {
       return this.$store.state.layout.eventMode;
     },
-    getStyleForHeadline() {
-      return this.$store.getters["layout/getStyleForHeadline"];
-    },
-    getTextColor() {
-      return this.$store.getters["layout/getTextColorForEvent"]["color"];
-    },
-    getPaddingForEditor() {
-      if (this.getEventMode === "border") {
-        return {
-          "padding-top": "5px",
-          "padding-left": "5px",
-          "padding-right": "5px",
-        };
-      } else if (this.getEventMode != "default") {
-        return { "padding-left": "5px", "padding-right": "5px" };
-      } else {
-        return "padding: none";
-      }
-    },
-    getStyleForEmojiButton() {
-      let style = {};
-      style["box-shadow"] = "none";
-      style["background-color"] = "transparent";
-      style["text-shadow"] = this.$store.getters["layout/getTextColorForEvent"]["text-shadow"];
-      style["color"] = this.$store.getters["layout/getTextColorForEvent"]["color"];
-      return style;
-    },
-    getInputStyleForTitle() {
-      let style = {};
-      style["min-height"] = "25px";
-      style["max-height"] = "50px";
-      style["font-size"] = "12px";
-      style["background-color"] = "transparent";
-      style["font-family"] = this.$store.state.layout.nonDefaultFont;
-
-      if (this.getEventMode != 'default') {
-        style["color"] = this.getColorBasedOnBackgroundColor + "!important";
-      } else {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
-          style["color"] = "white";
-          /*
-           style["color"] = this.$store.getters[
-                  "layout/getColorBasedOnBackgroundColor"
-                ](this.$store.state.layout.eventInputBackgroundColor);
-          */
-        } else {
-          style["color"] = "black";
-        }
-
-      }
-
-
-
-      return style;
-    },
     getWidthForInputFields() {
       return this.$store.state.layout.innerWidth * 0.8;
     },
-    getInputStyleForWhatHappened() {
-      let style = {};
-      style["font-size"] = "12px";
-      style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      style["width"] = this.getWidthForInputFields + "px";
-      return style;
-    },
-    getBackgroundColor() {
-      return this.$store.state.layout.eventBackgroundColor;
-    },
-    // Conditional Stuff for buttons
     textForRightButton() {
       if (this.$store.state.data.newEventIsInCreationMode) {
         return "Create";
       } else {
         return "Save";
-      }
-    },
-    getIconForEditorButton() {
-      if (this.isShowingEditor) {
-        return "bi-chevron-left";
-      } else {
-        return "bi-pencil-square";
       }
     },
   },
@@ -407,17 +198,5 @@ export default {
 </style>
 
 <style scoped>
-.topMargin {
-  margin-top: 20px;
-}
 
-.my_class input::placeholder {
-  font-weight: 600;
-  color: black;
-}
-
-.my_class input::-ms-input-placeholder {
-  font-weight: 600;
-  color: black;
-}
 </style>
