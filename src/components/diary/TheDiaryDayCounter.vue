@@ -6,7 +6,7 @@
         :style="subtitleStyle">
         <div class="col-12">{{ subtitle }}</div>
         <div class="col-12"
-          style="font-size: 12px">{{ dayCounter }}</div>
+          :style="styleForDayCounter">{{ dayCounter }}</div>
       </div>
     </div>
   </div>
@@ -23,6 +23,14 @@ export default {
     day: String,
     dateForSubtitle: String,
     diaryMode: String,
+    dayCounterFontSize: {
+      type: String,
+      default: "12px",
+    },
+    dateFontSize: {
+      type: String,
+      default: "1.15em",
+    },
   },
   data() {
     return {
@@ -55,27 +63,20 @@ export default {
     },
     subtitleStyle() {
       let style = {};
-      style["font-size"] = "1.15em";
+      style["font-size"] = this.dateFontSize;
       style["color"] = "white";
 
       if (this.diaryMode != 'clear') {
         style["margin-top"] = "10px";
       }
 
-      if (this.$store.state.layout.isDiarySubtitleStyleSetToAlternative) {
-        style["text-shadow"] = "2px 0 " + this.$store.state.layout.diarySubtitleColor
-          + ", -2px 0 " + this.$store.state.layout.diarySubtitleColor
-          + ", 0 2px " + this.$store.state.layout.diarySubtitleColor
-          + ", 0 -2px " + this.$store.state.layout.diarySubtitleColor
-          + ", 1px 1px " + this.$store.state.layout.diarySubtitleColor
-          + ", -1px -1px " + this.$store.state.layout.diarySubtitleColor
-          + ", 1px -1px " + this.$store.state.layout.diarySubtitleColor
-          + ", -1px 1px " + this.$store.state.layout.diarySubtitleColor;
-      } else {
-        style["text-shadow"] = "var(--q-info) 2px 2px 2px"; // für helle hintergründe, standard
-      }
+      style["text-shadow"] = this.$store.getters["layout/diaryShadowForFloatingElements"]["text-shadow"];
       return style;
     },
+    styleForDayCounter() {
+      return { "font-size": this.dayCounterFontSize };
+    },
+
   }
 };
 </script>

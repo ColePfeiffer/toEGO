@@ -84,8 +84,12 @@ export const setDiarySubtitleStyleToAlternative = (state, bool) => {
   state.isDiarySubtitleStyleSetToAlternative = bool;
 };
 
-export const setDiarySubtitleColor = (state, color) => {
-  state.diarySubtitleColor = color;
+export const setDiaryBorderColor = (state, color) => {
+  state.diaryBorderColor = color;
+};
+
+export const setDiaryBorderColorAlternative = (state, color) => {
+  state.diaryBorderColorAlternative = color;
 };
 
 export const toggleDarkMode = (state) => {

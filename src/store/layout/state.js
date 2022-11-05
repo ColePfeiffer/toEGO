@@ -56,7 +56,8 @@ export default function () {
     isDiaryTitlebarShowingDay: true,
     isDiaryCountingDays: false,
     isDiarySubtitleStyleSetToAlternative: false,
-    diarySubtitleColor: "#978fc7",
+    diaryBorderColorAlternative: "#978fc7",
+    diaryBorderColor: "var(--q-info)",
     //  Backgrounds
     backgrounds: [
       "https://64.media.tumblr.com/45baec53191971ec08c830217b64a3f0/tumblr_inline_mncitwVLMw1qz4rgp.gif",

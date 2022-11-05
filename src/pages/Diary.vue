@@ -113,7 +113,7 @@
                     label="back"
                     :isShowingLabel="true"
                     class="text-right"
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                    :style="$store.getters['layout/diarySectionButton']"
                     @click-button="exitFullscreen"></ButtonForDiarySection>
                 </div>
                 <BaseCard :backgroundColor="cardBackgroundColor"

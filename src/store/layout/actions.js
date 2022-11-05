@@ -106,7 +106,7 @@ export function setTheme({ commit }, theme) {
     commit("setDiaryMode", "clear");
     commit("toggleIsDiaryTitleBarShowingDay", false);
     commit("setDiarySubtitleStyleToAlternative", true);
-    commit("setDiarySubtitleColor", "#bacbde");
+    commit("setDiaryBorderColorAlternative", "#bacbde");
   } else {
     // default
     commit(
@@ -143,6 +143,6 @@ export function setTheme({ commit }, theme) {
     commit("toggleIsDiaryTitleBarShowingDay", true);
     commit("toggleIsDiaryCountingDays", false);
     commit("setDiarySubtitleStyleToAlternative", false);
-    commit("setDiarySubtitleColor", "#978fc7");
+    commit("setDiaryBorderColorAlternative", "#978fc7");
   }
 }

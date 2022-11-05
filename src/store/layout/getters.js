@@ -270,19 +270,46 @@ export const getStyleForHeadline = (state, getters) => {
   return style;
 };
 
-export const getStyleForDiarySectionHeadline = (state) => {
+export const diarySectionHeaderText = (state, getters) => {
   let style = {};
   style["font-family"] = state.nonDefaultFont;
   style["font-size"] = state.fontsize + "px";
   style["color"] = "white";
-  style["text-shadow"] = "var(--q-info) 2px 2px 2px";
+  style["text-shadow"] = getters.diaryShadowForFloatingElements["text-shadow"];
   style["margin-top"] = "4px";
   return style;
 };
 
-export const getStyleForDiarySectionButton = (state) => {
+export const diaryShadowForFloatingElements = (state) => {
   let style = {};
-  style["text-shadow"] = "var(--q-info) 2px 2px 2px";
+  if (state.isDiarySubtitleStyleSetToAlternative) {
+    style["text-shadow"] =
+      "2px 0 " +
+      state.diaryBorderColorAlternative +
+      ", -2px 0 " +
+      state.diaryBorderColorAlternative +
+      ", 0 2px " +
+      state.diaryBorderColorAlternative +
+      ", 0 -2px " +
+      state.diaryBorderColorAlternative +
+      ", 1px 1px " +
+      state.diaryBorderColorAlternative +
+      ", -1px -1px " +
+      state.diaryBorderColorAlternative +
+      ", 1px -1px " +
+      state.diaryBorderColorAlternative +
+      ", -1px 1px " +
+      state.diaryBorderColorAlternative;
+  } else {
+    style["text-shadow"] = state.diaryBorderColor + " 2px 2px 2px";
+  }
+
+  return style;
+};
+
+export const diarySectionButton = (state, getters) => {
+  let style = {};
+  style["text-shadow"] = getters.diaryShadowForFloatingElements["text-shadow"];
   style["font-family"] = state.nonDefaultFont;
   return style;
 };

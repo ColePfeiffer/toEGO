@@ -31,7 +31,7 @@
             <template v-slot:contentInsideSection>
               <q-btn flat
                 dense
-                color="accent"
+                color="secondary"
                 icon="bi-journal-plus"
                 @click="createDiaryEntry" />
             </template>

@@ -11,7 +11,7 @@
                     icon="bi-chevron-bar-up"
                     size="9.2px"
                     label=""
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                    :style="$store.getters['layout/diarySectionButton']"
                     @click-button="hideEvents">
                     <template v-slot:tooltip>
                         <BaseTooltip text="Hide Events"
@@ -23,7 +23,7 @@
                     icon="bi-chevron-bar-down"
                     size="9.2px"
                     label=""
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                    :style="$store.getters['layout/diarySectionButton']"
                     @click-button="expandMore">
                     <template v-slot:tooltip>
                         <BaseTooltip text="Show Events"
@@ -38,7 +38,7 @@
                     icon="bi-plus-lg"
                     class="q-mr-xs"
                     label=""
-                    :style="$store.getters['layout/getStyleForDiarySectionButton']"
+                    :style="$store.getters['layout/diarySectionButton']"
                     @click-button="goToEventSetToCreationMode">
                     <template v-slot:tooltip>
                         <BaseTooltip text="Add new event"
@@ -49,7 +49,7 @@
         </template>
     </DiaryBaseHeader>
 </template>
-    
+
 <script>
 import BaseTooltip from "../ui/BaseTooltip.vue";
 import ButtonForDiarySection from "./Base/ButtonForDiarySection.vue";

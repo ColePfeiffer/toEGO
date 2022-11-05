@@ -16,7 +16,8 @@
             <q-item-label>{{ title }}</q-item-label>
           </div>
 
-          <q-item-label caption>{{ caption }}</q-item-label>
+          <q-item-label caption
+            style="font-size: 10px">{{ caption }}</q-item-label>
         </q-item-section>
         <div class="col-6 text-right self-end">
           <slot name="content">
@@ -28,7 +29,8 @@
         class="row full-width justify-center">
         <q-item-section class="col-12">
           <q-item-label>{{ title }}</q-item-label>
-          <q-item-label caption>{{ caption }}</q-item-label>
+          <q-item-label caption
+            style="font-size: 10px">{{ caption }}</q-item-label>
         </q-item-section>
         <div class="col-12 text-right ">
           <slot name="content">
@@ -41,7 +43,7 @@
 
 <script>
 export default {
-  name: "BaseSettingsTabPanel",
+  name: "BaseItemForSettingsTabPanel",
   props: {
     title: String,
     caption: {
