@@ -40,7 +40,7 @@ export function changeMode({ commit }, payload) {
   if (payload.page === "home") {
     commit("setHomeMode", payload.mode);
   } else if (payload.page === "event") {
-    commit("setEventMode", payload.mode);
+    commit("setLayoutModeForNote", payload.mode);
   } else if (payload.page === "diary") {
     commit("setDiaryMode", payload.mode);
   }
@@ -48,7 +48,7 @@ export function changeMode({ commit }, payload) {
 
 export function changeEventPageProperties({ commit }, payload) {
   if (payload.type === "color") {
-    commit("setEventBackgroundColor", payload.color);
+    commit("setNotesContainerBackgroundColor", payload.color);
   } else {
     commit("setEventInputBackgroundColor", payload.color);
   }
@@ -79,7 +79,7 @@ export function setTheme({ commit }, theme) {
     commit("setHomeMode", "retro");
     commit("setHomeBackgroundColor", "#ebebeb59");
 
-    commit("setEventMode", "default");
+    commit("setLayoutModeForNote", "default");
 
     commit("setDiaryMode", "clear");
     commit("setDiaryCardBackgroundColor", "#fafafaed");
@@ -98,7 +98,7 @@ export function setTheme({ commit }, theme) {
     commit("setHomeMode", "retro");
     commit("setHomeBackgroundColor", "#ffffff82");
 
-    commit("setEventMode", "default");
+    commit("setLayoutModeForNote", "default");
 
     commit("setDiaryMode", "clear");
     commit("setDiaryCardBackgroundColor", "#fafafaed");
@@ -127,9 +127,9 @@ export function setTheme({ commit }, theme) {
     commit("setHomeBackgroundColor", "#ffffff54");
     commit("setHomeBackgroundColorDark", "#000000ad");
 
-    commit("setEventMode", "default");
-    commit("setEventBackgroundColor", "#f5f5f5fc");
-    commit("setEventBackgroundColorDark", "#000000ad");
+    commit("setLayoutModeForNote", "default");
+    commit("setNotesContainerBackgroundColor", "#f5f5f5fc");
+    commit("setNotesContainerBackgroundColorDark", "#000000ad");
     commit("setEventInputBackgroundColor", "#f5f5f5fc");
 
     commit("setDiaryMode", "clear");

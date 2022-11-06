@@ -485,14 +485,24 @@
         class="row justify-center items-center fit">
         <BasePage titleOfPage="Writing a note"
           :heightForContentMultiplier="0.2"
-          :mode="diaryMode"
+          :mode="noteLayoutMode"
           :isResizing="false"
-          :backgroundColor="diaryBackgroundColor">
+          :backgroundColor="notesContainerBackgroundColor">
           <template v-slot:content-without-scrollarea>
-            <div class="row justify-center items-center text-center ">
-              <div class="col-10 q-ma-md">
-
-              </div>
+            <div class="row justify-center items-center text-center  q-px-md">
+              <NoteSectionHowAreYouFeeling :mood="mood"
+                @set-mood="setMood"></NoteSectionHowAreYouFeeling>
+              <NoteSectionInputTitle class="col-10 q-ma-md"
+                :title="title"
+                :width="widthForPreviewInputFields"
+                :layoutMode="noteLayoutMode"
+                @set-title="setTitle"></NoteSectionInputTitle>
+              <NoteSectionInputEditor class="col-10 q-ma-md"
+                :minHeightMultiplicator="0.05"
+                editor="This is a preview."
+                :width="widthForPreviewInputFields"
+                :layoutMode="noteLayoutMode"
+                @set-editor="setEditor"></NoteSectionInputEditor>
             </div>
           </template>
         </BasePage>
@@ -501,7 +511,7 @@
       <BaseItemForSettingsTabPanel :title="getTitleForEvent"
         :isOnSameLine="false">
         <template v-slot:content>
-          <q-btn-toggle v-model="eventMode"
+          <q-btn-toggle v-model="noteLayoutMode"
             dense
             class="my-custom-toggle"
             color="transparent"
@@ -520,16 +530,16 @@
 
         </template>
       </BaseItemForSettingsTabPanel>
-      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
-        :color="eventBackgroundColor"
+      <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default'"
+        :color="notesContainerBackgroundColor"
         icon="bi-square-fill"
         title="Background"
-        :caption="(eventMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
+        :caption="(noteLayoutMode === 'clear') ? 'Match background-image color to set text color.' : 'Set color and opacity.'">
         <template v-slot:content>
           <q-input filled
             dense
             hide-bottom-space
-            v-model="eventBackgroundColor"
+            v-model="notesContainerBackgroundColor"
             :rules="['anyColor']"
             class="color-picker-input">
             <template v-slot:append>
@@ -538,7 +548,7 @@
                 <q-popup-proxy cover
                   transition-show="scale"
                   transition-hide="scale">
-                  <q-color v-model="eventBackgroundColor" />
+                  <q-color v-model="notesContainerBackgroundColor" />
                 </q-popup-proxy>
               </q-icon>
             </template>
@@ -546,7 +556,7 @@
 
         </template>
       </BaseItemForSettingsTabPanel>
-      <BaseItemForSettingsTabPanel v-if="eventMode != 'default'"
+      <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default'"
         class="q-pb-sm"
         title="Input Fields"
         :color="eventInputBackgroundColor"
@@ -576,7 +586,7 @@
           </q-input>
         </template>
       </BaseItemForSettingsTabPanel>
-      <q-separator v-if="eventMode != 'default'"
+      <q-separator v-if="noteLayoutMode != 'default'"
         color="whitestorm" />
 
     </template>
@@ -593,7 +603,9 @@ import BaseCard from '../ui/BaseCard.vue';
 import TheToolbarForDiary from "../diary/TheToolbarForDiary.vue";
 import TheDiaryDayCounter from '../diary/TheDiaryDayCounter.vue';
 import ButtonForDiarySection from "../diary/Base/ButtonForDiarySection.vue"
-
+import NoteSectionHowAreYouFeeling from '../NoteCreator/NoteSectionHowAreYouFeeling.vue';
+import NoteSectionInputEditor from '../NoteCreator/NoteSectionInputEditor.vue';
+import NoteSectionInputTitle from '../NoteCreator/NoteSectionInputTitle.vue';
 export default {
   components: {
     BaseItemForSettingsTabPanel,
@@ -604,7 +616,10 @@ export default {
     BaseCard,
     TheToolbarForDiary,
     TheDiaryDayCounter,
-    ButtonForDiarySection
+    ButtonForDiarySection,
+    NoteSectionHowAreYouFeeling,
+    NoteSectionInputEditor,
+    NoteSectionInputTitle
   },
   data() {
     return {
@@ -612,7 +627,6 @@ export default {
       isEventGroupExpanded: true,
       isDiaryGroupExpanded: false,
       homeMode: this.$store.state.layout.homeMode,
-      eventMode: this.$store.state.layout.eventMode,
       eventInputBackgroundColor: this.$store.state.layout.eventInputBackgroundColor,
       isShowingExpandButtonForEventsViaDiary: false,
       diaryMode: this.$store.state.layout.diaryMode,
@@ -627,9 +641,21 @@ export default {
       isNotesGroupExpanded: true,
       isShowingSettingsForDiaryPage: false,
       isShowingSettingsForDiaryContent: false,
+      mood: "",
+      title: "",
+      editor: "",
     };
   },
   methods: {
+    setEditor(value) {
+      this.editor = value;
+    },
+    setTitle(value) {
+      this.title = value;
+    },
+    setMood(value) {
+      this.mood = value;
+    },
     showBorderOptions() {
       this.isShowingBorderOptions = !this.isShshowBorderOptions;
     },
@@ -641,10 +667,6 @@ export default {
   watch: {
     homeMode(mode) {
       let payload = { "page": "home", "mode": mode };
-      this.$store.dispatch("layout/changeMode", payload);
-    },
-    eventMode(mode) {
-      let payload = { "page": "event", "mode": mode };
       this.$store.dispatch("layout/changeMode", payload);
     },
     eventInputBackgroundColor(color) {
@@ -677,6 +699,9 @@ export default {
 
   },
   computed: {
+    widthForPreviewInputFields() {
+      return this.$store.state.layout.width * 0.13;
+    },
     styleForDiaryDayCounterPreview() {
       return { "font-family": this.$store.state.layout.defaultFont };
     },
@@ -706,6 +731,15 @@ export default {
       } else {
         return this.noteBackgroundColor;
       }
+    },
+    noteLayoutMode: {
+      get() {
+        return this.$store.state.layout.noteLayoutMode;
+      },
+      set(value) {
+        let payload = { "page": "event", "mode": value };
+        this.$store.dispatch("layout/changeMode", payload)
+      },
     },
     diaryBorderColor: {
       get() {
@@ -779,12 +813,12 @@ export default {
       }
     },
     getTitleForEvent() {
-      if (this.eventMode === 'default') {
+      if (this.noteLayoutMode === 'default') {
         return "Default";
-      } else if (this.eventMode === 'retro') {
+      } else if (this.noteLayoutMode === 'retro') {
         return "Retro";
       }
-      else if (this.eventMode === 'border') {
+      else if (this.noteLayoutMode === 'border') {
         return "Border";
       } else {
         return "Transparent";
@@ -800,15 +834,15 @@ export default {
         return "Transparent";
       }
     },
-    eventBackgroundColor: {
+    notesContainerBackgroundColor: {
       get() {
-        return this.$store.getters['layout/getEventBackgroundColor'];
+        return this.$store.state.layout.notesContainerBackgroundColor;
       },
       set(value) {
         if (this.$store.getters['layout/isDarkModeActive']) {
-          this.$store.commit("layout/setEventBackgroundColorDark", value);
+          this.$store.commit("layout/setNotesContainerBackgroundColorDark", value);
         } else {
-          this.$store.commit("layout/setEventBackgroundColor", value);
+          this.$store.commit("layout/setNotesContainerBackgroundColor", value);
         }
       }
     },

@@ -41,11 +41,11 @@ export default function () {
     homeBackgroundColorDark: "#000000ad",
     //  - Note
     noteTitleRowIsColored: true,
-    eventMode: "default",
-    eventBackgroundColor: "#f5f5f5fc",
+    noteLayoutMode: "default",
+    notesContainerBackgroundColor: "#f5f5f5fc",
+    notesContainerBackgroundColorDark: "#000000ad",
     noteTextShadowColor: "#c42d2d00",
     noteBackgroundColor: "#f5f5f5FF",
-    eventBackgroundColorDark: "#000000ad",
     eventInputBackgroundColor: "#f7f7f700",
     eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated
     // Diary

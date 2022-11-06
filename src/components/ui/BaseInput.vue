@@ -17,7 +17,7 @@ export default {
   name: "BaseInput",
   props: {
     title: String,
-    eventMode: String,
+    noteLayoutMode: String,
     inputStyle: Object,
     rules: Array,
   },
@@ -42,7 +42,7 @@ export default {
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["width"] = this.$store.state.layout.innerWidth * 0.8 + "px";
       style["border-radius"] = "4px 4px 0px 0px";
-      if (this.eventMode === "default") {
+      if (this.noteLayoutMode === "default") {
         style["background-color"] = "transparent";
       } else {
         style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;

@@ -173,7 +173,7 @@ export default {
       return this.$store.state.data.pastedText;
     },
     getEventMode() {
-      return this.$store.state.layout.eventMode;
+      return this.$store.state.layout.noteLayoutMode;
     },
     getWidthForInputFields() {
       return this.$store.state.layout.innerWidth * 0.8;

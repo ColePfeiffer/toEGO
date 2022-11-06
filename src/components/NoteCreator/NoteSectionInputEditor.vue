@@ -31,6 +31,10 @@ export default {
     width: Number,
     editor: String,
     layoutMode: String,
+    minHeightMultiplicator: {
+      default: 0.35,
+      type: Number
+    }
   },
   data() {
     return {
@@ -67,7 +71,7 @@ export default {
       }
     },
     getColorBasedOnBackgroundColorAsName() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.$store.state.layout.eventBackgroundColor);
+      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.$store.state.layout.noteLayoutMode);
     },
     getInputStyleForWhatHappened() {
       let style = {};
@@ -96,7 +100,7 @@ export default {
 
     editorHeight() {
       let style = {};
-      style["min-height"] = this.$store.state.layout.height * 0.35 + "px";
+      style["min-height"] = this.$store.state.layout.height * this.minHeightMultiplicator + "px";
       return style;
     },
     editorBackgroundColor() {
@@ -108,7 +112,7 @@ export default {
         }
       } else {
         //TODO: HERE!!
-        return this.$store.state.layout.eventBackgroundColor;
+        return this.$store.state.layout.noteLayoutMode;
       }
     },
     editorModel: {

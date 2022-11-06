@@ -70,9 +70,9 @@ export const getHomeBackgroundColor = (state, getters) => {
 
 export const getEventBackgroundColor = (state, getters) => {
   if (getters.isDarkModeActive) {
-    return state.eventBackgroundColorDark;
+    return state.notesContainerBackgroundColorDark;
   } else {
-    return state.eventBackgroundColor;
+    return state.notesContainerBackgroundColor;
   }
 };
 
@@ -136,7 +136,7 @@ export const getTextColorForEvent = (state, getters) => {
   let textColor;
   let style = {};
 
-  if (state.eventMode === "default") {
+  if (state.noteLayoutMode === "default") {
     if (getters.isDarkModeActive) {
       textColor = "white";
     } else {
@@ -323,7 +323,7 @@ export const getFontsize = (state) => {
 };
 
 export const textColorForNotesEditor = (state, getters) => {
-  if (state.eventMode === "default") {
+  if (state.noteLayoutMode === "default") {
     if (getters.isDarkModeActive) {
       return "white";
     } else {
@@ -331,7 +331,7 @@ export const textColorForNotesEditor = (state, getters) => {
     }
   } else {
     return getters.getColorBasedOnBackgroundColorAsName(
-      state.eventBackgroundColor
+      state.notesContainerBackgroundColor
     );
   }
 };

@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     getColorBasedOnBackgroundColor() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.$store.state.layout.eventBackgroundColor);
+      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.$store.state.layout.notesContainerBackgroundColor);
     },
     getInputStyleForTitle() {
       let style = {};

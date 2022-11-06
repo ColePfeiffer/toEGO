@@ -48,12 +48,12 @@ export const setHomeBackgroundColorDark = (state, color) => {
   state.homeBackgroundColorDark = color;
 };
 
-export const setEventBackgroundColor = (state, color) => {
-  state.eventBackgroundColor = color;
+export const setNotesContainerBackgroundColor = (state, color) => {
+  state.notesContainerBackgroundColor = color;
 };
 
-export const setEventBackgroundColorDark = (state, color) => {
-  state.eventBackgroundColorDark = color;
+export const setNotesContainerBackgroundColorDark = (state, color) => {
+  state.notesContainerBackgroundColorDark = color;
 };
 
 export const setDiaryBackgroundColor = (state, color) => {
@@ -68,8 +68,8 @@ export const setHomeMode = (state, mode) => {
   state.homeMode = mode;
 };
 
-export const setEventMode = (state, mode) => {
-  state.eventMode = mode;
+export const setLayoutModeForNote = (state, mode) => {
+  state.noteLayoutMode = mode;
 };
 
 export const setDiaryMode = (state, mode) => {

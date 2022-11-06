@@ -202,6 +202,30 @@ export default {
       }
     },
     styleForButton() {
+      if (this.isInFullscreenMode) {
+        return {
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "60px",
+          "padding": "0px",
+          "margin-left": "10px",
+          "min-height": "20px",
+        }
+      } else {
+        return {
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "20px",
+          "min-height": "20px",
+          "margin-right": "5px"
+        }
+      }
+    },
+    styleForButtonVerkackt() {
       let style = {};
       if(this.textColor === ''){
         style["color"] = this.$store.getters['layout/getToolbarIconColor'];
