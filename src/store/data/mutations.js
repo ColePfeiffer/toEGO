@@ -80,6 +80,10 @@ export const renameFolder = (state, payload) => {
   folder.name = newName;
 };
 
+export const toggleDisableOnFabButton = (state, bool) => {
+  state.isFabButtonDisabled = bool;
+};
+
 // deletes a folder, uses "type" to differ between foldertypes
 export const deleteFolder = (state, payload) => {
   let folder = payload.folderToDelete;

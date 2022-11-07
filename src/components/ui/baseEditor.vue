@@ -220,14 +220,11 @@ export default {
       } else {
         if (this.isBackgroundColorSet) {
           if (this.isInFullscreenMode) {
-            console.log("is in fullscreen mode, text color set to black")
             return "black";
           } else {
-            console.log("is not in fullscreen mode, text color is as as")
             return this.textColor;
           }
         } else {
-          console.log("why u do this?")
           return this.$store.getters['layout/getToolbarIconColor'];
         }
       }

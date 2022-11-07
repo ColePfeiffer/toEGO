@@ -56,6 +56,7 @@
           <template v-slot:templates>
             <div class="row justify-center items-center align-center q-px-md navigation-bar-fab-button">
               <q-fab v-model="templatesFabButton"
+                :disable="isFabButtonDisabled"
                 class="col-12 navigation-bar-icon "
                 vertical-actions-align="center"
                 round
@@ -189,6 +190,13 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    isFabButtonDisabled() {
+      if (this.currentRouterPath === '/Event') {
+        return true;
+      } else {
+        return this.$store.state.data.isFabButtonDisabled;
+      }
+    },
     isHelpVisible() {
       if (this.currentRouterPath != "/settings") {
         return true;
@@ -276,7 +284,7 @@ export default {
         case "/diary":
           this.isHelpForDiaryVisible = false;
           break;
-        case "/event":
+        case "/Event":
           break;
         default:
           break;
@@ -293,7 +301,7 @@ export default {
           this.isHelpForDiaryVisible = !this.isHelpForDiaryVisible;
           console.log("show help for diary");
           break;
-        case "/event":
+        case "/Event":
           console.log("show help for events");
           break;
         default:

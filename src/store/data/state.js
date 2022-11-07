@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    isFabButtonDisabled: false,
     dialogTemplateViewerIsSetToDiaryMode: true,
     pastedText: "",
     editorText: "",

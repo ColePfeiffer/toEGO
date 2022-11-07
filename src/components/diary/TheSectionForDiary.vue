@@ -32,7 +32,7 @@ import DiaryBaseSection from "./Base/DiaryBaseSection.vue";
 import TheDiaryViewer from "./TheDiaryViewer.vue";
 import BaseEditor from "../ui/BaseEditor.vue";
 export default {
-    name: "TheSectionForNotes",
+    name: "TheSectionForDiary",
     components: { DiaryBaseSection, TheDiaryViewer, BaseEditor },
     emits: ["save-editor", "set-change-data-editor", "go-to-event-set-to-creation-mode", "create-diary-entry"],
     data() {
@@ -55,7 +55,7 @@ export default {
         },
         editorWidth() {
             if (this.$store.state.layout.diaryMode != 'retro') {
-                return this.$store.state.layout.innerWidth * 0.99;
+                return this.$store.state.layout.innerWidth * 0.98;
             } else {
                 return this.$store.state.layout.innerWidth * 0.88;
             }
