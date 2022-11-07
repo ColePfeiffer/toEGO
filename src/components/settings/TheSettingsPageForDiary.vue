@@ -6,11 +6,11 @@
             <ThePreviewForDiary :layoutMode="diaryMode"
                 :backgroundColor="diaryBackgroundColor"
                 :isDiaryTitlebarShowingDay="isDiaryTitlebarShowingDay"
-                :cardBackground="diaryCardBackgroundColor"
-                :borderColorLeft="borderColorLeftForDiary"
-                :borderColorRight="borderColorRightForDiary"
-                :textShadowColor="noteTextShadowColorForDiary"
-                :isNoteTitleColorful="noteTitleRowIsColoredForDiary"></ThePreviewForDiary>
+                :cardBackground="cardBackgroundColorForPreview"
+                :borderColorLeft="borderColorLeftForPreview"
+                :borderColorRight="borderColorRightForPreview"
+                :textShadowColor="textShadowForPreview"
+                :isNoteTitleColorful="isNoteTitleColorfulForPreview"></ThePreviewForDiary>
             <!-- Section: Layout -->
             <div class="row justify-between items-center q-pa-md">
                 <div class="col-10"
@@ -176,6 +176,13 @@
                     </template>
                 </BaseItemForSettingsTabPanel>
                 <div v-if="!isDiaryInputStyleSetToTodaysNotes">
+                    <q-separator />
+                    <BaseItemForSettingsTabPanel title="Title and Emoji are colorful">
+                        <template v-slot:content>
+                            <q-toggle color="accent"
+                                v-model="noteTitleRowIsColoredForDiary" />
+                        </template>
+                    </BaseItemForSettingsTabPanel>
                     <BaseItemForSettingsTabPanel title="Card Background"
                         dense
                         :color="diaryCardBackgroundColor"
@@ -312,6 +319,41 @@ export default {
         };
     },
     computed: {
+        cardBackgroundColorForPreview() {
+            if (this.isDiaryInputStyleSetToTodaysNotes) {
+                return this.$store.state.layout.noteBackgroundColor;
+            } else {
+                return this.diaryCardBackgroundColor;
+            }
+        },
+        textShadowForPreview() {
+            if (this.isDiaryInputStyleSetToTodaysNotes) {
+                return this.$store.state.layout.noteTextShadowColorForHome;
+            } else {
+                return this.noteTextShadowColorForDiary;
+            }
+        },
+        isNoteTitleColorfulForPreview() {
+            if (this.isDiaryInputStyleSetToTodaysNotes) {
+                return this.$store.state.layout.noteTitleRowIsColored;
+            } else {
+                return this.noteTitleRowIsColoredForDiary;
+            }
+        },
+        borderColorLeftForPreview() {
+            if (this.isDiaryInputStyleSetToTodaysNotes) {
+                return this.$store.state.layout.borderColorLeft;
+            } else {
+                return this.borderColorLeftForDiary;
+            }
+        },
+        borderColorRightForPreview() {
+            if (this.isDiaryInputStyleSetToTodaysNotes) {
+                return this.$store.state.layout.borderColorRight;
+            } else {
+                return this.borderColorRightForDiary;
+            }
+        },
         diaryBorderColorAlternative: {
             get() {
                 return this.$store.state.layout.diaryBorderColorAlternative;

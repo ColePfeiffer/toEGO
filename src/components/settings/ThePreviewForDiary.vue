@@ -15,14 +15,15 @@
 
         <template v-slot:content>
             <div class="row justify-center items-center text-center ">
-                <TheDiaryDayCounter day="today"
+                <TheDiaryDayCounter class="col-10"
+                    day="today"
                     dateForSubtitle="November 5th, 2022"
                     :diaryMode="layoutMode"
                     :style="styleForDiaryDayCounterPreview"
                     dateFontSize="11px"
                     dayCounterFontSize="10px"></TheDiaryDayCounter>
                 <div class="col-10"
-                    style="margin-bottom: 5px">
+                    :style="styleForHeader">
                     <div class="row justify-between">
                         <div class="col-6 text-left text-white"
                             :style="$store.getters['layout/diarySectionButton']">1 NOTE</div>
@@ -58,6 +59,8 @@
                 <BaseCard class="col-10 q-ma-md "
                     :isTextSetToCentered="false"
                     :backgroundColor="cardBackground"
+                    :borderColorLeft="borderColorLeft"
+                    :borderColorRight="borderColorRight"
                     :style="styleForPreviewBaseCardDiary">
                     <template v-slot:content>
                         <div class="q-pa-sm"
@@ -98,6 +101,16 @@ export default {
         };
     },
     computed: {
+        styleForHeader() {
+            if (this.layoutMode != 'transparent') {
+                return {
+                    "margin-top": "10px",
+                    "margin-bottom": "5px"
+                };
+            } else {
+                return { "margin-bottom": "5px" };
+            }
+        },
         styleForDiaryDayCounterPreview() {
             return { "font-family": this.$store.state.layout.defaultFont };
         },

@@ -1,7 +1,7 @@
 <template>
   <DiaryBaseHeader>
     <template v-slot:nameOfTitle
-      v-if="isDiaryVisible">
+      v-if="isTitleVisible">
       DIARY
     </template>
     <template v-slot:buttons>
@@ -11,8 +11,8 @@
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-if="areEditAndFullscreenButtonVisible"
           textColor="white"
-          icon="bi-fullscreen"
-          size="8.8px"
+          icon="bi-eye"
+          size="10px"
           label=""
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="openEntryInFullscreen">
@@ -70,6 +70,13 @@ export default {
     };
   },
   computed: {
+    isTitleVisible() {
+      if (this.viewingMode != 'edit' && (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     isDiaryVisible() {
       if (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true) {
         return true;

@@ -41,6 +41,7 @@
       <EventCard :borderColorLeft="borderColorLeft"
         :borderColorRight="borderColorRight"
         :isNoteTitleColorful="isNoteTitleColorful"
+        :textShadowColor="textShadowColor"
         :style="styleForEventCard"
         :backgroundColor="backgroundColor"
         :eventData="event"
@@ -89,6 +90,10 @@ export default {
     isNoteTitleColorful: {
       type: Boolean,
       default: true
+    },
+    textShadowColor: {
+      type: String,
+      default: ""
     }
   },
   data() {

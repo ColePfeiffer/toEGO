@@ -49,13 +49,7 @@ export default {
         return this.noteBackgroundColor;
       }
     },
-    diaryCardBackgroundForPreview() {
-      if (this.isDiaryInputStyleSetToTodaysNotes) {
-        return this.noteBackgroundColor;
-      } else {
-        return this.diaryCardBackgroundColor;
-      }
-    },
+
   }
 };
 </script>

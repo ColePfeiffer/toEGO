@@ -60,6 +60,18 @@ export default {
     },
   },
   computed: {
+    isUsingSeparateColoring() {
+      return this.$store.state.layout.diaryIsInputColoredSeparately;
+    },
+    backgroundColor() {
+      if (this.isUsingSeparateColoring) {
+        console.log("1", this.$store.state.layout.eventInputBackgroundColor)
+        return this.$store.state.layout.eventInputBackgroundColor;
+      } else {
+        console.log("2", this.$store.state.layout.notesContainerBackgroundColor)
+        return this.$store.state.layout.notesContainerBackgroundColor;
+      }
+    },
     type() {
       if (this.isPreview) {
         return "TEMPLATE";
@@ -82,7 +94,7 @@ export default {
       }
     },
     getColorBasedOnBackgroundColorAsName() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.$store.state.layout.noteLayoutMode);
+      return this.$store.getters["layout/getColorBasedOnBackgroundColorAsName"](this.editorBackgroundColor);
     },
     getInputStyleForWhatHappened() {
       let style = {};
@@ -92,23 +104,8 @@ export default {
       return style;
     },
     editorTextColor() {
-      if (this.layoutMode != 'default') {
-        return this.getColorBasedOnBackgroundColorAsName;
-      } else {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
-          return "white";
-          /*
-           style["color"] = this.$store.getters[
-                  "layout/getColorBasedOnBackgroundColor"
-                ](this.$store.state.layout.eventInputBackgroundColor);
-          */
-        } else {
-          return "black";
-        }
-
-      }
+      return this.getColorBasedOnBackgroundColorAsName;
     },
-
     editorHeight() {
       let style = {};
       style["min-height"] = this.$store.state.layout.height * this.minHeightMultiplicator + "px";
@@ -122,8 +119,7 @@ export default {
           return this.$store.state.layout.whitesmoke;
         }
       } else {
-        //TODO: HERE!!
-        return this.$store.state.layout.noteLayoutMode;
+        return this.backgroundColor;
       }
     },
     editorModel: {

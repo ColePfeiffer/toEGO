@@ -167,9 +167,7 @@ export default {
       };
     },
     clearEditor() {
-      console.log("dirty: ", this.eventData.editor);
       let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { USE_PROFILES: { html: true } }, { FORBID_TAGS: ['style'] }, { FORBID_ATTR: ['style'] });
-      console.log("only allow safe html: ", sanitazedEditor);
       return sanitazedEditor;
     },
     clearEditorNonExpanded() {

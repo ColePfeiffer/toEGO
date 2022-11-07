@@ -8,8 +8,8 @@
             <div class="row no-wrap">
                 <ButtonForDiarySection v-if="$store.state.data.eventsOnDiaryPageAreExpanded || splitterModel >= 10"
                     textColor="white"
-                    icon="bi-chevron-bar-up"
-                    size="9.2px"
+                    icon="bi-eye-slash"
+                    size="10px"
                     label=""
                     :style="$store.getters['layout/diarySectionButton']"
                     @click-button="hideEvents">
@@ -18,10 +18,10 @@
                             :delay="15"></BaseTooltip>
                     </template>
                 </ButtonForDiarySection>
-                <ButtonForDiarySection v-if="hasEvents"
+                <ButtonForDiarySection v-if="hasEvents && splitterModel <= 175"
                     textColor="white"
-                    icon="bi-chevron-bar-down"
-                    size="9.2px"
+                    icon="bi-eye"
+                    size="10px"
                     label=""
                     :style="$store.getters['layout/diarySectionButton']"
                     @click-button="expandMore">

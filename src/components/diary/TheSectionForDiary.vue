@@ -10,7 +10,7 @@
                 @create-diary-entry="createDiaryEntry"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode">
                 <template v-slot:editor>
-                    <BaseEditor editorTitle="Log"
+                    <BaseEditor editorTitle="Diary"
                         :editorWidth="editorWidth"
                         ref="editorRef1"
                         class="no-border-radius no-box-shadow q-pa-none q-pt-xs"
@@ -19,7 +19,7 @@
                         @show-dialog-template-creator="showTemplateCreator"
                         @show-dialog-template-viewer="showTemplateViewer"
                         @paste-template-from-quicklist="pasteTemplateFromQuicklist"
-                        minHeight="445px"
+                        :minHeight="minHeightForEditor"
                         type="DIARY" />
                 </template>
             </TheDiaryViewer>
@@ -50,6 +50,9 @@ export default {
         isCreatingNewDiaryEntry: Boolean,
     },
     computed: {
+        minHeightForEditor() {
+            return this.$store.state.layout.height * 0.62 + "px";
+        },
         editorWidth() {
             if (this.$store.state.layout.diaryMode != 'retro') {
                 return this.$store.state.layout.innerWidth * 0.99;

@@ -5,6 +5,7 @@
                 :borderColorLeft="borderColorLeftForDiary"
                 :borderColorRight="borderColorRightForDiary"
                 :backgroundColor="backgroundColor"
+                :textShadowColor="textShadowColor"
                 :diaryEntry="diaryEntry"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
                 @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
@@ -31,6 +32,13 @@ export default {
     computed: {
         isUsingSameStyleAsHome() {
             return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
+        },
+        textShadowColor() {
+            if (this.isUsingSameStyleAsHome) {
+                return this.$store.state.layout.noteTextShadowColorForHome;
+            } else {
+                return this.$store.state.layout.noteTextShadowColorForDiary;
+            }
         },
         noteTitleRowIsColoredForDiary() {
             if (this.isUsingSameStyleAsHome) {

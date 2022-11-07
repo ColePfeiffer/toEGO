@@ -34,8 +34,31 @@ export default {
     };
   },
   computed: {
+    isUsingSeparateColoring() {
+      return this.$store.state.layout.diaryIsInputColoredSeparately;
+    },
+    backgroundColorBasedOnMode() {
+      if (this.$store.getters['layout/isDarkModeActive']) {
+        return this.$store.state.layout.blacksmoke;
+      } else {
+        if (this.layoutMode === 'default') {
+          return this.$store.state.layout.whitesmoke;
+        } else {
+          return this.backgroundColor;
+        }
+      }
+    },
+    backgroundColor() {
+      if (this.isUsingSeparateColoring) {
+        console.log("1", this.$store.state.layout.eventInputBackgroundColor)
+        return this.$store.state.layout.eventInputBackgroundColor;
+      } else {
+        console.log("2", this.$store.state.layout.notesContainerBackgroundColor)
+        return this.$store.state.layout.notesContainerBackgroundColor;
+      }
+    },
     getColorBasedOnBackgroundColor() {
-      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.$store.state.layout.notesContainerBackgroundColor);
+      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColorBasedOnMode);
     },
     getInputStyleForTitle() {
       let style = {};
@@ -68,17 +91,14 @@ export default {
       style["width"] = this.width + "px";
       style["padding"] = "0 12px";
       style["border-radius"] = "0px";
-
+      style["background-color"] = this.backgroundColorBasedOnMode + " !important";
       if (this.layoutMode === "default") {
-        style["background-color"] = "transparent";
         if (this.$store.getters["layout/isDarkModeActive"]) {
           style["border"] = "1px solid #ffffff1f";
         } else {
           style["border"] = "1px solid rgba(0, 0, 0, 0.12)";
         }
-
       } else {
-        style["background-color"] = this.$store.state.layout.eventInputBackgroundColor;
         style["border"] = "1px solid " + this.getColorBasedOnBackgroundColor + "52";
       }
       return style;

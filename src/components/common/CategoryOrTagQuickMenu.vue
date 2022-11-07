@@ -206,7 +206,6 @@ export default {
       //report.value = size;
     },
     templateClicked(template) {
-      console.log("template clicked!!!", template);
     },
     onSubmit() {
       let nameInput = this.$refs.nameRef;

@@ -4,7 +4,7 @@
         @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
         <template v-slot:q-item-section-content>
             <ThePreviewForNewNote :layoutMode="noteLayoutMode"
-                :backgroundColor="notesContainerBackgroundColor" />
+                :backgroundColor="backgroundColorForPreview" />
             <BaseItemForSettingsTabPanel :title="getTitleForEvent"
                 :isOnSameLine="false">
                 <template v-slot:content>
@@ -54,6 +54,13 @@
                 </template>
             </BaseItemForSettingsTabPanel>
             <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default'"
+                title="Input Fields use different Color">
+                <template v-slot:content>
+                    <q-toggle color="accent"
+                        v-model="diaryIsInputColoredSeparately" />
+                </template>
+            </BaseItemForSettingsTabPanel>
+            <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default' & diaryIsInputColoredSeparately === true"
                 class="q-pb-sm"
                 title="Input Fields"
                 :color="eventInputBackgroundColor"
@@ -107,6 +114,28 @@ export default {
         };
     },
     computed: {
+        isDarkModeActive() {
+            if (this.$store.getters['layout/isDarkModeActive']) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        backgroundColorForPreview() {
+            if (this.isDarkModeActive) {
+                return this.notesContainerBackgroundColor;
+            } else {
+                return this.notesContainerBackgroundColor;
+            }
+        },
+        diaryIsInputColoredSeparately: {
+            get() {
+                return this.$store.state.layout.diaryIsInputColoredSeparately;
+            },
+            set(value) {
+                this.$store.commit("layout/setInputColoredSeparately", value);
+            },
+        },
         noteLayoutMode: {
             get() {
                 return this.$store.state.layout.noteLayoutMode;
@@ -118,7 +147,11 @@ export default {
         },
         notesContainerBackgroundColor: {
             get() {
-                return this.$store.state.layout.notesContainerBackgroundColor;
+                if (this.isDarkModeActive) {
+                    return this.$store.state.layout.notesContainerBackgroundColorDark;
+                } else {
+                    return this.$store.state.layout.notesContainerBackgroundColor;
+                }
             },
             set(value) {
                 if (this.$store.getters['layout/isDarkModeActive']) {

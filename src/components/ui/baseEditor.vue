@@ -4,8 +4,8 @@
     :placeholder="placeholderText"
     :content-style="getStyleForEditorContent"
     :style="getStyleForEditor"
-    :toolbar-text-color="getTextColor"
-    :toolbar-color="getTextColor"
+    :toolbar-text-color="calculatedTextColor"
+    :toolbar-color="calculatedTextColor"
     :toolbar="getToolbar"
     :fonts="{
       arial: 'Arial',
@@ -63,10 +63,6 @@ export default {
     type: String,
     editorWidth: Number,
     textColor: {
-      type: String,
-      default: ""
-    },
-    backgroundColorDark: {
       type: String,
       default: ""
     },
@@ -178,16 +174,13 @@ export default {
       this.isShowingFullToolbar = !this.isShowingFullToolbar;
     },
     toggleFullscreen() {
-      console.log("toggling fullscreen");
       let editorRef = this.$refs.editorRef;
       if (this.isInFullscreenMode) {
         // if the editor already is in fullscreen mode, and he clicks on this button, we want to go back to normal view, and hide the full toolbar.
         this.isShowingFullToolbar = false;
         this.isInFullscreenMode = false;
-        console.log("before toggle");
         editorRef.exitFullscreen();
         editorRef.refreshToolbar();
-        console.log("after toggle");
       }
       else {
         this.isShowingFullToolbar = true;
@@ -200,34 +193,74 @@ export default {
     },
   },
   computed: {
-    getTextColor(){
-      console.log("textcoolor: ", this.textColor);
-      if(this.textColor === ''){
-        return this.$store.getters['layout/getToolbarIconColor'];
-      }else{
-        return this.textColor;
+    isBackgroundColorSet() {
+      if (this.backgroundColor != '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    getColorBasedOnBackgroundColor() {
+      return this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor);
+    },
+    borderStyleForEditor() {
+      if (this.isDarkModeActive) {
+        return "1px solid #ffffff1f !important";
+      } else {
+        if (this.backgroundColor === "whitesmoke" || this.backgroundColor === '#f5f5f5') {
+          return "1px solid rgba(0, 0, 0, 0.12)";
+        } else {
+          return "1px solid " + this.getColorBasedOnBackgroundColor + "52 !important";
+        }
+      }
+    },
+    calculatedTextColor() {
+      if (this.isDarkModeActive) {
+        return "white";
+      } else {
+        if (this.isBackgroundColorSet) {
+          if (this.isInFullscreenMode) {
+            console.log("is in fullscreen mode, text color set to black")
+            return "black";
+          } else {
+            console.log("is not in fullscreen mode, text color is as as")
+            return this.textColor;
+          }
+        } else {
+          console.log("why u do this?")
+          return this.$store.getters['layout/getToolbarIconColor'];
+        }
+      }
+    },
+    calculatedBackgroundColor() {
+      if (this.isDarkModeActive) {
+        return this.$store.state.layout.blacksmoke;
+      } else {
+        if (this.isBackgroundColorSet) {
+          if (this.isInFullscreenMode) {
+            return this.$store.state.layout.whitesmoke;
+          } else {
+            return this.backgroundColor;
+          }
+        } else {
+          return this.$store.state.layout.whitesmoke;
+        }
+      }
+    },
+    isDarkModeActive() {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        return true;
+      } else {
+        return false;
       }
     },
     getStyleForEditor() {
       let style = {};
       style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-
-        if (this.$store.getters["layout/isDarkModeActive"]) {
-          if(this.backgroundColorDark === ''){
-            style["background-color"] = this.$store.state.layout.blacksmoke;
-          }else{
-            style["background-color"] = this.backgroundColorDark;
-          }
-      }else {
-        if(this.backgroundColor === ''){
-          style["background-color"] = this.$store.state.layout.whitesmoke;
-        }else{
-
-          style["background-color"] = this.backgroundColor;
-        }
-      }
-
+      style["border-radius"] = "0px";
+      style["background-color"] = this.calculatedBackgroundColor;
+      style["border"] = this.borderStyleForEditor;
       return style;
     },
     getStyleForEditorContent() {
@@ -237,6 +270,10 @@ export default {
       style["padding-top"] = "12px";
       style["padding-left"] = "12px";
       style["padding-right"] = "12px";
+      style["color"] = this.calculatedTextColor;
+
+
+
       return style;
     },
     getToolbar() {
@@ -263,12 +300,9 @@ export default {
 }
 </style>
 <style scoped src="98.css">
-.q-editor__toolbar-group {}
-
 .editor :deep(.q-editor__toolbars-container) {
   display: none;
 }
-
 
 .button.no-icon i {
   display: none;

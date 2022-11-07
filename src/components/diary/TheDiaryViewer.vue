@@ -1,9 +1,11 @@
 <template>
-  <div class="q-py-md">
+  <div class="q-py-md q-px-xs">
     <div v-if="viewingMode === 'view'">
       <!-- Case 1: There is no entry for the selected day. -->
       <div v-if="diaryEntry === undefined">
-        <BaseCard :backgroundColor="backgroundColor">
+        <BaseCard :backgroundColor="backgroundColor"
+          :borderColorLeft="borderColorLeft"
+          :borderColorRight="borderColorRight">
           <template v-slot:contentInsideSection>
             Nothing here yet.
             <span @click="goToEventSetToCreationMode">Add an event
@@ -27,7 +29,9 @@
       <div v-else>
         <!-- Case 2.1.1: Showing + Button, if journal-entry is empty. -->
         <div v-if="editor === ''">
-          <BaseCard :backgroundColor="backgroundColor">
+          <BaseCard :backgroundColor="backgroundColor"
+            :borderColorLeft="borderColorLeft"
+            :borderColorRight="borderColorRight">
             <template v-slot:contentInsideSection>
               <q-btn flat
                 dense
@@ -39,9 +43,11 @@
         </div>
         <!-- Case 2.1.2: Showing journal-entrie's text. -->
         <div v-else>
-          <BaseCard class="diary-card"
+          <BaseCard :style="heightForCardWithDiaryText"
             :backgroundColor="backgroundColor"
-            :isTextSetToCentered="false">
+            :isTextSetToCentered="false"
+            :borderColorLeft="borderColorLeft"
+            :borderColorRight="borderColorRight">
             <template v-slot:contentInsideSection>
               <div v-html="editor">
               </div>
@@ -89,7 +95,28 @@ export default {
     },
 
   },
+
   computed: {
+    heightForCardWithDiaryText() {
+      return { "min-height": this.$store.state.layout.height * 0.4 + "px" };
+    },
+    isDiaryContentStyleSetToTodays() {
+      return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
+    },
+    borderColorLeft() {
+      if (this.isDiaryContentStyleSetToTodays) {
+        return this.$store.state.layout.borderColorLeft
+      } else {
+        return this.$store.state.layout.borderColorLeftForDiary;
+      }
+    },
+    borderColorRight() {
+      if (this.isDiaryContentStyleSetToTodays) {
+        return this.$store.state.layout.borderColorRight
+      } else {
+        return this.$store.state.layout.borderColorRightForDiary;
+      }
+    },
     editor() {
       if (this.diaryEntry === undefined) {
         return undefined;
@@ -116,11 +143,6 @@ export default {
 </script>
 
 <style>
-.diary-card {
-  min-height: 250px;
-
-}
-
 a:link {
   color: var(--q-accent);
   background-color: transparent;

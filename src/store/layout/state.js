@@ -48,13 +48,14 @@ export default function () {
     notesContainerBackgroundColor: "#f5f5f5fc",
     notesContainerBackgroundColorDark: "#000000ad",
     noteTextShadowColorForHome: "#c42d2d00",
-    noteTextShadowColorForDiary: "#c42d2d00",
 
+    noteTextShadowColorForDiary: "#c42d2d00",
     noteBackgroundColor: "#f5f5f5FF",
     eventInputBackgroundColor: "#f7f7f700",
     eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated
     // Diary
     diaryMode: "clear",
+    diaryIsInputColoredSeparately: false,
     diaryBackgroundColor: "#ffffff54",
     diaryBackgroundColorDark: "#000000ad",
     diaryCardBackgroundColor: "#f5f5f5ff",

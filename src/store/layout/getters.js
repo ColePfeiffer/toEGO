@@ -149,7 +149,6 @@ export const getTextColorForEvent = (state, getters) => {
   }
 
   style["color"] = textColor;
-  console.log("textcolor: ", textColor);
   if (
     textColor === "white" ||
     textColor === "#ffffff" ||

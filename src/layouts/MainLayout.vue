@@ -24,7 +24,7 @@
             {
               value: 'diary', slot: 'diary',
             },
-
+          
             { value: 'settings', slot: 'settings' },
             {
               label: '',
@@ -277,7 +277,6 @@ export default {
           this.isHelpForDiaryVisible = false;
           break;
         case "/event":
-          console.log("möpp");
           break;
         default:
           break;

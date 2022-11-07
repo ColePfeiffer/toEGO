@@ -53,15 +53,15 @@
           <q-splitter v-model="splitterModel"
             :limits="[1, Infinity]"
             unit="px"
+            :disable="isSplitterDisabled"
             horizontal
             color="transparent"
             :style="styleForSplitter"
             :separator-style="styleForSplitterSeparator">
             <!-- Section for Notes -->
-            <template v-slot:before>
-              <TheSectionForNotes
-                v-if="!isDiaryEntryShownInFullscreen && getDiaryEntry != undefined && viewingMode != 'edit'"
-                :backgroundColor="cardBackgroundColor"
+            <template v-slot:before
+              v-if="isBeforeVisible">
+              <TheSectionForNotes :backgroundColor="cardBackgroundColor"
                 :diaryEntry="getDiaryEntry"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
                 @go-to-event-set-to-editing-mode="goToEventSetToEditingMode" />
@@ -150,11 +150,8 @@
 import { date } from "quasar";
 import TheSectionForNotes from "src/components/diary/TheSectionForNotes.vue";
 import TheSectionForDiary from "src/components/diary/TheSectionForDiary.vue";
-import { useQuasar } from "quasar";
 import BasePage from "src/components/ui/BasePage.vue";
-import BaseButtonForTitleBar from "src/components/ui/BaseButtonForTitleBar.vue";
 import BaseCard from "src/components/ui/BaseCard.vue";
-import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 import ButtonForDiarySection from "src/components/diary/Base/ButtonForDiarySection.vue";
 import TheHeaderForNoteSection from "src/components/diary/TheHeaderForNoteSection.vue";
 import TheHeaderForDiarySection from "src/components/diary/TheHeaderForDiarySection.vue";
@@ -185,7 +182,7 @@ export default {
       day: "TODAY",
       splitterModel: 1,
       splitterHeightDefault: 1,
-      splitterHeightShowingNonExpandedNote: 156,
+      splitterHeightShowingNonExpandedNote: 160,
       isCreatingNewDiaryEntry: false,
       changeData: {},
       isHidingEvents: false,
@@ -194,6 +191,9 @@ export default {
     };
   },
   watch: {
+    viewingMode(mode) {
+      console.log("viewing mode changed to ", mode);
+    },
     splitterModel(number) {
       console.log("Splitter: ", number);
       if (number <= 93) {
@@ -243,10 +243,27 @@ export default {
     },
   },
   computed: {
+    isBeforeVisible() {
+      if (this.isDiaryEntryShownInFullscreen) {
+        return false;
+      } else if (this.getDiaryEntry === undefined) {
+        return false;
+      } else if (this.viewingMode === 'edit') {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    isSplitterDisabled() {
+      if (this.viewingMode === 'edit') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     dateForLabel() {
       return this.formatDate(this.getDate);
     },
-
     pastedText() {
       return this.$store.state.data.pastedText;
     },
@@ -400,10 +417,10 @@ export default {
     },
     styleForSplitterSeparator() {
       let style = {};
-      if ((this.getDiaryEntry != undefined || this.viewingMode === 'edit') && !this.isDiaryEntryShownInFullscreen) {
+      if (!this.isDiaryEntryShownInFullscreen & this.getDiaryEntry != undefined) {
         style["z-index"] = "1";
-        style["height"] = "45px";
         style["background-color"] = "transparent";
+        style["height"] = "45px";
       } else {
         style["display"] = "none";
       }

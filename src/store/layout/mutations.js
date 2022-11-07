@@ -100,6 +100,10 @@ export const setNoteTextShadowColorForHome = (state, color) => {
   state.noteTextShadowColorForHome = color;
 };
 
+export const setInputColoredSeparately = (state, bool) => {
+  state.diaryIsInputColoredSeparately = bool;
+};
+
 export const setNoteTextShadowColorForDiary = (state, color) => {
   state.noteTextShadowColorForDiary = color;
 };

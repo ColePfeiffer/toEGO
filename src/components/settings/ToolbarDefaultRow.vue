@@ -70,7 +70,6 @@
           :icon="iconForToggleToolbarButton"
           :style="styleForButton"
           :ripple="false"
-          :text-color="$store.getters['layout/getToolbarIconColor']"
           size="xs"
           :label="labelForToolbarButton"
           @click="changeToolbarMode">
@@ -83,7 +82,6 @@
           icon="fas fa-save"
           :style="styleForButton"
           :ripple="false"
-          :text-color="$store.getters['layout/getToolbarIconColor']"
           size="xs"
           label="save"
           @click="saveEditor">
@@ -96,7 +94,6 @@
           :icon="iconForFullscreenButton"
           :style="styleForButton"
           :ripple="false"
-          :text-color="$store.getters['layout/getToolbarIconColor']"
           size="xs"
           :label="labelForFullscreenButton"
           @click="toggleFullscreen">
@@ -201,7 +198,7 @@ export default {
         return "bi-plus";
       }
     },
-    styleForButton() {
+    styleForButtonVerkackt() {
       if (this.isInFullscreenMode) {
         return {
           "background-color": "transparent",
@@ -225,54 +222,33 @@ export default {
         }
       }
     },
-    styleForButtonVerkackt() {
+    styleForButton() {
       let style = {};
-      if(this.textColor === ''){
-        style["color"] = this.$store.getters['layout/getToolbarIconColor'];
-      }else{
-        style["color"] = this.textColor;
-      }
-
-      // TODO: here???
-      if (!this.isInFullscreenMode) {
       style["background-color"] = "transparent";
       style["border-style"] = "unset";
       style["box-shadow"] = "none";
-      style["min-width"] = "20px";
-      style["max-width"] = "60px";
-
-      style["padding"] = "0px";
-      style["margin-left"] = "10px";
       style["min-height"] = "20px";
-      }
-      else{
-        style["max-width"] = "20px";
-      style["margin-right"] = "5px";
-      }
-      return style;
+      style["min-width"] = "20px";
 
       if (this.isInFullscreenMode) {
-        return {
-          "background-color": "transparent",
-          "border-style": "unset",
-          "box-shadow": "none",
-          "min-width": "20px",
-          "max-width": "60px",
-          "padding": "0px",
-          "margin-left": "10px",
-          "min-height": "20px",
+        style["max-width"] = "60px";
+        style["padding"] = "0px";
+        style["margin-left"] = "10px";
+        if (this.isDarkModeActive) {
+          style["color"] = "white !important";
+        } else {
+          style["color"] = "black !important";
         }
       } else {
-        return {
-          "background-color": "transparent",
-          "border-style": "unset",
-          "box-shadow": "none",
-          "min-width": "20px",
-          "max-width": "20px",
-          "min-height": "20px",
-          "margin-right": "5px"
+        if (this.isDarkModeActive) {
+          style["color"] = "white !important";
+        } else {
+          style["color"] = this.textColor + " !important";
         }
+        style["max-width"] = "20px";
+        style["margin-right"] = "5px";
       }
+      return style;
     },
     styleForQuickListText() {
       if (this.isQuicklistDisabled) {
@@ -286,15 +262,18 @@ export default {
         };
       }
     },
+    isDarkModeActive() {
+      if (this.$store.getters["layout/isDarkModeActive"]) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     styleForTitle() {
       let style = {};
       style["font-size"] = "11px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      if(this.$store.getters['layout/isDarkModeActive']){
-        style["color"] = "white";
-      }else{
-        style["color"] = "black";
-      }
+      style["color"] = this.textColor + " !important";
       style["font-weight"] = "600";
       style["margin-top"] = "1px";
       return style;

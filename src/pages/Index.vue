@@ -36,6 +36,7 @@
         <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
           :borderColorLeft="borderColorLeft"
           :borderColorRight="borderColorRight"
+          :textShadowColor="textShadowColor"
           :diaryEntry="getDiaryEntry"
           :marginBottom="22"
           :backgroundColor="noteBackgroundColor"
@@ -94,6 +95,9 @@ export default {
   computed: {
     borderColorLeft() {
       return this.$store.state.layout.borderColorLeft;
+    },
+    textShadowColor() {
+      return this.$store.state.layout.noteTextShadowColorForHome;
     },
     borderColorRight() {
       return this.$store.state.layout.borderColorRight;
