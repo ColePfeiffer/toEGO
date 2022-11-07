@@ -6,7 +6,9 @@
     <!-- Case 1: There is no diaryentry for the selected day. -->
     <div v-if="diaryEntry === undefined">
       <div v-if="showMessageIfThereAreNoEvents">
-        <BaseCard :backgroundColor="backgroundColor">
+        <BaseCard :borderColorLeft="borderColorLeft"
+          :borderColorRight="borderColorRight"
+          :backgroundColor="backgroundColor">
           <template v-slot:contentInsideSection>
             There is nothing here yet.
             <q-btn color="accent"
@@ -20,7 +22,9 @@
     </div>
     <!-- Case 2: Entry exists, but no event has been created yet. -->
     <div v-else-if="diaryEntry != undefined && diaryEntry.events.length < 1">
-      <BaseCard :backgroundColor="backgroundColor">
+      <BaseCard :borderColorLeft="borderColorLeft"
+        :borderColorRight="borderColorRight"
+        :backgroundColor="backgroundColor">
         <template v-slot:contentInsideSection>
           <q-btn color="accent"
             flat
@@ -34,7 +38,10 @@
     <div v-else
       v-for="event in events"
       :key="event.id">
-      <EventCard :style="styleForEventCard"
+      <EventCard :borderColorLeft="borderColorLeft"
+        :borderColorRight="borderColorRight"
+        :isNoteTitleColorful="isNoteTitleColorful"
+        :style="styleForEventCard"
         :backgroundColor="backgroundColor"
         :eventData="event"
         @changeEventData="changeEventData"
@@ -46,7 +53,7 @@
 
 <script>
 import BaseCard from "../ui/BaseCard.vue";
-import EventCard from "./EventCard.vue";
+import EventCard from "./TheEventCard.vue";
 import DialogDeleteEvent from "../dialogs/DialogDeleteEvent.vue";
 
 export default {
@@ -70,8 +77,19 @@ export default {
     backgroundColor: {
       type: String,
       default: "#f5f5f5",
+    },
+    borderColorLeft: {
+      type: String,
+      default: ""
+    },
+    borderColorRight: {
+      type: String,
+      default: ""
+    },
+    isNoteTitleColorful: {
+      type: Boolean,
+      default: true
     }
-
   },
   data() {
     return {

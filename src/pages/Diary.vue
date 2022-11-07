@@ -410,7 +410,11 @@ export default {
       return style;
     },
     cardBackgroundColor() {
-      return this.$store.state.layout.diaryCardBackgroundColor;
+      if (this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes) {
+        return this.$store.state.layout.noteBackgroundColor;
+      } else {
+        return this.$store.state.layout.diaryCardBackgroundColor;
+      }
     },
 
 

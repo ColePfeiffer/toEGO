@@ -10,7 +10,7 @@
       ref="editorRef1"
       v-model="editorModel"
       :style="editorHeight"
-      type="EVENT"
+      :type="type"
       @save="saveChanges"
       @show-dialog-template-creator="openDialogCreateTemplate"
       @show-dialog-template-viewer="openDialogViewTemplates"
@@ -32,8 +32,12 @@ export default {
     editor: String,
     layoutMode: String,
     minHeightMultiplicator: {
-      default: 0.35,
-      type: Number
+      type: Number,
+      default: 0.35
+    },
+    isPreview: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -56,6 +60,13 @@ export default {
     },
   },
   computed: {
+    type() {
+      if (this.isPreview) {
+        return "TEMPLATE";
+      } else {
+        return "EVENT";
+      }
+    },
     // TODO: kann vielleicht weg
     getPaddingForEditor() {
       if (this.layoutMode === "border") {

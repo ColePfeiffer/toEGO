@@ -1,5 +1,7 @@
 <template>
   <BaseCard :isTextSetToCentered="false"
+    :borderColorLeft="borderColorLeft"
+    :borderColorRight="borderColorRight"
     :backgroundColor="backgroundColor">
     <template v-slot:content>
       <!-- Mood, Title, Expand Button -->
@@ -24,8 +26,6 @@
                 @expand="expand"></BaseButtonExpandable>
             </div>
           </div>
-
-
         </q-item-section>
       </q-item>
 
@@ -85,7 +85,7 @@ import { date } from "quasar";
 import BaseCard from "../ui/BaseCard.vue";
 
 export default {
-  name: "EventCard",
+  name: "TheEventCard",
   components: {
     BaseButtonExpandable,
     BaseCard
@@ -95,6 +95,22 @@ export default {
     backgroundColor: {
       type: String,
       default: "#f5f5f5",
+    },
+    borderColorLeft: {
+      type: String,
+      default: ""
+    },
+    borderColorRight: {
+      type: String,
+      default: ""
+    },
+    isNoteTitleColorful: {
+      type: Boolean,
+      default: true
+    },
+    textShadowColor: {
+      type: String,
+      default: "",
     }
   },
   emits: ["changeEventData", "deleteEvent", "editEvent"],
@@ -109,6 +125,13 @@ export default {
   },
 
   computed: {
+    calculatedTextShadow() {
+      if (this.textShadowColor != '') {
+        return this.textShadowColor;
+      } else {
+        return this.$store.state.layout.noteTextShadowColor;
+      }
+    },
     isTextShortened() {
       if (this.clearEditorNonExpanded.length >= this.maxLengthOfCardText) {
         return true;
@@ -116,15 +139,12 @@ export default {
         return false;
       }
     },
-    isNoteTitleColorful() {
-      return this.$store.state.layout.noteTitleRowIsColored;
-    },
     isDarkModeActive() {
       return this.$store.getters['layout/isDarkModeActive'];
     },
     styleForTitleRow() {
       let style = {};
-      style["text-shadow"] = "2px 2px 3px " + this.$store.state.layout.noteTextShadowColor;
+      style["text-shadow"] = "2px 2px 3px " + this.calculatedTextShadow;
 
       if (this.isDarkModeActive & this.isNoteTitleColorful) {
         style["color"] = this.$store.state.layout.secondary + " !important";

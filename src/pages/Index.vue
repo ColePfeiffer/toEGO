@@ -33,8 +33,12 @@
         <MessageToMyself v-if="isLetterVisible"
           class="q-px-md "
           @hide-message="isLetterVisible = false"></MessageToMyself>
-        <TheEventViewer :diaryEntry="getDiaryEntry"
+        <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
+          :borderColorLeft="borderColorLeft"
+          :borderColorRight="borderColorRight"
+          :diaryEntry="getDiaryEntry"
           :marginBottom="22"
+          :backgroundColor="noteBackgroundColor"
           @goToEventSetToCreationMode="goToEventSetToCreationMode"
           @goToEventSetToEditingMode="goToEventSetToEditingMode"
           class="q-px-md q-pt-md "></TheEventViewer>
@@ -88,6 +92,18 @@ export default {
     },
   },
   computed: {
+    borderColorLeft() {
+      return this.$store.state.layout.borderColorLeft;
+    },
+    borderColorRight() {
+      return this.$store.state.layout.borderColorRight;
+    },
+    isNoteTitleColorful() {
+      return this.$store.state.layout.noteTitleRowIsColored;
+    },
+    noteBackgroundColor() {
+      return this.$store.state.layout.noteBackgroundColor;
+    },
     // get diary entry for today
     getDiaryEntry() {
       let diaryEntryRefForDate = this.$store.getters[

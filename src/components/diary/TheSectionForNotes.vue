@@ -1,7 +1,10 @@
 <template>
     <DiaryBaseSection>
         <template v-slot:content>
-            <TheEventViewer :backgroundColor="backgroundColor"
+            <TheEventViewer :isNoteTitleColorful="noteTitleRowIsColoredForDiary"
+                :borderColorLeft="borderColorLeftForDiary"
+                :borderColorRight="borderColorRightForDiary"
+                :backgroundColor="backgroundColor"
                 :diaryEntry="diaryEntry"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
                 @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
@@ -24,6 +27,32 @@ export default {
             type: String,
             default: "#f5f5f5",
         },
+    },
+    computed: {
+        isUsingSameStyleAsHome() {
+            return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
+        },
+        noteTitleRowIsColoredForDiary() {
+            if (this.isUsingSameStyleAsHome) {
+                return this.$store.state.layout.noteTitleRowIsColored;
+            } else {
+                return this.$store.state.layout.noteTitleRowIsColoredForDiary;
+            }
+        },
+        borderColorLeftForDiary() {
+            if (this.isUsingSameStyleAsHome) {
+                return this.$store.state.layout.borderColorLeft;
+            } else {
+                return this.$store.state.layout.borderColorLeftForDiary;
+            }
+        },
+        borderColorRightForDiary() {
+            if (this.isUsingSameStyleAsHome) {
+                return this.$store.state.layout.borderColorRight;
+            } else {
+                return this.$store.state.layout.borderColorRightForDiary;
+            }
+        }
     },
     methods: {
         goToEventSetToCreationMode() {

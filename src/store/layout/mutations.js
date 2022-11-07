@@ -96,8 +96,12 @@ export const toggleDarkMode = (state) => {
   state.isDarkModeOn = !state.isDarkModeOn;
 };
 
-export const setNoteTextShadowColor = (state, color) => {
-  state.noteTextShadowColor = color;
+export const setNoteTextShadowColorForHome = (state, color) => {
+  state.noteTextShadowColorForHome = color;
+};
+
+export const setNoteTextShadowColorForDiary = (state, color) => {
+  state.noteTextShadowColorForDiary = color;
 };
 
 export const setEventInputBackgroundColor = (state, color) => {
@@ -112,8 +116,20 @@ export const setBorderColorRight = (state, color) => {
   state.borderColorRight = color;
 };
 
+export const setBorderColorLeftForDiary = (state, color) => {
+  state.borderColorLeftForDiary = color;
+};
+
+export const setBorderColorRightForDiary = (state, color) => {
+  state.borderColorRightForDiary = color;
+};
+
 export const setNoteTitleRowIsColored = (state, color) => {
   state.noteTitleRowIsColored = color;
+};
+
+export const setNoteTitleRowIsColoredForDiary = (state, color) => {
+  state.noteTitleRowIsColoredForDiary = color;
 };
 
 export const toggleIsDiaryTitleBarShowingDay = (state, bool) => {
@@ -126,6 +142,10 @@ export const toggleIsDiaryCountingDays = (state, bool) => {
 
 export const setNoteBackgroundColor = (state, color) => {
   state.noteBackgroundColor = color;
+};
+
+export const setDiaryInputStyleToTodaysNotes = (state, bool) => {
+  state.isDiaryInputStyleSetToTodaysNotes = bool;
 };
 
 export const changeBackgroundColor = (state, color) => {

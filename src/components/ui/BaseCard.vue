@@ -21,9 +21,31 @@ export default {
     backgroundColor: {
       type: String,
       default: "#f5f5f5",
-    }
+    },
+    borderColorLeft: {
+      type: String,
+      default: ""
+    },
+    borderColorRight: {
+      type: String,
+      default: ""
+    },
   },
   computed: {
+    calculatedBorderColorLeft() {
+      if (this.borderColorLeft != '') {
+        return this.borderColorLeft;
+      } else {
+        return this.$store.state.layout.borderColorLeft;
+      }
+    },
+    calculatedBorderColorRight() {
+      if (this.borderColorRight != '') {
+        return this.borderColorRight;
+      } else {
+        return this.$store.state.layout.borderColorRight;
+      }
+    },
     getStyleForCard() {
       let style = {};
       let fontColor = this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor);
@@ -38,7 +60,8 @@ export default {
         style["border"] = "2px solid";
         style["border-image-slice"] = "1";
         style["border-width"] = "1px";
-        style["border-image-source"] = "linear-gradient(to left, " + this.$store.state.layout.borderColorRight + ", " + this.$store.state.layout.borderColorLeft + ")";
+
+        style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
         console.log(style["border-image-source"])
         /* amazing border
         style["border-width"] = "20px";
@@ -49,7 +72,7 @@ export default {
         style["border"] = "2px solid";
         style["border-image-slice"] = "1";
         style["border-width"] = "1px";
-        style["border-image-source"] = "linear-gradient(to left, " + this.$store.state.layout.borderColorRight + ", " + this.$store.state.layout.borderColorLeft + ")";
+        style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
         style["background-color"] = this.backgroundColor;
         style["color"] = fontColor;
         //style["color"] = "black";

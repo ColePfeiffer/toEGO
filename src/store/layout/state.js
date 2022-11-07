@@ -35,16 +35,21 @@ export default function () {
     isDarkModeOn: false,
     borderColorLeft: "#dfd4f5",
     borderColorRight: "#dfd4f5",
+    borderColorLeftForDiary: "#dfd4f5",
+    borderColorRightForDiary: "#dfd4f5",
     //  - Home
     homeMode: "retro",
     homeBackgroundColor: "#ffffff54",
     homeBackgroundColorDark: "#000000ad",
     //  - Note
     noteTitleRowIsColored: true,
+    noteTitleRowIsColoredForDiary: true,
     noteLayoutMode: "default",
     notesContainerBackgroundColor: "#f5f5f5fc",
     notesContainerBackgroundColorDark: "#000000ad",
-    noteTextShadowColor: "#c42d2d00",
+    noteTextShadowColorForHome: "#c42d2d00",
+    noteTextShadowColorForDiary: "#c42d2d00",
+
     noteBackgroundColor: "#f5f5f5FF",
     eventInputBackgroundColor: "#f7f7f700",
     eventTextShadow: "#dfd4f5 2px 2px 2px", // is calculated
@@ -53,6 +58,7 @@ export default function () {
     diaryBackgroundColor: "#ffffff54",
     diaryBackgroundColorDark: "#000000ad",
     diaryCardBackgroundColor: "#f5f5f5ff",
+    isDiaryInputStyleSetToTodaysNotes: true,
     isDiaryTitlebarShowingDay: true,
     isDiaryCountingDays: false,
     isDiarySubtitleStyleSetToAlternative: false,
