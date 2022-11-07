@@ -24,15 +24,17 @@
 
       </slot>
 
-      <BaseScrollArea :style="getStyleForScrollArea">
-        <template v-slot:content>
-          <div class="q-pt-sm   row justify-center items-center"
-            style="font-size: 12px">
-            <slot name="step-content">
-            </slot>
-          </div>
-        </template>
-      </BaseScrollArea>
+      <slot name="content-without-scroll-area">
+        <BaseScrollArea :style="getStyleForScrollArea">
+          <template v-slot:content>
+            <div class="q-pt-sm   row justify-center items-center"
+              style="font-size: 12px">
+              <slot name="step-content">
+              </slot>
+            </div>
+          </template>
+        </BaseScrollArea>
+      </slot>
 
       <div class="q-pt-md   row justify-center items-center">
         <div class="col-12">
