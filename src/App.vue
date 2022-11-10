@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 export default {
   name: "App",
   methods: {
@@ -15,6 +14,9 @@ export default {
         size
       );
     },
+  },
+  mounted() {
+    this.$store.dispatch("auth/handleAuthStateChange");
   }
 };
 </script>

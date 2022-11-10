@@ -75,12 +75,22 @@ export default {
         };
     },
     computed: {
+        notesArray() {
+            return this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
+        },
+        numberOfNotes() {
+            if (this.notesArray != undefined) {
+                return this.notesArray.length
+            } else {
+                return 0;
+            }
+        },
         getTitle() {
             if (this.diaryEntry != undefined) {
-                if (this.diaryEntry.events.length === 1) {
-                    return this.diaryEntry.events.length + " NOTE";
+                if (this.numberOfNotes === 1) {
+                    return this.numberOfNotes + " NOTE";
                 } else {
-                    return this.diaryEntry.events.length + " NOTES";
+                    return this.numberOfNotes + " NOTES";
                 }
 
             } else {
@@ -89,7 +99,7 @@ export default {
         },
         hasEvents() {
             if (this.diaryEntry != undefined) {
-                if (this.diaryEntry.events.length > 0) {
+                if (this.numberOfNotes > 0) {
                     return true;
                 }
             }
@@ -109,11 +119,11 @@ export default {
         },
         expandMore() {
             this.$emit("show-events");
-            this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", true);
+            this.$store.commit("diaryentries/setExpandedStatusOfEventsOnDiaryPage", true);
             this.toggleExpansedStatusOfAllEvents(true);
         },
         expandLess() {
-            this.$store.commit("data/setExpandedStatusOfEventsOnDiaryPage", false);
+            this.$store.commit("diaryentries/setExpandedStatusOfEventsOnDiaryPage", false);
             this.toggleExpansedStatusOfAllEvents(false);
         },
         toggleExpansedStatusOfAllEvents(isExpanded) {
@@ -121,7 +131,7 @@ export default {
                 diaryEntryRef: this.diaryEntry,
                 isExpanded: isExpanded,
             };
-            this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
+            this.$store.commit("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
         },
     },
 

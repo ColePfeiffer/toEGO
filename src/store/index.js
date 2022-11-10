@@ -1,5 +1,9 @@
 import data from "./data";
 import layout from "./layout";
+import auth from "./auth";
+import diaryentries from "./diaryentries";
+import templates from "./templates";
+
 import { createStore } from "vuex";
 // import example from './module-example'
 
@@ -8,6 +12,9 @@ export default function (/* { ssrContext } */) {
     modules: {
       data,
       layout,
+      auth,
+      diaryentries,
+      templates,
     },
 
     // enable strict mode (adds overhead!)

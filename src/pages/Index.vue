@@ -41,7 +41,7 @@
           :marginBottom="22"
           :backgroundColor="noteBackgroundColor"
           @goToEventSetToCreationMode="goToEventSetToCreationMode"
-          @goToEventSetToEditingMode="goToEventSetToEditingMode"
+          @edit-note="goToEventSetToEditingMode"
           class="q-px-md q-pt-md "></TheEventViewer>
       </div>
     </template>
@@ -77,15 +77,14 @@ export default {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
-    // TODO: angucken!
-    goToEventSetToEditingMode(eventData) {
+    goToEventSetToEditingMode(note) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
-        "data/getDiaryEntryByDate"
-      ](eventData.createdOn);
+        "diaryentries/getDiaryEntryByDate"
+      ](note.createdOn);
 
-      this.$store.commit("data/updateEventData", {
-        eventData: eventData,
-        diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
+      this.$store.commit("diaryentries/updateCurrentNote", {
+        note: note,
+        diaryEntry: diaryEntryRefWhereEventIsStoredAt,
       });
 
       this.$store.commit("data/setModeForNewEvent", "EDIT");
@@ -111,7 +110,7 @@ export default {
     // get diary entry for today
     getDiaryEntry() {
       let diaryEntryRefForDate = this.$store.getters[
-        "data/getDiaryEntryByDate"
+        "diaryentries/getDiaryEntryByDate"
       ](new Date());
       return diaryEntryRefForDate;
     },

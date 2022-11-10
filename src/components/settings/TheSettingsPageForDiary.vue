@@ -18,7 +18,7 @@
                     Page Layout: {{ getTitleForDiary }}
                 </div>
                 <BaseButtonExpandable class="col-1"
-                    :isEventExpanded="isShowingSettingsForDiaryPage"
+                    :isNoteExpanded="isShowingSettingsForDiaryPage"
                     @expand="isShowingSettingsForDiaryPage = !isShowingSettingsForDiaryPage">
                 </BaseButtonExpandable>
             </div>
@@ -161,7 +161,7 @@
                     Content
                 </div>
                 <BaseButtonExpandable class="col-1"
-                    :isEventExpanded="isShowingSettingsForDiaryContent"
+                    :isNoteExpanded="isShowingSettingsForDiaryContent"
                     @expand="isShowingSettingsForDiaryContent = !isShowingSettingsForDiaryContent">
                 </BaseButtonExpandable>
             </div>
@@ -238,7 +238,7 @@
                             Border
                         </div>
                         <BaseButtonExpandable class="col-1"
-                            :isEventExpanded="isShowingBorderOptionsForDiary"
+                            :isNoteExpanded="isShowingBorderOptionsForDiary"
                             @expand="isShowingBorderOptionsForDiary = !isShowingBorderOptionsForDiary">
                         </BaseButtonExpandable>
                     </div>

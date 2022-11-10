@@ -66,11 +66,11 @@ export default {
   methods: {
     createCategory(name) {
       let payload = { categoryName: name, type: this.type };
-      this.$store.commit("data/createCategory", payload);
+      this.$store.commit("templates/createCategory", payload);
     },
     // renames an existing folder
     renameCategory(payload) {
-      this.$store.commit("data/renameCategory", payload);
+      this.$store.commit("templates/renameCategory", payload);
     },
     deleteCategory(categoryToDelete) {
       this.$emit("delete-category", categoryToDelete);

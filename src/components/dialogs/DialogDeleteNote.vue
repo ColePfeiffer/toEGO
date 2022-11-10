@@ -1,17 +1,17 @@
 <template>
   <baseDialog v-model="isDialogVisible"
-    dialogTitle="Deleting Event"
+    dialogTitle="Deleting Note"
     :icon="menuIcon"
-    :button1="{isShown: true, text: 'No'}"
-    :button2="{isShown: true, text: 'Yes'}"
+    :button1="{ isShown: true, text: 'No' }"
+    :button2="{ isShown: true, text: 'Yes' }"
     :minHeight="200"
     @closeDialog="closeDialog"
-    @save="deleteEvent">
+    @save="deleteNote">
     <template v-slot:content>
       <q-card class="transparent no-shadow">
         <q-card-section class="row q-pa-md items-center justify-center text-center ">
           <div class="col-10 q-mt-md">
-            <span class="q-ml-sm ">Do you really want to delete this event?</span>
+            <span class="q-ml-sm ">Do you really want to delete this note?</span>
           </div>
         </q-card-section>
       </q-card>
@@ -23,8 +23,8 @@
 import baseDialog from "../ui/baseDialog.vue";
 
 export default {
-  name: "DialogDeleteEvent",
-  emits: ["deleteEvent", "closeDialog"],
+  name: "DialogDeleteNote",
+  emits: ["delete-note", "close-dialog"],
   components: {
     baseDialog,
   },
@@ -36,10 +36,10 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.$emit("closeDialog");
+      this.$emit("close-dialog");
     },
-    deleteEvent() {
-      this.$emit("deleteEvent");
+    deleteNote() {
+      this.$emit("delete-note");
     },
   },
   computed: {
@@ -48,7 +48,7 @@ export default {
         if (
           this.$store.state.data.dialogSettings.isVisible === true &&
           this.$store.state.data.dialogSettings.nameOfCurrentDialog ===
-          "dialogDeleteEvent"
+          "DialogDeleteNote"
         ) {
           return true;
         } else {

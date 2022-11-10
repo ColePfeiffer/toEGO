@@ -24,6 +24,8 @@
             label="Design" />
           <q-tab name="other"
             label="Page Layout" />
+          <q-tab name="Account"
+            label="Account" />
         </q-tabs>
 
         <BaseScrollArea :style="styleForScrollArea">
@@ -36,6 +38,10 @@
 
               <q-tab-panel name="other">
                 <PageSettings></PageSettings>
+              </q-tab-panel>
+
+              <q-tab-panel name="Account">
+                <AccountSettings></AccountSettings>
               </q-tab-panel>
             </q-tab-panels>
           </template>
@@ -54,9 +60,10 @@ import BasePage from "src/components/ui/BasePage.vue";
 import BaseScrollArea from "src/components/ui/BaseScrollArea.vue";
 import PageSettings from "src/components/settings/PageSettings.vue";
 import DesignSettings from "../components/settings/DesignSettings.vue";
+import AccountSettings from "../components/settings/AccountSettings.vue";
 
 export default {
-  components: { BasePage, PageSettings, DesignSettings, BaseScrollArea },
+  components: { BasePage, PageSettings, DesignSettings, AccountSettings, BaseScrollArea },
   data() {
     return {
       settingsTab: 'view',

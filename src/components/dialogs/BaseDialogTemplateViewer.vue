@@ -484,7 +484,6 @@ export default {
     nameOfCurrentDialog(newName) {
       let firstPart = newName.substring(0, 15);
       let secondPart = newName.substring(20);
-      console.log(firstPart, secondPart);
       if (firstPart === 'template-viewer') {
         if (secondPart === 'diary' || secondPart === 'events') {
           // is showing via mainLayout, no paste function
@@ -494,8 +493,6 @@ export default {
           this.isPasteAllowed = true;
         }
       }
-      console.log(this.$store.state.data.dialogSettings.nameOfCurrentDialog.substring(20));
-
     },
     qMenuModel(newValue) {
       if (newValue === true) {
@@ -545,14 +542,14 @@ export default {
         quicklist: this.quicklist,
         type: this.type,
       };
-      this.$store.commit("data/manageQuicklistStatusOfTemplate", payload);
+      this.$store.commit("templates/manageQuicklistStatusOfTemplate", payload);
     },
     manageTemplate() {
       this.isShowingManagingButtons = !this.isShowingManagingButtons;
     },
     removeCategoryFromTemplate(category) {
       let payload = { "category": category, "template": this.currentTemplate };
-      this.$store.commit("data/removeTemplateFromCategory", payload);
+      this.$store.commit("templates/removeTemplateFromCategory", payload);
     },
     // from manager...
     deleteCategory(categoryToDelete) {
@@ -562,7 +559,7 @@ export default {
         type: this.type,
       };
       this.$store.dispatch(
-        "data/removeCategoryFromParentsAndDeleteIt",
+        "templates/removeCategoryFromParentsAndDeleteIt",
         payload
       );
     },
@@ -587,7 +584,7 @@ export default {
         categoryName: this.newCategoryName,
         type: this.type,
       };
-      this.$store.commit("data/createCategory", payload);
+      this.$store.commit("templates/createCategory", payload);
       this.closeAndResetNewCategoryCreation();
     },
     resetDialog() {
@@ -616,7 +613,7 @@ export default {
       if (this.isCreatingNewTemplate) {
         this.$store.commit("data/setEditorText", this.editor);
         let payload = { 'name': this.name, "type": this.type };
-        this.$store.commit("data/createTemplateAndAddToList", payload);
+        this.$store.commit("templates/createTemplateAndAddToList", payload);
         console.log(this.currentTemplate);
         console.log(this.templateList[this.lengthOfTemplates - 1]);
         this.currentTemplate = this.templateList[this.lengthOfTemplates - 1];
@@ -624,7 +621,7 @@ export default {
       } else {
         let payload = { "templateID": this.currentTemplate.id, "type": this.type, "name": this.name, "text": this.editor };
         this.$store.dispatch(
-          "data/updateTemplate",
+          "templates/updateTemplate",
           payload
         );
       }
@@ -662,7 +659,7 @@ export default {
         type: this.type,
       };
       this.$store.dispatch(
-        "data/removeTemplateFromParentsAndDeleteIt",
+        "templates/removeTemplateFromParentsAndDeleteIt",
         payload
       );
       this.isDeletingTemplate = false;
@@ -689,7 +686,7 @@ export default {
         id: this.currentTemplate.id,
         templateList: this.templateList,
       };
-      this.$store.commit("data/setDefaultStatusOfTemplate", payload);
+      this.$store.commit("templates/setDefaultStatusOfTemplate", payload);
     },
     // for baseDialog
     showHelp() {
@@ -714,7 +711,7 @@ export default {
     templatesCategories() {
       let data = { parents: this.categories, child: this.currentTemplate };
       console.log(data);
-      let output = this.$store.getters['data/getParentsOfChild'](data);
+      let output = this.$store.getters['templates/getParentsOfChild'](data);
       console.log(output)
       return output;
 
@@ -893,23 +890,23 @@ export default {
     },
     folders() {
       if (this.isTypeSetToDiary) {
-        return this.$store.state.data.foldersForDiary;
+        return this.$store.state.templates.foldersForDiary;
       } else {
-        return this.$store.state.data.foldersForEvents;
+        return this.$store.state.templates.foldersForEvents;
       }
     },
     categories() {
       if (this.isTypeSetToDiary) {
-        return this.$store.state.data.categoriesForDiary;
+        return this.$store.state.templates.categoriesForDiary;
       } else {
-        return this.$store.state.data.categoriesForEvents;
+        return this.$store.state.templates.categoriesForEvents;
       }
     },
     quicklist() {
       if (this.isTypeSetToDiary) {
-        return this.$store.state.data.quicklistForDiary;
+        return this.$store.state.templates.quicklistForDiary;
       } else {
-        return this.$store.state.data.quicklistForEvents;
+        return this.$store.state.templates.quicklistForEvents;
       }
     },
 

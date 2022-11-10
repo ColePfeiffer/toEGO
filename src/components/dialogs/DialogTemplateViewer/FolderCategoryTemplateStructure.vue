@@ -87,16 +87,14 @@ export default {
   computed: {
     displayedCategories() {
       if (this.isShowingTemplates) {
-        console.log("categories: ", this.getCategoriesWithoutFolders)
         return this.getCategoriesWithoutFoldersButWithTemplates
       } else {
-        console.log("categories: ", this.getCategoriesWithoutFolders)
         return this.getCategoriesWithoutFolders;
       }
     },
     getCategoriesWithoutFolders() {
       if (this.getNonEmptyFolders.length > 0) {
-        return this.$store.getters["data/getCategoriesWithoutFolders"]({
+        return this.$store.getters["templates/getCategoriesWithoutFolders"]({
           folders: this.folders,
           categories: this.categories,
         });
@@ -106,7 +104,7 @@ export default {
 
     },
     getNonEmptyFolders() {
-      return this.$store.getters["data/getNonEmptyFolders"](
+      return this.$store.getters["templates/getNonEmptyFolders"](
         this.folders,
         this.categories
       );
@@ -116,16 +114,13 @@ export default {
       let test;
 
       test = this.getCategoriesWithoutFolders.filter((category) => {
-        console.log(category);
         return category.storedIDs.length > 0;
       });
       return test;
     },
     getTemplatesWithoutCategories() {
-      console.log(this.displayedCategories.length);
-      console.log(this.getNonEmptyFolders.length);
       if (this.displayedCategories.length > 0 || this.getNonEmptyFolders.length > 0) {
-        return this.$store.getters["data/getTemplatesWithoutCategories"]({
+        return this.$store.getters["templates/getTemplatesWithoutCategories"]({
           templates: this.templates,
           categories: this.categories,
         });

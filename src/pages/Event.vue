@@ -71,7 +71,7 @@ export default {
   activated() {
     // if mode is set to editing mode, we fetch the updated eventData
     if (!this.$store.state.data.newEventIsInCreationMode) {
-      this.setEventData();
+      this.setNote();
     }
   },
   watch: {
@@ -96,25 +96,25 @@ export default {
     setEditor(value) {
       this.editor = value;
     },
-    setEventData() {
-      this.editor = this.$store.state.data.eventData.editor;
-      this.title = this.$store.state.data.eventData.title;
-      this.mood = this.$store.state.data.eventData.mood;
+    setNote() {
+      this.editor = this.$store.state.diaryentries.currentNote.editor;
+      this.title = this.$store.state.diaryentries.currentNote.title;
+      this.mood = this.$store.state.diaryentries.currentNote.mood;
     },
-    resetEventData() {
-      this.$store.commit("data/resetEventData");
-      this.setEventData();
+    resetNote() {
+      this.$store.commit("diaryentries/resetCurrentNote");
+      this.setNote();
     },
-    updateEventData() {
-      this.$store.commit("data/updateEditor", this.editor);
-      this.$store.commit("data/updateTitle", this.title);
-      this.$store.commit("data/updateMood", this.mood);
+    updateNote() {
+      this.$store.commit("diaryentries/updateEditor", this.editor);
+      this.$store.commit("diaryentries/updateTitle", this.title);
+      this.$store.commit("diaryentries/updateMood", this.mood);
     },
     leavePage() {
       let lastPath = this.$router.options.history.state.back;
       lastPath = lastPath.substring(1);
       this.$router.push(lastPath);
-      this.resetEventData();
+      this.resetNote();
     },
     saveChanges() {
       if (this.mood === "") {
@@ -124,21 +124,21 @@ export default {
       if (this.$store.state.data.newEventIsInCreationMode) {
         let lastPath = this.$router.options.history.state.back;
         if (lastPath === "/diary") {
-          this.updateEventData();
-          this.$store.commit(
-            "data/addEventToEvents",
+          this.updateNote();
+          this.$store.dispatch(
+            "diaryentries/addNote",
             this.$store.state.data.lastSelectedDate
           );
         } else {
-          this.updateEventData();
+          this.updateNote();
           // if we are at home, we want to use new Date
-          this.$store.commit("data/addEventToEvents", new Date());
+          this.$store.dispatch(
+            "diaryentries/addNote", new Date());
         }
       } else {
-        this.updateEventData();
-        this.$store.commit("data/saveChangesToEditedEvent");
+        this.updateNote();
+        this.$store.dispatch("diaryentries/saveChangesToEditedNote");
         this.$store.commit("data/setModeForNewEvent", "CREATE");
-
       }
       this.leavePage();
     },

@@ -3,16 +3,22 @@ import index from "pages/Index.vue";
 import Diary from "pages/Diary.vue";
 import Settings from "pages/Settings.vue";
 import Event from "pages/Event.vue";
+import LoginRegister from "pages/LoginRegister.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/loginRegister",
   },
   {
     path: "/home",
     component: mainLayout,
     children: [{ path: "", component: index }],
+  },
+  {
+    path: "/loginRegister",
+    component: mainLayout,
+    children: [{ path: "", component: LoginRegister }],
   },
   {
     path: "/Event",

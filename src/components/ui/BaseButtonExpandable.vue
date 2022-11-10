@@ -11,14 +11,14 @@
 export default {
   name: "BaseExpandableButton",
   emits: ["expand"],
-  props: { isEventExpanded: Boolean },
+  props: { isNoteExpanded: Boolean },
   data() {
     return {
     };
   },
   computed: {
     getIcon() {
-      if (this.isEventExpanded) {
+      if (this.isNoteExpanded) {
         return "bi-chevron-up";
       } else {
         return "bi-chevron-down";

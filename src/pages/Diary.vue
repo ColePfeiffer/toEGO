@@ -250,7 +250,7 @@ export default {
       return this.$store.state.data.pastedText;
     },
     diaryEntry() {
-      return this.$store.getters["data/getDiaryEntryByDate"](this.date);
+      return this.$store.getters["diaryentries/getDiaryEntryByDate"](this.date);
     },
     daysFromNowOutput() {
       let today = Date.now();
@@ -282,7 +282,13 @@ export default {
     },
     numberOfNotes() {
       if (!this.isDiaryEntryUndefined) {
-        return this.diaryEntry.events.length;
+        let test = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
+        if (test != undefined) {
+          console.log(test.length);
+          return test.length;
+        } else {
+          return 0;
+        }
       }
       else {
         return 9999;
@@ -398,7 +404,7 @@ export default {
 
       // applying default template
       let defaultTemplate =
-        this.$store.getters["data/getDefaultTemplate"]("DIARY");
+        this.$store.getters["templates/getDefaultTemplate"]("DIARY");
       if (defaultTemplate != undefined) {
         this.changeData.editor = defaultTemplate;
       }
@@ -424,13 +430,13 @@ export default {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
-    goToEventSetToEditingMode(eventData) {
+    goToEventSetToEditingMode(note) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "data/getDiaryEntryByDate"
-      ](eventData.createdOn);
+      ](note.createdOn);
 
-      this.$store.commit("data/updateEventData", {
-        eventData: eventData,
+      this.$store.commit("diaryentries/updateCurrentNote", {
+        eventData: note,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
       });
       this.$store.commit("data/setModeForNewEvent", "EDIT");
@@ -448,7 +454,7 @@ export default {
           let newEntry = this.changeData;
           console.log("new Entry: ", newEntry);
           newEntry.date = this.date;
-          this.$store.commit("data/addEntryToDiaryEntries", newEntry);
+          this.$store.dispatch("diaryentries/addEntry", newEntry);
         } else {
           this.$q.notify({
             icon: "bi-exclamation-square",

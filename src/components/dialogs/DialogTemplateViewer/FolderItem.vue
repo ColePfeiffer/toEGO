@@ -1,31 +1,26 @@
 <template>
     <div>
-        <BaseItemExpandable
-            :item="folder"
+        <BaseItemExpandable :item="folder"
             icon="bi-folder"
             :isExpanded="menuModel"
             :currentTemplate="currentTemplate"
-            @click-item="clickFolder"
-        >
+            @click-item="clickFolder">
         </BaseItemExpandable>
         <!-- Submenu -->
-        <BaseMenu
-            :menuModel="menuModel"
-            :items="$store.getters['data/getFolderContent'](
-              folder,
-              categories
+        <BaseMenu :menuModel="menuModel"
+            :items="$store.getters['templates/getFolderContent'](
+                folder,
+                categories
             )"
-            @changed-menu-state="changedMenuState"
-        >
+            @changed-menu-state="changedMenuState">
             <template v-slot:itemsInsideList>
                 <!-- Templates inside Category -->
                 <!-- TODO: -->
                 <!-- TODO: ADD PROPS -->
-                <CategoryItem
-                    v-for="category in $store.getters['data/getFolderContent'](
-                      folder,
-                      categories
-                    )"
+                <CategoryItem v-for="category in $store.getters['templates/getFolderContent'](
+                    folder,
+                    categories
+                )"
                     :key="category"
                     clickable
                     :isShowingTemplates="isShowingTemplates"
@@ -34,8 +29,7 @@
                     :currentTemplate="currentTemplate"
                     :templates="templates"
                     @click-category="clickCategory"
-                    @click-template="clickTemplate"
-                >
+                    @click-template="clickTemplate">
                 </CategoryItem>
             </template>
         </BaseMenu>

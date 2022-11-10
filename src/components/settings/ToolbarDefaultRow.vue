@@ -42,9 +42,7 @@
                 <!-- Submenu -->
                 <q-menu auto-close>
                   <q-list>
-                    <q-item v-for="template in $store.getters[
-                      'data/getQuickListContent'
-                    ](type)"
+                    <q-item v-for="template in quicklistContent"
                       :key="template"
                       dense
                       clickable
@@ -166,8 +164,11 @@ export default {
         return "";
       }
     },
+    quicklistContent() {
+      return this.$store.getters["templates/getQuickListContent"](this.type)
+    },
     isQuicklistDisabled() {
-      let templates = this.$store.getters["data/getQuickListContent"](this.type);
+      let templates = this.quicklistContent;
       if (templates.length < 1) {
         return true;
       }

@@ -42,7 +42,7 @@
                     :borderColorRight="borderColorRight"
                     :isNoteTitleColorful="isNoteTitleColorful"
                     :textShadowColor="textShadowColor"
-                    :eventData="$store.state.data.notePreview" />
+                    :currentNote="$store.state.data.notePreview" />
                 <div class="col-10"
                     style="margin-bottom: 5px">
                     <div class="row justify-between">
@@ -77,7 +77,7 @@
 
 <script>
 import BasePreview from "./BasePreview.vue";
-import EventCard from "../common/TheEventCard.vue";
+import EventCard from "../common/TheNoteCard.vue";
 import TheToolbarForDiary from "../diary/TheToolbarForDiary.vue";
 import TheDiaryDayCounter from "../diary/TheDiaryDayCounter.vue";
 import ButtonForDiarySection from "../diary/Base/ButtonForDiarySection.vue";

@@ -1,0 +1,94 @@
+import { date } from "quasar";
+
+export const getNotesAsRevertedArrayByDiaryEntryID = (state, getters) => {
+  return (diaryEntryID) => {
+    let notesContainer = getters.getNotesByDiaryEntryID(diaryEntryID);
+    if (notesContainer != undefined) {
+      return Object.values(notesContainer).slice().reverse();
+    } else {
+      return undefined;
+    }
+  };
+};
+
+export const getIndexOfNote = (state) => {
+  return (note) => {
+    return state.notes.indexOf(note);
+  };
+};
+
+export const getNotesByDiaryEntryID = (state) => {
+  return (diaryEntryID) => {
+    let notesContainerForDiaryEntryID = state.notes[diaryEntryID];
+    return notesContainerForDiaryEntryID;
+  };
+};
+
+export const getDiaryEntryIDByDate = (state) => {
+  return (providedDate) => {
+    let diaryentry = state.diaryEntries.find((diaryEntry) =>
+      date.isSameDate(diaryEntry.date, providedDate, "day")
+    );
+    let indexOfDiaryEntry = state.diaryEntries.indexOf(diaryentry);
+    return state.diaryEntries[indexOfDiaryEntry].id;
+  };
+};
+
+export const getNoteContainerByDiaryEntryID = (state) => {
+  return (diaryEntryID) => {
+    let notesContainerForDiaryEntryID = state.notes[diaryEntryID];
+    if (notesContainerForDiaryEntryID != undefined) {
+    } else {
+      console.log("note container is undefined");
+    }
+    return notesContainerForDiaryEntryID;
+  };
+};
+
+export const doesNoteContainerExistForDiaryEntryID = (state) => {
+  return (diaryEntryID) => {
+    let notesContainerForDiaryEntryID = state.notes[diaryEntryID];
+    if (notesContainerForDiaryEntryID != undefined) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+};
+
+export const doesDiaryEntryExistForProvidedDate = (state) => {
+  return (providedDate) => {
+    for (let i = 0; i < state.diaryEntries.length; i++) {
+      if (date.isSameDate(state.diaryEntries[i].date, providedDate, "day")) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
+
+// takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
+export const getDiaryEntryByID = (state) => {
+  return (ID) => {
+    let refToDiaryInStore = state.diaryEntries.find(
+      (diaryEntry) => diaryEntry.id === ID
+    );
+    console.log(refToDiaryInStore);
+    return refToDiaryInStore;
+  };
+};
+
+// takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
+export const getDiaryEntryByDate = (state) => {
+  return (selectedDate) => {
+    let refToDiaryInStore = state.diaryEntries.find((diaryEntry) =>
+      date.isSameDate(diaryEntry.date, selectedDate, "day")
+    );
+    if (refToDiaryInStore != undefined) {
+      //console.log("* * Entry found: ", refToDiaryInStore);
+    } else {
+      //console.log("* * No Entry found.");
+    }
+    return refToDiaryInStore;
+  };
+};

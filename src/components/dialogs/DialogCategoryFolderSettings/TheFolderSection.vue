@@ -64,16 +64,16 @@ export default {
   methods: {
     createFolder(name) {
       let payload = { name: name, type: this.type };
-      this.$store.commit("data/createFolder", payload);
+      this.$store.commit("templates/createFolder", payload);
     },
     // renames an existing folder
     renameFolder(payload) {
-      this.$store.commit("data/renameFolder", payload);
+      this.$store.commit("templates/renameFolder", payload);
     },
     deleteFolder(folderToDelete) {
       // delete item
       let payload = { folderToDelete: folderToDelete, type: this.type };
-      this.$store.commit("data/deleteFolder", payload);
+      this.$store.commit("templates/deleteFolder", payload);
     },
   },
 };

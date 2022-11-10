@@ -68,10 +68,10 @@ export default {
       }
     },
     addChildToParent(payload) {
-      this.$store.commit("data/addChildToParent", payload);
+      this.$store.commit("templates/addChildToParent", payload);
     },
     removeChildFromParent(payload) {
-      this.$store.commit("data/removeChildFromParent", payload);
+      this.$store.commit("templates/removeChildFromParent", payload);
     },
   },
   computed: {

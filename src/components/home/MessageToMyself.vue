@@ -123,10 +123,8 @@ export default {
       this.$store.commit("data/updateEditor", this.editableMessageToMyself);
       this.$store.commit("data/updateTitle", "Message to Myself");
       this.$store.commit("data/updateMood", "bi-envelope");
-
-      this.$store.commit("data/addEventToEvents", new Date());
-
-      this.$store.commit("data/resetEventData");
+      this.$store.dispatch("diaryentries/addNote", new Date());
+      this.$store.commit("diaryentries/resetCurrentNote");
     },
 
   },

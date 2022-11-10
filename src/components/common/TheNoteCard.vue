@@ -11,18 +11,18 @@
             <div class="col-1 ">
               <q-icon size="22.5px"
                 :style="styleForTitleRow"
-                :name="eventData.mood"></q-icon>
+                :name="currentNote.mood"></q-icon>
             </div>
             <div class="col-10 text-left q-pl-md">
               <q-item-label :style="styleForTitleRow">{{
-                  eventData.title
+                  currentNote.title
               }}</q-item-label>
             </div>
             <div class="col-1 text-right ">
               <BaseButtonExpandable color="secondary"
                 style="font-size: 11px"
                 dense
-                :isEventExpanded="eventData.expanded"
+                :isNoteExpanded="currentNote.expanded"
                 @expand="expand"></BaseButtonExpandable>
             </div>
           </div>
@@ -33,9 +33,9 @@
 
       <!-- Text, Buttons -->
       <div class="fit"
-        :style="styleForEventContent">
+        :style="styleForNoteContent">
         <!-- Expanded: False -->
-        <q-card-section v-if="!eventData.expanded"
+        <q-card-section v-if="!currentNote.expanded"
           class="row justify-left items-center">
           <div style="white-space: pre-wrap"
             v-html="nonExpandedEditor">
@@ -57,17 +57,17 @@
               <div class="col-3 text-right">
                 <div class="row no-wrap">
                   <q-btn class="col"
-                    v-if="eventData.expanded === true"
+                    v-if="currentNote.expanded === true"
                     flat
                     icon="delete"
                     color="secondary"
-                    @click="deleteEvent"></q-btn>
+                    @click="deleteNote"></q-btn>
                   <q-btn class="col"
-                    v-if="eventData.expanded === true"
+                    v-if="currentNote.expanded === true"
                     flat
                     icon="edit"
                     color="secondary"
-                    @click="editEvent"></q-btn>
+                    @click="editNote"></q-btn>
                 </div>
               </div>
             </div>
@@ -85,13 +85,13 @@ import { date } from "quasar";
 import BaseCard from "../ui/BaseCard.vue";
 
 export default {
-  name: "TheEventCard",
+  name: "TheNoteCard",
   components: {
     BaseButtonExpandable,
     BaseCard
   },
   props: {
-    eventData: Object,
+    currentNote: Object,
     backgroundColor: {
       type: String,
       default: "#f5f5f5",
@@ -113,12 +113,12 @@ export default {
       default: "",
     }
   },
-  emits: ["changeEventData", "deleteEvent", "editEvent"],
+  emits: ["change-note-data", "delete-note", "edit-note"],
   data() {
     return {
       maxLengthOfCardText: 90,
-      timeAgoGER: date.formatDate(this.eventData.createdOn, "HH:mm"),
-      timeAgo: date.formatDate(this.eventData.createdOn, "h:mm A"),
+      timeAgoGER: date.formatDate(this.currentNote.createdOn, "HH:mm"),
+      timeAgo: date.formatDate(this.currentNote.createdOn, "h:mm A"),
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };
@@ -160,18 +160,18 @@ export default {
     getColorBasedOnBackgroundColor() {
       return { "color": this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor) };
     },
-    styleForEventContent() {
+    styleForNoteContent() {
       return {
         'width': this.$store.state.layout.innerWidth * 0.87 + "px",
         'min-height': '80px'
       };
     },
     clearEditor() {
-      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { USE_PROFILES: { html: true } }, { FORBID_TAGS: ['style'] }, { FORBID_ATTR: ['style'] });
+      let sanitazedEditor = DOMPurify.sanitize(this.currentNote.editor, { USE_PROFILES: { html: true } }, { FORBID_TAGS: ['style'] }, { FORBID_ATTR: ['style'] });
       return sanitazedEditor;
     },
     clearEditorNonExpanded() {
-      let sanitazedEditor = DOMPurify.sanitize(this.eventData.editor, { ALLOWED_TAGS: ['b', 'i', 'br', 'div'], ALLOWED_ATTR: [] });
+      let sanitazedEditor = DOMPurify.sanitize(this.currentNote.editor, { ALLOWED_TAGS: ['b', 'i', 'br', 'div'], ALLOWED_ATTR: [] });
       sanitazedEditor = sanitazedEditor.replaceAll("<br>", " ");
       sanitazedEditor = sanitazedEditor.replaceAll("<div>", " ");
       sanitazedEditor = sanitazedEditor.replaceAll("</div>", "");
@@ -186,14 +186,14 @@ export default {
     },
   },
   methods: {
-    deleteEvent() {
-      this.$emit("deleteEvent", this.eventData);
+    deleteNote() {
+      this.$emit("delete-note", this.currentNote);
     },
-    editEvent() {
-      this.$emit("editEvent", this.eventData);
+    editNote() {
+      this.$emit("edit-note", this.currentNote);
     },
     expand() {
-      this.$emit("changeEventData", this.eventData);
+      this.$emit("change-note-data", this.currentNote);
     },
   },
 };

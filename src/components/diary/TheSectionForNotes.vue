@@ -8,7 +8,7 @@
                 :textShadowColor="textShadowColor"
                 :diaryEntry="diaryEntry"
                 @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-                @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
+                @edit-note="goToEventSetToEditingMode"
                 :showMessageIfThereAreNoEvents="false">
             </TheEventViewer>
         </template>

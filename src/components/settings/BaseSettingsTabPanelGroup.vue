@@ -20,7 +20,7 @@
           </q-btn>
         </div>
         <BaseButtonExpandable class="col-1"
-          :isEventExpanded="isExpanded">
+          :isNoteExpanded="isExpanded">
         </BaseButtonExpandable>
 
 

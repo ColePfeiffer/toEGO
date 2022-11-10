@@ -16,7 +16,7 @@
                     Page Layout: {{ layoutName }}
                 </div>
                 <BaseButtonExpandable class="col-1"
-                    :isEventExpanded="isShowingSettingsForToday"
+                    :isNoteExpanded="isShowingSettingsForToday"
                     @expand="isShowingSettingsForToday = !isShowingSettingsForToday">
                 </BaseButtonExpandable>
             </div>
@@ -73,7 +73,7 @@
                     Note Appearance
                 </div>
                 <BaseButtonExpandable class="col-1"
-                    :isEventExpanded="isShowingSettingsForNotes"
+                    :isNoteExpanded="isShowingSettingsForNotes"
                     @expand="isShowingSettingsForNotes = !isShowingSettingsForNotes">
                 </BaseButtonExpandable>
             </div>
@@ -142,7 +142,7 @@
                         Border
                     </div>
                     <BaseButtonExpandable class="col-1"
-                        :isEventExpanded="isShowingBorderOptions"
+                        :isNoteExpanded="isShowingBorderOptions"
                         @expand="isShowingBorderOptions = !isShowingBorderOptions">
                     </BaseButtonExpandable>
                 </div>

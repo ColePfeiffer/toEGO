@@ -110,7 +110,7 @@ export default {
     },
     data() {
         return {
-            isEventGroupExpanded: true,
+            isEventGroupExpanded: false,
         };
     },
     computed: {

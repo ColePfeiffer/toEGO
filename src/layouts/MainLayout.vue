@@ -19,19 +19,7 @@
           toggle-color="white"
           text-color="white"
           @click="clickNavigationItem"
-          :options="[
-            { value: 'home', slot: 'home' },
-            {
-              value: 'diary', slot: 'diary',
-            },
-          
-            { value: 'settings', slot: 'settings' },
-            {
-              label: '',
-              value: 'templates',
-              slot: 'templates',
-            },
-          ]">
+          :options="navigationBarItems">
           <template v-slot:home>
             <div class="row justify-center items-center align-center ">
               <q-icon class="col-12 navigation-bar-icon"
@@ -95,9 +83,13 @@
               </q-fab>
               <span class="navigation-button-label col-12 q-pb-md"></span>
             </div>
-
-
-
+          </template>
+          <template v-slot:loginRegister>
+            <div class="row justify-center items-center">
+              <q-icon class="col-12 navigation-bar-icon"
+                :name="iconForLoggedIn" />
+              <span class="navigation-button-label col-12">{{ loginText }}</span>
+            </div>
           </template>
 
         </q-btn-toggle>
@@ -190,6 +182,44 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    navigationBarItems() {
+      if (this.isUserLoggedIn) {
+        return [
+          { value: 'home', slot: 'home' },
+          {
+            value: 'diary', slot: 'diary',
+          },
+
+          { value: 'settings', slot: 'settings' },
+          {
+            label: '',
+            value: 'templates',
+            slot: 'templates',
+          },
+          { value: 'loginRegister', slot: 'loginRegister' },
+        ];
+      } else {
+        return [{ value: 'loginRegister', slot: 'loginRegister' }];
+      }
+    },
+    isUserLoggedIn() {
+      return this.$store.state.auth.isUserLoggedIn;
+    },
+    loginText() {
+      if (this.isUserLoggedIn) {
+        return 'Logout'
+      } else {
+        return 'Login'
+      }
+    },
+    iconForLoggedIn() {
+      if (this.isUserLoggedIn) {
+        return 'bi-door-closed'
+      } else {
+        return 'bi-door-open'
+      }
+    },
+
     isFabButtonDisabled() {
       if (this.currentRouterPath === '/Event') {
         return true;
@@ -216,16 +246,16 @@ export default {
     },
     templates() {
       if (this.nameOfCurrentDialog === "template-viewer-for-events") {
-        return this.$store.state.data.eventTemplates;
+        return this.$store.state.templates.eventTemplates;
       } else {
-        return this.$store.state.data.diaryTemplates;
+        return this.$store.state.templates.diaryTemplates;
       }
     },
     currentRouterPath() {
       return this.$route.path;
     },
     getDiaryEntryForToday() {
-      return this.$store.getters["data/getDiaryEntryByDate"](new Date());
+      return this.$store.getters["diaryentries/getDiaryEntryByDate"](new Date());
     },
     getIconForDiary() {
       if (this.isNavigationSetTo('diary')) {
@@ -258,22 +288,23 @@ export default {
   },
   watch: {
     currentRouterPath(newPath) {
-      // whenever the router path updates, we want to set expanded to false for events.
-      let payload = {
-        isExpanded: false,
-        diaryEntryRef: this.getDiaryEntryForToday,
-      };
-      this.$store.commit("data/setExpandedStatusOfAllEvents", payload);
-
-      // we also want to update navButtonToggleModel based on the new navigation
-      this.navButtonToggleModel = newPath.substring(1);
+      if (this.isUserLoggedIn) {
+        if (this.getDiaryEntryForToday != undefined) {
+          // whenever the router path updates, we want to set expanded to false for events.
+          this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", this.getDiaryEntryForToday.id);
+        }
+        // we also want to update navButtonToggleModel based on the new navigation
+        this.navButtonToggleModel = newPath.substring(1);
+      } else {
+        this.$router.push("loginRegister");
+        this.navButtonToggleModel = newPath.substring(1);
+      }
     },
     nameOfCurrentDialog(nameOfCurrentDialog) {
       console.log("current dialog name changed to ", nameOfCurrentDialog);
     },
   },
   created() {
-    this.$store.commit("data/initiateDay");
   },
   methods: {
     finish() {
@@ -316,7 +347,15 @@ export default {
       this.templatesFabButton = !this.templatesFabButton;
     },
     clickNavigationItem() {
-      if (this.navButtonToggleModel != 'templates') {
+      if (this.navButtonToggleModel === 'loginRegister') {
+        if (this.isUserLoggedIn) {
+          this.$store.dispatch(
+            "auth/logoutUser");
+        } else {
+          this.goToPage();
+        }
+      }
+      else if (this.navButtonToggleModel != 'templates') {
         this.templatesFabButton = false;
         this.goToPage();
       } else {
@@ -361,7 +400,7 @@ export default {
         type: "EVENT",
       };
       this.$store.dispatch(
-        "data/removeTemplateFromParentsAndDeleteIt",
+        "templates/removeTemplateFromParentsAndDeleteIt",
         payload
       );
     },
@@ -371,7 +410,7 @@ export default {
         name: templateName,
         type: this.type,
       };
-      this.$store.commit("data/createTemplateAndAddToList", newTemplate);
+      this.$store.commit("templates/createTemplateAndAddToList", newTemplate);
       this.closeDialog();
     },
     toggleLeftDialog() {

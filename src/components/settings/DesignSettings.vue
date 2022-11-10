@@ -303,7 +303,6 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
 import BaseTooltip from '../ui/BaseTooltip.vue';
@@ -358,7 +357,6 @@ export default {
 
   },
   methods: {
-    ...mapMutations(["./store/data/showModal", "store/data/showModal"]),
     toggleDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
       this.$store.commit("layout/toggleDarkMode");

@@ -195,7 +195,7 @@ export default {
         id: this.currentTemplate.id,
         templateList: this.templates,
       };
-      this.$store.commit("data/setDefaultStatusOfTemplate", payload);
+      this.$store.commit("templates/setDefaultStatusOfTemplate", payload);
     },
     onResize(size) {
       this.styleForScrollArea = {
@@ -236,7 +236,7 @@ export default {
         categoryName: this.newCategoryName,
         type: this.type,
       };
-      this.$store.commit("data/createCategory", payload);
+      this.$store.commit("templates/createCategory", payload);
       this.closeAndResetNewCategoryCreation();
     },
     unsetAllCategories() {
@@ -245,7 +245,7 @@ export default {
         categories: this.categories,
         quicklist: this.quicklist,
       };
-      this.$store.commit("data/resetCategorySettingsForTemplate", payload);
+      this.$store.commit("templates/resetCategorySettingsForTemplate", payload);
     },
 
     manageQuicklistStatus() {
@@ -254,7 +254,7 @@ export default {
         quicklist: this.quicklist,
         type: this.type,
       };
-      this.$store.commit("data/manageQuicklistStatusOfTemplate", payload);
+      this.$store.commit("templates/manageQuicklistStatusOfTemplate", payload);
     },
   },
 };

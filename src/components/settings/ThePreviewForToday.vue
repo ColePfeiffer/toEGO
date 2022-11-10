@@ -13,7 +13,7 @@
                     :isNoteTitleColorful="isNoteTitleColorful"
                     :backgroundColor="noteBackgroundColor"
                     :textShadowColor="textShadowColor"
-                    :eventData="$store.state.data.notePreview" />
+                    :currentNote="$store.state.data.notePreview" />
             </div>
         </template>
 
@@ -22,7 +22,7 @@
 
 <script>
 import BasePreview from "./BasePreview.vue";
-import EventCard from "../common/TheEventCard.vue";
+import EventCard from "../common/TheNoteCard.vue";
 
 export default {
     name: "ThePreviewForToday",
