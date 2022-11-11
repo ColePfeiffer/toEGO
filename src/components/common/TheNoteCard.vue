@@ -117,8 +117,8 @@ export default {
   data() {
     return {
       maxLengthOfCardText: 90,
-      timeAgoGER: date.formatDate(this.currentNote.createdOn, "HH:mm"),
-      timeAgo: date.formatDate(this.currentNote.createdOn, "h:mm A"),
+      timeAgoGER: date.formatDate(this.currentNote.date, "HH:mm"),
+      timeAgo: date.formatDate(this.currentNote.date, "h:mm A"),
       lorem:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     };

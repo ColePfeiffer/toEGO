@@ -8,6 +8,30 @@ export const addContainer = (state, diaryEntryID) => {
   state.notes[diaryEntryID] = {};
 };
 
+export const addContainerFromDatabase = (state, payload) => {
+  console.log("adding container from database...");
+  state.notes[payload.diaryEntryID] = payload.noteContainer;
+  console.log(state.notes);
+};
+
+export const updateNoteContainer = (state, payload) => {
+  state.notes[payload.diaryEntryID] = payload.updatedContainer;
+};
+
+export const deleteNoteContainer = (state, diaryEntryID) => {
+  delete state.notes[diaryEntryID];
+};
+
+export const updateDiaryEntry = (state, payload) => {
+  if (payload.index !== -1) {
+    state.diaryEntries[payload.index] = payload.updatedDiaryEntry;
+  }
+};
+
+export const deleteDiaryEntry = (state, index) => {
+  state.diaryEntries.splice(index, 1);
+};
+
 // adds a note to the container corresponding to the ID
 export const addNoteToContainer = (state, diaryEntryID) => {
   state.notes[diaryEntryID][state.currentNote.id] = state.currentNote;
@@ -26,7 +50,7 @@ export const resetCurrentNote = (state) => {
     title: " ",
     mood: "",
     editor: "",
-    createdOn: "",
+    date: "",
     expanded: false,
   };
 };
@@ -68,8 +92,8 @@ export const updateMood = (state, value) => {
   state.currentNote.mood = value;
 };
 
-export const updateCreatedOn = (state, value) => {
-  state.currentNote.createdOn = value;
+export const updateDate = (state, value) => {
+  state.currentNote.date = value;
 };
 
 export const updateID = (state, value) => {

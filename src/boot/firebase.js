@@ -11,8 +11,8 @@ const firebaseConfig = {
   messagingSenderId: "98064654113",
   appId: "1:98064654113:web:6e9e996f05a070dafe6860",
   measurementId: "G-CGDVL0EGFL",
-  //databaseURL: "https://toego---diary-app-default-rtdb.firebaseio.com",
-  databaseURL: "https://toego---diary-app.firebaseio.com",
+  databaseURL:
+    "https://toego---diary-app-default-rtdb.europe-west1.firebasedatabase.app/",
 };
 
 // Initialize Firebase

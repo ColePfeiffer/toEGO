@@ -1,3 +1,5 @@
+
+
 <template>
   <BasePage titleOfPage="Today's notes"
     :mode="getHomeMode"
@@ -80,7 +82,7 @@ export default {
     goToEventSetToEditingMode(note) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "diaryentries/getDiaryEntryByDate"
-      ](note.createdOn);
+      ](note.date);
 
       this.$store.commit("diaryentries/updateCurrentNote", {
         note: note,

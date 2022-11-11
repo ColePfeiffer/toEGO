@@ -244,6 +244,7 @@ export default {
       return this.isSplitterVisible;
     },
     dateForLabel() {
+      console.log(this.date);
       return this.formatDate(this.date);
     },
     pastedText() {
@@ -433,7 +434,7 @@ export default {
     goToEventSetToEditingMode(note) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "data/getDiaryEntryByDate"
-      ](note.createdOn);
+      ](note.date);
 
       this.$store.commit("diaryentries/updateCurrentNote", {
         eventData: note,

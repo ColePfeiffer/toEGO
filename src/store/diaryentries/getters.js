@@ -1,5 +1,17 @@
 import { date } from "quasar";
 
+export const convertDateToUnix = () => {
+  return (providedDate) => {
+    return date.formatDate(providedDate, "X");
+  };
+};
+
+export const convertUnixToDate = () => {
+  return (providedDate) => {
+    return new Date(providedDate * 1000);
+  };
+};
+
 export const getNotesAsRevertedArrayByDiaryEntryID = (state, getters) => {
   return (diaryEntryID) => {
     let notesContainer = getters.getNotesByDiaryEntryID(diaryEntryID);
@@ -70,11 +82,19 @@ export const doesDiaryEntryExistForProvidedDate = (state) => {
 // takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
 export const getDiaryEntryByID = (state) => {
   return (ID) => {
-    let refToDiaryInStore = state.diaryEntries.find(
+    console.log(state.diaryEntries);
+    let ref = state.diaryEntries.find((diaryEntry) => diaryEntry.id === ID);
+    console.log(ref);
+    return ref;
+  };
+};
+
+export const getIndexOfDiaryEntryByID = (state) => {
+  return (ID) => {
+    let index = state.diaryEntries.findIndex(
       (diaryEntry) => diaryEntry.id === ID
     );
-    console.log(refToDiaryInStore);
-    return refToDiaryInStore;
+    return index;
   };
 };
 

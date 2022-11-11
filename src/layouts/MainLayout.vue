@@ -139,7 +139,6 @@
 
 <script>
 import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
-import { date } from "quasar";
 import BaseDialogTemplateViewer from "../components/dialogs/BaseDialogTemplateViewer.vue";
 import BaseTooltip from "../components/ui/BaseTooltip.vue";
 import TheHelpStepperForHome from "../components/home/TheHelpStepperForHome.vue";
@@ -291,7 +290,8 @@ export default {
       if (this.isUserLoggedIn) {
         if (this.getDiaryEntryForToday != undefined) {
           // whenever the router path updates, we want to set expanded to false for events.
-          this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", this.getDiaryEntryForToday.id);
+          // TODO: change this!
+          //this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", this.getDiaryEntryForToday.id);
         }
         // we also want to update navButtonToggleModel based on the new navigation
         this.navButtonToggleModel = newPath.substring(1);
