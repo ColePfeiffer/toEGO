@@ -187,6 +187,7 @@ export default {
   },
   methods: {
     deleteNote() {
+      console.log("triggering delete in NoteCard... for ", this.currentNote);
       this.$emit("delete-note", this.currentNote);
     },
     editNote() {

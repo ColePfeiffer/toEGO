@@ -15,7 +15,7 @@ export const addContainerFromDatabase = (state, payload) => {
 };
 
 export const updateNoteContainer = (state, payload) => {
-  state.notes[payload.diaryEntryID] = payload.updatedContainer;
+  state.notes[payload.diaryEntryID] = payload.noteContainer;
 };
 
 export const deleteNoteContainer = (state, diaryEntryID) => {

@@ -13,77 +13,67 @@ import {
   onChildRemoved,
 } from "firebase/database";
 
-export function convertDateViaNoteContainerDateToUnix({}, noteContainer) {
-  let updatedNoteContainer = noteContainer;
-  let noteContainerAsArray = Object.entries(noteContainer);
-
-  noteContainerAsArray.forEach((note) => {
-    console.log("converting date to unix for ", note[1]);
-    let noteID = note[0];
-    console.log("date o convert ", updatedNoteContainer[noteID].date);
-    console.log(
-      "converted date ",
-      date.formatDate(noteContainer[noteID].date, "X")
-    );
-    updatedNoteContainer[noteID].date = date.formatDate(
-      noteContainer[noteID].date,
-      "X"
-    );
-  });
-  return updatedNoteContainer;
-}
-
-export function convertDateViaNoteContainerUnixToDate(
-  { getters },
-  noteContainer
+export function addNote(
+  { state, commit, dispatch, getters },
+  dateNoteIsCreatedFor
 ) {
-  console.log("converting unix to date");
-  let updatedNoteContainer = noteContainer;
-  let noteContainerAsArray = Object.entries(noteContainer);
-  noteContainerAsArray.forEach((note) => {
-    let noteID = note[0];
-    updatedNoteContainer[noteID].date = getters.convertUnixToDate(
-      noteContainer[noteID].date
-    );
-  });
-  return updatedNoteContainer;
+  dispatch("createDataForNewNote", dateNoteIsCreatedFor);
+  let diaryEntryID;
+  if (getters.doesDiaryEntryExistForProvidedDate(dateNoteIsCreatedFor)) {
+    diaryEntryID = getters.getDiaryEntryIDByDate(dateNoteIsCreatedFor);
+    if (getters.doesNoteContainerExistForDiaryEntryID(diaryEntryID)) {
+      dispatch("firebaseCreateNote", diaryEntryID);
+    } else {
+      dispatch("firebaseCreateNoteContainer", diaryEntryID);
+      dispatch("firebaseCreateNote", diaryEntryID);
+    }
+  } else {
+    let newDiaryEntry = {
+      id: uid(),
+      date: dateNoteIsCreatedFor,
+      editor: "",
+    };
+    dispatch("addEntry", newDiaryEntry);
+    dispatch("firebaseCreateNoteContainer", newDiaryEntry.id);
+    dispatch("firebaseCreateNote", newDiaryEntry.id);
+  }
 }
-
+export function addEntry({ dispatch, getters }, entry) {
+  entry.date = getters.convertDateToUnix(entry.date);
+  entry.id = uid();
+  dispatch("firebaseCreateDiaryEntry", entry);
+}
+export function saveChangesToEditedNote({ state, getters, dispatch }) {
+  let diaryEntryID = getters.getDiaryEntryByDate(state.currentNote.date).id;
+  dispatch("firebaseUpdateNote", diaryEntryID);
+}
+export function createDataForNewNote({ commit }, dateNoteIsCreatedFor) {
+  commit("updateDate", dateNoteIsCreatedFor);
+  commit("updateID", uid());
+  commit("updateExpanded", false);
+}
+// NOTE: Reading data -----------
 export function firebaseReadData({ commit, dispatch, state, getters }) {
   let userID = firebaseAuth.currentUser.uid;
   let userNoteContainers = ref(firebaseDb, "notes/" + userID);
 
   // whenever a child gets added
   onChildAdded(userNoteContainers, (snapshot) => {
-    console.log("Copying note from firebase to local notes.");
     let noteContainer = snapshot.val();
-    let updatedNoteContainer = dispatch(
-      "convertDateViaNoteContainerUnixToDate",
-      noteContainer
-    );
     let payload = {
       diaryEntryID: snapshot.key,
-      noteContainer: updatedNoteContainer,
+      noteContainer: noteContainer,
     };
-    commit("addContainerFromDatabase", payload);
+    dispatch("addNoteContainerToStore", payload);
   });
 
   onChildChanged(userNoteContainers, (snapshot) => {
     let noteContainer = snapshot.val();
-    // https://stackoverflow.com/questions/54963700/how-to-get-value-instead-of-promise-from-firebase
-    console.log("note container changed ", noteContainer);
-    let updatedNoteContainer = dispatch(
-      "convertDateViaNoteContainerUnixToDate",
-      noteContainer
-    );
-    console.log("updated container @ date", updatedNoteContainer);
-
     let payload = {
       diaryEntryID: snapshot.key,
-      updatedContainer: updatedNoteContainer,
+      noteContainer: noteContainer,
     };
-    commit("updateNoteContainer", payload);
-    console.log("local notes container", state.notes);
+    dispatch("updateStoredNoteContainer", payload);
   });
 
   onChildRemoved(userNoteContainers, (snapshot) => {
@@ -101,9 +91,11 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
 
   onChildChanged(userDiaryEntries, (snapshot) => {
     let index = getters.getIndexOfDiaryEntryByID(snapshot.key);
+    let updatedDiaryEntry = snapshot.val();
+    updatedDiaryEntry.date = getters.convertUnixToDate(updatedDiaryEntry.date);
     let payload = {
       index: index,
-      updatedDiaryEntry: snapshot.val(),
+      updatedDiaryEntry: updatedDiaryEntry,
     };
     commit("updateDiaryEntry", payload);
   });
@@ -122,14 +114,57 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
                 showErrorMessage(error.message)
                 this.$router.replace('/auth')
             }
-        })                
+        })
   */
 }
+// adds a note from firebase to our vuex store
+export function addNoteContainerToStore({ getters, commit, state }, payload) {
+  let updatedNoteContainer = payload.noteContainer;
+  let noteContainerAsArray = Object.entries(payload.noteContainer);
+  noteContainerAsArray.forEach((note) => {
+    let noteID = note[0];
+    updatedNoteContainer[noteID].date = getters.convertUnixToDate(
+      payload.noteContainer[noteID].date
+    );
+  });
 
-export function firebaseAddNoteToContainer(
-  { state, getters, commit },
-  diaryEntryID
-) {
+  let payloadForMutation = {
+    diaryEntryID: payload.diaryEntryID,
+    noteContainer: updatedNoteContainer,
+  };
+  commit("addContainerFromDatabase", payloadForMutation);
+}
+// updates a note from firebase
+export function updateStoredNoteContainer({ getters, commit }, payload) {
+  let noteContainer = payload.noteContainer;
+  let noteContainerAsArray = Object.entries(payload.noteContainer);
+  noteContainerAsArray.forEach((note) => {
+    let noteID = note[0];
+    noteContainer[noteID].date = getters.convertUnixToDate(
+      payload.noteContainer[noteID].date
+    );
+  });
+  let payloadForMutation = {
+    diaryEntryID: payload.diaryEntryID,
+    noteContainer: noteContainer,
+  };
+  commit("updateNoteContainer", payloadForMutation);
+}
+// ---------- Writing data -----------
+export function firebaseCreateNoteContainer({}, diaryEntryID) {
+  let userId = firebaseAuth.currentUser.uid;
+  let noteContainerRef = ref(
+    firebaseDb,
+    "notes/" + userId + "/" + diaryEntryID
+  );
+  let emptyNoteContainer = {};
+  set(noteContainerRef, emptyNoteContainer, (error) => {
+    if (error) {
+      //showErrorMessage(error.message)
+    }
+  });
+}
+export function firebaseCreateNote({ state, getters, commit }, diaryEntryID) {
   console.log("* Creating Note to Container @ firebase ");
   let userId = firebaseAuth.currentUser.uid;
   let noteRef = ref(
@@ -144,31 +179,45 @@ export function firebaseAddNoteToContainer(
     }
   });
 }
-
-export function firebaseAddNoteContainer({ state }, diaryEntryID) {
-  console.log("* Creating Note-Container @ firebase ");
+export function firebaseUpdateNote({ getters, state, commit }, diaryEntryID) {
+  let noteID = state.currentNote.id;
+  // convert date to unix
+  commit("updateDate", getters.convertDateToUnix(state.currentNote.date));
   let userId = firebaseAuth.currentUser.uid;
-  let noteContainerRef = ref(
+  let noteRef = ref(
     firebaseDb,
-    "notes/" + userId + "/" + diaryEntryID
+    "notes/" + userId + "/" + diaryEntryID + "/" + noteID
   );
-  let emptyNoteContainer = {};
-  set(noteContainerRef, emptyNoteContainer, (error) => {
+  set(noteRef, state.currentNote, (error) => {
     if (error) {
       //showErrorMessage(error.message)
     }
   });
 }
-
-export function firebaseAddDiaryEntry({}, entry) {
-  console.log("* Creating Entry @ firebase ");
+export function firebaseDeleteNote({ state }) {
+  console.log("delete note!");
+  let userId = firebaseAuth.currentUser.uid;
+  let noteRef = ref(
+    firebaseDb,
+    "notes/" +
+      userId +
+      "/" +
+      state.diaryEntryRef.id +
+      "/" +
+      state.currentNote.id
+  );
+  remove(noteRef, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
+export function firebaseCreateDiaryEntry({}, entry) {
   let userId = firebaseAuth.currentUser.uid;
   let diaryEntryRef = ref(
     firebaseDb,
     "diaryEntries/" + userId + "/" + entry.id
   );
-
-  console.log(entry.date);
 
   set(diaryEntryRef, entry, (error) => {
     if (error) {
@@ -176,7 +225,21 @@ export function firebaseAddDiaryEntry({}, entry) {
     }
   });
 }
-
+export function firebaseUpdateDiaryEntry({ getters }, updatedDiaryEntry) {
+  // convert date to unix
+  updatedDiaryEntry.date = getters.convertDateToUnix(updatedDiaryEntry.date);
+  let userId = firebaseAuth.currentUser.uid;
+  let diaryEntryRef = ref(
+    firebaseDb,
+    "diaryEntries/" + userId + "/" + updatedDiaryEntry.id + "/editor"
+  );
+  set(diaryEntryRef, updatedDiaryEntry.editor, (error) => {
+    if (error) {
+      //showErrorMessage(error.message)
+    }
+  });
+}
+// FIXME:
 export function setExpandedStatusOfAllNotesForDiaryID(
   { commit, state },
   diaryEntryID
@@ -193,70 +256,4 @@ export function setExpandedStatusOfAllNotesForDiaryID(
     };
     commit("setExpanded", payload);
   });
-}
-
-export function addEntry({ dispatch, getters }, entry) {
-  entry.date = getters.convertDateToUnix(entry.date);
-  entry.id = uid();
-  dispatch("firebaseAddDiaryEntry", entry);
-}
-
-export function createDataForNewNote({ commit }, dateNoteIsCreatedFor) {
-  commit("updateDate", dateNoteIsCreatedFor);
-  commit("updateID", uid());
-  commit("updateExpanded", false);
-}
-
-export function createNoteContainerViaDate(
-  { getters, commit },
-  dateNoteIsCreatedFor
-) {
-  let diaryEntryID = getters.getDiaryEntryIDByDate(dateNoteIsCreatedFor);
-  commit("addContainer", diaryEntryID);
-}
-
-export function addNote(
-  { state, commit, dispatch, getters },
-  dateNoteIsCreatedFor
-) {
-  dispatch("createDataForNewNote", dateNoteIsCreatedFor);
-  let diaryEntryID;
-  if (getters.doesDiaryEntryExistForProvidedDate(dateNoteIsCreatedFor)) {
-    diaryEntryID = getters.getDiaryEntryIDByDate(dateNoteIsCreatedFor);
-    if (getters.doesNoteContainerExistForDiaryEntryID(diaryEntryID)) {
-      dispatch("firebaseAddNoteToContainer", diaryEntryID);
-    } else {
-      dispatch("firebaseAddNoteContainer", diaryEntryID);
-      dispatch("firebaseAddNoteToContainer", diaryEntryID);
-    }
-  } else {
-    console.log("date: ", dateNoteIsCreatedFor);
-    let newDiaryEntry = {
-      id: uid(),
-      date: dateNoteIsCreatedFor,
-      editor: "",
-    };
-    dispatch("addEntry", newDiaryEntry);
-    dispatch("firebaseAddNoteContainer", newDiaryEntry.id);
-    dispatch("firebaseAddNoteToContainer", newDiaryEntry.id);
-  }
-}
-
-export function deleteNote({ getters, commit }, payload) {
-  let noteContainer = getters.getNoteContainerByDiaryEntryID(
-    payload.diaryEntryID
-  );
-  let noteID = payload.note.id;
-  let payloadForMutation = { noteContainer: noteContainer, noteID: noteID };
-  commit("deleteNote", payloadForMutation);
-}
-
-export function saveChangesToEditedNote({ state, getters, commit }) {
-  let diaryEntryID = getters.getDiaryEntryByDate(state.currentNote.date).id;
-  let noteContainer = getters.getNoteContainerByDiaryEntryID(diaryEntryID);
-  let payloadForMutation = {
-    noteContainer: noteContainer,
-    noteID: state.currentNote.id,
-  };
-  commit("overwriteNote", payloadForMutation);
 }

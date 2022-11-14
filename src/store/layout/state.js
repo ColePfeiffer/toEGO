@@ -7,7 +7,7 @@ export default function () {
     innerHeight: 400,
     // Font Settings
     defaultFont: "PressStart",
-    fontsize: "12.5",
+    fontsize: "12",
     nonDefaultFont: "Inter",
     backgroundImageURL:
       "url(/images/background_wide2.jpg) no-repeat center center fixed",

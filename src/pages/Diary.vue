@@ -395,7 +395,6 @@ export default {
         id: "",
         date: "",
         editor: "",
-        events: [],
       };
     },
     createDiaryEntry() {
@@ -433,7 +432,7 @@ export default {
     },
     goToEventSetToEditingMode(note) {
       let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
-        "data/getDiaryEntryByDate"
+        "diaryentries/getDiaryEntryByDate"
       ](note.date);
 
       this.$store.commit("diaryentries/updateCurrentNote", {
@@ -465,11 +464,7 @@ export default {
           });
         }
       } else {
-        payload = {
-          diaryEntryRef: this.diaryEntry,
-          newData: this.changeData,
-        };
-        this.$store.commit("data/updateDiaryEntry", payload);
+        this.$store.dispatch("diaryentries/firebaseUpdateDiaryEntry", this.changeData);
       }
       this.resetChangeData();
     },

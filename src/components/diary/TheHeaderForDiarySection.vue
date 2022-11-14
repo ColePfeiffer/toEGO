@@ -125,7 +125,6 @@ export default {
         id: this.diaryEntry.id,
         date: this.diaryEntry.date,
         editor: this.diaryEntry.editor,
-        events: this.diaryEntry.events,
       });
     },
   },

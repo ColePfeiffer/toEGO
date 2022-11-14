@@ -16,7 +16,9 @@ export const getNotesAsRevertedArrayByDiaryEntryID = (state, getters) => {
   return (diaryEntryID) => {
     let notesContainer = getters.getNotesByDiaryEntryID(diaryEntryID);
     if (notesContainer != undefined) {
-      return Object.values(notesContainer).slice().reverse();
+      let array = Object.values(notesContainer);
+      array.sort((a, b) => a.date - b.date);
+      return array.slice().reverse();
     } else {
       return undefined;
     }
@@ -51,7 +53,6 @@ export const getNoteContainerByDiaryEntryID = (state) => {
     let notesContainerForDiaryEntryID = state.notes[diaryEntryID];
     if (notesContainerForDiaryEntryID != undefined) {
     } else {
-      console.log("note container is undefined");
     }
     return notesContainerForDiaryEntryID;
   };
@@ -82,9 +83,7 @@ export const doesDiaryEntryExistForProvidedDate = (state) => {
 // takes selectedDate as an argument and returns a diary entry, if a diary entry for the date exists
 export const getDiaryEntryByID = (state) => {
   return (ID) => {
-    console.log(state.diaryEntries);
     let ref = state.diaryEntries.find((diaryEntry) => diaryEntry.id === ID);
-    console.log(ref);
     return ref;
   };
 };

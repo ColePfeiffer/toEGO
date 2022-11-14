@@ -5,7 +5,7 @@
 
     <!-- Case 1: There is no diaryentry for the selected day. -->
     <div v-if="diaryEntry === undefined">
-      <div v-if="showMessageIfThereAreNoEvents">
+      <div v-if="showMessageIfThereAreNoNotes">
         <Card :borderColorLeft="borderColorLeft"
           :borderColorRight="borderColorRight"
           :backgroundColor="backgroundColor">
@@ -15,12 +15,12 @@
               flat
               dense
               icon="bi-plus"
-              @click="goToEventSetToCreationMode" />
+              @click="goToNoteSetToCreationMode" />
           </template>
         </Card>
       </div>
     </div>
-    <!-- Case 2: Entry exists, but no event has been created yet. -->
+    <!-- Case 2: Entry exists, but no note has been created yet. -->
     <div v-else-if="diaryEntry != undefined && !notesExist">
       <Card :borderColorLeft="borderColorLeft"
         :borderColorRight="borderColorRight"
@@ -30,21 +30,21 @@
             flat
             dense
             icon="bi-plus"
-            @click="goToEventSetToCreationMode" />
+            @click="goToNoteSetToCreationMode" />
         </template>
       </Card>
     </div>
-    <!-- Case 3: Entry and event(s) exist. -->
+    <!-- Case 3: Entry and note(s) exist. -->
     <div v-else
-      v-for="event in events"
-      :key="event.id">
+      v-for="note in notes"
+      :key="note.id">
       <Note :borderColorLeft="borderColorLeft"
         :borderColorRight="borderColorRight"
         :isNoteTitleColorful="isNoteTitleColorful"
         :textShadowColor="textShadowColor"
         :style="styleForNote"
         :backgroundColor="backgroundColor"
-        :currentNote="event"
+        :currentNote="note"
         @change-note-data="changeNoteData"
         @edit-note="editNote"
         @delete-note="showConfirmDeleteDialog" />
@@ -67,7 +67,7 @@ export default {
   },
   props: {
     diaryEntry: Object,
-    showMessageIfThereAreNoEvents: {
+    showMessageIfThereAreNoNotes: {
       type: Boolean,
       default: true,
     },
@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-      toBeDeletedEvent: "",
+      toBeDeletedNote: {},
     };
   },
   methods: {
@@ -106,14 +106,18 @@ export default {
       let payload = { diaryEntryID: this.diaryEntry.id, noteID: note.id, toggle: true };
       this.$store.commit("diaryentries/setExpanded", payload);
     },
-    showConfirmDeleteDialog(eventData) {
+    showConfirmDeleteDialog(note) {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
         nameOfCurrentDialog: "DialogDeleteNote",
       };
       this.$store.commit("data/setDialogVisibility", payload);
-      this.toBeDeletedEvent = eventData;
+      payload = {
+        note: note,
+        diaryEntry: this.diaryEntry
+      }
+      this.$store.commit("diaryentries/updateCurrentNote", payload);
     },
     closeDialog() {
       let payload = {
@@ -126,22 +130,21 @@ export default {
       this.$store.commit("data/setDialogVisibility", payload);
     },
     deleteNote() {
-      let payload = { diaryEntryID: this.diaryEntry.id, note: this.toBeDeletedEvent }
-      this.$store.dispatch("diaryentries/deleteNote", payload);
+      this.$store.dispatch("diaryentries/firebaseDeleteNote");
       this.closeDialog();
     },
-    goToEventSetToCreationMode() {
+    goToNoteSetToCreationMode() {
       this.$emit("go-to-event-set-to-creation-mode");
     },
-    editNote(eventData) {
-      this.$emit("edit-note", eventData);
+    editNote(note) {
+      this.$emit("edit-note", note);
     },
 
   },
   computed: {
     notesExist() {
-      if (this.events != undefined) {
-        if (this.events.length > 0) {
+      if (this.notes != undefined) {
+        if (this.notes.length > 0) {
           return true;
         } else {
           return false;
@@ -150,7 +153,7 @@ export default {
         return false;
       }
     },
-    events() {
+    notes() {
       return this.$store.getters["diaryentries/getNotesAsRevertedArrayByDiaryEntryID"](this.diaryEntry.id);
     },
     styleForNote() {

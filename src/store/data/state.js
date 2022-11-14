@@ -1,12 +1,6 @@
 import { date } from "quasar";
 export default function () {
   return {
-    isFabButtonDisabled: false,
-    dialogTemplateViewerIsSetToDiaryMode: true,
-    pastedText: "",
-    editorText: "",
-    isShowingLabelsForDiarySection: false,
-    messageToMyself: "",
     notePreview: {
       date: date.subtractFromDate(new Date(), { days: 2 }),
       expanded: false,
@@ -15,16 +9,27 @@ export default function () {
       editor: "This is a preview.",
       title: "Preview",
     },
-    newEventIsInCreationMode: true,
-    eventsOnDiaryPageAreExpanded: false,
+    userOptions: {
+      userHasFinishedHelpForHome: false,
+      userHasFinishedHelpForDiary: false,
+      userHasFinishedHelpForTemplates: false,
+    },
+    // add to DB
+    messageToMyself: "",
     lastSelectedDate: new Date(),
-    lastButtonClicked: "",
-
-    debug: true,
+    // Toggles
+    newEventIsInCreationMode: true,
+    isFabButtonDisabled: false,
+    // Dialogs
+    dialogTemplateViewerIsSetToDiaryMode: true,
     dialogSettings: {
       nameOfCurrentDialog: "test",
       isVisible: false,
       isBackgroundVisible: false,
     },
+    pastedText: "",
+    editorText: "",
+    // FIXME:
+    eventsOnDiaryPageAreExpanded: false,
   };
 }

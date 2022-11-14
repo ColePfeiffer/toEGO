@@ -195,7 +195,7 @@ export default {
             value: 'templates',
             slot: 'templates',
           },
-          { value: 'loginRegister', slot: 'loginRegister' },
+
         ];
       } else {
         return [{ value: 'loginRegister', slot: 'loginRegister' }];
