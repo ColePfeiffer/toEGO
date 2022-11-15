@@ -128,7 +128,7 @@ export default {
     },
     toggleExpansedStatusOfAllEvents(isExpanded) {
       let payload = {
-        diaryEntryRef: this.diaryEntry,
+        diaryEntry: this.diaryEntry,
         isExpanded: isExpanded,
       };
       this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);

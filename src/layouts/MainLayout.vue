@@ -96,7 +96,7 @@
       </q-toolbar>
     </q-footer>
     <!-- Router-view -->
-    <q-page-container>
+    <q-page-container v-if="isAllDataDownloaded | currentRouterPath === '/loginRegister'">
       <q-page class="test3"
         :style="$store.getters['layout/getStyleForPage']">
         <DialogNameAndCreate @create="createTemplate"
@@ -118,9 +118,11 @@
               ">
               <div class="row justify-center items-center align-center">
                 <div class="col-12">
-                  <TheHelpStepperForHome v-if="isHelpForNotesVisible && currentRouterPath === '/home'"
+                  <TheHelpStepperForHome
+                    v-if="((isHelpForNotesVisible || !$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime) && currentRouterPath === '/home')"
                     @finish="finish"></TheHelpStepperForHome>
-                  <TheHelpStepperForDiary v-if="isHelpForDiaryVisible && currentRouterPath === '/diary'"
+                  <TheHelpStepperForDiary
+                    v-if="((isHelpForDiaryVisible || !$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime) && currentRouterPath === '/diary')"
                     @finish="finish"></TheHelpStepperForDiary>
                 </div>
               </div>
@@ -132,6 +134,15 @@
         </div>
       </q-page>
 
+    </q-page-container>
+    <q-page-container v-else>
+      <q-page :style="$store.getters['layout/getStyleForPage']">
+        <span class="absolute-center"
+          :style="boxShadowStyle">
+          <q-spinner-orbit color="secondary"
+            size="4em" />
+        </span>
+      </q-page>
     </q-page-container>
 
   </q-layout>
@@ -165,8 +176,8 @@ export default {
         "box-shadow": "none",
       },
       templatesFabButton: false,
-      isHelpForNotesVisible: true,
-      isHelpForDiaryVisible: true,
+      isHelpForNotesVisible: false,
+      isHelpForDiaryVisible: false,
     };
   },
   components: {
@@ -181,6 +192,13 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    isAllDataDownloaded() {
+      if (this.$store.state.data.userSettingsDownloaded & this.$store.state.diaryentries.diaryEntriesDownloaded & this.$store.state.diaryentries.notesDownloaded) {
+        return true
+      } else {
+        return false
+      }
+    },
     navigationBarItems() {
       if (this.isUserLoggedIn) {
         return [
@@ -311,9 +329,15 @@ export default {
       switch (this.currentRouterPath) { //
         case "/home":
           this.isHelpForNotesVisible = false;
+          if (!this.$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime) {
+            this.$store.dispatch("data/setHelpForHomeToCompleted");
+          }
           break;
         case "/diary":
           this.isHelpForDiaryVisible = false;
+          if (!this.$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime) {
+            this.$store.dispatch("data/setHelpForDiaryToCompleted");
+          }
           break;
         case "/Event":
           break;

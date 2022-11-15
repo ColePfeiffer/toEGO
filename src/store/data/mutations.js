@@ -5,6 +5,22 @@ import shared from "../../shared.js";
 import { date } from "quasar";
 import getters from "./getters";
 
+export const setUserSettingsDownloaded = (state, value) => {
+  state.userSettingsDownloaded = value;
+};
+
+export const setHelpForHomeToCompleted = (state) => {
+  state.userSettings.hasFinishedHelpForHomeForTheFirstTime = true;
+};
+
+export const setHelpForDiaryToCompleted = (state) => {
+  state.userSettings.hasFinishedHelpForHomeForTheFirstTime = true;
+};
+
+export const overwriteLocalUserSetting = (state, payload) => {
+  state.userSettings[payload.name] = payload.value;
+};
+
 export const updateLastSelectedDate = (state, value) => {
   state.lastSelectedDate = value;
 };

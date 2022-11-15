@@ -2,6 +2,8 @@ import { date } from "quasar";
 
 export default function () {
   return {
+    diaryEntriesDownloaded: false,
+    notesDownloaded: false,
     diaryEntryRef: "",
     currentNote: {
       id: "",

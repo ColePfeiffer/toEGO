@@ -1,3 +1,16 @@
+export const setDiaryEntriesDownloaded = (state, value) => {
+  state.diaryEntriesDownloaded = value;
+};
+
+export const resetDiaryEntriesAndNotes = (state) => {
+  state.diaryEntries = [];
+  state.notes = {};
+};
+
+export const setNotesDownloaded = (state, value) => {
+  state.notesDownloaded = value;
+};
+
 // adds a diary entry to diaryEntries
 export const addDiaryEntry = (state, entry) => {
   state.diaryEntries.push(entry);
@@ -9,9 +22,7 @@ export const addContainer = (state, diaryEntryID) => {
 };
 
 export const addContainerFromDatabase = (state, payload) => {
-  console.log("adding container from database...");
   state.notes[payload.diaryEntryID] = payload.noteContainer;
-  console.log(state.notes);
 };
 
 export const updateNoteContainer = (state, payload) => {

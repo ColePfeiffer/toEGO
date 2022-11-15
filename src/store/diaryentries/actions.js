@@ -1,4 +1,5 @@
-import { uid, date } from "quasar";
+import { uid, date, Notify } from "quasar";
+import { showErrorMessage } from "src/functions/function-show-error-message";
 import { firebaseApp, firebaseDb, firebaseAuth } from "boot/firebase";
 import {
   onValue,
@@ -12,6 +13,12 @@ import {
   onChildChanged,
   onChildRemoved,
 } from "firebase/database";
+
+export function resetDiaryEntriesAndNotes({ commit }) {
+  commit("setNotesDownloaded", false);
+  commit("setDiaryEntriesDownloaded", false);
+  commit("resetDiaryEntriesAndNotes");
+}
 
 export function addNote(
   { state, commit, dispatch, getters },
@@ -43,6 +50,22 @@ export function addEntry({ dispatch, getters }, entry) {
   entry.id = uid();
   dispatch("firebaseCreateDiaryEntry", entry);
 }
+
+// checks if the diaryentry is empty; if so, deletes it.
+export function checkIfDiaryEntryIsEmpty(
+  { dispatch, state, getters },
+  diaryEntryID
+) {
+  if (state.notes[diaryEntryID] === undefined) {
+    let diaryEntry = getters.getDiaryEntryByID(diaryEntryID);
+    if (diaryEntry != undefined) {
+      if (diaryEntry.editor === "") {
+        dispatch("firebaseDeleteDiaryEntry", diaryEntryID);
+      }
+    }
+  }
+}
+
 export function saveChangesToEditedNote({ state, getters, dispatch }) {
   let diaryEntryID = getters.getDiaryEntryByDate(state.currentNote.date).id;
   dispatch("firebaseUpdateNote", diaryEntryID);
@@ -56,6 +79,21 @@ export function createDataForNewNote({ commit }, dateNoteIsCreatedFor) {
 export function firebaseReadData({ commit, dispatch, state, getters }) {
   let userID = firebaseAuth.currentUser.uid;
   let userNoteContainers = ref(firebaseDb, "notes/" + userID);
+
+  // only fires once
+  onValue(
+    userNoteContainers,
+    (snapshot) => {
+      commit("setNotesDownloaded", true);
+    },
+    { onlyOnce: true },
+    (error) => {
+      if (error) {
+        this.$router.replace("/loginRegister");
+        showErrorMessage(error.message);
+      }
+    }
+  );
 
   // whenever a child gets added
   onChildAdded(userNoteContainers, (snapshot) => {
@@ -83,6 +121,20 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
 
   let userDiaryEntries = ref(firebaseDb, "diaryEntries/" + userID);
 
+  // only fires once
+  onValue(
+    userDiaryEntries,
+    (snapshot) => {
+      commit("setDiaryEntriesDownloaded", true);
+    },
+    { onlyOnce: true },
+    (error) => {
+      if (error) {
+        showErrorMessage(error.message);
+      }
+    }
+  );
+
   onChildAdded(userDiaryEntries, (snapshot) => {
     let entry = snapshot.val();
     entry.date = getters.convertUnixToDate(entry.date);
@@ -104,18 +156,6 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
     let index = getters.getIndexOfDiaryEntryByID(snapshot.key);
     commit("deleteDiaryEntry", index);
   });
-
-  /*
-    onValue(userTasks, snapshot=>{
-            commit('setTasksDownloaded', true)
-        }, error => {
-            if (error){
-                console.log('error message: ', error.message)
-                showErrorMessage(error.message)
-                this.$router.replace('/auth')
-            }
-        })
-  */
 }
 // adds a note from firebase to our vuex store
 export function addNoteContainerToStore({ getters, commit, state }, payload) {
@@ -153,19 +193,23 @@ export function updateStoredNoteContainer({ getters, commit }, payload) {
 // ---------- Writing data -----------
 export function firebaseCreateNoteContainer({}, diaryEntryID) {
   let userId = firebaseAuth.currentUser.uid;
+
   let noteContainerRef = ref(
     firebaseDb,
     "notes/" + userId + "/" + diaryEntryID
   );
   let emptyNoteContainer = {};
+  showErrorMessage("bleh, container creation");
   set(noteContainerRef, emptyNoteContainer, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
     }
   });
 }
-export function firebaseCreateNote({ state, getters, commit }, diaryEntryID) {
-  console.log("* Creating Note to Container @ firebase ");
+export function firebaseCreateNote(
+  { state, getters, commit, rootGetters },
+  diaryEntryID
+) {
   let userId = firebaseAuth.currentUser.uid;
   let noteRef = ref(
     firebaseDb,
@@ -175,7 +219,14 @@ export function firebaseCreateNote({ state, getters, commit }, diaryEntryID) {
   commit("updateDate", updatedDate);
   set(noteRef, state.currentNote, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
+    } else {
+      Notify.create({
+        icon: "bi-x",
+        color: "secondary",
+        textColor: rootGetters["layout/getTextColorOnSecondary"],
+        message: "Note added.",
+      });
     }
   });
 }
@@ -190,29 +241,25 @@ export function firebaseUpdateNote({ getters, state, commit }, diaryEntryID) {
   );
   set(noteRef, state.currentNote, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
     }
   });
 }
-export function firebaseDeleteNote({ state }) {
-  console.log("delete note!");
+export function firebaseDeleteNote({ state, dispatch }) {
   let userId = firebaseAuth.currentUser.uid;
+  let diaryEntryID = state.diaryEntryRef.id;
   let noteRef = ref(
     firebaseDb,
-    "notes/" +
-      userId +
-      "/" +
-      state.diaryEntryRef.id +
-      "/" +
-      state.currentNote.id
+    "notes/" + userId + "/" + diaryEntryID + "/" + state.currentNote.id
   );
   remove(noteRef, (error) => {
     if (error) {
       showErrorMessage(error.message);
     }
   });
+  dispatch("checkIfDiaryEntryIsEmpty", diaryEntryID);
 }
-export function firebaseCreateDiaryEntry({}, entry) {
+export function firebaseCreateDiaryEntry({ getters }, entry) {
   let userId = firebaseAuth.currentUser.uid;
   let diaryEntryRef = ref(
     firebaseDb,
@@ -221,39 +268,48 @@ export function firebaseCreateDiaryEntry({}, entry) {
 
   set(diaryEntryRef, entry, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
     }
   });
 }
-export function firebaseUpdateDiaryEntry({ getters }, updatedDiaryEntry) {
-  // convert date to unix
-  updatedDiaryEntry.date = getters.convertDateToUnix(updatedDiaryEntry.date);
+export function firebaseUpdateDiaryEntry({ getters }, updatedEntry) {
+  updatedEntry.date = getters.convertDateToUnix(updatedEntry.date); // convert date to unix
   let userId = firebaseAuth.currentUser.uid;
   let diaryEntryRef = ref(
     firebaseDb,
-    "diaryEntries/" + userId + "/" + updatedDiaryEntry.id + "/editor"
+    "diaryEntries/" + userId + "/" + updatedEntry.id + "/editor"
   );
-  set(diaryEntryRef, updatedDiaryEntry.editor, (error) => {
+  set(diaryEntryRef, updatedEntry.editor, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
     }
   });
 }
-// FIXME:
+export function firebaseDeleteDiaryEntry({ state }, diaryEntryID) {
+  let userId = firebaseAuth.currentUser.uid;
+  let diaryEntryToDelete = ref(
+    firebaseDb,
+    "diaryEntries/" + userId + "/" + diaryEntryID
+  );
+  remove(diaryEntryToDelete, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
 export function setExpandedStatusOfAllNotesForDiaryID(
   { commit, state },
-  diaryEntryID
+  payload
 ) {
-  let test = Object.entries(state.notes[diaryEntryID]);
-
+  let test = Object.entries(state.notes[payload.diaryEntry.id]);
   test.forEach((note) => {
     let noteID = note[0];
-    let payload = {
+    let payloadForMutation = {
       noteID: noteID,
-      diaryEntryID: diaryEntryID,
+      diaryEntryID: payload.diaryEntry.id,
       toggle: false,
-      expanded: false,
+      expanded: payload.isExpanded,
     };
-    commit("setExpanded", payload);
+    commit("setExpanded", payloadForMutation);
   });
 }

@@ -1,6 +1,7 @@
 import { date } from "quasar";
 export default function () {
   return {
+    userSettingsDownloaded: false,
     notePreview: {
       date: date.subtractFromDate(new Date(), { days: 2 }),
       expanded: false,
@@ -9,12 +10,19 @@ export default function () {
       editor: "This is a preview.",
       title: "Preview",
     },
-    userOptions: {
-      userHasFinishedHelpForHome: false,
-      userHasFinishedHelpForDiary: false,
-      userHasFinishedHelpForTemplates: false,
-    },
     // add to DB
+    defaultUserSettings: {
+      hasFinishedHelpForHomeForTheFirstTime: false,
+      hasFinishedHelpForDiaryForTheFirstTime: false,
+      hasFinishedHelpForTemplatesForTheFirstTime: false,
+      userTheme: {},
+    },
+    userSettings: {
+      hasFinishedHelpForHomeForTheFirstTime: false,
+      hasFinishedHelpForDiaryForTheFirstTime: false,
+      hasFinishedHelpForTemplatesForTheFirstTime: false,
+      userTheme: {},
+    },
     messageToMyself: "",
     lastSelectedDate: new Date(),
     // Toggles

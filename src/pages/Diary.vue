@@ -189,14 +189,17 @@ export default {
       }
     },
     // whenever note count changes, the splitter height gets adjusted. 9999 stands for "there is no diary entry for the day yet."
-    numberOfNotes(newCount) {
-      if (newCount === 9999) {
-        this.splitterModel = this.splitterHeightDefault;
-      } else if (newCount > 0) {
-        this.splitterModel = this.splitterHeightShowingNonExpandedNote;
-      } else {
-        this.splitterModel = this.splitterHeightDefault;
-      }
+    numberOfNotes: {
+      immediate: true,
+      handler(newCount) {
+        if (newCount === 9999) {
+          this.splitterModel = this.splitterHeightDefault;
+        } else if (newCount > 0) {
+          this.splitterModel = this.splitterHeightShowingNonExpandedNote;
+        } else {
+          this.splitterModel = this.splitterHeightDefault;
+        }
+      },
     },
     // whenever date gets updated, it updates lastSelectedDate inside the store
     date(newDate) {
@@ -210,9 +213,6 @@ export default {
           "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
         // Case 3: No events, no diary entry.
       } else {
-        if (this.getNumberOfDaysAwayFromToday === -0) {
-          console.log("ITS TODAY MATE");
-        }
         this.editorHTMLContent =
           "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
       }
@@ -244,7 +244,6 @@ export default {
       return this.isSplitterVisible;
     },
     dateForLabel() {
-      console.log(this.date);
       return this.formatDate(this.date);
     },
     pastedText() {
@@ -283,10 +282,9 @@ export default {
     },
     numberOfNotes() {
       if (!this.isDiaryEntryUndefined) {
-        let test = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
-        if (test != undefined) {
-          console.log(test.length);
-          return test.length;
+        let notesAsArray = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
+        if (notesAsArray != undefined) {
+          return notesAsArray.length;
         } else {
           return 0;
         }
@@ -452,7 +450,6 @@ export default {
         if (cleanedEditorText != "") {
           // if editor isn't empty and doesn't just contain whitespace
           let newEntry = this.changeData;
-          console.log("new Entry: ", newEntry);
           newEntry.date = this.date;
           this.$store.dispatch("diaryentries/addEntry", newEntry);
         } else {
@@ -464,7 +461,9 @@ export default {
           });
         }
       } else {
-        this.$store.dispatch("diaryentries/firebaseUpdateDiaryEntry", this.changeData);
+        let updatedEntry = Object.assign({}, this.diaryEntry);
+        updatedEntry.editor = this.changeData.editor;
+        this.$store.dispatch("diaryentries/firebaseUpdateDiaryEntry", updatedEntry);
       }
       this.resetChangeData();
     },
