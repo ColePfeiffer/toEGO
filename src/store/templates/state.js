@@ -1,5 +1,6 @@
 export default function () {
   return {
+    // TODO: change quicklist logic to work with template based favorite state
     quicklistForDiary: {
       id: 0,
       name: "Quick List",
@@ -10,6 +11,17 @@ export default function () {
       name: "Quick List",
       storedIDs: [],
     },
+    /*
+
+    templates base
+        id: 0,
+        name: "Morning Prompts",
+        text: "<div>Intention of the day:<br></div><div>What do you need to get done today?<br></div>",
+        icon: "fas fa-sun",
+        isSetToDefault: false,
+        isFavorite: false,
+
+    */
     diaryTemplates: [
       {
         id: 0,

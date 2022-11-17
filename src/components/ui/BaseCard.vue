@@ -62,7 +62,6 @@ export default {
         style["border-width"] = "1px";
 
         style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
-        console.log(style["border-image-source"])
         /* amazing border
         style["border-width"] = "20px";
         style["border-image"] =

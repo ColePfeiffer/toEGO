@@ -45,7 +45,6 @@
           :diaryEntry="diaryEntry"
           :splitterModel="splitterModel"
           @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-          @go-to-event-set-to-editing-mode="goToEventSetToEditingMode"
           @show-events="showEvents"
           @hide-events="hideEvents" />
         <BaseSplitter :splitterModel="splitterModel"
@@ -57,7 +56,7 @@
               :backgroundColor="cardBackgroundColor"
               :diaryEntry="diaryEntry"
               @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-              @go-to-event-set-to-editing-mode="goToEventSetToEditingMode" />
+              @edit-note="goAndEditNote" />
           </template>
           <template v-slot:splitter-content-separator>
             <TheHeaderForDiarySection :style="styleHeaderDiary"
@@ -172,12 +171,6 @@ export default {
     };
   },
   watch: {
-    // closes the splitter automatically when height is under 94px
-    splitterModel(number) {
-      if (number <= 93) {
-        this.splitterModel = this.splitterHeightDefault;
-      }
-    },
     pastedText(text) {
       if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === true && text != "") {
         if (this.changeData.editor != "") {
@@ -192,7 +185,7 @@ export default {
     numberOfNotes: {
       immediate: true,
       handler(newCount) {
-        if (newCount === 9999) {
+        if (newCount === 9999 || this.isDiaryEntryShownInFullscreen) {
           this.splitterModel = this.splitterHeightDefault;
         } else if (newCount > 0) {
           this.splitterModel = this.splitterHeightShowingNonExpandedNote;
@@ -428,8 +421,12 @@ export default {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
-    goToEventSetToEditingMode(note) {
-      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
+    goAndEditNote(note) {
+      this.$store.commit("diaryentries/updateCurrentNoteForEditing", note);
+      this.$store.commit("data/setModeForNewEvent", "EDIT");
+      this.$router.push("Event");
+      /* OLD
+            let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "diaryentries/getDiaryEntryByDate"
       ](note.date);
 
@@ -439,6 +436,8 @@ export default {
       });
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");
+      */
+
     },
     saveChangesToEntry() {
       this.changeViewMode('view');

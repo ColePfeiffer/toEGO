@@ -56,7 +56,6 @@ export const getQuickListContent = (state) => {
         );
       });
     }
-
     return array;
   };
 };
@@ -197,7 +196,6 @@ export const getNonEmptyFolders = (state, getters) => {
         array.push(folder);
       }
     });
-    console.log("Non Empty Folders: ", array);
     return array;
   };
 };

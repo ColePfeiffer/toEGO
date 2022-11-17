@@ -4,7 +4,8 @@ export default function () {
   return {
     diaryEntriesDownloaded: false,
     notesDownloaded: false,
-    diaryEntryRef: "",
+    diaryEntryRef: "", // kann weg nachher, also eins davon...
+    diaryEntryID: "", // kan weg nachher
     currentNote: {
       id: "",
       mood: "las la-meh-blank",

@@ -35,7 +35,7 @@ export const setModeForNewEvent = (state, mode) => {
 };
 
 export const setMessageToMyself = (state, text) => {
-  state.messageToMyself = text;
+  state.userSettings.messageToMyself = text;
 };
 
 export const setEditorText = (state, text) => {

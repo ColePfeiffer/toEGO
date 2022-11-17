@@ -12,9 +12,9 @@
       :style="editorHeight"
       :type="type"
       @save="saveChanges"
-      @show-dialog-template-creator="openDialogCreateTemplate"
-      @show-dialog-template-viewer="openDialogViewTemplates"
-      @paste-template-from-quicklist="pasteTemplateFromQuicklist" />
+      @show-dialog-template-creator="showTemplateCreator"
+      @show-dialog-template-viewer="showTemplateViewer"
+      @paste-template-from-quicklist="pasteTemplateFromFavorites" />
   </div>
 </template>
 
@@ -25,7 +25,7 @@ import BaseEditor from '../ui/BaseEditor.vue';
 
 export default {
   name: "NoteSectionInputEditor",
-  emits: ["save-changes", "show-dialog-template-creator", "show-dialog-template-viewer", "paste-template-from-quicklist", "set-editor"],
+  emits: ["save-changes", "show-template-creator", "show-template-viewer", "paste-template-from-favorites", "set-editor"],
   components: { BaseEditor },
   props: {
     width: Number,
@@ -47,16 +47,16 @@ export default {
   },
   methods: {
     saveChanges() {
-
+      this.$emit("save-changes");
     },
-    openDialogCreateTemplate() {
-
+    showTemplateCreator() {
+      this.$emit("show-template-creator");
     },
-    openDialogViewTemplates() {
-
+    showTemplateViewer() {
+      this.$emit("show-template-viewer");
     },
-    pasteTemplateFromQuicklist() {
-
+    pasteTemplateFromFavorites(template) {
+      this.$emit("paste-template-from-favorites", template);
     },
   },
   computed: {
@@ -65,10 +65,8 @@ export default {
     },
     backgroundColor() {
       if (this.isUsingSeparateColoring) {
-        console.log("1", this.$store.state.layout.eventInputBackgroundColor)
         return this.$store.state.layout.eventInputBackgroundColor;
       } else {
-        console.log("2", this.$store.state.layout.notesContainerBackgroundColor)
         return this.$store.state.layout.notesContainerBackgroundColor;
       }
     },

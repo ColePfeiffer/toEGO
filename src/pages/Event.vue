@@ -29,7 +29,11 @@
         <NoteSectionInputEditor :editor="editor"
           :width="getWidthForInputFields"
           :layoutMode="getEventMode"
-          @set-editor="setEditor"></NoteSectionInputEditor>
+          @set-editor="setEditor"
+          @save-changes="saveChanges"
+          @show-template-creator="showTemplateCreator"
+          @show-template-viewer="showTemplateViewer"
+          @paste-template-from-favorites="pasteTemplateFromFavorites"></NoteSectionInputEditor>
       </div>
     </template>
     <template v-slot:footer>
@@ -98,6 +102,7 @@ export default {
       this.editor = value;
     },
     setNote() {
+      console.log("setting note", this.$store.state.diaryentries.currentNote);
       this.editor = this.$store.state.diaryentries.currentNote.editor;
       this.title = this.$store.state.diaryentries.currentNote.title;
       this.mood = this.$store.state.diaryentries.currentNote.mood;
@@ -143,14 +148,14 @@ export default {
       }
       this.leavePage();
     },
-    pasteTemplateFromQuicklist(template) {
+    pasteTemplateFromFavorites(template) {
       if (this.editor != "") {
         this.editor = this.editor + "<br>" + template.text;
       } else {
         this.editor = template.text;
       }
     },
-    openDialogCreateTemplate() {
+    showTemplateCreator() {
       this.$store.commit("data/setEditorText", this.editor);
       let payload = {
         isVisible: true,
@@ -159,11 +164,11 @@ export default {
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },
-    openDialogViewTemplates() {
+    showTemplateViewer() {
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,
-        nameOfCurrentDialog: "template-viewer-for-events-editor",
+        nameOfCurrentDialog: "template-viewer-for-notes-editor",
       };
       this.$store.commit("data/setDialogVisibility", payload);
     },

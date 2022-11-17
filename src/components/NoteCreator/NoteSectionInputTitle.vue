@@ -50,10 +50,8 @@ export default {
     },
     backgroundColor() {
       if (this.isUsingSeparateColoring) {
-        console.log("1", this.$store.state.layout.eventInputBackgroundColor)
         return this.$store.state.layout.eventInputBackgroundColor;
       } else {
-        console.log("2", this.$store.state.layout.notesContainerBackgroundColor)
         return this.$store.state.layout.notesContainerBackgroundColor;
       }
     },

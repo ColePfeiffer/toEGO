@@ -62,7 +62,7 @@ export default {
     BaseTooltip,
     DiaryBaseHeader
   },
-  emits: ["go-to-event-set-to-creation-mode", "go-to-event-set-to-editing-mode", "hide-events", "show-events"],
+  emits: ["go-to-event-set-to-creation-mode", "hide-events", "show-events"],
   props: {
     diaryEntry: Object,
     splitterModel: {
@@ -109,9 +109,6 @@ export default {
   methods: {
     goToEventSetToCreationMode() {
       this.$emit("go-to-event-set-to-creation-mode");
-    },
-    goToEventSetToEditingMode(eventData) {
-      this.$emit("go-to-event-set-to-editing-mode", eventData);
     },
     hideEvents() {
       this.expandLess();

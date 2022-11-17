@@ -485,7 +485,7 @@ export default {
       let firstPart = newName.substring(0, 15);
       let secondPart = newName.substring(20);
       if (firstPart === 'template-viewer') {
-        if (secondPart === 'diary' || secondPart === 'events') {
+        if (secondPart === 'diary' || secondPart === 'notes') {
           // is showing via mainLayout, no paste function
           this.isPasteAllowed = false;
         } else {
@@ -614,8 +614,6 @@ export default {
         this.$store.commit("data/setEditorText", this.editor);
         let payload = { 'name': this.name, "type": this.type };
         this.$store.commit("templates/createTemplateAndAddToList", payload);
-        console.log(this.currentTemplate);
-        console.log(this.templateList[this.lengthOfTemplates - 1]);
         this.currentTemplate = this.templateList[this.lengthOfTemplates - 1];
         this.isCreatingNewTemplate = false;
       } else {
@@ -691,7 +689,6 @@ export default {
     // for baseDialog
     showHelp() {
       this.isHelpVisible = !this.isHelpVisible;
-      console.log(this.isHelpVisible);
     },
     finish() {
       this.isHelpVisible = false;
@@ -710,9 +707,7 @@ export default {
     },
     templatesCategories() {
       let data = { parents: this.categories, child: this.currentTemplate };
-      console.log(data);
       let output = this.$store.getters['templates/getParentsOfChild'](data);
-      console.log(output)
       return output;
 
     },

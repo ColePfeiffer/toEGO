@@ -18,6 +18,7 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
   let userID = firebaseAuth.currentUser.uid;
   let userSettingsContainer = ref(firebaseDb, "userSettings/" + userID);
 
+  // USER-SETTINGS
   // only fires once
   onValue(
     userSettingsContainer,
@@ -58,13 +59,33 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
   });
 }
 
-export function firebaseCreateUserSettings(state) {
-  console.log("creating user settings in firebase...");
+export function firebaseCreateUserSettings({ state }) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(firebaseDb, "userSettings/" + userId);
   set(path, state.userSettings, (error) => {
     if (error) {
-      //showErrorMessage(error.message)
+      showErrorMessage(error.message);
+    }
+  });
+}
+
+export function firebaseSetMessageToMyself({}, messageText) {
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(firebaseDb, "userSettings/" + userId + "/messageToMyself");
+  set(path, messageText, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
+
+export function firebaseToggleMessageVisibility({ state }) {
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(firebaseDb, "userSettings/" + userId + "/isMessageShown");
+  let newValue = !state.userSettings.isMessageShown;
+  set(path, newValue, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
     }
   });
 }

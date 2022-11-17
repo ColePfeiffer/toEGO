@@ -22,7 +22,7 @@
         </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
           :icon="getLetterIcon"
-          @click-button="toggleLetterVisibility">
+          @click-button="toggleMessageVisibility">
           <template v-slot:tooltip>
             <BaseTooltip text="Message to myself"
               :delay="15"></BaseTooltip>
@@ -32,9 +32,9 @@
     </template>
     <template v-slot:content>
       <div>
-        <MessageToMyself v-if="isLetterVisible"
+        <MessageToMyself v-if="isMessageShown"
           class="q-px-md "
-          @hide-message="isLetterVisible = false"></MessageToMyself>
+          @hide-message="toggleMessageVisibility"></MessageToMyself>
         <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
           :borderColorLeft="borderColorLeft"
           :borderColorRight="borderColorRight"
@@ -61,7 +61,6 @@ import BaseTooltip from "src/components/ui/BaseTooltip.vue";
 export default {
   data() {
     return {
-      isLetterVisible: false,
     };
   },
   components: {
@@ -72,15 +71,19 @@ export default {
     BaseTooltip
   },
   methods: {
-    toggleLetterVisibility() {
-      this.isLetterVisible = !this.isLetterVisible;
+    toggleMessageVisibility() {
+      this.$store.dispatch("data/firebaseToggleMessageVisibility");
     },
     goToEventSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
     goToEventSetToEditingMode(note) {
-      let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
+      this.$store.commit("diaryentries/updateCurrentNoteForEditing", note);
+      this.$store.commit("data/setModeForNewEvent", "EDIT");
+      this.$router.push("Event");
+      /* OLD
+     let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "diaryentries/getDiaryEntryByDate"
       ](note.date);
 
@@ -91,9 +94,13 @@ export default {
 
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");
+      */
     },
   },
   computed: {
+    isMessageShown() {
+      return this.$store.state.data.userSettings.isMessageShown;
+    },
     borderColorLeft() {
       return this.$store.state.layout.borderColorLeft;
     },
@@ -117,7 +124,7 @@ export default {
       return diaryEntryRefForDate;
     },
     getLetterIcon() {
-      if (this.isLetterVisible) {
+      if (this.isMessageShown) {
         return 'bi-envelope-open'
       } else {
         return "bi-envelope"

@@ -89,7 +89,6 @@ export default {
   components: { BaseCardWithTape, BaseButtonForDialogFooter },
   data() {
     return {
-      text: "Get the project done, try to have fun too, and keep an eye on yourself, buddy.",
       isInEditMode: false,
       editableMessageToMyself: "",
     };
@@ -97,7 +96,6 @@ export default {
   watch: {
     isInEditMode(newValue) {
       if (newValue) {
-        console.log("mode changed to edit mode");
         this.editableMessageToMyself = this.messageToMyself;
       }
     }
@@ -106,13 +104,12 @@ export default {
     enterEditMode() {
       this.isInEditMode = true;
     },
-    // TODO:
     discardChanges() {
       this.isInEditMode = false;
     },
     saveChanges() {
       this.isInEditMode = false;
-      this.$store.commit("data/setMessageToMyself", this.editableMessageToMyself);
+      this.$store.dispatch("data/firebaseSetMessageToMyself", this.editableMessageToMyself);
     },
     saveChangesAndCreateNote() {
       this.saveChanges();
@@ -130,7 +127,7 @@ export default {
   },
   computed: {
     messageToMyself() {
-      return this.$store.state.data.messageToMyself;
+      return this.$store.state.data.userSettings.messageToMyself;
     },
     // Styles
     getStyleForInput() {

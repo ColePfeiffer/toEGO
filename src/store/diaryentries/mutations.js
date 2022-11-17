@@ -111,6 +111,11 @@ export const updateID = (state, value) => {
   state.currentNote.id = value;
 };
 
+export const updateCurrentNoteForEditing = (state, note) => {
+  state.currentNote = note;
+};
+
+// TODO: kann wohl weg.
 export const updateCurrentNote = (state, payload) => {
   state.currentNote = payload.note;
   state.diaryEntryRef = payload.diaryEntry;

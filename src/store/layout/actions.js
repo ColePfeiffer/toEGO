@@ -19,19 +19,16 @@ export function setShadowForTitle({ getters, state, commit }) {
   let brightness = getters.getBrightness(state.secondary);
 
   if (brightness > 60 && brightness < 150) {
-    console.log("medium opacity");
     commit(
       "setEventTextShadow",
       state.secondary + state.mediumOpacity + " 2px 2px 2px"
     );
   } else if (brightness <= 60) {
-    console.log("low opacity");
     commit(
       "setEventTextShadow",
       state.secondary + state.lowOpacity + " 2px 2px 2px"
     );
   } else {
-    console.log("normal opacity");
     commit("setEventTextShadow", state.secondary + " 2px 2px 2px");
   }
 }

@@ -255,14 +255,14 @@ export default {
       return this.$store.state.data.dialogSettings.nameOfCurrentDialog;
     },
     type() {
-      if (this.nameOfCurrentDialog === 'template-viewer-for-events' || this.nameOfCurrentDialog === 'template-creator-for-event') {
+      if (this.nameOfCurrentDialog === 'template-viewer-for-notes-editor' || this.nameOfCurrentDialog === 'template-creator-for-event') {
         return "EVENT"
       } else {
         return "DIARY"
       }
     },
     templates() {
-      if (this.nameOfCurrentDialog === "template-viewer-for-events") {
+      if (this.nameOfCurrentDialog === "template-viewer-for-notes-editor") {
         return this.$store.state.templates.eventTemplates;
       } else {
         return this.$store.state.templates.diaryTemplates;
@@ -396,7 +396,7 @@ export default {
       }
     },
     openDialogViewEventTemplates() {
-      this.openDialog("template-viewer-for-events");
+      this.openDialog("template-viewer-for-notes");
     },
     openDialogViewDiaryTemplates() {
       this.openDialog("template-viewer-for-diary");
@@ -429,7 +429,6 @@ export default {
       );
     },
     createTemplate(templateName) {
-      console.log("creating template.... for : ", this.type);
       let newTemplate = {
         name: templateName,
         type: this.type,

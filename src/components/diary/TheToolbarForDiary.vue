@@ -11,7 +11,7 @@
           @click-button="subtractFromDate(1)">
           <template v-slot:tooltip>
             <BaseTooltip text="Go back"
-              :delay="15"></BaseTooltip>
+              :delay="100"></BaseTooltip>
           </template>
         </BaseButtonForTitleBar>
       </div>
@@ -23,7 +23,7 @@
           @click-button="setDateToToday()">
           <template v-slot:tooltip>
             <BaseTooltip text="Go to today"
-              :delay="15"></BaseTooltip>
+              :delay="100"></BaseTooltip>
           </template>
         </BaseButtonForTitleBar>
       </div>
@@ -50,7 +50,7 @@
           @click-button="setDateToToday()">
           <template v-slot:tooltip>
             <BaseTooltip text="Go to today"
-              :delay="15"></BaseTooltip>
+              :delay="100"></BaseTooltip>
           </template>
         </BaseButtonForTitleBar>
       </div>
@@ -62,7 +62,7 @@
           @click-button="addToDate(1)">
           <template v-slot:tooltip>
             <BaseTooltip text="Go forward"
-              :delay="15"></BaseTooltip>
+              :delay="100"></BaseTooltip>
           </template>
         </BaseButtonForTitleBar>
       </div>

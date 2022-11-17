@@ -11,7 +11,6 @@ export function registerUser(context, payload) {
   Loading.show();
   createUserWithEmailAndPassword(firebaseAuth, payload.email, payload.password)
     .then((response) => {
-      console.log("signed in response: ", response);
       // TODO: create userSettings For user...
       // FIXME: wird nicht gecalled.
       //dispatch("data/firebaseCreateUserSettings");
