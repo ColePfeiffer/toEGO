@@ -39,7 +39,7 @@ export default function () {
       isBackgroundVisible: false,
     },
     pastedText: "",
-    editorText: "",
+
     // FIXME:
     eventsOnDiaryPageAreExpanded: false,
   };

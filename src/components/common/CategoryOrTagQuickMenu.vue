@@ -115,6 +115,7 @@ import FolderCategoryTemplateStructure from "../dialogs/DialogTemplateViewer/Fol
 
 export default {
   name: "CategoryOrTagQuickMenu",
+  emits: ["set-favorite"],
   props: {
     currentTemplate: Object,
     folders: Array,
@@ -249,12 +250,7 @@ export default {
     },
 
     manageQuicklistStatus() {
-      let payload = {
-        templateID: this.currentTemplate.id,
-        quicklist: this.quicklist,
-        type: this.type,
-      };
-      this.$store.commit("templates/manageQuicklistStatusOfTemplate", payload);
+      this.$emit("set-favorite");
     },
   },
 };

@@ -1,18 +1,10 @@
 import { uid } from "quasar";
 
-export const createTemplateAndAddToList = (state, payload) => {
-  let newTemplate = {
-    id: uid(),
-    name: payload.name,
-    text: state.editorText,
-    isSetToDefault: false,
-  };
-  if (payload.type === "DIARY") {
-    state.diaryTemplates.push(newTemplate);
-  } else {
-    state.eventTemplates.push(newTemplate);
-  }
+export const setEditorText = (state, text) => {
+  state.editorText = text;
 };
+
+// old stuff
 
 // * deletes a template
 export const deleteTemplate = (state, payload) => {
@@ -86,32 +78,6 @@ export const resetCategorySettingsForTemplate = (state, payload) => {
 
   if (quicklist.storedIDs.includes(templateID)) {
     quicklist.storedIDs.splice(quicklist.storedIDs.indexOf(templateID), 1);
-  }
-};
-
-//payload consists of templateID and either diary's or event's quicklist
-export const manageQuicklistStatusOfTemplate = (state, payload) => {
-  let templateID = payload.templateID;
-  let type = payload.type;
-
-  if (type === "DIARY") {
-    if (state.quicklistForDiary.storedIDs.includes(templateID)) {
-      state.quicklistForDiary.storedIDs.splice(
-        state.quicklistForDiary.storedIDs.indexOf(templateID),
-        1
-      ); //deleting
-    } else {
-      state.quicklistForDiary.storedIDs.push(templateID);
-    }
-  } else {
-    if (state.quicklistForEvents.storedIDs.includes(templateID)) {
-      state.quicklistForEvents.storedIDs.splice(
-        state.quicklistForEvents.storedIDs.indexOf(templateID),
-        1
-      ); //deleting
-    } else {
-      state.quicklistForEvents.storedIDs.push(templateID);
-    }
   }
 };
 

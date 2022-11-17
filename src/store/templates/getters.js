@@ -1,3 +1,37 @@
+export const getFavoritesByType = (state, getters) => {
+  return (type) => {
+    return getters
+      .getTemplatesByType(type)
+      .filter((template) => template.isFavorite === true);
+  };
+};
+
+export const getTemplatesByType = (state) => {
+  return (type) => {
+    return state.templates.filter((template) => template.type === type);
+  };
+};
+
+export const getCategoriesByType = (state) => {
+  return (type) => {
+    return state.categories.filter((template) => template.type === type);
+  };
+};
+
+export const getFoldersByType = (state) => {
+  return (type) => {
+    return state.folders.filter((template) => template.type === type);
+  };
+};
+
+export const getTemplateByID = (state) => {
+  return (templateID) => {
+    return state.templates.find((template) => template.id === templateID);
+  };
+};
+
+// old
+
 // takes templateType (String, "DIARY" or "EVENT") as an argument, chekcs if there is a default template
 export const getDefaultTemplate = (state) => {
   return (templateType) => {
@@ -36,26 +70,6 @@ export const getTemplatesFromCategory = (state) => {
     category.storedIDs.forEach((ID) => {
       array.push(templates.find((template) => template.id === ID));
     });
-    return array;
-  };
-};
-
-export const getQuickListContent = (state) => {
-  return (type) => {
-    let array = [];
-    if (type === "DIARY") {
-      state.quicklistForDiary.storedIDs.forEach((templateID) => {
-        array.push(
-          state.diaryTemplates.find((template) => template.id === templateID)
-        );
-      });
-    } else {
-      state.quicklistForEvents.storedIDs.forEach((templateID) => {
-        array.push(
-          state.eventTemplates.find((template) => template.id === templateID)
-        );
-      });
-    }
     return array;
   };
 };
@@ -109,17 +123,6 @@ export const getCategoriesWithoutFolders = (state, getters) => {
   };
 };
 
-// TODO: kann weg
-export const getCategoriesByType = (state) => {
-  return (type) => {
-    if (type === "DIARY") {
-      return state.categoriesForDiary;
-    } else {
-      return state.categoriesForEvents;
-    }
-  };
-};
-
 export const getTemplatesWithoutCategories = (state, getters) => {
   return (payload) => {
     let categories = payload.categories;
@@ -129,26 +132,6 @@ export const getTemplatesWithoutCategories = (state, getters) => {
       let data = { parents: categories, child: template };
       return getters.isItemChildToAnyParent(data) === false;
     });
-  };
-};
-
-export const getTemplateByID = (state) => {
-  return (payload) => {
-    if (payload.type === "DIARY") {
-      return state.diaryTemplates.find((x) => x.id === payload.templateID);
-    } else {
-      return state.eventTemplates.find((x) => x.id === payload.templateID);
-    }
-  };
-};
-
-export const getTemplatesByType = (state) => {
-  return (type) => {
-    if (type === "DIARY") {
-      return state.diaryTemplates;
-    } else {
-      return state.eventTemplates;
-    }
   };
 };
 

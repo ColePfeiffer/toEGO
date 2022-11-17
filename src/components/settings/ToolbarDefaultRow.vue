@@ -165,7 +165,7 @@ export default {
       }
     },
     quicklistContent() {
-      return this.$store.getters["templates/getQuickListContent"](this.type)
+      return this.$store.getters["templates/getFavoritesByType"](this.type)
     },
     isQuicklistDisabled() {
       let templates = this.quicklistContent;

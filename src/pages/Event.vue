@@ -156,7 +156,7 @@ export default {
       }
     },
     showTemplateCreator() {
-      this.$store.commit("data/setEditorText", this.editor);
+      this.$store.commit("templates/setEditorText", this.editor);
       let payload = {
         isVisible: true,
         isBackgroundVisible: true,

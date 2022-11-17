@@ -102,11 +102,10 @@
         <DialogNameAndCreate @create="createTemplate"
           @closeDialog="closeDialog">
         </DialogNameAndCreate>
-        <BaseDialogTemplateViewer :type="type"
-          :templateList="templates"
-          @pasteTemplate="pasteTemplate"
+        <DialogTemplateViewer :type="type"
+          @paste-template="pasteTemplate"
           @closeDialog="closeDialog">
-        </BaseDialogTemplateViewer>
+        </DialogTemplateViewer>
         <div class="row justify-center"
           :style="boxShadowStyle">
           <div class="col-12 col-xs-10 col-sm-8 col-md-7 col-lg-4 col-xl-3 ">
@@ -150,7 +149,7 @@
 
 <script>
 import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
-import BaseDialogTemplateViewer from "../components/dialogs/BaseDialogTemplateViewer.vue";
+import DialogTemplateViewer from "../components/dialogs/DialogTemplateViewer.vue";
 import BaseTooltip from "../components/ui/BaseTooltip.vue";
 import TheHelpStepperForHome from "../components/home/TheHelpStepperForHome.vue";
 import TheHelpStepperForDiary from "../components/diary/TheHelpStepperForDiary.vue";
@@ -182,7 +181,7 @@ export default {
   },
   components: {
     DialogNameAndCreate,
-    BaseDialogTemplateViewer,
+    DialogTemplateViewer,
     BaseTooltip,
     TheHelpStepperForHome,
     TheHelpStepperForDiary
@@ -433,7 +432,7 @@ export default {
         name: templateName,
         type: this.type,
       };
-      this.$store.commit("templates/createTemplateAndAddToList", newTemplate);
+      this.$store.dispatch("templates/firebaseCreateTemplate", newTemplate);
       this.closeDialog();
     },
     toggleLeftDialog() {

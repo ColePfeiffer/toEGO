@@ -84,7 +84,7 @@ export default {
             this.$emit("go-to-event-set-to-creation-mode");
         },
         showTemplateCreator() {
-            this.$store.commit("data/setEditorText", this.changeData.editor);
+            this.$store.commit("templates/setEditorText", this.changeData.editor);
             let payload = {
                 isVisible: true,
                 isBackgroundVisible: true,

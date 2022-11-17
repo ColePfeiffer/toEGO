@@ -38,9 +38,6 @@ export const setMessageToMyself = (state, text) => {
   state.userSettings.messageToMyself = text;
 };
 
-export const setEditorText = (state, text) => {
-  state.editorText = text;
-};
 export const setDialogVisibility = (state, payload) => {
   state.dialogSettings.nameOfCurrentDialog = payload.nameOfCurrentDialog;
   state.dialogSettings.isVisible = payload.isVisible;
