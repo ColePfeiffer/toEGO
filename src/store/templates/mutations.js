@@ -1,129 +1,60 @@
-import { uid } from "quasar";
-
 export const setEditorText = (state, text) => {
   state.editorText = text;
 };
 
-// old stuff
-
-// * deletes a template
-export const deleteTemplate = (state, payload) => {
-  let template = payload.templateToDelete;
-  let templates = payload.templates;
-
-  let indexOfTemplate = templates.indexOf(template);
-  templates.splice(indexOfTemplate, 1);
+export const setTemplatesDownloaded = (state, bool) => {
+  state.templatesDownloaded = bool;
 };
 
-// * deletes a category
-export const deleteCategory = (state, payload) => {
-  let category = payload.categoryToDelete;
-  let categories = payload.categories;
-
-  let indexOfCategory = categories.indexOf(category);
-  categories.splice(indexOfCategory, 1);
+export const setCategoriesDownloaded = (state, bool) => {
+  state.categoriesDownloaded = bool;
 };
 
-export const updateTemplate = (state, payload) => {
-  payload.template.name = payload.name;
-  payload.template.text = payload.text;
+export const setFoldersDownloaded = (state, bool) => {
+  state.foldersDownloaded = bool;
 };
-
-export const setDefaultStatusOfTemplate = (state, payload) => {
-  payload.templateList.forEach((template) => {
-    if (template.id === payload.id) {
-      template.isSetToDefault = !template.isSetToDefault;
-    } else {
-      template.isSetToDefault = false;
-    }
-  });
+export const addLocalTemplate = (state, template) => {
+  state.templates.push(template);
 };
-
-// payload consists of categoryName and type; type can be "DIARY" or "EVENT"
-export const createCategory = (state, payload) => {
-  let categories;
-  if (payload.type === "DIARY") {
-    categories = state.categoriesForDiary;
-  } else {
-    categories = state.categoriesForEvents;
-  }
-  let newCategory = {
-    id: uid(),
-    name: payload.categoryName,
-    storedIDs: [],
-  };
-  categories.push(newCategory);
-};
-
-// renames a folder
-export const renameCategory = (state, payload) => {
-  let category = payload.item;
-  let newName = payload.newName;
-  category.name = newName;
-};
-
-export const resetCategorySettingsForTemplate = (state, payload) => {
-  let template = payload.template;
-  let templateID = payload.template.id;
-  let categories = payload.categories;
-  let quicklist = payload.quicklist;
-  template.isSetToDefault = false;
-
-  categories.forEach((category) => {
-    // if template id exists in category, delete it
-    if (category.storedIDs.includes(templateID)) {
-      category.storedIDs.splice(category.storedIDs.indexOf(templateID), 1);
-    }
-  });
-
-  if (quicklist.storedIDs.includes(templateID)) {
-    quicklist.storedIDs.splice(quicklist.storedIDs.indexOf(templateID), 1);
+export const updateLocalTemplate = (state, payload) => {
+  if (payload.index !== -1) {
+    state.templates[payload.index] = payload.template;
   }
 };
-
-// renames a folder
-export const renameFolder = (state, payload) => {
-  let folder = payload.item;
-  let newName = payload.newName;
-  folder.name = newName;
+export const deleteLocalTemplate = (state, indexOfTemplate) => {
+  state.templates.splice(indexOfTemplate, 1);
 };
 
-// deletes a folder, uses "type" to differ between foldertypes
-export const deleteFolder = (state, payload) => {
-  let folder = payload.folderToDelete;
-  let type = payload.type;
-
-  // remove folder from array
-  if (type === "DIARY") {
-    console.log("diary");
-    let indexOfFolder = state.foldersForDiary.indexOf(folder);
-    console.log(state.foldersForDiary);
-    state.foldersForDiary.splice(indexOfFolder, 1);
-    console.log(state.foldersForDiary);
-  } else {
-    console.log("note");
-    let indexOfFolder = state.foldersForEvents.indexOf(folder);
-    console.log(state.foldersForEvents);
-    state.foldersForEvents.splice(indexOfFolder, 1);
-    console.log(state.foldersForEvents);
+export const addLocalCategory = (state, category) => {
+  state.categories.push(category);
+};
+export const updateLocalCategory = (state, payload) => {
+  if (payload.index !== -1) {
+    state.categories[payload.index] = payload.category;
   }
 };
-
-export const createFolder = (state, payload) => {
-  let folders;
-  if (payload.type === "DIARY") {
-    folders = state.foldersForDiary;
-  } else {
-    folders = state.foldersForEvents;
-  }
-  let newFolder = {
-    id: uid(),
-    name: payload.name,
-    storedIDs: [],
-  };
-  folders.push(newFolder);
+export const deleteLocalCategory = (state, index) => {
+  state.categories.splice(index, 1);
 };
 
+export const addLocalFolder = (state, folder) => {
+  state.folders.push(folder);
+};
+export const updateLocalFolder = (state, payload) => {
+  console.log(state.folders);
+  if (payload.index !== -1) {
+    state.folders[payload.index] = payload.folder;
+  }
+  console.log(state.folders);
+};
+export const deleteLocalFolder = (state, index) => {
+  state.folders.splice(index, 1);
+};
+
+// old stuff ahead --- warning :O
+
+// FIXME: turn into action; by using the prop icon in baseItemClickable we can determine if its a template or a category; then we can add that to our payload
+// then we can differ between those two for setting the right stuff in the db
 export const addChildToParent = (state, payload) => {
   let parent = payload.parent;
   let child = payload.child;

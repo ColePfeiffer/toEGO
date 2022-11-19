@@ -9,6 +9,10 @@
             @click="logout"
             :style="styleForButton"
             color="secondary"></q-btn>
+          <q-btn label="Initiate Template Logic"
+            @click="$store.dispatch('templates/firebaseInitiate')"
+            :style="styleForButton"
+            color="secondary"></q-btn>
         </div>
       </template>
     </BaseSettingsTabPanelGroup>

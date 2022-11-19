@@ -137,7 +137,7 @@ export default {
   },
   computed: {
     isTemplateInQuicklist() {
-      if (this.quicklist.storedIDs.includes(this.currentTemplate.id)) {
+      if (this.currentTemplate.isFavorite) {
         return "bi-dash";
       } else {
         return "bi-plus";
@@ -192,11 +192,7 @@ export default {
   },
   methods: {
     setAsDefault() {
-      let payload = {
-        id: this.currentTemplate.id,
-        templateList: this.templates,
-      };
-      this.$store.commit("templates/setDefaultStatusOfTemplate", payload);
+      this.$store.dispatch("templates/firebaseSetDefault", this.currentTemplate);
     },
     onResize(size) {
       this.styleForScrollArea = {
@@ -233,20 +229,12 @@ export default {
       this.newCategoryName = "";
     },
     createNewCategory() {
-      let payload = {
-        categoryName: this.newCategoryName,
-        type: this.type,
-      };
-      this.$store.commit("templates/createCategory", payload);
+      let payload = { name: this.newCategoryName, type: this.type };
+      this.$store.dispatch("templates/firebaseCreateCategory", payload);
       this.closeAndResetNewCategoryCreation();
     },
     unsetAllCategories() {
-      let payload = {
-        template: this.currentTemplate,
-        categories: this.categories,
-        quicklist: this.quicklist,
-      };
-      this.$store.commit("templates/resetCategorySettingsForTemplate", payload);
+      this.$store.dispatch("templates/resetCategorySettingsForTemplate", this.currentTemplate);
     },
 
     manageQuicklistStatus() {

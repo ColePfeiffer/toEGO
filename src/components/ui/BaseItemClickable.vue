@@ -76,12 +76,12 @@ export default {
   },
   computed: {
     isItemInParent() {
-      if (this.currentParent.storedIDs.includes(this.currentChild.id)) {
-        return true;
+      if (this.currentParent.storedIDs != undefined) {
+        if (this.currentParent.storedIDs.includes(this.currentChild.id)) {
+          return true;
+        }
       }
-      else {
-        return false;
-      }
+      return false;
     },
     textColorStyle() {
       // sets the text color

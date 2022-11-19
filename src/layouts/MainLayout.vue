@@ -416,17 +416,6 @@ export default {
       }
       this.$store.commit("data/setPastedText", template.text);
     },
-    deleteTemplate(template) {
-      let payload = {
-        parents: this.categories,
-        child: template,
-        type: "EVENT",
-      };
-      this.$store.dispatch(
-        "templates/removeTemplateFromParentsAndDeleteIt",
-        payload
-      );
-    },
     createTemplate(templateName) {
       let newTemplate = {
         name: templateName,

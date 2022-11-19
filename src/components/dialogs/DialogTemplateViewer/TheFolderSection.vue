@@ -64,16 +64,15 @@ export default {
   methods: {
     createFolder(name) {
       let payload = { name: name, type: this.type };
-      this.$store.commit("templates/createFolder", payload);
+      this.$store.dispatch("templates/firebaseCreateFolder", payload);
     },
-    // renames an existing folder
     renameFolder(payload) {
-      this.$store.commit("templates/renameFolder", payload);
+      let updatedFolder = Object.assign({}, payload.item);
+      updatedFolder.name = payload.newName;
+      this.$store.dispatch("templates/firebaseUpdateFolder", updatedFolder);
     },
     deleteFolder(folderToDelete) {
-      // delete item
-      let payload = { folderToDelete: folderToDelete, type: this.type };
-      this.$store.commit("templates/deleteFolder", payload);
+      this.$store.commit("templates/firebaseDeleteFolder", folderToDelete);
     },
   },
 };

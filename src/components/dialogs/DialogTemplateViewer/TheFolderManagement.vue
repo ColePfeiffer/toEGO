@@ -28,8 +28,6 @@ export default {
     },
     props: {
         type: String,
-        folders: Array,
-        categories: Array,
     },
     data() {
         return {
@@ -40,15 +38,20 @@ export default {
             let payload = {
                 parents: this.folders,
                 child: categoryToDelete,
-                type: this.type,
             };
             this.$store.dispatch(
-                "templates/removeCategoryFromParentsAndDeleteIt",
+                "templates/firebaseDeleteCategory",
                 payload
             );
         },
     },
     computed: {
+        folders() {
+            return this.$store.getters["templates/getFoldersByType"](this.type);
+        },
+        categories() {
+            return this.$store.getters["templates/getCategoriesByType"](this.type);
+        },
         styleForFolderManagerContainer() {
             let style = {};
             style['max-height'] = this.$store.state.layout.height * 0.75 + "px";

@@ -328,9 +328,6 @@ export default {
     emits: ["paste-template"],
     components: { CategoryOrTagQuickMenu, FolderCategoryTemplateStructure, BaseEditor },
     props: {
-        templates: Array,
-        categories: Array,
-        folders: Array,
         type: String,
         isPasteAllowed: Boolean,
     },
@@ -344,7 +341,7 @@ export default {
             isInEditingMode: false,
             editor: "",
             name: "",
-            currentTemplate: this.templates[0],
+            indexOfCurrentTemplate: 0,
             isDeletingTemplate: false,
             qMenuModel: false,
             icon: true,
@@ -362,7 +359,7 @@ export default {
         // whenever the length of templates changes, this will reset the currentTemplate
         lengthOfTemplates(newLength, oldLength) {
             if (newLength != 0) {
-                this.currentTemplate = this.templates[newLength - 1];
+                this.indexOfCurrentTemplate = newLength - 1;
             }
         }
     },
@@ -408,7 +405,7 @@ export default {
             this.$store.commit("templates/removeTemplateFromCategory", payload);
         },
         pickTemplate(template) {
-            this.currentTemplate = template;
+            this.indexOfCurrentTemplate = this.$store.getters["templates/getTemplateIndexByID"](template.id);
             this.qMenuModel = false;
         },
         initiateDeletion() {
@@ -438,10 +435,11 @@ export default {
                 this.$store.commit("templates/setEditorText", this.editor);
                 let payload = { name: this.name, type: this.type };
                 this.$store.dispatch("templates/firebaseCreateTemplate", payload);
-                this.currentTemplate = this.templates[this.lengthOfTemplates - 1];
+                this.indexOfCurrentTemplate = this.lengthOfTemplates - 1;
                 this.isCreatingNewTemplate = false;
             } else {
                 let payload = { template: this.currentTemplate, name: this.name, text: this.editor };
+                console.log(payload);
                 this.$store.dispatch(
                     "templates/firebaseUpdateTemplate",
                     payload
@@ -475,26 +473,42 @@ export default {
                 if (!this.isIndexAtZero) {
                     let currentIndex = this.getIndexOfCurrentTemplate;
                     currentIndex -= 1;
-                    this.currentTemplate = this.templates[currentIndex];
+                    this.indexOfCurrentTemplate = currentIndex;
                 }
             } else {
                 if (!this.isIndexAtMaxLength) {
                     let currentIndex = this.getIndexOfCurrentTemplate;
                     currentIndex += 1;
-                    this.currentTemplate = this.templates[currentIndex];
+                    this.indexOfCurrentTemplate = currentIndex;
                 }
             }
         },
     },
     computed: {
+        currentTemplate() {
+            return this.templates[this.indexOfCurrentTemplate];
+        },
+        templates() {
+            return this.$store.getters["templates/getTemplatesByType"](this.type).slice();
+        },
+        categories() {
+            return this.$store.getters["templates/getCategoriesByType"](this.type);
+        },
+        folders() {
+            return this.$store.getters["templates/getFoldersByType"](this.type);
+        },
         lengthOfTemplates() {
             return this.templates.length;
         },
         favorites() {
             return this.$store.getters["templates/getFavoritesByType"](this.type);
         },
+        currentTemplateFavoriteState() {
+            return this.currentTemplate.isFavorite;
+        },
         isTemplateFavorite() {
-            if (this.currentTemplate.isFavorite) {
+            console.log("checking templateFavorite", this.currentTemplate, this.currentTemplate.isFavorite);
+            if (this.currentTemplateFavoriteState) {
                 return true;
             } else {
                 return false;

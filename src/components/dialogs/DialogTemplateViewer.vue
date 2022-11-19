@@ -39,15 +39,11 @@
         </div>
         <TheTemplateViewer v-else-if="isShowingTemplateViewer"
           ref="templateViewer"
-          :templates="templates"
-          :categories="categories"
-          :folders="folders"
           :type="type"
           :isPasteAllowed="isPasteAllowed"
           @paste-template="pasteTemplate"></TheTemplateViewer>
-        <TheFolderManagement v-else
-          :categories="categories"
-          :folders="folders"></TheFolderManagement>
+        <TheFolderManagement :type="type"
+          v-else></TheFolderManagement>
         <br />
       </div>
     </template>
@@ -184,12 +180,6 @@ export default {
     },
     lengthOfTemplates() {
       return this.templates.length;
-    },
-    categories() {
-      return this.$store.getters["templates/getCategoriesByType"](this.type);
-    },
-    folders() {
-      return this.$store.getters["templates/getFoldersByType"](this.type);
     },
     labelForToggleButton() {
       if (this.isShowingTemplateViewer) {

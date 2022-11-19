@@ -30,6 +30,24 @@ export const getTemplateByID = (state) => {
   };
 };
 
+export const getTemplateIndexByID = (state) => {
+  return (templateID) => {
+    return state.templates.findIndex((template) => template.id === templateID);
+  };
+};
+
+export const getCategoryIndexByID = (state) => {
+  return (categoryID) => {
+    return state.categories.findIndex((category) => category.id === categoryID);
+  };
+};
+
+export const getFolderIndexByID = (state) => {
+  return (folderID) => {
+    return state.folders.findIndex((folder) => folder.id === folderID);
+  };
+};
+
 // old
 
 // takes templateType (String, "DIARY" or "EVENT") as an argument, chekcs if there is a default template
@@ -56,10 +74,11 @@ export const getDefaultTemplate = (state) => {
 export const getFolderContent = (state) => {
   return (folder, categories) => {
     let array = [];
-
-    folder.storedIDs.forEach((ID) => {
-      array.push(categories.find((category) => category.id === ID));
-    });
+    if (folder.storedIDs != undefined) {
+      folder.storedIDs.forEach((ID) => {
+        array.push(categories.find((category) => category.id === ID));
+      });
+    }
     return array;
   };
 };
@@ -67,9 +86,11 @@ export const getFolderContent = (state) => {
 export const getTemplatesFromCategory = (state) => {
   return (category, templates) => {
     let array = [];
-    category.storedIDs.forEach((ID) => {
-      array.push(templates.find((template) => template.id === ID));
-    });
+    if (category.storedIDs != undefined) {
+      category.storedIDs.forEach((ID) => {
+        array.push(templates.find((template) => template.id === ID));
+      });
+    }
     return array;
   };
 };
@@ -80,8 +101,10 @@ export const getParentsOfChild = (state) => {
     let child = payload.child;
     let parentsOfChild = [];
     for (let i = 0; i < possibleParents.length; i++) {
-      if (possibleParents[i].storedIDs.includes(child.id)) {
-        parentsOfChild.push(possibleParents[i]);
+      if (possibleParents.storedIDs != undefined) {
+        if (possibleParents[i].storedIDs.includes(child.id)) {
+          parentsOfChild.push(possibleParents[i]);
+        }
       }
     }
     return parentsOfChild;
@@ -96,11 +119,13 @@ export const isItemChildToAnyParent = (state) => {
     let isChildFromParent;
     for (let i = 0; i < parents.length; i++) {
       // if we find a parent to our item, we leave the loop early.
-      if (parents[i].storedIDs.includes(child.id)) {
-        isChildFromParent = true;
-        return isChildFromParent;
-      } else {
-        isChildFromParent = false;
+      if (parents.storedIDs != undefined) {
+        if (parents[i].storedIDs.includes(child.id)) {
+          isChildFromParent = true;
+          return isChildFromParent;
+        } else {
+          isChildFromParent = false;
+        }
       }
     }
     return isChildFromParent;
@@ -138,7 +163,7 @@ export const getTemplatesWithoutCategories = (state, getters) => {
 // TODO: L
 export const isCategoryEmpty = (state) => {
   return (category) => {
-    if (typeof category !== "undefined" && category.storedIDs.length === 0) {
+    if (typeof category !== "undefined" && category.storedIDs != undefined) {
       return true;
     } else {
       return false;
@@ -150,7 +175,7 @@ export const areCategoriesInFolderEmpty = (state, getters) => {
   return (folder, categories) => {
     let folderIsEmpty;
     // if folder doesn't have any categories, return true
-    if (folder.storedIDs.length === 0) {
+    if (folder.storedIDs === undefined) {
       folderIsEmpty = true;
       // if folder has categories, check if they are empty
     } else {

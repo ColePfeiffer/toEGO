@@ -65,12 +65,14 @@ export default {
 
   methods: {
     createCategory(name) {
-      let payload = { categoryName: name, type: this.type };
-      this.$store.commit("templates/createCategory", payload);
+      let payload = { name: name, type: this.type };
+      this.$store.dispatch("templates/firebaseCreateCategory", payload);
     },
     // renames an existing folder
     renameCategory(payload) {
-      this.$store.commit("templates/renameCategory", payload);
+      let updatedCategory = Object.assign({}, payload.item);
+      updatedCategory.name = payload.newName;
+      this.$store.dispatch("templates/firebaseUpdateCategory", updatedCategory);
     },
     deleteCategory(categoryToDelete) {
       this.$emit("delete-category", categoryToDelete);

@@ -55,6 +55,7 @@ export function handleAuthStateChange({ commit, dispatch }) {
       //LocalStorage.set("loggedIn", true);
       dispatch("diaryentries/firebaseReadData", null, { root: true });
       dispatch("data/firebaseReadData", null, { root: true });
+      dispatch("templates/firebaseReadData", null, { root: true });
     } else {
       commit("setLoggedIn", false);
       //LocalStorage.set("loggedIn", false);
