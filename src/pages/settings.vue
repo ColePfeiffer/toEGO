@@ -33,25 +33,32 @@
             <q-tab-panels v-model="settingsTab"
               animated>
               <q-tab-panel name="view">
-                <DesignSettings></DesignSettings>
+                <DesignSettings :hasSettingChanged="hasSettingChanged"
+                  @setting-changed="settingHasChanged"></DesignSettings>
               </q-tab-panel>
-
               <q-tab-panel name="other">
-                <PageSettings></PageSettings>
+                <PageSettings :hasSettingChanged="hasSettingChanged"
+                  @setting-changed="settingHasChanged"></PageSettings>
               </q-tab-panel>
-
               <q-tab-panel name="Account">
                 <AccountSettings></AccountSettings>
               </q-tab-panel>
             </q-tab-panels>
           </template>
-
         </BaseScrollArea>
-
       </div>
 
     </template>
-    <template v-slot:footer></template>
+    <template v-slot:footer>
+      <BaseButtonForDialogFooter v-if="hasSettingChanged"
+        buttonText="Discard"
+        @click-button="discardChanges">
+      </BaseButtonForDialogFooter>
+      <BaseButtonForDialogFooter v-if="hasSettingChanged"
+        buttonText="Save changes"
+        @click-button="saveChangesToFirebase">
+      </BaseButtonForDialogFooter>
+    </template>
   </BasePage>
 </template>
 
@@ -61,19 +68,36 @@ import BaseScrollArea from "src/components/ui/BaseScrollArea.vue";
 import PageSettings from "src/components/settings/PageSettings.vue";
 import DesignSettings from "../components/settings/DesignSettings.vue";
 import AccountSettings from "../components/settings/AccountSettings.vue";
+import BaseButtonForDialogFooter from "../components/ui/BaseButtonForDialogFooter.vue";
 
 export default {
-  components: { BasePage, PageSettings, DesignSettings, AccountSettings, BaseScrollArea },
+  components: { BasePage, PageSettings, DesignSettings, AccountSettings, BaseScrollArea, BaseButtonForDialogFooter },
   data() {
     return {
       settingsTab: 'view',
+      hasSettingChanged: false,
     };
   },
+  methods: {
+    discardChanges() {
+      // reset changes to userTheme
+      this.hasSettingChanged = false;
+    },
+    saveChangesToFirebase() {
+      // save changes to userTheme
+    },
+    settingHasChanged() {
+      console.log("some setting has changed");
+      this.hasSettingChanged = true;
+    },
+  },
   computed: {
+    userTheme() {
+      return this.$store.state.data.userTheme;
+    },
     styleForScrollArea() {
       let style = {};
-
-      style['height'] = this.$store.state.layout.height * .7 + "px";
+      style['height'] = this.$store.state.layout.height * .69 + "px";
       if (this.$store.getters['layout/isDarkModeActive']) {
         style["background-color"] = "var(--q-dark)";
       } else {

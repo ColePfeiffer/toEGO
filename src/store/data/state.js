@@ -17,7 +17,27 @@ export default function () {
       hasFinishedHelpForTemplatesForTheFirstTime: false,
       messageToMyself: "",
       isMessageShown: false,
-      userTheme: {},
+      userTheme: {}, // { 'nightSky' }
+    },
+    userThemes: {
+      // also add these to default... so when user sets stuff to default, default themes will be resetted too.
+      nightSky: {
+        backgroundImage: "url(https://i.imgur.com/Dryps1y.png)",
+        secondary: "#7689b0",
+        accent: "#cdb1de",
+        accent2: "#060754",
+        borderColorLeft: "#7689b0",
+        borderColorRight: "#7689b0",
+        homeMode: "retro",
+        homeBackgroundColor: "#ebebeb59",
+        noteMode: "default",
+        diaryMode: "clear",
+        diaryCardBackgroundColor: "#fafafaed",
+        isDiaryTitleBarShowingDay: false,
+        diarySubtitleStyleIsSetToAlternative: false,
+      },
+      theme2: {},
+      theme3: {},
     },
     userSettings: {
       hasFinishedHelpForHomeForTheFirstTime: false,

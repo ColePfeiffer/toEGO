@@ -310,6 +310,8 @@ import BaseTooltip from '../ui/BaseTooltip.vue';
 
 export default {
   components: { BaseItemForSettingsTabPanel, BaseSettingsTabPanelGroup, BaseTooltip },
+  emits: ["setting-changed"],
+  props: { hasSettingChanged: Boolean },
   data() {
     return {
       isGeneralGroupExpanded: true,
@@ -326,9 +328,11 @@ export default {
   },
   watch: {
     fontsize(newValue) {
+      this.setHasSettingChanged();
       this.$store.commit("layout/setFontsize", newValue);
     },
     isUsingFont(newValue) {
+      this.setHasSettingChanged();
       this.$store.commit("layout/setFont", newValue);
     },
     storedTheme(newTheme) {
@@ -340,23 +344,28 @@ export default {
         value
       );
     },
-
     backgroundImageURL(newURL) {
       this.backgroundImage = newURL;
     },
     backgroundImage(imageURL) {
+      this.setHasSettingChanged();
       console.log(imageURL);
       if (imageURL != 'custom') {
         this.$store.commit("layout/changeBackgroundImage", imageURL);
       }
     },
-
     backgroundColor(color) {
+      this.setHasSettingChanged();
       this.$store.commit("layout/changeBackgroundColor", color);
     },
 
   },
   methods: {
+    setHasSettingChanged() {
+      if (!this.hasSettingChanged) {
+        this.$emit("setting-changed");
+      }
+    },
     toggleDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
       this.$store.commit("layout/toggleDarkMode");
@@ -394,6 +403,7 @@ export default {
         return this.$store.state.layout.secondary;
       },
       set(value) {
+        this.setHasSettingChanged();
         this.$store.dispatch("layout/setSecondaryColor", value);
       },
     },
@@ -402,6 +412,7 @@ export default {
         return this.$store.state.layout.accent;
       },
       set(value) {
+        this.setHasSettingChanged();
         this.$store.commit("layout/setAccent", value);
       },
     },
@@ -411,6 +422,7 @@ export default {
         return this.$store.state.layout.accent2;
       },
       set(value) {
+        this.setHasSettingChanged();
         this.$store.commit("layout/setAccent2", value);
       },
     },

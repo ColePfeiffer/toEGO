@@ -21,6 +21,8 @@ export default {
     TheSettingsPageForDiary,
     TheSettingsPageForNewNote
   },
+  emits: ["setting-changed"],
+  props: { hasSettingChanged: Boolean },
   data() {
     return {
     };
