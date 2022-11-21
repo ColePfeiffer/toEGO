@@ -10,18 +10,12 @@
       <!-- Submenu -->
       <BaseMenu v-if="isShowingTemplates"
         :menuModel="menuModel"
-        :items="$store.getters['templates/getTemplatesFromCategory'](
-          category,
-          templates
-        )"
+        :items="getTemplatesFromCategory"
         @changed-menu-state="changedMenuState">
         <template v-slot:itemsInsideList>
           <!-- Templates inside Category -->
-          <TemplateItem v-for="template in $store.getters['templates/getTemplatesFromCategory'](
-            category,
-            templates
-          )"
-            :key="template"
+          <TemplateItem v-for="template in getTemplatesFromCategory"
+            :key="template.id"
             v-close-popup="2"
             :isShowingTemplates="isShowingTemplates"
             :template="template"
@@ -91,6 +85,9 @@ export default {
     }
   },
   computed: {
+    getTemplatesFromCategory() {
+      return this.$store.getters['templates/getTemplatesFromCategory'](this.category, this.templates);
+    }
   },
 };
 </script>

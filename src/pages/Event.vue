@@ -77,6 +77,13 @@ export default {
     // if mode is set to editing mode, we fetch the updated eventData
     if (!this.$store.state.data.newEventIsInCreationMode) {
       this.setNote();
+    } else {
+      // applying default template
+      let defaultTemplate =
+        this.$store.getters["templates/getDefaultTemplate"]("EVENT");
+      if (defaultTemplate != undefined) {
+        this.editor = defaultTemplate;
+      }
     }
   },
   watch: {

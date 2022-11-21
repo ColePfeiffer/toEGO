@@ -5,10 +5,9 @@
                 :style="styleForFolderManagerContainer"
                 padding>
                 <TheFolderSection :type="type"
-                    :itemsToDisplay="folders"></TheFolderSection>
+                    :folders="folders"></TheFolderSection>
                 <q-separator spaced />
                 <TheCategorySection :type="type"
-                    :itemsToDisplay="categories"
                     @delete-category="deleteCategory"></TheCategorySection>
             </q-list>
         </div>
@@ -48,9 +47,6 @@ export default {
     computed: {
         folders() {
             return this.$store.getters["templates/getFoldersByType"](this.type);
-        },
-        categories() {
-            return this.$store.getters["templates/getCategoriesByType"](this.type);
         },
         styleForFolderManagerContainer() {
             let style = {};

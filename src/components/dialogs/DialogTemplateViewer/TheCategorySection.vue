@@ -2,24 +2,17 @@
   <BaseSection @create-new-item="createCategory">
     <template v-slot:headername>Categories</template>
     <template v-slot:itemsToDisplay>
-      <div v-for="category in itemsToDisplay"
-        :key="category">
+      <div v-for="category in categories"
+        :key="category.id">
         <BaseMenuForFolderManagement childAsText="Templates: "
           :item="category"
+          childIcon="bi-file-earmark-font"
+          :childList="templates"
           icon="bi-tags"
           dense
           style="padding-bottom: 0px"
           @rename-item="renameCategory"
           @delete-item="deleteCategory">
-          <template v-slot:children>
-            <div v-for="template in templates"
-              :key="template">
-              <BaseItemForFolderManagement :item="template"
-                icon="bi-file-earmark-font"
-                :parent="category">
-              </BaseItemForFolderManagement>
-            </div>
-          </template>
         </BaseMenuForFolderManagement>
       </div>
     </template>
@@ -28,7 +21,6 @@
 
 <script>
 import BaseSection from "./BaseSection.vue";
-import BaseItemForFolderManagement from "./BaseItemForFolderManagement.vue";
 import BaseMenuForFolderManagement from "./BaseMenuForFolderManagement.vue";
 
 export default {
@@ -36,17 +28,19 @@ export default {
   emits: ["delete-category"],
   props: {
     type: String,
-    itemsToDisplay: Array,
   },
   components: {
     BaseSection,
-    BaseItemForFolderManagement,
     BaseMenuForFolderManagement,
   },
   data() {
-    return {};
+    return {
+    };
   },
   computed: {
+    categories() {
+      return this.$store.getters["templates/getCategoriesByType"](this.type);
+    },
     isTypeSetToDiary() {
       if (this.type === "DIARY") {
         return true;
@@ -55,14 +49,9 @@ export default {
       }
     },
     templates() {
-      if (this.isTypeSetToDiary) {
-        return this.$store.state.data.diaryTemplates;
-      } else {
-        return this.$store.state.data.eventTemplates;
-      }
+      return this.$store.getters["templates/getTemplatesByType"](this.type);
     },
   },
-
   methods: {
     createCategory(name) {
       let payload = { name: name, type: this.type };

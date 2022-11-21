@@ -33,6 +33,8 @@ export default {
       type: Object,
       default: null,
     },
+
+
   },
   created() {
     // FIXME: maybe use different thingie instead of created, dunno if right choice???
@@ -52,10 +54,6 @@ export default {
   },
   methods: {
     clickItem() {
-      this.manageChildParentRelationship();
-    },
-    // item is child
-    manageChildParentRelationship() {
       let payload = {
         parent: this.currentParent,
         child: this.currentChild,
@@ -68,10 +66,10 @@ export default {
       }
     },
     addChildToParent(payload) {
-      this.$store.commit("templates/addChildToParent", payload);
+      this.$store.dispatch("templates/firebaseAddChildToParent", payload);
     },
     removeChildFromParent(payload) {
-      this.$store.commit("templates/removeChildFromParent", payload);
+      this.$store.dispatch("templates/firebaseRemoveChildFromParent", payload);
     },
   },
   computed: {

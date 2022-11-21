@@ -17,8 +17,9 @@ export const addLocalTemplate = (state, template) => {
   state.templates.push(template);
 };
 export const updateLocalTemplate = (state, payload) => {
+  let template = payload.template;
   if (payload.index !== -1) {
-    state.templates[payload.index] = payload.template;
+    Object.assign(state.templates[payload.index], template);
   }
 };
 export const deleteLocalTemplate = (state, indexOfTemplate) => {
@@ -28,9 +29,18 @@ export const deleteLocalTemplate = (state, indexOfTemplate) => {
 export const addLocalCategory = (state, category) => {
   state.categories.push(category);
 };
+/*
+Setting the index directly for some reason breaks reactivity with some components (menu's list for example), but setting it by Object.assign() works.
+    //state.categories[payload.index] = payload.category
+*/
 export const updateLocalCategory = (state, payload) => {
+  let category = payload.category;
   if (payload.index !== -1) {
-    state.categories[payload.index] = payload.category;
+    Object.assign(state.categories[payload.index], category);
+
+    if (category.storedIDs === undefined) {
+      delete state.categories[payload.index].storedIDs;
+    }
   }
 };
 export const deleteLocalCategory = (state, index) => {
@@ -41,36 +51,19 @@ export const addLocalFolder = (state, folder) => {
   state.folders.push(folder);
 };
 export const updateLocalFolder = (state, payload) => {
-  console.log(state.folders);
+  let folder = payload.folder;
   if (payload.index !== -1) {
-    state.folders[payload.index] = payload.folder;
+    Object.assign(state.folders[payload.index], folder);
+    if (folder.storedIDs === undefined) {
+      delete state.folders[payload.index].storedIDs;
+    }
   }
-  console.log(state.folders);
 };
 export const deleteLocalFolder = (state, index) => {
   state.folders.splice(index, 1);
 };
 
-// old stuff ahead --- warning :O
-
-// FIXME: turn into action; by using the prop icon in baseItemClickable we can determine if its a template or a category; then we can add that to our payload
-// then we can differ between those two for setting the right stuff in the db
-export const addChildToParent = (state, payload) => {
-  let parent = payload.parent;
-  let child = payload.child;
-  parent.storedIDs.push(child.id);
-};
-
-export const removeChildFromParent = (state, payload) => {
-  let parent = payload.parent;
-  let child = payload.child;
-
-  var filteredArray = parent.storedIDs.filter(function (categoryID) {
-    return categoryID != child.id;
-  });
-  parent.storedIDs = filteredArray;
-};
-
+/*
 export const removeChildFromAllParents = (state, payload) => {
   let child = payload.child; // can be category item or template item ...
   let parents = payload.parents; // can be folders or categories
@@ -84,22 +77,4 @@ export const removeChildFromAllParents = (state, payload) => {
   });
 };
 
-// payload consists of category and templateID
-export const addTemplateToCategory = (state, payload) => {
-  let category = payload.category;
-  let template = payload.template;
-  category.storedIDs.push(template.id);
-};
-
-// payload consists of category, templateID
-export const removeTemplateFromCategory = (state, payload) => {
-  let category = payload.category;
-  let template = payload.template;
-
-  // Remove template from array
-  var filteredArray = category.storedIDs.filter(function (templateID) {
-    return templateID != template.id;
-  });
-
-  category.storedIDs = filteredArray;
-};
+*/

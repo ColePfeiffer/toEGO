@@ -4,6 +4,7 @@
     <q-menu fit
       square
       cover
+      no-refocus
       anchor="top left"
       class="no-border-radius"
       ref="qMenuModelRef"
@@ -19,7 +20,7 @@
               color="secondary"
               class="q-pl-sm"
               icon="bi-chevron-left"
-              @click="toggleMenu">
+              @click="hideMenu">
             </q-btn>
           </q-item-section>
           <!-- Name and Buttons -->
@@ -118,8 +119,14 @@
         </q-item>
         <q-separator></q-separator>
         <!-- Folder or Category Items -->
-        <!-- TODO add items -->
-        <slot name="children"></slot>
+        <!-- TODO add items  ...-->
+        <div v-for="child in childList"
+          :key="child.id">
+          <BaseItemForFolderManagement :item="child"
+            :icon="childIcon"
+            :parent="item">
+          </BaseItemForFolderManagement>
+        </div>
       </q-list>
     </q-menu>
 
@@ -157,36 +164,36 @@
 </template>
 
 <script>
+import BaseItemForFolderManagement from "./BaseItemForFolderManagement.vue";
+
 export default {
   name: "BaseMenuForFolderManagement",
   props: {
     item: Object,
     childAsText: String,
     icon: String, // bi-folder, or bi-collection
+    childIcon: String,
+    childList: Array,
   },
   emits: ["delete-item", "rename-item"],
-  components: {},
+  components: { BaseItemForFolderManagement },
   data() {
     return {
-      expandIcon: "bi-chevron-down",
-      qMenuModel: false,
-      qMenuModel2: false,
       isDeleting: false,
+      qMenuModel: false,
       isRenaming: false,
       newName: this.item.name,
       nameRules: [(val) => (val && val.length > 0) || "Please enter a name"],
     };
   },
-  watch: {
-    qMenuModel(newValue) {
-      if (newValue === true) {
-        this.expandIcon = "bi-chevron-up";
+  computed: {
+    expandIcon() {
+      if (this.qMenuModel === true) {
+        return "bi-chevron-up";
       } else {
-        this.expandIcon = "bi-chevron-down";
+        return "bi-chevron-down";
       }
     },
-  },
-  computed: {
     itemName() {
       if (this.item.name.length > 15) {
         return this.item.name.substring(0, 15) + "...";
@@ -202,7 +209,7 @@ export default {
       if (this.item.storedIDs != undefined) {
         amount = this.item.storedIDs.length;
       } else {
-        amount = this.item.storedIDs.length;
+        amount = 0;
       }
       return amount;
     },
@@ -219,7 +226,6 @@ export default {
     initiateRenaming() {
       this.isRenaming = !this.isRenaming;
     },
-
     cancelRenaming() {
       this.$refs.nameRef.resetValidation();
       this.isRenaming = false;
@@ -232,10 +238,12 @@ export default {
       this.isRenaming = false;
     },
     showQMenu() {
-      this.$refs.qMenuModelRef.show;
+      //this.$refs.qMenuModelRef.show;
+      this.qMenuModel = true;
     },
-    toggleMenu() {
-      this.qMenuModel = !this.qMenuModel;
+    hideMenu() {
+      this.qMenuModel = false;
+      //this.$refs.qMenuModelRef.hide;
     },
   },
 };

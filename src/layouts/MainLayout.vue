@@ -254,18 +254,14 @@ export default {
       return this.$store.state.data.dialogSettings.nameOfCurrentDialog;
     },
     type() {
-      if (this.nameOfCurrentDialog === 'template-viewer-for-notes-editor' || this.nameOfCurrentDialog === 'template-creator-for-event') {
+      if (this.nameOfCurrentDialog === 'template-viewer-for-notes-editor' | this.nameOfCurrentDialog === "template-viewer-for-notes" | this.nameOfCurrentDialog === 'template-creator-for-event') {
         return "EVENT"
       } else {
         return "DIARY"
       }
     },
     templates() {
-      if (this.nameOfCurrentDialog === "template-viewer-for-notes-editor") {
-        return this.$store.state.templates.eventTemplates;
-      } else {
-        return this.$store.state.templates.diaryTemplates;
-      }
+      return this.$store.getters["templates/getTemplatesByType"](this.type)
     },
     currentRouterPath() {
       return this.$route.path;

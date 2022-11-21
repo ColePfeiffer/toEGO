@@ -69,7 +69,6 @@ export default {
       this.$emit("click-folder", folder);
     },
     clickCategoryInsideFolder() {
-
     },
     clickTemplateInsideCategoryInsideFolder(template) {
       this.clickTemplate(template);
@@ -77,8 +76,8 @@ export default {
     clickCategory(category) {
       this.$emit("click-category", category);
     },
-    clickTemplateInsideCategory() {
-
+    clickTemplateInsideCategory(template) {
+      this.$emit("click-template", template);
     },
     clickTemplate(template) {
       this.$emit("click-template", template);
@@ -112,9 +111,8 @@ export default {
     // only returns category-items that are not stored in any folder and hold at least one template-item
     getCategoriesWithoutFoldersButWithTemplates() {
       let test;
-
       test = this.getCategoriesWithoutFolders.filter((category) => {
-        return category.storedIDs.length > 0;
+        return category.storedIDs != undefined && category.storedIDs.length > 0;
       });
       return test;
     },

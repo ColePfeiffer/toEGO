@@ -14,13 +14,13 @@ export const getTemplatesByType = (state) => {
 
 export const getCategoriesByType = (state) => {
   return (type) => {
-    return state.categories.filter((template) => template.type === type);
+    return state.categories.filter((category) => category.type === type);
   };
 };
 
 export const getFoldersByType = (state) => {
   return (type) => {
-    return state.folders.filter((template) => template.type === type);
+    return state.folders.filter((folder) => folder.type === type);
   };
 };
 
@@ -31,8 +31,10 @@ export const getTemplateByID = (state) => {
 };
 
 export const getTemplateIndexByID = (state) => {
-  return (templateID) => {
-    return state.templates.findIndex((template) => template.id === templateID);
+  return (payload) => {
+    return payload.templates.findIndex(
+      (template) => template.id === payload.templateID
+    );
   };
 };
 
@@ -48,26 +50,34 @@ export const getFolderIndexByID = (state) => {
   };
 };
 
-// old
-
 // takes templateType (String, "DIARY" or "EVENT") as an argument, chekcs if there is a default template
-export const getDefaultTemplate = (state) => {
-  return (templateType) => {
-    let templateList;
-    if (templateType === "EVENT") {
-      templateList = state.eventTemplates;
-    } else {
-      templateList = state.diaryTemplates;
-    }
-    let defaultTemplate = templateList.find(
+export const getDefaultTemplate = (state, getters) => {
+  return (type) => {
+    let templates = getters.getTemplatesByType(type);
+    let result = templates.findIndex(
       (template) => template.isSetToDefault === true
     );
-
-    if (defaultTemplate != undefined) {
-      return defaultTemplate.text;
+    if (result != -1) {
+      return templates[result].text;
     } else {
       return undefined;
     }
+  };
+};
+
+export const getParentsOfChild = (state) => {
+  return (payload) => {
+    let possibleParents = payload.parents;
+    let child = payload.child;
+    let parentsOfChild = [];
+    for (let i = 0; i < possibleParents.length; i++) {
+      if (possibleParents[i].storedIDs != undefined) {
+        if (possibleParents[i].storedIDs.includes(child.id)) {
+          parentsOfChild.push(possibleParents[i]);
+        }
+      }
+    }
+    return parentsOfChild;
   };
 };
 
@@ -95,75 +105,9 @@ export const getTemplatesFromCategory = (state) => {
   };
 };
 
-export const getParentsOfChild = (state) => {
-  return (payload) => {
-    let possibleParents = payload.parents;
-    let child = payload.child;
-    let parentsOfChild = [];
-    for (let i = 0; i < possibleParents.length; i++) {
-      if (possibleParents.storedIDs != undefined) {
-        if (possibleParents[i].storedIDs.includes(child.id)) {
-          parentsOfChild.push(possibleParents[i]);
-        }
-      }
-    }
-    return parentsOfChild;
-  };
-};
-
-// checks if the provided item is a child of any parent of the parents-array and returns true if so
-export const isItemChildToAnyParent = (state) => {
-  return (payload) => {
-    let parents = payload.parents;
-    let child = payload.child;
-    let isChildFromParent;
-    for (let i = 0; i < parents.length; i++) {
-      // if we find a parent to our item, we leave the loop early.
-      if (parents.storedIDs != undefined) {
-        if (parents[i].storedIDs.includes(child.id)) {
-          isChildFromParent = true;
-          return isChildFromParent;
-        } else {
-          isChildFromParent = false;
-        }
-      }
-    }
-    return isChildFromParent;
-  };
-};
-
-export const getCategoriesWithoutFolders = (state, getters) => {
-  return (payload) => {
-    let categories = payload.categories;
-    let folders = payload.folders;
-
-    /* we only want to get folderless categories,
-      the following filtering process only returns those category-items, that meet the condition
-      ("isItemChildToAnyParent" returning false) as that means it's folderless */
-
-    return categories.filter((category) => {
-      let data = { parents: folders, child: category };
-      return getters.isItemChildToAnyParent(data) === false;
-    });
-  };
-};
-
-export const getTemplatesWithoutCategories = (state, getters) => {
-  return (payload) => {
-    let categories = payload.categories;
-    let templates = payload.templates;
-
-    return templates.filter((template) => {
-      let data = { parents: categories, child: template };
-      return getters.isItemChildToAnyParent(data) === false;
-    });
-  };
-};
-
-// TODO: L
 export const isCategoryEmpty = (state) => {
   return (category) => {
-    if (typeof category !== "undefined" && category.storedIDs != undefined) {
+    if (category.storedIDs === undefined) {
       return true;
     } else {
       return false;
@@ -171,6 +115,7 @@ export const isCategoryEmpty = (state) => {
   };
 };
 
+// returns a boolean
 export const areCategoriesInFolderEmpty = (state, getters) => {
   return (folder, categories) => {
     let folderIsEmpty;
@@ -196,6 +141,7 @@ export const areCategoriesInFolderEmpty = (state, getters) => {
   };
 };
 
+// returns all folders that aren't empty; meaning folders which hold categories which hold templates
 export const getNonEmptyFolders = (state, getters) => {
   return (folders, categories) => {
     let array = [];
@@ -205,5 +151,54 @@ export const getNonEmptyFolders = (state, getters) => {
       }
     });
     return array;
+  };
+};
+
+// checks if the provided item is a child of any parent of the parents-array and returns true if so
+export const isItemChildToAnyParent = (state) => {
+  return (payload) => {
+    let parents = payload.parents;
+    let child = payload.child;
+    let isChildFromParent;
+    for (let i = 0; i < parents.length; i++) {
+      // if we find a parent to our item, we leave the loop early.
+      if (parents[i].storedIDs != undefined) {
+        if (parents[i].storedIDs.includes(child.id)) {
+          isChildFromParent = true;
+          return isChildFromParent;
+        } else {
+          isChildFromParent = false;
+        }
+      } else {
+        isChildFromParent = false;
+      }
+    }
+    return isChildFromParent;
+  };
+};
+
+export const getCategoriesWithoutFolders = (state, getters) => {
+  return (payload) => {
+    let categories = payload.categories;
+    let folders = payload.folders;
+    /* we only want to get folderless categories,
+      the following filtering process only returns those category-items, that meet the condition
+      ("isItemChildToAnyParent" returning false) as that means it's folderless */
+    return categories.filter((category) => {
+      let data = { parents: folders, child: category };
+      return getters.isItemChildToAnyParent(data) === false;
+    });
+  };
+};
+
+export const getTemplatesWithoutCategories = (state, getters) => {
+  return (payload) => {
+    let categories = payload.categories;
+    let templates = payload.templates;
+
+    return templates.filter((template) => {
+      let data = { parents: categories, child: template };
+      return getters.isItemChildToAnyParent(data) === false;
+    });
   };
 };

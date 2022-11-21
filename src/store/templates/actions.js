@@ -40,8 +40,9 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
 
   onChildChanged(templates, (snapshot) => {
     let template = snapshot.val();
-    let index = getters.getTemplateIndexByID(template.id);
-    let payload = {
+    let payload = { templateID: template.id, templates: state.templates };
+    let index = getters.getTemplateIndexByID(payload);
+    payload = {
       index: index,
       template: template,
     };
@@ -50,8 +51,9 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
 
   onChildRemoved(templates, (snapshot) => {
     let template = snapshot.val();
-    let indexOfTemplate = getters.getTemplateIndexByID(template.id);
-    commit("deleteLocalTemplate", indexOfTemplate);
+    let payload = { templateID: template.id, templates: state.templates };
+    let index = getters.getTemplateIndexByID(payload);
+    commit("deleteLocalTemplate", index);
   });
 
   // CATEGORIES
@@ -193,7 +195,6 @@ export function firebaseCreateTemplate({ state }, payload) {
     firebaseDb,
     "templates/" + userId + "/templates/" + templateID
   );
-  console.log("template", newTemplate);
   set(path, newTemplate, (error) => {
     if (error) {
       showErrorMessage(error.message);
@@ -229,21 +230,17 @@ export function firebaseRemoveTemplateFromCategories({ dispatch }, payload) {
   // looks through every parent and filters out child's id from the parent's "storedIDs"-property by creating a new array without these filtered out items
   // then updates storedIds to the newly created array
   categories.forEach((category) => {
-    let storedIDswWithoutTemplateID = category.storedIDs.filter(function (
-      storedIDs
-    ) {
-      return storedIDs != template.id;
-    });
-    if (category.storedIDs.length != storedIDswWithoutTemplateID.length) {
-      let updatedCategory = Object.assign({}, category);
-      updatedCategory.storedIDs = storedIDswWithoutTemplateID;
-      console.log(
-        "updated category: ",
-        updatedCategory,
-        "vs category",
-        category
-      );
-      dispatch("firebaseUpdateCategory", updatedCategory);
+    if (category.storedIDs != undefined) {
+      let storedIDswWithoutTemplateID = category.storedIDs.filter(function (
+        storedIDs
+      ) {
+        return storedIDs != template.id;
+      });
+      if (category.storedIDs.length != storedIDswWithoutTemplateID.length) {
+        let updatedCategory = Object.assign({}, category);
+        updatedCategory.storedIDs = storedIDswWithoutTemplateID;
+        dispatch("firebaseUpdateCategory", updatedCategory);
+      }
     }
   });
 }
@@ -278,10 +275,8 @@ export function firebaseSetFavorite({}, payload) {
 
 export function firebaseSetDefault({ state }, template) {
   let userId = firebaseAuth.currentUser.uid;
-
   state.templates.forEach((element) => {
     if (element.id === template.id) {
-      console.log("found");
       let newValue = !element.isSetToDefault;
       let path = ref(
         firebaseDb,
@@ -359,7 +354,7 @@ export function firebaseRemoveCategoryFromFolders({ dispatch }, payload) {
   });
 }
 
-export const firebaseDeleteCategory = ({}, payload) => {
+export function firebaseDeleteCategory({ dispatch }, payload) {
   dispatch("firebaseRemoveCategoryFromFolders", payload);
   let userId = firebaseAuth.currentUser.uid;
   let categoryToDelete = payload.child;
@@ -372,7 +367,7 @@ export const firebaseDeleteCategory = ({}, payload) => {
       showErrorMessage(error.message);
     }
   });
-};
+}
 
 export function firebaseCreateFolder({}, payload) {
   let folderID = uid();
@@ -402,7 +397,7 @@ export function firebaseUpdateFolder({}, folder) {
   });
 }
 
-export const firebaseDeleteFolder = ({}, folder) => {
+export function firebaseDeleteFolder({}, folder) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(firebaseDb, "templates/" + userId + "/folders/" + folder.id);
   remove(path, (error) => {
@@ -410,7 +405,7 @@ export const firebaseDeleteFolder = ({}, folder) => {
       showErrorMessage(error.message);
     }
   });
-};
+}
 
 export function resetCategorySettingsForTemplate(
   { state, dispatch },
@@ -450,4 +445,39 @@ export function resetCategorySettingsForTemplate(
       showErrorMessage(error.message);
     }
   });
+}
+
+export function firebaseAddChildToParent({ dispatch }, payload) {
+  let parent = Object.assign({}, payload.parent);
+  let child = Object.assign({}, payload.child);
+  if (parent.storedIDs === undefined) {
+    parent.storedIDs = [];
+  }
+  let storedIDsUpdated = parent.storedIDs.slice();
+  storedIDsUpdated.push(child.id);
+  parent.storedIDs = storedIDsUpdated;
+
+  if (child.isSetToDefault != undefined) {
+    // child is template
+    dispatch("firebaseUpdateCategory", parent);
+  } else {
+    // child is category
+    dispatch("firebaseUpdateFolder", parent);
+  }
+}
+export function firebaseRemoveChildFromParent({ dispatch }, payload) {
+  let parent = payload.parent;
+  let child = payload.child;
+  let parentUpdated = Object.assign({}, parent);
+  let storedIDsUpdated = parentUpdated.storedIDs.filter(function (storedID) {
+    return storedID != child.id;
+  });
+  parentUpdated.storedIDs = storedIDsUpdated;
+  if (child.isSetToDefault != undefined) {
+    // child is template
+    dispatch("firebaseUpdateCategory", parentUpdated);
+  } else {
+    // child is category
+    dispatch("firebaseUpdateFolder", parentUpdated);
+  }
 }

@@ -121,7 +121,7 @@
                                 <div class="row "
                                     style="max-width: 300px; margin-left: -4px"
                                     :class="{ 'truncate-chip-labels': true }">
-                                    <div v-for="category in templatesCategories"
+                                    <div v-for="category in categoriesOfCurrentTemplate"
                                         :key="category.id">
                                         <q-chip removable
                                             style="font-size: 11px"
@@ -129,7 +129,7 @@
                                             color="secondary"
                                             outline
                                             text-color="white"
-                                            @remove="removeCategoryFromTemplate(category)"
+                                            @remove="removeTemplateFromCategory(category)"
                                             :label="category.name" />
                                     </div>
                                 </div>
@@ -400,12 +400,13 @@ export default {
         manageTemplate() {
             this.isShowingManagingButtons = !this.isShowingManagingButtons;
         },
-        removeCategoryFromTemplate(category) {
-            let payload = { "category": category, "template": this.currentTemplate };
-            this.$store.commit("templates/removeTemplateFromCategory", payload);
+        removeTemplateFromCategory(category) {
+            let payload = { "parent": category, "child": this.currentTemplate };
+            this.$store.dispatch("templates/firebaseRemoveChildFromParent", payload);
         },
         pickTemplate(template) {
-            this.indexOfCurrentTemplate = this.$store.getters["templates/getTemplateIndexByID"](template.id);
+            let payload = { templateID: template.id, templates: this.templates };
+            this.indexOfCurrentTemplate = this.$store.getters["templates/getTemplateIndexByID"](payload);
             this.qMenuModel = false;
         },
         initiateDeletion() {
@@ -439,7 +440,6 @@ export default {
                 this.isCreatingNewTemplate = false;
             } else {
                 let payload = { template: this.currentTemplate, name: this.name, text: this.editor };
-                console.log(payload);
                 this.$store.dispatch(
                     "templates/firebaseUpdateTemplate",
                     payload
@@ -489,7 +489,7 @@ export default {
             return this.templates[this.indexOfCurrentTemplate];
         },
         templates() {
-            return this.$store.getters["templates/getTemplatesByType"](this.type).slice();
+            return this.$store.getters["templates/getTemplatesByType"](this.type); // slice();
         },
         categories() {
             return this.$store.getters["templates/getCategoriesByType"](this.type);
@@ -507,15 +507,13 @@ export default {
             return this.currentTemplate.isFavorite;
         },
         isTemplateFavorite() {
-            console.log("checking templateFavorite", this.currentTemplate, this.currentTemplate.isFavorite);
             if (this.currentTemplateFavoriteState) {
                 return true;
             } else {
                 return false;
             }
         },
-        // ??
-        templatesCategories() {
+        categoriesOfCurrentTemplate() {
             let data = { parents: this.categories, child: this.currentTemplate };
             let output = this.$store.getters['templates/getParentsOfChild'](data);
             return output;

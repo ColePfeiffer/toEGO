@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <BaseItemClickable :item="item"
-      :parent="parent"
-      :icon="icon"
-      style="padding-bottom: 0px"
-      @click-item="clickItem"></BaseItemClickable>
-  </div>
-
+  <BaseItemClickable :item="item"
+    :parent="parent"
+    :icon="icon"
+    style="padding-bottom: 0px"
+    @click="isClicked"></BaseItemClickable>
 </template>
 
 <script>
 import BaseItemClickable from 'src/components/ui/BaseItemClickable.vue';
 export default {
   name: "BaseItemForFolderManagement",
+  emits: ["is-clicked"],
   props: {
     item: Object,
     icon: String,
@@ -23,8 +21,9 @@ export default {
     return {};
   },
   methods: {
-    clickItem() {
-    },
+    isClicked() {
+      this.$emit("is-clicked");
+    }
   },
 
 };

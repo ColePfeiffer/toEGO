@@ -2,24 +2,17 @@
   <BaseSection @create-new-item="createFolder">
     <template v-slot:headername>Folders</template>
     <template v-slot:itemsToDisplay>
-      <div v-for="folder in itemsToDisplay"
-        :key="folder">
-        <BaseMenuForFolderManagement childAsText="Categories: "
+      <div v-for="folder in folders"
+        :key="folder.id">
+        <BaseMenuForFolderManagement childAsText="Templates: "
           :item="folder"
-          dense
+          childIcon="bi-tags"
+          :childList="categories"
           icon="bi-folder"
+          dense
           style="padding-bottom: 0px"
           @rename-item="renameFolder"
           @delete-item="deleteFolder">
-          <template v-slot:children>
-            <div v-for="category in categories"
-              :key="category">
-              <BaseItemForFolderManagement :item="category"
-                icon="bi-tags"
-                :parent="folder">
-              </BaseItemForFolderManagement>
-            </div>
-          </template>
         </BaseMenuForFolderManagement>
       </div>
     </template>
@@ -28,37 +21,26 @@
 
 <script>
 import BaseSection from "./BaseSection.vue";
-import BaseItemForFolderManagement from "./BaseItemForFolderManagement.vue";
 import BaseMenuForFolderManagement from "./BaseMenuForFolderManagement.vue";
 
 export default {
   name: "TheFolderSection",
   props: {
     type: String,
-    itemsToDisplay: Array,
+    folders: Array,
   },
   components: {
     BaseSection,
-    BaseItemForFolderManagement,
     BaseMenuForFolderManagement,
   },
   data() {
-    return {};
+    return {
+      qMenuModel: false,
+    };
   },
   computed: {
-    isTypeSetToDiary() {
-      if (this.type === "DIARY") {
-        return true;
-      } else {
-        return false;
-      }
-    },
     categories() {
-      if (this.isTypeSetToDiary) {
-        return this.$store.state.data.categoriesForDiary;
-      } else {
-        return this.$store.state.data.categoriesForEvents;
-      }
+      return this.$store.getters["templates/getCategoriesByType"](this.type);
     },
   },
   methods: {
@@ -72,7 +54,7 @@ export default {
       this.$store.dispatch("templates/firebaseUpdateFolder", updatedFolder);
     },
     deleteFolder(folderToDelete) {
-      this.$store.commit("templates/firebaseDeleteFolder", folderToDelete);
+      this.$store.dispatch("templates/firebaseDeleteFolder", folderToDelete);
     },
   },
 };
