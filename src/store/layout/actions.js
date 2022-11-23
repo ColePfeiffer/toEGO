@@ -100,7 +100,6 @@ export function setTheme({ commit }, theme) {
     commit("setDiaryMode", "clear");
     commit("setDiaryCardBackgroundColor", "#fafafaed");
 
-    commit("setDiaryMode", "clear");
     commit("toggleIsDiaryTitleBarShowingDay", false);
     commit("setDiarySubtitleStyleToAlternative", true);
     commit("setDiaryBorderColorAlternative", "#bacbde");
@@ -128,9 +127,6 @@ export function setTheme({ commit }, theme) {
     commit("setNotesContainerBackgroundColor", "#f5f5f5fc");
     commit("setNotesContainerBackgroundColorDark", "#000000ad");
     commit("setEventInputBackgroundColor", "#f5f5f5fc");
-
-    commit("setDiaryMode", "clear");
-    commit("setDiaryCardBackgroundColor", "#fafafaed");
 
     commit("setDiaryMode", "clear");
     commit("setDiaryBackgroundColor", "#ffffff54");

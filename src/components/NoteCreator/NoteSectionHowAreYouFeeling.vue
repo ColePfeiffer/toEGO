@@ -10,7 +10,7 @@
       class="col-12 q-mb-md"
       toggle-color="accent"
       padding="none"
-      :style="getTextColor"
+      :color="getTextColor"
       flat
       :options="[
         { value: 'las la-angry', slot: 'angry' },
@@ -83,7 +83,7 @@ export default {
       style["box-shadow"] = "none";
       style["background-color"] = "transparent";
       style["text-shadow"] = this.$store.getters["layout/getTextColorForEvent"]["text-shadow"];
-      style["color"] = this.$store.getters["layout/getTextColorForEvent"]["color"];
+      //style["color"] = this.$store.getters["layout/getTextColorForEvent"]["color"];
       return style;
     },
     styleForTitle() {
