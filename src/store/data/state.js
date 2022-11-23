@@ -22,12 +22,16 @@ export default function () {
     userThemes: {
       // also add these to default... so when user sets stuff to default, default themes will be resetted too.
       nightSky: {
-        backgroundImage: "url(https://i.imgur.com/Dryps1y.png)",
+        defaultFont: "PressStart",
+        fontsize: 12,
+        backgroundImageURL: "url(https://i.imgur.com/Dryps1y.png)",
         secondary: "#7689b0",
         accent: "#cdb1de",
         accent2: "#060754",
         borderColorLeft: "#7689b0",
         borderColorRight: "#7689b0",
+        borderColorLeftForDiary: "#7689b0",
+        borderColorRightForDiary: "#7689b0",
         homeMode: "retro",
         homeBackgroundColor: "#ebebeb59",
         noteMode: "default",

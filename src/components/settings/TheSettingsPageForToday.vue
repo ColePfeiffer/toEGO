@@ -92,6 +92,7 @@
                     <template v-slot:content>
                         <q-input filled
                             dense
+                            :disable="isDarkModeActive"
                             hide-bottom-space
                             v-model="todayNoteBackgroundColor"
                             :rules="['anyColor']"
@@ -245,16 +246,23 @@ export default {
                 return this.$store.getters['layout/getHomeBackgroundColor'];
             },
             set(value) {
-                if (this.$store.getters['layout/isDarkModeActive']) {
+                if (this.isDarkModeActive) {
                     this.$store.commit("layout/setHomeBackgroundColorDark", value);
                 } else {
                     this.$store.commit("layout/setHomeBackgroundColor", value);
                 }
             }
         },
+        isDarkModeActive() {
+            return this.$store.getters['layout/isDarkModeActive'];
+        },
         todayNoteBackgroundColor: {
             get() {
-                return this.$store.state.layout.noteBackgroundColor;
+                if (this.isDarkModeActive) {
+                    return this.$store.state.layout.dark;
+                } else {
+                    return this.$store.state.layout.noteBackgroundColor;
+                }
             },
             set(value) {
                 this.$store.commit("layout/setNoteBackgroundColor", value);

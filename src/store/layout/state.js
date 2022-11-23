@@ -1,47 +1,51 @@
 export default function () {
   return {
-    //
+    // FIXME: ? maybe remove this...
+    theme: "default",
+    // Size
     width: 359,
     height: 500,
     innerWidth: 250,
     innerHeight: 400,
+
     // Font Settings
+    nonDefaultFont: "Inter",
     defaultFont: "PressStart",
     fontsize: "12",
-    nonDefaultFont: "Inter",
+    // Background
     backgroundImageURL:
       "url(/images/background_wide2.jpg) no-repeat center center fixed",
     backgroundColor: "#9c9c9c",
-    //  Colors
-    //  - Color Brand Settings
-    primary: "#00080f", // Font Color
-    secondary: "#dfd4f5",
-    accent: "#ffc107",
-    accent2: "#14157a",
-    //  - Sub Colors
-    SecondaryLighter: "#f3effc",
-    //  - System colors, can't be changed by the user
+    // System colors | can't be changed by the user
     whitesmoke: "#f5f5f5",
     blacksmoke: "#2c2c2c",
     dark: "#252425",
     white: "#ffffff",
     lightgrey: "#d3d3d3",
     darkgrey: "#989898",
-    theme: "default",
+    primary: "#00080f",
     //  Opacity
     lowOpacity: "30",
     mediumOpacity: "a6",
-    //  Page Settings
+    // User Colors
+    secondary: "#dfd4f5",
+    accent: "#ffc107",
+    accent2: "#14157a",
+    // Sub Colors
+    //FIXME: make computed or something  -
+    SecondaryLighter: "#f3effc",
+
+    // Page Settings
     isDarkModeOn: false,
     borderColorLeft: "#dfd4f5",
     borderColorRight: "#dfd4f5",
     borderColorLeftForDiary: "#dfd4f5",
     borderColorRightForDiary: "#dfd4f5",
-    //  - Home
+    // Home
     homeMode: "retro",
     homeBackgroundColor: "#ffffff54",
     homeBackgroundColorDark: "#000000ad",
-    //  - Note
+    // Note
     noteTitleRowIsColored: true,
     noteTitleRowIsColoredForDiary: true,
     noteLayoutMode: "default",
