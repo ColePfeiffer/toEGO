@@ -32,14 +32,6 @@ export const setAccent2 = (state, color) => {
   setCssVar("info", color);
 };
 
-export const setEventTextShadow = (state, shadowProperties) => {
-  state.eventTextShadow = shadowProperties;
-};
-
-export const setColorSecondaryLighter = (state, color) => {
-  state.SecondaryLighter = color;
-};
-
 export const setHomeBackgroundColor = (state, color) => {
   state.homeBackgroundColor = color;
 };
@@ -64,8 +56,8 @@ export const setDiaryBackgroundColorDark = (state, color) => {
   state.diaryBackgroundColorDark = color;
 };
 
-export const setHomeMode = (state, mode) => {
-  state.homeMode = mode;
+export const setLayoutModeForHome = (state, mode) => {
+  state.homeLayoutMode = mode;
 };
 
 export const setLayoutModeForNote = (state, mode) => {
@@ -101,7 +93,7 @@ export const setNoteTextShadowColorForHome = (state, color) => {
 };
 
 export const setInputColoredSeparately = (state, bool) => {
-  state.diaryIsInputColoredSeparately = bool;
+  state.isDiaryInputColoredSeparately = bool;
 };
 
 export const setNoteTextShadowColorForDiary = (state, color) => {

@@ -1,16 +1,58 @@
-/*
-export function someGetter (state) {
-}
-*/
 import { useQuasar } from "quasar";
 import { colors } from "quasar";
+const { lighten } = colors;
 import state from "./state";
 
 const { getPaletteColor } = colors;
 const { brightness } = colors;
 
-export const isDarkModeActive = (state) => {
-  return state.isDarkModeOn;
+export const getAllLayoutSettings = (state) => {
+  return {
+    backgroundImageURL: state.backgroundImageURL,
+    backgroundColor: state.backgroundColor,
+    // User Colors
+    secondary: state.secondary,
+    accent: state.accent,
+    accent2: state.accent2,
+    // Font Settings
+    defaultFont: state.defaultFont,
+    fontsize: state.fontsize,
+    // Page: Home
+    homeLayoutMode: state.homeLayoutMode,
+    homeBackgroundColor: state.homeBackgroundColor,
+    homeBackgroundColorDark: state.homeBackgroundColorDark,
+    // Cards
+    borderColorLeft: state.borderColorLeft,
+    borderColorRight: state.borderColorRight,
+    // Cards for notes
+    noteBackgroundColor: state.noteBackgroundColor,
+    noteTitleRowIsColored: state.noteTitleRowIsColored,
+    noteTextShadowColorForHome: state.noteTextShadowColorForHome,
+    // Page: New Note
+    noteLayoutMode: state.noteLayoutMode,
+    notesContainerBackgroundColor: state.notesContainerBackgroundColor,
+    notesContainerBackgroundColorDark: state.notesContainerBackgroundColorDark,
+    eventInputBackgroundColor: state.eventInputBackgroundColor,
+    // Page: Diary
+    diaryMode: state.diaryMode,
+    diaryBackgroundColor: state.diaryBackgroundColor,
+    diaryBackgroundColorDark: state.diaryBackgroundColorDark,
+    isDiaryInputColoredSeparately: state.isDiaryInputColoredSeparately,
+    isDiaryTitlebarShowingDay: state.isDiaryTitlebarShowingDay,
+    isDiaryCountingDays: state.isDiaryCountingDays,
+    // Diary Subtitle Styling
+    isDiarySubtitleStyleSetToAlternative:
+      state.isDiarySubtitleStyleSetToAlternative,
+    diaryBorderColorAlternative: state.diaryBorderColorAlternative,
+    diaryBorderColor: state.diaryBorderColor,
+    // Diary Cards
+    isDiaryInputStyleSetToTodaysNotes: state.isDiaryInputStyleSetToTodaysNotes,
+    borderColorLeftForDiary: state.borderColorLeftForDiary,
+    borderColorRightForDiary: state.borderColorRightForDiary,
+    diaryCardBackgroundColor: state.diaryCardBackgroundColor,
+    noteTitleRowIsColoredForDiary: state.noteTitleRowIsColoredForDiary,
+    noteTextShadowColorForDiary: state.noteTextShadowColorForDiary,
+  };
 };
 
 export const getTextColorBasedOnDarkMode = (getters) => {
@@ -42,16 +84,14 @@ export const getStyleForText = (state, getters) => {
   style = getters.getFontsize;
 
   if (getters.isDarkModeActive) {
-    let merged = {
-      ...getters.getFontsize,
-      ...state.sTextBasicShadowDarkWhiteFont,
-    };
-    return merged;
+    //"text-shadow": "2px 2px #000000",
+    style["text-shadow"] = "rgb(0 0 0) 2px 2px 2px";
+    style["color"] = "white !important";
   } else {
     style["font-color"] = "black";
     style["text-shadow"] = "2px 2px 3px rgba(var(--q-secondary), 0.5)";
-    return style;
   }
+  return style;
 };
 
 export const getShadowForAriaButtons = (state) => {
@@ -84,19 +124,52 @@ export const getDiaryBackgroundColor = (state, getters) => {
   }
 };
 
-export const getStyleForLayout = (state) => {
-  let style = {};
-  let background = state.backgroundImageURL;
+export const getLoadingBackgroundImage = (state) => {
+  let width = state.width;
+  const hours = new Date().getHours();
+  const isDayTime = hours > 6 && hours < 20;
+  let number = "01";
+  let finalString;
 
-  if (background != "none") {
-    style["background"] = background;
-  } else {
-    style["background-color"] = state.backgroundColor;
+  if (!isDayTime) {
+    number = "03";
   }
+  if (width <= 360) {
+    finalString = "url(/images/backgrounds/" + number + "_small.jpg), #00080f";
+  } else if (width < 600) {
+    finalString =
+      "url(/images/backgrounds/" + number + "_smallmedium.jpg), #00080f";
+  } else if (width < 800) {
+    finalString = "url(/images/backgrounds/" + number + "_medium.jpg), #00080f";
+  } else {
+    finalString = "url(/images/backgrounds/" + number + "_big.jpg), #00080f";
+  }
+  return finalString;
+};
 
+export const getStyleForLayout = (state, getters, rootState, rootGetters) => {
+  let style = {};
+  if (!rootGetters["data/isAllDataDownloaded"]) {
+    style = {};
+    style["background"] = getters.getLoadingBackgroundImage;
+    style["background-size"] = "cover";
+    style["background-repeat"] = "no-repeat";
+    style["background-position"] = "center center";
+  } else {
+    style = {};
+    style["background-size"] = "unset";
+    style["background-repeat"] = "unset";
+    style["background-position"] = "unset";
+    let background = state.backgroundImageURL;
+    if (background != "none") {
+      style["background"] = background;
+    } else {
+      style["background"] = "unset";
+      style["background-color"] = state.backgroundColor;
+    }
+  }
   style["margin"] = "auto";
   style["padding"] = "auto";
-
   return style;
 };
 
@@ -156,10 +229,35 @@ export const getTextColorForEvent = (state, getters) => {
   ) {
     style["text-shadow"] = state.accent2 + " 2px 2px 2px";
   } else {
-    style["text-shadow"] = state.eventTextShadow;
+    style["text-shadow"] = getters.noteTitleTextShadow;
   }
 
   return style;
+};
+
+export const noteTitleTextShadow = (state, getters) => {
+  let brightness = getters.getBrightness(state.secondary);
+
+  if (brightness > 60 && brightness < 150) {
+    return state.secondary + state.mediumOpacity + " 2px 2px 2px";
+  } else if (brightness <= 60) {
+    return state.secondary + state.lowOpacity + " 2px 2px 2px";
+  } else {
+    return state.secondary + " 2px 2px 2px";
+  }
+};
+
+export const secondaryLighter = (state, getters) => {
+  let oldColor = state.secondary;
+  let newColor;
+  let calculatedBrightness = getters.getBrightness(oldColor);
+
+  if (calculatedBrightness < 151) {
+    newColor = lighten(oldColor, 40);
+  } else {
+    newColor = lighten(oldColor, 65);
+  }
+  return newColor;
 };
 
 export const getStyleForBasePage = (state, getters) => {
@@ -190,9 +288,9 @@ export const getStyleForBasePage = (state, getters) => {
       "inset -1px -1px #22273894, inset -4px -4px " +
       state.secondary +
       ", inset -5px -5px " +
-      state.SecondaryLighter +
+      getters.secondaryLighter +
       ", inset 1px 1px " +
-      state.SecondaryLighter +
+      getters.secondaryLighter +
       ", inset 4px 4px " +
       state.secondary +
       ", inset 5px 5px #22273894";
@@ -232,13 +330,13 @@ export const getStyleForTitleBar = (state, getters) => {
         "inset -1px 0 #22273894, inset -4px 0px " +
         state.secondary +
         ", inset -5px 0px " +
-        state.SecondaryLighter +
+        getters.secondaryLighter +
         ", inset 1px 0px " +
-        state.SecondaryLighter +
+        getters.secondaryLighter +
         ", inset 4px 3px " +
         state.secondary +
         ", 0px -1px " +
-        state.SecondaryLighter +
+        getters.secondaryLighter +
         ", inset 5px 4px #222738" +
         state.lowOpacity;
     }

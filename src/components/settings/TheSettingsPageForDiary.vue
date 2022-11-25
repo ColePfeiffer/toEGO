@@ -386,7 +386,7 @@ export default {
             }
         },
         isDarkModeActive() {
-            return this.$store.getters['layout/isDarkModeActive'];
+            return this.$store.getters['data/isDarkModeActive'];
         },
         getTitleForDiary() {
             if (this.diaryMode === 'retro') {
@@ -444,7 +444,7 @@ export default {
                 return this.$store.getters['layout/getDiaryBackgroundColor'];
             },
             set(value) {
-                if (this.$store.getters['layout/isDarkModeActive']) {
+                if (this.$store.getters['data/isDarkModeActive']) {
                     this.$store.commit("layout/setDiaryBackgroundColorDark", value);
                 } else {
                     this.$store.commit("layout/setDiaryBackgroundColor", value);

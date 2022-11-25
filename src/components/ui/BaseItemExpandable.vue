@@ -49,7 +49,7 @@ export default {
       if (this.isExpanded) {
         return { color: "#d3d3d3 " };
       } else {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
+        if (this.$store.getters["data/isDarkModeActive"]) {
           return { color: "white" };
         } else {
           return { color: "black" };

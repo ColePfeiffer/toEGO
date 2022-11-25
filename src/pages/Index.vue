@@ -2,7 +2,7 @@
 
 <template>
   <BasePage titleOfPage="Today's notes"
-    :mode="getHomeMode"
+    :mode="getLayoutModeForHome"
     :backgroundColor="$store.getters['layout/getHomeBackgroundColor']">
     <template v-slot:title-bar-icon>
       <div style="padding: 4px">
@@ -130,8 +130,8 @@ export default {
         return "bi-envelope"
       }
     },
-    getHomeMode() {
-      return this.$store.state.layout.homeMode;
+    getLayoutModeForHome() {
+      return this.$store.state.layout.homeLayoutMode;
     },
   },
 };

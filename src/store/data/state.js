@@ -10,86 +10,251 @@ export default function () {
       editor: "This is a preview.",
       title: "Preview",
     },
-    // add to DB
+    lastSelectedTheme: "",
+    // TODO: add to DB on registration
     defaultUserSettings: {
       hasFinishedHelpForHomeForTheFirstTime: false,
       hasFinishedHelpForDiaryForTheFirstTime: false,
       hasFinishedHelpForTemplatesForTheFirstTime: false,
       messageToMyself: "",
       isMessageShown: false,
-      userTheme: {}, // { 'nightSky' }
-    },
-    userThemes: {
-      // also add these to default... so when user sets stuff to default, default themes will be resetted too.
-      nightSky: {
-        defaultFont: "PressStart",
-        fontsize: 12,
-        backgroundImageURL: "url(https://i.imgur.com/Dryps1y.png)",
-        secondary: "#7689b0",
-        accent: "#cdb1de",
-        accent2: "#060754",
-        borderColorLeft: "#7689b0",
-        borderColorRight: "#7689b0",
-        borderColorLeftForDiary: "#7689b0",
-        borderColorRightForDiary: "#7689b0",
-        homeMode: "retro",
-        homeBackgroundColor: "#ebebeb59",
-        noteMode: "default",
-        diaryMode: "clear",
-        diaryCardBackgroundColor: "#fafafaed",
-        isDiaryTitleBarShowingDay: false,
-        diarySubtitleStyleIsSetToAlternative: false,
+      currentTheme: "nightSky", // { 'nightSky' }
+      // TODO: add names property to unnamed ones...
+      userThemes: {
+        // also add these to default... so when user sets stuff to default, default themes will be resetted too.
+        nightSky: {
+          name: "nightSky",
+          backgroundImageURL: "url(https://i.imgur.com/Dryps1y.png)",
+          // User Colors
+          secondary: "#7689b0",
+          accent: "#cdb1de",
+          accent2: "#060754",
+          // Font Settings
+          defaultFont: "PressStart",
+          fontsize: "12",
+          // Page: Home
+          homeLayoutMode: "retro",
+          homeBackgroundColor: "#ebebeb59",
+          homeBackgroundColorDark: "#000000ad",
+          // Cards
+          borderColorLeft: "#7689b0",
+          borderColorRight: "#7689b0",
+          // Cards for notes
+          noteBackgroundColor: "#f5f5f5FF",
+          noteTitleRowIsColored: true,
+          noteTextShadowColorForHome: "#c42d2d00",
+          // Page: New Note
+          noteLayoutMode: "default",
+          notesContainerBackgroundColor: "#f5f5f5fc",
+          notesContainerBackgroundColorDark: "#000000ad",
+          eventInputBackgroundColor: "#f7f7f700",
+          // Page: Diary
+          diaryMode: "clear",
+          diaryBackgroundColor: "#fafafaed",
+          diaryBackgroundColorDark: "#000000ad",
+          isDiaryInputColoredSeparately: false,
+          isDiaryTitlebarShowingDay: true,
+          isDiaryCountingDays: false,
+          // Diary Subtitle Styling
+          isDiarySubtitleStyleSetToAlternative: false,
+          diaryBorderColorAlternative: "#978fc7",
+          diaryBorderColor: "#14157a",
+          // Diary Cards
+          isDiaryInputStyleSetToTodaysNotes: true,
+          borderColorLeftForDiary: "#7689b0",
+          borderColorRightForDiary: "#7689b0",
+          diaryCardBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColoredForDiary: true,
+          noteTextShadowColorForDiary: "#c42d2d00",
+        },
+        clouds: {
+          name: "clouds",
+          backgroundImageURL: "url(https://i.imgur.com/TPnaBOX.png)",
+          // User Colors
+          secondary: "#bacbde",
+          accent: "#FF7E6B",
+          accent2: "#deb4db",
+          // Font Settings
+          defaultFont: "PressStart",
+          fontsize: "12",
+          // Page: Home
+          homeLayoutMode: "retro",
+          homeBackgroundColor: "#ffffff82",
+          homeBackgroundColorDark: "#000000ad",
+          // Cards
+          borderColorLeft: "#57a3eb",
+          borderColorRight: "#6bafcf",
+          // Cards for notes
+          noteBackgroundColor: "#f5f5f5FF",
+          noteTitleRowIsColored: true,
+          noteTextShadowColorForHome: "#c42d2d00",
+          // Page: New Note
+          noteLayoutMode: "default",
+          notesContainerBackgroundColor: "#f5f5f5fc",
+          notesContainerBackgroundColorDark: "#000000ad",
+          eventInputBackgroundColor: "#f7f7f700",
+          // Page: Diary
+          diaryMode: "clear",
+          diaryBackgroundColor: "#fafafaed",
+          diaryBackgroundColorDark: "#000000ad",
+          isDiaryInputColoredSeparately: false,
+          isDiaryTitlebarShowingDay: true,
+          isDiaryCountingDays: false,
+          // Diary Subtitle Styling
+          isDiarySubtitleStyleSetToAlternative: true,
+          diaryBorderColorAlternative: "#978fc7",
+          diaryBorderColor: "#bacbde",
+          // Diary Cards
+          isDiaryInputStyleSetToTodaysNotes: true,
+          borderColorLeftForDiary: "#7689b0",
+          borderColorRightForDiary: "#7689b0",
+          diaryCardBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColoredForDiary: true,
+          noteTextShadowColorForDiary: "#c42d2d00",
+        },
+        lilacSky: {
+          name: "lilacSky",
+          backgroundImageURL:
+            "url(/images/background_wide2.jpg) no-repeat center center fixed",
+          // User Colors
+          secondary: "#DFD4F5",
+          accent: "#ffc107",
+          accent2: "#211761",
+          // Font Settings
+          defaultFont: "PressStart",
+          fontsize: "12",
+          // Page: Home
+          homeLayoutMode: "retro",
+          homeBackgroundColor: "#ffffff54",
+          homeBackgroundColorDark: "#000000ad",
+          // Cards
+          borderColorLeft: "#DFD4F5",
+          borderColorRight: "#DFD4F5",
+          // Cards for notes
+          noteBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColored: false,
+          noteTextShadowColorForHome: "#c42d2d00",
+          // Page: New Note
+          noteLayoutMode: "default",
+          notesContainerBackgroundColor: "#f5f5f5fc",
+          notesContainerBackgroundColorDark: "#000000ad",
+          eventInputBackgroundColor: "#f5f5f5fc",
+          // Page: Diary
+          diaryMode: "clear",
+          diaryBackgroundColor: "#ffffff54",
+          diaryBackgroundColorDark: "#000000ad",
+          isDiaryInputColoredSeparately: false,
+          isDiaryTitlebarShowingDay: true,
+          isDiaryCountingDays: false,
+          // Diary Subtitle Styling
+          isDiarySubtitleStyleSetToAlternative: false,
+          diaryBorderColorAlternative: "#978fc7",
+          diaryBorderColor: "#bacbde",
+          // Diary Cards
+          isDiaryInputStyleSetToTodaysNotes: true,
+          borderColorLeftForDiary: "#7689b0",
+          borderColorRightForDiary: "#7689b0",
+          diaryCardBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColoredForDiary: true,
+          noteTextShadowColorForDiary: "#c42d2d00",
+        },
+        theme4: {
+          name: "theme4",
+          //...
+          backgroundImageURL:
+            "url(/images/background_wide2.jpg) no-repeat center center fixed",
+          // User Colors
+          secondary: "#DFD4F5",
+          accent: "#ffc107",
+          accent2: "#211761",
+          // Font Settings
+          defaultFont: "PressStart",
+          fontsize: "12",
+          // Page: Home
+          homeLayoutMode: "retro",
+          homeBackgroundColor: "#ffffff54",
+          homeBackgroundColorDark: "#000000ad",
+          // Cards
+          borderColorLeft: "#DFD4F5",
+          borderColorRight: "#DFD4F5",
+          // Cards for notes
+          noteBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColored: false,
+          noteTextShadowColorForHome: "#c42d2d00",
+          // Page: New Note
+          noteLayoutMode: "default",
+          notesContainerBackgroundColor: "#f5f5f5fc",
+          notesContainerBackgroundColorDark: "#000000ad",
+          eventInputBackgroundColor: "#f5f5f5fc",
+          // Page: Diary
+          diaryMode: "clear",
+          diaryBackgroundColor: "#ffffff54",
+          diaryBackgroundColorDark: "#000000ad",
+          isDiaryInputColoredSeparately: false,
+          isDiaryTitlebarShowingDay: true,
+          isDiaryCountingDays: false,
+          // Diary Subtitle Styling
+          isDiarySubtitleStyleSetToAlternative: false,
+          diaryBorderColorAlternative: "#978fc7",
+          diaryBorderColor: "#bacbde",
+          // Diary Cards
+          isDiaryInputStyleSetToTodaysNotes: true,
+          borderColorLeftForDiary: "#7689b0",
+          borderColorRightForDiary: "#7689b0",
+          diaryCardBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColoredForDiary: true,
+          noteTextShadowColorForDiary: "#c42d2d00",
+        },
+        theme5: {
+          name: "theme5",
+          // ...
+          backgroundImageURL:
+            "url(/images/background_wide2.jpg) no-repeat center center fixed",
+          // User Colors
+          secondary: "#DFD4F5",
+          accent: "#ffc107",
+          accent2: "#211761",
+          // Font Settings
+          defaultFont: "PressStart",
+          fontsize: "12",
+          // Page: Home
+          homeLayoutMode: "retro",
+          homeBackgroundColor: "#ffffff54",
+          homeBackgroundColorDark: "#000000ad",
+          // Cards
+          borderColorLeft: "#DFD4F5",
+          borderColorRight: "#DFD4F5",
+          // Cards for notes
+          noteBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColored: false,
+          noteTextShadowColorForHome: "#c42d2d00",
+          // Page: New Note
+          noteLayoutMode: "default",
+          notesContainerBackgroundColor: "#f5f5f5fc",
+          notesContainerBackgroundColorDark: "#000000ad",
+          eventInputBackgroundColor: "#f5f5f5fc",
+          // Page: Diary
+          diaryMode: "clear",
+          diaryBackgroundColor: "#ffffff54",
+          diaryBackgroundColorDark: "#000000ad",
+          isDiaryInputColoredSeparately: false,
+          isDiaryTitlebarShowingDay: true,
+          isDiaryCountingDays: false,
+          // Diary Subtitle Styling
+          isDiarySubtitleStyleSetToAlternative: false,
+          diaryBorderColorAlternative: "#978fc7",
+          diaryBorderColor: "#bacbde",
+          // Diary Cards
+          isDiaryInputStyleSetToTodaysNotes: true,
+          borderColorLeftForDiary: "#7689b0",
+          borderColorRightForDiary: "#7689b0",
+          diaryCardBackgroundColor: "#f5f5f5ff",
+          noteTitleRowIsColoredForDiary: true,
+          noteTextShadowColorForDiary: "#c42d2d00",
+        },
       },
-      clouds: {
-        backgroundImage: "url(https://i.imgur.com/TPnaBOX.png)",
-        secondary: "#bacbde",
-        accent: "#FF7E6B",
-        accent2: "#deb4db",
-        borderColorLeft: "#57a3eb",
-        borderColorRight: "#6bafcf",
-        homeMode: "retro",
-        homeBackgroundColor: "#ffffff82",
-        noteMode: "default",
-        diaryMode: "clear",
-        diaryCardBackgroundColor: "#fafafaed",
-        isDiaryTitleBarShowingDay: false,
-        diarySubtitleStyleIsSetToAlternative: true,
-        diaryBorderColor: "#bacbde",
-      },
-      lilacSky: {
-        backgroundImage:
-          "url(/images/background_wide2.jpg) no-repeat center center fixed",
-        fontSize: 12.5,
-        defaultFont: "PressStart",
-        secondary: "#DFD4F5",
-        accent: "#ffc107",
-        accent2: "#211761",
-        borderColorLeft: "#80d2f2",
-        borderColorRight: "#7d5fb8",
-        homeMode: "retro",
-        homeBackgroundColor: "#ffffff54",
-        noteMode: "default",
-        notesContainerBackgroundColor: "#f5f5f5fc",
-        notesInputBackgroundColor: "#f5f5f5fc",
-        diaryMode: "clear",
-        diaryBackgroundColor: "ffffff54",
-        diaryCardBackgroundColor: "#f5f5f5ff",
-        isDiaryTitleBarShowingDay: true,
-        diarySubtitleStyleIsSetToAlternative: true,
-        diaryBorderColor: "#bacbde",
-      },
-      theme4: {},
-      theme5: {},
-      theme6: {},
     },
-    userSettings: {
-      hasFinishedHelpForHomeForTheFirstTime: false,
-      hasFinishedHelpForDiaryForTheFirstTime: false,
-      hasFinishedHelpForTemplatesForTheFirstTime: false,
-      messageToMyself: "",
-      isMessageShown: false,
-      userTheme: {},
-    },
+    userSettings: {},
     lastSelectedDate: new Date(),
     // Toggles
     newEventIsInCreationMode: true,
@@ -102,7 +267,6 @@ export default function () {
       isBackgroundVisible: false,
     },
     pastedText: "",
-
     // FIXME:
     eventsOnDiaryPageAreExpanded: false,
   };

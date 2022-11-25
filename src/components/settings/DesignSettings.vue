@@ -13,7 +13,8 @@
               val="battery" />
           </template>
         </BaseItemForSettingsTabPanel>
-        <BaseItemForSettingsTabPanel title="Themes">
+        <BaseItemForSettingsTabPanel title="Themes"
+          :isOnSameLine="false">
           <template v-slot:content>
             <q-btn-toggle v-model="theme"
               class="my-custom-toggle"
@@ -25,9 +26,11 @@
               toggle-text-color="white"
               no-caps
               :options="[
-                { label: '1', value: 'Lilac Dreams', slot: 'lilac-dreams' },
-                { label: '2', value: 'Night Sky', slot: 'night-sky' },
-                { label: '3', value: 'Clouds', slot: 'clouds' },
+                { label: '1', value: 'lilacSky', slot: 'lilac-dreams' },
+                { label: '2', value: 'nightSky', slot: 'night-sky' },
+                { label: '3', value: 'clouds', slot: 'clouds' },
+                { label: '4', value: 'theme4', slot: 'custom' },
+                { label: '5', value: 'theme5', slot: 'custom' },
               ]">
               <template v-slot:lilac-dreams>
                 <BaseTooltip text="Lilac Dreams"
@@ -39,6 +42,10 @@
               </template>
               <template v-slot:clouds>
                 <BaseTooltip text="Clouds"
+                  :delay="0"></BaseTooltip>
+              </template>
+              <template v-slot:custom>
+                <BaseTooltip text="Custom"
                   :delay="0"></BaseTooltip>
               </template>
             </q-btn-toggle>
@@ -252,7 +259,7 @@
         <BaseItemForSettingsTabPanel title="Font-Style"
           caption="Change text style.">
           <template v-slot:content>
-            <q-btn-toggle v-model="isUsingFont"
+            <q-btn-toggle v-model="fontFamily"
               class="my-custom-toggle"
               color="transparent"
               square
@@ -318,57 +325,29 @@ export default {
       isColorGroupExpanded: false,
       isFontGroupExpanded: false,
       backgroundImage: this.$store.state.layout.backgroundImageURL,
-      backgroundColor: this.$store.state.layout.backgroundColor,
-      isUsingFont: this.$store.state.layout.defaultFont,
-      fontsize: 12,
       customBackgroundImage: "",
-      theme: 'Lilac Dreams',
-
     };
   },
   watch: {
-    fontsize(newValue) {
-      this.setHasSettingChanged();
-      this.$store.commit("layout/setFontsize", newValue);
-    },
-    isUsingFont(newValue) {
-      this.setHasSettingChanged();
-      this.$store.commit("layout/setFont", newValue);
-    },
-    storedTheme(newTheme) {
-      this.theme = newTheme;
-    },
-    theme(value) {
-      this.$store.dispatch(
-        "layout/setTheme",
-        value
-      );
-    },
     backgroundImageURL(newURL) {
       this.backgroundImage = newURL;
     },
     backgroundImage(imageURL) {
-      this.setHasSettingChanged();
+      this.setHasSettingChanged(true);
       console.log(imageURL);
       if (imageURL != 'custom') {
         this.$store.commit("layout/changeBackgroundImage", imageURL);
       }
     },
-    backgroundColor(color) {
-      this.setHasSettingChanged();
-      this.$store.commit("layout/changeBackgroundColor", color);
-    },
-
   },
   methods: {
-    setHasSettingChanged() {
-      if (!this.hasSettingChanged) {
-        this.$emit("setting-changed");
-      }
+    setHasSettingChanged(value) {
+      this.$emit("setting-changed", value);
     },
     toggleDarkMode() {
       this.$q.dark.set(!this.$q.dark.isActive);
-      this.$store.commit("layout/toggleDarkMode");
+      this.$store.dispatch("layout/firebaseToggleDarkMode");
+      //this.$store.commit("layout/toggleDarkMode");
     },
     useCustomImage() {
       let url = "url(" + this.customBackgroundImage + ")";
@@ -377,6 +356,44 @@ export default {
 
   },
   computed: {
+    backgroundColor: {
+      get() {
+        return this.$store.state.layout.backgroundColor;
+      },
+      set(color) {
+        this.setHasSettingChanged(true);
+        this.$store.commit("layout/changeBackgroundColor", color);
+      }
+    },
+    fontFamily: {
+      get() {
+        return this.$store.state.layout.defaultFont;
+      },
+      set(value) {
+        this.setHasSettingChanged(true);
+        this.$store.commit("layout/setFont", value);
+      }
+    },
+    fontsize: {
+      get() {
+        return this.$store.state.layout.fontsize;
+      },
+      set(value) {
+        this.setHasSettingChanged(true);
+        this.$store.commit("layout/setFontsize", value);
+      }
+    },
+    theme: {
+      get() {
+        return this.$store.state.data.userSettings.currentTheme;
+      },
+      set(value) {
+        this.setHasSettingChanged(true);
+        this.$store.dispatch(
+          "layout/setTheme",
+          value);
+      },
+    },
     darkMode: {
       get() {
         return this.$store.getters["layout/isDarkModeActive"];
@@ -388,12 +405,9 @@ export default {
     getStyleForTextPreview() {
       return {
         "border-left": "3px solid var(--q-secondary)",
-        "font-family": this.isUsingFont,
+        "font-family": this.fontFamily,
         "font-size": this.fontsize + "px",
       };
-    },
-    storedTheme() {
-      return this.$store.state.layout.theme;
     },
     backgroundImageURL() {
       return this.$store.state.layout.backgroundImageURL;
@@ -403,7 +417,7 @@ export default {
         return this.$store.state.layout.secondary;
       },
       set(value) {
-        this.setHasSettingChanged();
+        this.setHasSettingChanged(true);
         this.$store.dispatch("layout/setSecondaryColor", value);
       },
     },
@@ -412,7 +426,7 @@ export default {
         return this.$store.state.layout.accent;
       },
       set(value) {
-        this.setHasSettingChanged();
+        this.setHasSettingChanged(true);
         this.$store.commit("layout/setAccent", value);
       },
     },
@@ -422,7 +436,7 @@ export default {
         return this.$store.state.layout.accent2;
       },
       set(value) {
-        this.setHasSettingChanged();
+        this.setHasSettingChanged(true);
         this.$store.commit("layout/setAccent2", value);
       },
     },

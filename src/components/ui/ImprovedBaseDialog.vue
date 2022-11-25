@@ -73,7 +73,7 @@
         </div>
     </q-dialog>
 </template>
-  
+
 <script>
 import BaseButtonForDialogFooter from './BaseButtonForDialogFooter.vue';
 import BaseButtonForTitleBar from './BaseButtonForTitleBar.vue';
@@ -132,7 +132,7 @@ export default {
         styleForContent() {
             let style = {};
 
-            if (this.$store.getters["layout/isDarkModeActive"]) {
+            if (this.$store.getters["data/isDarkModeActive"]) {
                 style = {
                     "background-color": this.$store.state.layout.dark,
                     "min-height": this.minHeight,
@@ -150,7 +150,7 @@ export default {
 
 };
 </script>
-  
+
 <style scoped src="98.css">
 .dialogBox {
     background-color: whitesmoke;
@@ -160,4 +160,3 @@ export default {
     box-shadow: none;
 }
 </style>
-  

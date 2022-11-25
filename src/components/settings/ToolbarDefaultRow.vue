@@ -264,7 +264,7 @@ export default {
       }
     },
     isDarkModeActive() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         return true;
       } else {
         return false;

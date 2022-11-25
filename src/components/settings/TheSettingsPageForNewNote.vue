@@ -57,10 +57,10 @@
                 title="Input Fields use different Color">
                 <template v-slot:content>
                     <q-toggle color="accent"
-                        v-model="diaryIsInputColoredSeparately" />
+                        v-model="isDiaryInputColoredSeparately" />
                 </template>
             </BaseItemForSettingsTabPanel>
-            <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default' & diaryIsInputColoredSeparately === true"
+            <BaseItemForSettingsTabPanel v-if="noteLayoutMode != 'default' & isDiaryInputColoredSeparately === true"
                 class="q-pb-sm"
                 title="Input Fields"
                 :color="eventInputBackgroundColor"
@@ -115,7 +115,7 @@ export default {
     },
     computed: {
         isDarkModeActive() {
-            if (this.$store.getters['layout/isDarkModeActive']) {
+            if (this.$store.getters['data/isDarkModeActive']) {
                 return true;
             } else {
                 return false;
@@ -128,9 +128,9 @@ export default {
                 return this.notesContainerBackgroundColor;
             }
         },
-        diaryIsInputColoredSeparately: {
+        isDiaryInputColoredSeparately: {
             get() {
-                return this.$store.state.layout.diaryIsInputColoredSeparately;
+                return this.$store.state.layout.isDiaryInputColoredSeparately;
             },
             set(value) {
                 this.$store.commit("layout/setInputColoredSeparately", value);
@@ -154,7 +154,7 @@ export default {
                 }
             },
             set(value) {
-                if (this.$store.getters['layout/isDarkModeActive']) {
+                if (this.$store.getters['data/isDarkModeActive']) {
                     this.$store.commit("layout/setNotesContainerBackgroundColorDark", value);
                 } else {
                     this.$store.commit("layout/setNotesContainerBackgroundColor", value);

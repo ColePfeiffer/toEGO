@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     isUsingSeparateColoring() {
-      return this.$store.state.layout.diaryIsInputColoredSeparately;
+      return this.$store.state.layout.isDiaryInputColoredSeparately;
     },
     backgroundColor() {
       if (this.isUsingSeparateColoring) {
@@ -111,7 +111,7 @@ export default {
     },
     editorBackgroundColor() {
       if (this.layoutMode === 'default') {
-        if (this.$store.getters['layout/isDarkModeActive']) {
+        if (this.$store.getters['data/isDarkModeActive']) {
           return this.$store.state.layout.blacksmoke;
         } else {
           return this.$store.state.layout.whitesmoke;

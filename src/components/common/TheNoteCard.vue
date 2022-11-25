@@ -140,7 +140,7 @@ export default {
       }
     },
     isDarkModeActive() {
-      return this.$store.getters['layout/isDarkModeActive'];
+      return this.$store.getters['data/isDarkModeActive'];
     },
     styleForTitleRow() {
       let style = {};

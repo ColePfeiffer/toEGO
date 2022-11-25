@@ -24,6 +24,9 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
     userSettingsContainer,
     (snapshot) => {
       commit("setUserSettingsDownloaded", true);
+      dispatch("layout/setTheme", state.userSettings.currentTheme, {
+        root: true,
+      });
     },
     { onlyOnce: true },
     (error) => {
@@ -57,12 +60,64 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
     //let diaryEntryID = snapshot.key;
     //commit("deleteNoteContainer", diaryEntryID);
   });
+
+  //let path = ref(firebaseDb, "userSettings/" + userId + "/userThemes");
+}
+
+// TODO: remove later
+export function firebaseCreateUserThemes({ state }) {
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(firebaseDb, "userSettings/" + userId + "/userThemes");
+  set(path, state.defaultUserSettings.userThemes, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
 }
 
 export function firebaseCreateUserSettings({ state }) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(firebaseDb, "userSettings/" + userId);
   set(path, state.userSettings, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
+
+export function firebaseSetCurrentTheme({}, currentTheme) {
+  console.log("setting current Theme in Firebase for ", currentTheme.name);
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(firebaseDb, "userSettings/" + userId + "/currentTheme");
+  set(path, currentTheme.name, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
+
+export function firebaseUpdateUserTheme({ rootGetters }, currentTheme) {
+  console.log("setting usertheme in userThemes", currentTheme.name);
+  let updatedSettingsForTheme = rootGetters["layout/getAllLayoutSettings"];
+  updatedSettingsForTheme.name = currentTheme.name;
+  console.log("updatedSettingsForTheme", updatedSettingsForTheme);
+  //let updatedTheme = Object.assign({}, currentTheme);
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(
+    firebaseDb,
+    "userSettings/" + userId + "/userThemes/" + updatedSettingsForTheme.name
+  );
+  set(path, updatedSettingsForTheme, (error) => {
+    if (error) {
+      showErrorMessage(error.message);
+    }
+  });
+}
+
+export function firebaseToggleDarkMode({}, newValue) {
+  let userId = firebaseAuth.currentUser.uid;
+  let path = ref(firebaseDb, "userSettings/" + userId + "/isDarkModeActive");
+  set(path, newValue, (error) => {
     if (error) {
       showErrorMessage(error.message);
     }

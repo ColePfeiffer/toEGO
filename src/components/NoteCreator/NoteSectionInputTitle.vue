@@ -35,10 +35,10 @@ export default {
   },
   computed: {
     isUsingSeparateColoring() {
-      return this.$store.state.layout.diaryIsInputColoredSeparately;
+      return this.$store.state.layout.isDiaryInputColoredSeparately;
     },
     backgroundColorBasedOnMode() {
-      if (this.$store.getters['layout/isDarkModeActive']) {
+      if (this.$store.getters['data/isDarkModeActive']) {
         return this.$store.state.layout.blacksmoke;
       } else {
         if (this.layoutMode === 'default') {
@@ -69,7 +69,7 @@ export default {
       if (this.layoutMode != 'default') {
         style["color"] = this.getColorBasedOnBackgroundColor + "!important";
       } else {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
+        if (this.$store.getters["data/isDarkModeActive"]) {
           style["color"] = "white";
           /*
            style["color"] = this.$store.getters[
@@ -91,7 +91,7 @@ export default {
       style["border-radius"] = "0px";
       style["background-color"] = this.backgroundColorBasedOnMode + " !important";
       if (this.layoutMode === "default") {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
+        if (this.$store.getters["data/isDarkModeActive"]) {
           style["border"] = "1px solid #ffffff1f";
         } else {
           style["border"] = "1px solid rgba(0, 0, 0, 0.12)";

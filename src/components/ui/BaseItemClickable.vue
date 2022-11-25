@@ -84,7 +84,7 @@ export default {
     textColorStyle() {
       // sets the text color
       if (this.isItemInParent) {
-        if (this.$store.getters["layout/isDarkModeActive"]) {
+        if (this.$store.getters["data/isDarkModeActive"]) {
           return { color: "white" };
         } else {
           return { color: "black" };

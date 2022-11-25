@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     styleForHeaderText() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         return { 'color': 'white' };
       } else {
         return { 'color': 'black' };

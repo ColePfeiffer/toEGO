@@ -52,10 +52,12 @@
     <template v-slot:footer>
       <BaseButtonForDialogFooter v-if="hasSettingChanged"
         buttonText="Discard"
+        style="border-radius: 0px"
         @click-button="discardChanges">
       </BaseButtonForDialogFooter>
       <BaseButtonForDialogFooter v-if="hasSettingChanged"
-        buttonText="Save changes"
+        buttonText="Save"
+        style="border-radius: 0px"
         @click-button="saveChangesToFirebase">
       </BaseButtonForDialogFooter>
     </template>
@@ -82,13 +84,14 @@ export default {
     discardChanges() {
       // reset changes to userTheme
       this.hasSettingChanged = false;
+      this.$store.dispatch("layout/discardChangesToLayout");
     },
     saveChangesToFirebase() {
-      // save changes to userTheme
+      this.$store.dispatch("layout/saveLayoutChangesInFirebase");
+      this.hasSettingChanged = false;
     },
-    settingHasChanged() {
-      console.log("some setting has changed");
-      this.hasSettingChanged = true;
+    settingHasChanged(value) {
+      this.hasSettingChanged = value;
     },
   },
   computed: {

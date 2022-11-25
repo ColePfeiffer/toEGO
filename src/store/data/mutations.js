@@ -21,6 +21,17 @@ export const overwriteLocalUserSetting = (state, payload) => {
   state.userSettings[payload.name] = payload.value;
 };
 
+export const resetCurrentThemeLocally = (state) => {
+  console.log("resetting current theme");
+  state.userSettings["currentTheme"] = state.lastSelectedTheme;
+};
+
+export const setCurrentThemeLocally = (state, nameOfTheme) => {
+  console.log("setting current theme");
+  state.lastSelectedTheme = state.userSettings["currentTheme"];
+  state.userSettings["currentTheme"] = nameOfTheme;
+};
+
 export const updateLastSelectedDate = (state, value) => {
   state.lastSelectedDate = value;
 };

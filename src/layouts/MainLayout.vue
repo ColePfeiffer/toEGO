@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf"
-    :style="$store.getters['layout/getStyleForLayout']">
+    :style="styleForLayout">
     <!-- Dialogs -->
 
     <!-- Bottom Navigation bar -->
@@ -134,7 +134,8 @@
       </q-page>
 
     </q-page-container>
-    <q-page-container v-else>
+    <q-page-container v-else
+      :style="test">
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <span class="absolute-center"
           :style="boxShadowStyle">
@@ -191,12 +192,15 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    styleForLayout(){
+      return this.$store.getters['layout/getStyleForLayout']
+    },
+    test() {
+      return { "background": "url(public/images/backgrounds/01_big.png)" };
+      // style["background"] = background;
+    },
     isAllDataDownloaded() {
-      if (this.$store.state.data.userSettingsDownloaded & this.$store.state.diaryentries.diaryEntriesDownloaded & this.$store.state.diaryentries.notesDownloaded) {
-        return true
-      } else {
-        return false
-      }
+      return this.$store.getters["data/isAllDataDownloaded"];
     },
     navigationBarItems() {
       if (this.isUserLoggedIn) {

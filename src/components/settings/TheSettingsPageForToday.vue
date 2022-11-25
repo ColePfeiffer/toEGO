@@ -234,7 +234,7 @@ export default {
         },
         todayLayoutMode: {
             get() {
-                return this.$store.state.layout.homeMode;
+                return this.$store.state.layout.homeLayoutMode;
             },
             set(mode) {
                 let payload = { "page": "home", "mode": mode };
@@ -254,7 +254,7 @@ export default {
             }
         },
         isDarkModeActive() {
-            return this.$store.getters['layout/isDarkModeActive'];
+            return this.$store.getters['data/isDarkModeActive'];
         },
         todayNoteBackgroundColor: {
             get() {

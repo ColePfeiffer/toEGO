@@ -127,7 +127,7 @@ export default {
     },
     getStyleForDialog() {
       let style = {};
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         style = {
           "background-color": this.$store.state.layout.dark,
           "min-height": this.minHeight,

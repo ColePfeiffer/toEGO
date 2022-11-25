@@ -106,21 +106,21 @@ export default {
   },
   computed: {
     colorForStepper() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         return "secondary"
       } else {
         return "black"
       }
     },
     activeColorForStepper() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         return "white"
       } else {
         return "black"
       }
     },
     styleForGhost() {
-      if (this.$store.getters["layout/isDarkModeActive"]) {
+      if (this.$store.getters["data/isDarkModeActive"]) {
         return {
           'height': "50px",
           'max-width': "50px",

@@ -13,6 +13,10 @@
             @click="$store.dispatch('templates/firebaseInitiate')"
             :style="styleForButton"
             color="secondary"></q-btn>
+          <q-btn label="Add Themes to DB"
+            @click="$store.dispatch('data/firebaseCreateUserThemes')"
+            :style="styleForButton"
+            color="secondary"></q-btn>
         </div>
       </template>
     </BaseSettingsTabPanelGroup>
