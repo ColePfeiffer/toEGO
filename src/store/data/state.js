@@ -254,7 +254,9 @@ export default function () {
         },
       },
     },
-    userSettings: {},
+    userSettings: {
+      isDarkModeActive: false,
+    },
     lastSelectedDate: new Date(),
     // Toggles
     newEventIsInCreationMode: true,

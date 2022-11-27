@@ -1,4 +1,4 @@
-import { uid, date } from "quasar";
+import { uid, date, Dark } from "quasar";
 import { firebaseApp, firebaseDb, firebaseAuth } from "boot/firebase";
 import { showErrorMessage } from "src/functions/function-show-error-message";
 import {
@@ -40,8 +40,12 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
   // whenever a child gets added
   onChildAdded(userSettingsContainer, (snapshot) => {
     let userSetting = snapshot.val();
+    let nameOfSetting = snapshot.key;
+    if (nameOfSetting === "isDarkModeActive") {
+      Dark.set(userSetting);
+    }
     let payload = {
-      name: snapshot.key,
+      name: nameOfSetting,
       value: userSetting,
     };
     commit("overwriteLocalUserSetting", payload);

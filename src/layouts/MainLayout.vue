@@ -134,8 +134,7 @@
       </q-page>
 
     </q-page-container>
-    <q-page-container v-else
-      :style="test">
+    <q-page-container v-else>
       <q-page :style="$store.getters['layout/getStyleForPage']">
         <span class="absolute-center"
           :style="boxShadowStyle">
@@ -192,12 +191,8 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
-    styleForLayout(){
+    styleForLayout() {
       return this.$store.getters['layout/getStyleForLayout']
-    },
-    test() {
-      return { "background": "url(public/images/backgrounds/01_big.png)" };
-      // style["background"] = background;
     },
     isAllDataDownloaded() {
       return this.$store.getters["data/isAllDataDownloaded"];
@@ -455,10 +450,10 @@ export default {
   padding-top: 7px
 
 .navigation-bar-icon
-  padding-top: 2px
+  padding-top: 1.5px
 
 .navigation-toolbar
-  height: 51px
+  height: 55px
 
 .navigation-button-label
   font-size: 10px

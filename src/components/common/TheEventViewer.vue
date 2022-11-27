@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-md q-px-xs">
+  <div class="q-py-sm q-px-xs">
     <DialogDeleteNote @delete-note="deleteNote"
       @close-dialog="closeDialog"></DialogDeleteNote>
 
@@ -45,6 +45,7 @@
         :style="styleForNote"
         :backgroundColor="backgroundColor"
         :currentNote="note"
+        :isShowingExpandButton="isShowingExpandButton"
         @change-note-data="changeNoteData"
         @edit-note="editNote"
         @delete-note="showConfirmDeleteDialog" />
@@ -66,6 +67,10 @@ export default {
     Card
   },
   props: {
+    isShowingExpandButton: {
+      type: Boolean,
+      default: true
+    },
     diaryEntry: Object,
     showMessageIfThereAreNoNotes: {
       type: Boolean,

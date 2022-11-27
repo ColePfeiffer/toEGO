@@ -22,5 +22,6 @@ export const isAllDataDownloaded = (state, getters, rootState) => {
 };
 
 export const isDarkModeActive = (state) => {
+  console.log("yeah", state.userSettings.isDarkModeActive);
   return state.userSettings.isDarkModeActive;
 };

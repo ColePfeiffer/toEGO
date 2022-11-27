@@ -5,8 +5,25 @@
       DIARY
     </template>
     <template v-slot:buttons>
+      <!-- TODO: or empty?-->
+      <div v-if="isShowingPlusButton"
+        class="col-auto">
+        <ButtonForDiarySection textColor="white"
+          class="q-mr-xs"
+          icon="bi-plus-lg"
+          size="10px"
+          label=""
+          :style="$store.getters['layout/diarySectionButton']"
+          @click-button="setDiaryModeToEdit">
+          <template v-slot:tooltip>
+            <BaseTooltip text="Create entry"
+              :delay="
+              15"></BaseTooltip>
+          </template>
+        </ButtonForDiarySection>
+      </div>
       <!-- Buttons: Left -->
-      <div v-if="isDiaryVisible"
+      <div v-else-if="isDiaryVisible"
         class="col-auto">
         <!-- Button: Enter Fullscreen Button -->
         <ButtonForDiarySection v-if="areEditAndFullscreenButtonVisible"
@@ -17,7 +34,7 @@
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="openEntryInFullscreen">
           <template v-slot:tooltip>
-            <BaseTooltip text="Turn Viewing-Mode on"
+            <BaseTooltip text="show in fullscreen"
               :delay="
               15"></BaseTooltip>
           </template>
@@ -36,7 +53,7 @@
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="editDiaryEntry">
           <template v-slot:tooltip>
-            <BaseTooltip text="Edit diary text"
+            <BaseTooltip text="edit text"
               :delay="15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
@@ -70,6 +87,15 @@ export default {
     };
   },
   computed: {
+    isShowingPlusButton() {
+      if (this.diaryEntry === undefined) {
+        return true;
+      } else if (this.diaryEntry.editor === undefined | this.diaryEntry.editor === '') {
+        return true;
+      } else {
+        return false;
+      }
+    },
     isTitleVisible() {
       if (this.viewingMode != 'edit' && (this.diaryEntry != undefined || this.isCreatingNewDiaryEntry === true)) {
         return true;

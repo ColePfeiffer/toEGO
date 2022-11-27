@@ -55,6 +55,7 @@
             <TheSectionForNotes v-if="isNoteSectionVisible"
               :backgroundColor="cardBackgroundColor"
               :diaryEntry="diaryEntry"
+              :isShowingExpandButton="isShowingExpandButtonAsComputed"
               @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
               @edit-note="goAndEditNote" />
           </template>
@@ -158,8 +159,10 @@ export default {
   },
   data() {
     return {
+      isShowingExpandButton: false,
       isCreatingNewDiaryEntry: false,
       isDiaryEntryShownInFullscreen: false,
+      isNoteSectionSetToFullscreen: false,
       viewingMode: "view", // is either set to 'view' or 'edit'
       date: this.$store.state.data.lastSelectedDate,
       day: "TODAY",
@@ -198,6 +201,13 @@ export default {
     date(newDate) {
       this.$store.commit("data/updateLastSelectedDate", newDate);
       // Case 1: Entry exists
+      console.log("note section in fullscreen", this.isNoteSectionSetToFullscreen)
+      if (this.isNoteSectionSetToFullscreen) {
+        this.isShowingExpandButton = true;
+      } else {
+        this.isShowingExpandButton = false;
+      }
+
       if (!this.isDiaryEntryUndefined && this.diaryEntry.editor != "") {
         this.editorHTMLContent = this.diaryEntry.editor;
         // Case 2: No Diary Entry, but events exist.
@@ -212,6 +222,10 @@ export default {
     },
   },
   computed: {
+    isShowingExpandButtonAsComputed() {
+      console.log("moipp", this.isShowingExpandButton);
+      return this.isShowingExpandButton;
+    },
     isDiaryEntryUndefined() {
       if (this.diaryEntry === undefined) {
         return true;
@@ -401,9 +415,13 @@ export default {
       }
     },
     hideEvents() {
+      this.isNoteSectionSetToFullscreen = false;
+      this.isShowingExpandButton = false;
       this.splitterModel = this.splitterHeightDefault;
     },
     showEvents() {
+      this.isNoteSectionSetToFullscreen = true;
+      this.isShowingExpandButton = true;
       this.splitterModel = 570;
     },
     setDateToToday() {

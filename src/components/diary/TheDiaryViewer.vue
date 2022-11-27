@@ -29,17 +29,6 @@
       <div v-else>
         <!-- Case 2.1.1: Showing + Button, if journal-entry is empty. -->
         <div v-if="editor === ''">
-          <BaseCard :backgroundColor="backgroundColor"
-            :borderColorLeft="borderColorLeft"
-            :borderColorRight="borderColorRight">
-            <template v-slot:contentInsideSection>
-              <q-btn flat
-                dense
-                color="secondary"
-                icon="bi-journal-plus"
-                @click="createDiaryEntry" />
-            </template>
-          </BaseCard>
         </div>
         <!-- Case 2.1.2: Showing journal-entrie's text. -->
         <div v-else>

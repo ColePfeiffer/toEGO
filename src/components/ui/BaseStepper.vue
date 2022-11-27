@@ -105,22 +105,25 @@ export default {
     }
   },
   computed: {
+    isDarkModeActive() {
+      return this.$store.state.data.userSettings.isDarkModeActive;
+    },
     colorForStepper() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         return "secondary"
       } else {
         return "black"
       }
     },
     activeColorForStepper() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         return "white"
       } else {
         return "black"
       }
     },
     styleForGhost() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         return {
           'height': "50px",
           'max-width': "50px",

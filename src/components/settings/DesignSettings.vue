@@ -396,7 +396,7 @@ export default {
     },
     darkMode: {
       get() {
-        return this.$store.getters["layout/isDarkModeActive"];
+        return this.$store.state.data.userSettings.isDarkModeActive;
       },
       set() {
         this.toggleDarkMode();

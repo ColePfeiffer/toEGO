@@ -29,12 +29,12 @@ export default {
   },
   computed: {
     isDarkModeActive() {
-      return this.$store.getters['data/isDarkModeActive'];
+      return this.$store.state.data.userSettings.isDarkModeActive;
     },
     styleForInfoBox() {
       let style = {};
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
         style["color"] = "white";
       } else {

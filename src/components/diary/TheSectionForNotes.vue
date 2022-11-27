@@ -1,74 +1,76 @@
 <template>
-    <DiaryBaseSection>
-        <template v-slot:content>
-            <TheEventViewer :isNoteTitleColorful="noteTitleRowIsColoredForDiary"
-                :borderColorLeft="borderColorLeftForDiary"
-                :borderColorRight="borderColorRightForDiary"
-                :backgroundColor="backgroundColor"
-                :textShadowColor="textShadowColor"
-                :diaryEntry="diaryEntry"
-                @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-                @edit-note="editNote"
-                :showMessageIfThereAreNoEvents="false">
-            </TheEventViewer>
-        </template>
-    </DiaryBaseSection>
+  <DiaryBaseSection>
+    <template v-slot:content>
+      <TheEventViewer :isNoteTitleColorful="noteTitleRowIsColoredForDiary"
+        :borderColorLeft="borderColorLeftForDiary"
+        :borderColorRight="borderColorRightForDiary"
+        :backgroundColor="backgroundColor"
+        :textShadowColor="textShadowColor"
+        :diaryEntry="diaryEntry"
+        :isShowingExpandButton="isShowingExpandButton"
+        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+        @edit-note="editNote"
+        :showMessageIfThereAreNoEvents="false">
+      </TheEventViewer>
+    </template>
+  </DiaryBaseSection>
 </template>
 
 <script>
 import TheEventViewer from "../common/TheEventViewer.vue";
 import DiaryBaseSection from "./Base/DiaryBaseSection.vue";
 export default {
-    name: "TheSectionForNotes",
-    components: { TheEventViewer, DiaryBaseSection },
-    emits: ["go-to-event-set-to-creation-mode", "edit-note"],
-    props: {
-        diaryEntry: Object,
-        backgroundColor: {
-            type: String,
-            default: "#f5f5f5",
-        },
+  name: "TheSectionForNotes",
+  components: { TheEventViewer, DiaryBaseSection },
+  emits: ["go-to-event-set-to-creation-mode", "edit-note"],
+  props: {
+    diaryEntry: Object,
+    backgroundColor: {
+      type: String,
+      default: "#f5f5f5",
     },
-    computed: {
-        isUsingSameStyleAsHome() {
-            return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
-        },
-        textShadowColor() {
-            if (this.isUsingSameStyleAsHome) {
-                return this.$store.state.layout.noteTextShadowColorForHome;
-            } else {
-                return this.$store.state.layout.noteTextShadowColorForDiary;
-            }
-        },
-        noteTitleRowIsColoredForDiary() {
-            if (this.isUsingSameStyleAsHome) {
-                return this.$store.state.layout.noteTitleRowIsColored;
-            } else {
-                return this.$store.state.layout.noteTitleRowIsColoredForDiary;
-            }
-        },
-        borderColorLeftForDiary() {
-            if (this.isUsingSameStyleAsHome) {
-                return this.$store.state.layout.borderColorLeft;
-            } else {
-                return this.$store.state.layout.borderColorLeftForDiary;
-            }
-        },
-        borderColorRightForDiary() {
-            if (this.isUsingSameStyleAsHome) {
-                return this.$store.state.layout.borderColorRight;
-            } else {
-                return this.$store.state.layout.borderColorRightForDiary;
-            }
-        }
+    isShowingExpandButton: Boolean,
+  },
+  computed: {
+    isUsingSameStyleAsHome() {
+      return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
     },
-    methods: {
-        goToEventSetToCreationMode() {
-            this.$emit("go-to-event-set-to-creation-mode");
-        },
-        editNote(note) {
-            this.$emit("edit-note", note);
-        },
+    textShadowColor() {
+      if (this.isUsingSameStyleAsHome) {
+        return this.$store.state.layout.noteTextShadowColorForHome;
+      } else {
+        return this.$store.state.layout.noteTextShadowColorForDiary;
+      }
+    },
+    noteTitleRowIsColoredForDiary() {
+      if (this.isUsingSameStyleAsHome) {
+        return this.$store.state.layout.noteTitleRowIsColored;
+      } else {
+        return this.$store.state.layout.noteTitleRowIsColoredForDiary;
+      }
+    },
+    borderColorLeftForDiary() {
+      if (this.isUsingSameStyleAsHome) {
+        return this.$store.state.layout.borderColorLeft;
+      } else {
+        return this.$store.state.layout.borderColorLeftForDiary;
+      }
+    },
+    borderColorRightForDiary() {
+      if (this.isUsingSameStyleAsHome) {
+        return this.$store.state.layout.borderColorRight;
+      } else {
+        return this.$store.state.layout.borderColorRightForDiary;
+      }
     }
+  },
+  methods: {
+    goToEventSetToCreationMode() {
+      this.$emit("go-to-event-set-to-creation-mode");
+    },
+    editNote(note) {
+      this.$emit("edit-note", note);
+    },
+  }
 }
 </script>

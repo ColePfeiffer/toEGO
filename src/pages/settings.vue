@@ -98,10 +98,14 @@ export default {
     userTheme() {
       return this.$store.state.data.userTheme;
     },
+    isDarkModeActive() {
+      console.log("isDarkModeActive? ", this.$store.state.data.userSettings.isDarkModeActive)
+      return this.$store.state.data.userSettings.isDarkModeActive;
+    },
     styleForScrollArea() {
       let style = {};
       style['height'] = this.$store.state.layout.height * .69 + "px";
-      if (this.$store.getters['layout/isDarkModeActive']) {
+      if (this.isDarkModeActive) {
         style["background-color"] = "var(--q-dark)";
       } else {
         style["background-color"] = "white";
@@ -110,7 +114,7 @@ export default {
     },
     getBackgroundColor() {
       let style = {};
-      if (this.$store.getters['layout/isDarkModeActive']) {
+      if (this.isDarkModeActive) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
       } else {
         style["background-color"] = this.$store.state.layout.whitesmoke;

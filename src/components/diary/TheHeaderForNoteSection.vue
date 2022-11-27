@@ -14,7 +14,7 @@
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="hideEvents">
           <template v-slot:tooltip>
-            <BaseTooltip text="Hide Events"
+            <BaseTooltip text="hide notes"
               :delay="15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
@@ -26,7 +26,7 @@
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="expandMore">
           <template v-slot:tooltip>
-            <BaseTooltip text="Show Events"
+            <BaseTooltip text="show notes"
               :delay="15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>
@@ -41,7 +41,7 @@
           :style="$store.getters['layout/diarySectionButton']"
           @click-button="goToEventSetToCreationMode">
           <template v-slot:tooltip>
-            <BaseTooltip text="Add new event"
+            <BaseTooltip text="create note"
               :delay="15"></BaseTooltip>
           </template>
         </ButtonForDiarySection>

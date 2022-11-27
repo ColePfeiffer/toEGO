@@ -19,11 +19,13 @@
               }}</q-item-label>
             </div>
             <div class="col-1 text-right ">
-              <BaseButtonExpandable color="secondary"
+              <BaseButtonExpandable v-if="isShowingExpandButton"
+                color="secondary"
                 style="font-size: 11px"
                 dense
                 :isNoteExpanded="currentNote.expanded"
                 @expand="expand"></BaseButtonExpandable>
+              <div v-else></div>
             </div>
           </div>
         </q-item-section>
@@ -111,6 +113,10 @@ export default {
     textShadowColor: {
       type: String,
       default: "",
+    },
+    isShowingExpandButton: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ["change-note-data", "delete-note", "edit-note"],
@@ -140,7 +146,7 @@ export default {
       }
     },
     isDarkModeActive() {
-      return this.$store.getters['data/isDarkModeActive'];
+      return this.$store.state.data.userSettings.isDarkModeActive;
     },
     styleForTitleRow() {
       let style = {};

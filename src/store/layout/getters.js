@@ -55,16 +55,16 @@ export const getAllLayoutSettings = (state) => {
   };
 };
 
-export const getTextColorBasedOnDarkMode = (getters) => {
-  if (getters.isDarkModeActive) {
+export const getTextColorBasedOnDarkMode = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return "#FFFFFF";
   } else {
     return "#000000";
   }
 };
 
-export const getStyleForTransparentCard = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getStyleForTransparentCard = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return {
       "background-color": state.blacksmoke,
       "text-shadow": "#000000" + state.lowOpacity + " 2px 2px 2px",
@@ -79,11 +79,11 @@ export const getStyleForTransparentCard = (state, getters) => {
   }
 };
 
-export const getStyleForText = (state, getters) => {
+export const getStyleForText = (state, getters, rootState) => {
   let style = {};
   style = getters.getFontsize;
 
-  if (getters.isDarkModeActive) {
+  if (rootState.data.userSettings.isDarkModeActive) {
     //"text-shadow": "2px 2px #000000",
     style["text-shadow"] = "rgb(0 0 0) 2px 2px 2px";
     style["color"] = "white !important";
@@ -100,24 +100,24 @@ export const getShadowForAriaButtons = (state) => {
   };
 };
 
-export const getHomeBackgroundColor = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getHomeBackgroundColor = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return state.homeBackgroundColorDark;
   } else {
     return state.homeBackgroundColor;
   }
 };
 
-export const getEventBackgroundColor = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getEventBackgroundColor = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return state.notesContainerBackgroundColorDark;
   } else {
     return state.notesContainerBackgroundColor;
   }
 };
 
-export const getDiaryBackgroundColor = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getDiaryBackgroundColor = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return state.diaryBackgroundColorDark;
   } else {
     return state.diaryBackgroundColor;
@@ -205,12 +205,12 @@ export const getTextColorOnSecondary = (state, getters) => {
   return getters.getColorBasedOnBackgroundColor(state.secondary);
 };
 
-export const getTextColorForEvent = (state, getters) => {
+export const getTextColorForEvent = (state, getters, rootState) => {
   let textColor;
   let style = {};
 
   if (state.noteLayoutMode === "default") {
-    if (getters.isDarkModeActive) {
+    if (rootState.data.userSettings.isDarkModeActive) {
       textColor = "white";
     } else {
       textColor = "black";
@@ -260,8 +260,9 @@ export const secondaryLighter = (state, getters) => {
   return newColor;
 };
 
-export const getStyleForBasePage = (state, getters) => {
+export const getStyleForBasePage = (state, getters, rootState) => {
   return (payload) => {
+    let isDarkModeActive = rootState.data.userSettings.isDarkModeActive;
     let style = {};
     let defaultColor;
     style["border-radius"] = "0px";
@@ -273,12 +274,12 @@ export const getStyleForBasePage = (state, getters) => {
       defaultColor = state.whitesmoke;
     }
 
-    if (getters.isDarkModeActive && payload.mode === "default") {
+    if (isDarkModeActive && payload.mode === "default") {
       style["background-color"] = state.dark;
-    } else if (getters.isDarkModeActive && payload.mode != "default") {
+    } else if (isDarkModeActive && payload.mode != "default") {
       // TODO: kann vielleicht weg?
       style["background-color"] = payload.backgroundColor;
-    } else if (!getters.isDarkModeActive && payload.mode === "default") {
+    } else if (!isDarkModeActive && payload.mode === "default") {
       style["background-color"] = defaultColor;
     } else {
       style["background-color"] = payload.backgroundColor;
@@ -419,9 +420,9 @@ export const getFontsize = (state) => {
   return { "font-size": state.fontsize + "px" };
 };
 
-export const textColorForNotesEditor = (state, getters) => {
+export const textColorForNotesEditor = (state, getters, rootState) => {
   if (state.noteLayoutMode === "default") {
-    if (getters.isDarkModeActive) {
+    if (rootState.data.userSettings.isDarkModeActive) {
       return "white";
     } else {
       return "black";
@@ -433,24 +434,24 @@ export const textColorForNotesEditor = (state, getters) => {
   }
 };
 
-export const getToolbarIconColor = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getToolbarIconColor = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return "white";
   } else {
     return "black";
   }
 };
 
-export const getToolbarBackgroundColor = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getToolbarBackgroundColor = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return state.dark;
   } else {
     return state.white;
   }
 };
 
-export const getStyleForQuotedEventText = (state, getters) => {
-  if (getters.isDarkModeActive) {
+export const getStyleForQuotedEventText = (state, getters, rootState) => {
+  if (rootState.data.userSettings.isDarkModeActive) {
     return {
       background: "var(--q-dark)",
       "text-shadow": "rgb(0 0 0) 2px 2px 2px",

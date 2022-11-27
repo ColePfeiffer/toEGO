@@ -70,12 +70,15 @@ export default {
     }
   },
   computed: {
+    isDarkModeActive() {
+      return this.$store.state.data.userSettings.isDarkModeActive;
+    },
     getStyle() {
       let style = {};
       style["border-radius"] = "0px";
       style["font-size"] = "12px";
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
       }
       else {
@@ -89,7 +92,7 @@ export default {
       style["font-size"] = "12.5px";
       style["font-weight"] = "600";
 
-      if (this.$store.getters["data/isDarkModeActive"]) {
+      if (this.isDarkModeActive) {
         style["color"] = "whitesmoke";
         style["border-bottom"] = "1px solid " + this.$store.state.layout.secondary + this.$store.state.layout.lowOpacity;
       }

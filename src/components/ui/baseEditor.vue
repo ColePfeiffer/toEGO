@@ -245,11 +245,7 @@ export default {
       }
     },
     isDarkModeActive() {
-      if (this.$store.getters["data/isDarkModeActive"]) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.$store.state.data.userSettings.isDarkModeActive;
     },
     getStyleForEditor() {
       let style = {};
