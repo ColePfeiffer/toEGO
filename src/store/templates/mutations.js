@@ -2,6 +2,12 @@ export const setEditorText = (state, text) => {
   state.editorText = text;
 };
 
+export const resetTemplatesCategoriesAndFolders = (state) => {
+  state.templates = [];
+  state.categories = [];
+  state.folders = [];
+};
+
 export const setTemplatesDownloaded = (state, bool) => {
   state.templatesDownloaded = bool;
 };

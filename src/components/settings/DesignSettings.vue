@@ -257,6 +257,7 @@
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
         </blockquote>
         <BaseItemForSettingsTabPanel title="Font-Style"
+          :isOnSameLine="false"
           caption="Change text style.">
           <template v-slot:content>
             <q-btn-toggle v-model="fontFamily"
@@ -270,8 +271,10 @@
               no-caps
               :options="[
                 { label: '1', value: 'PressStart', slot: 'pressStart' },
-                { label: '2', value: 'Inter', slot: 'inter' },
-                { label: '3', value: 'Munro', slot: 'munro' },
+                { label: '2', value: 'PixeloidSans', slot: 'PixeloidSans' },
+                { label: '3', value: 'Inter', slot: 'inter' },
+                { label: '4', value: 'Munro', slot: 'munro' },
+                { label: '5', value: 'RedAlert', slot: 'RedAlert' },
               ]">
               <template v-slot:pressStart>
                 <BaseTooltip text="Pixelfont: Default"

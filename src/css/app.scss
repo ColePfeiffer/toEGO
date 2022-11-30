@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: "Inter";
-  src: url(../../public/fonts/new/Inter-Regular.woff2);
+  src: url(../../public/fonts/Inter-Regular.woff2);
 }
 
 @font-face {
@@ -11,16 +11,28 @@
 }
 
 @font-face {
-  font-family: "Inter Light";
-  src: url(../../public/fonts/new/Inter-Light.woff2);
+  font-family: "Pixel4B";
+  src: url(../../public/fonts/04B.ttf);
 }
+
 @font-face {
-  font-family: "Inter Thin";
-  src: url(../../public/fonts/new/Inter-Thin.woff2);
+  font-family: "PixeloidSans";
+  src: url(../../public/fonts/PixeloidSans.ttf);
 }
+
+@font-face {
+  font-family: "FreePixel";
+  src: url(../../public/fonts/FreePixel.ttf);
+}
+
+@font-face {
+  font-family: "RedAlert";
+  src: url(../../public/fonts/C&CRedAlert.ttf);
+}
+
 @font-face {
   font-family: "Munro";
-  src: url(../../public/fonts/new/munro.ttf);
+  src: url(../../public/fonts/munro.ttf);
 }
 
 // declare a class which applies it

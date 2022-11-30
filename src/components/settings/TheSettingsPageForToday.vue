@@ -10,193 +10,169 @@
         :borderColorLeft="borderColorLeft"
         :borderColorRight="borderColorRight"
         :textShadowColor="noteTextShadowColorForHome" />
-      <div class="row justify-between items-center q-pa-md">
-        <div class="col-10"
-          style="font-weight: 600">
-          Page Layout: {{ layoutName }}
-        </div>
-        <BaseButtonExpandable class="col-1"
-          :isNoteExpanded="isShowingSettingsForToday"
-          @expand="isShowingSettingsForToday = !isShowingSettingsForToday">
-        </BaseButtonExpandable>
-      </div>
-      <div v-if="isShowingSettingsForToday">
-        <BaseItemForSettingsTabPanel title="">
-          <template v-slot:content>
-            <q-btn-toggle v-model="todayLayoutMode"
-              dense
-              class="my-custom-toggle q-mx-md"
-              color="transparent"
-              square
-              unelevated
-              toggle-color="accent"
-              text-color="lightgrey"
-              toggle-text-color="white"
-              no-caps
-              :options="[
-                { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
-                { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
-                { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
-              ]" />
-          </template>
-        </BaseItemForSettingsTabPanel>
-        <BaseItemForSettingsTabPanel v-if="todayLayoutMode === 'retro' || todayLayoutMode === 'border'"
-          title="Background"
-          :color="todayPageBackgroundColor"
-          icon="bi-square-fill"
-          caption="Set color and opacity.">
-          <template v-slot:content>
-            <q-input filled
-              dense
-              hide-bottom-space
-              v-model="todayPageBackgroundColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="todayPageBackgroundColor" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </template>
-        </BaseItemForSettingsTabPanel>
-      </div>
+      <SettingsTabPanelItemFolder :title="'Page Layout:' + layoutName">
+        <template v-slot:content>
+          <BaseItemForSettingsTabPanel title="">
+            <template v-slot:content>
+              <q-btn-toggle v-model="todayLayoutMode"
+                dense
+                class="my-custom-toggle q-mx-md"
+                color="transparent"
+                square
+                unelevated
+                toggle-color="accent"
+                text-color="lightgrey"
+                toggle-text-color="white"
+                no-caps
+                :options="[
+                  { label: '', icon: 'bi-window', padding: '10px', value: 'retro' },
+                  { label: '', icon: 'bi-square-fill', padding: '10px', value: 'border' },
+                  { label: '', icon: 'bi-square', padding: '10px', value: 'clear' },
+                ]" />
+            </template>
+          </BaseItemForSettingsTabPanel>
+          <BaseItemForSettingsTabPanel v-if="todayLayoutMode === 'retro' || todayLayoutMode === 'border'"
+            title="Background"
+            :color="todayPageBackgroundColor"
+            icon="bi-square-fill"
+            caption="Set color and opacity.">
+            <template v-slot:content>
+              <q-input filled
+                dense
+                hide-bottom-space
+                v-model="todayPageBackgroundColor"
+                :rules="['anyColor']"
+                class="color-picker-input">
+                <template v-slot:append>
+                  <q-icon name="colorize"
+                    class="cursor-pointer">
+                    <q-popup-proxy cover
+                      transition-show="scale"
+                      transition-hide="scale">
+                      <q-color v-model="todayPageBackgroundColor" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </template>
+          </BaseItemForSettingsTabPanel>
+        </template>
+      </SettingsTabPanelItemFolder>
       <q-separator />
-      <div class="row justify-between items-center q-pa-md">
-        <div class="col-10"
-          style="font-weight: 600">
-          Note Appearance
-        </div>
-        <BaseButtonExpandable class="col-1"
-          :isNoteExpanded="isShowingSettingsForNotes"
-          @expand="isShowingSettingsForNotes = !isShowingSettingsForNotes">
-        </BaseButtonExpandable>
-      </div>
-      <div v-if="isShowingSettingsForNotes">
-        <BaseItemForSettingsTabPanel title="Title and Emoji are colorful">
-          <template v-slot:content>
-            <q-toggle color="accent"
-              v-model="todayNoteTitleRowIsColored" />
-          </template>
-        </BaseItemForSettingsTabPanel>
+      <SettingsTabPanelItemFolder title="Note Appearance">
+        <template v-slot:content>
+          <BaseItemForSettingsTabPanel title="Title and Emoji are colorful">
+            <template v-slot:content>
+              <q-toggle color="accent"
+                v-model="todayNoteTitleRowIsColored" />
+            </template>
+          </BaseItemForSettingsTabPanel>
 
-        <BaseItemForSettingsTabPanel title="Background"
-          :color="todayNoteBackgroundColor"
-          icon="bi-square-fill"
-          caption="Set color and opacity.">
-          <template v-slot:content>
-            <q-input filled
-              dense
-              :disable="isDarkModeActive"
-              hide-bottom-space
-              v-model="todayNoteBackgroundColor"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer outline">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="todayNoteBackgroundColor" />
-                  </q-popup-proxy>
-                </q-icon>
+          <BaseItemForSettingsTabPanel title="Background"
+            :color="todayNoteBackgroundColor"
+            icon="bi-square-fill"
+            caption="Set color and opacity.">
+            <template v-slot:content>
+              <q-input filled
+                dense
+                :disable="isDarkModeActive"
+                hide-bottom-space
+                v-model="todayNoteBackgroundColor"
+                :rules="['anyColor']"
+                class="color-picker-input">
+                <template v-slot:append>
+                  <q-icon name="colorize"
+                    class="cursor-pointer outline">
+                    <q-popup-proxy cover
+                      transition-show="scale"
+                      transition-hide="scale">
+                      <q-color v-model="todayNoteBackgroundColor" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+
+
+            </template>
+          </BaseItemForSettingsTabPanel>
+
+          <BaseItemForSettingsTabPanel title="Text Shadow"
+            :color="noteTextShadowColorForHome"
+            icon="bi-square-fill"
+            caption="Set color and opacity.">
+            <template v-slot:content>
+              <q-input filled
+                dense
+                hide-bottom-space
+                v-model="noteTextShadowColorForHome"
+                :rules="['anyColor']"
+                class="color-picker-input">
+                <template v-slot:append>
+                  <q-icon name="colorize"
+                    class="cursor-pointer outline">
+                    <q-popup-proxy cover
+                      transition-show="scale"
+                      transition-hide="scale">
+                      <q-color v-model="noteTextShadowColorForHome" />
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </template>
+          </BaseItemForSettingsTabPanel>
+
+          <div>
+            <BaseItemForSettingsTabPanel :color="borderColorLeft"
+              icon="bi-square-fill"
+              title="Border: Left">
+              <template v-slot:content>
+                <q-input filled
+                  dense
+                  hide-bottom-space
+                  v-model="borderColorLeft"
+                  :rules="['anyColor']"
+                  class="color-picker-input ">
+                  <template v-slot:append>
+                    <q-icon name="colorize"
+                      class="cursor-pointer">
+                      <q-popup-proxy cover
+                        transition-show="scale"
+                        transition-hide="scale">
+                        <q-color v-model="borderColorLeft" />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </template>
-            </q-input>
+            </BaseItemForSettingsTabPanel>
 
-
-          </template>
-        </BaseItemForSettingsTabPanel>
-
-        <BaseItemForSettingsTabPanel title="Text Shadow"
-          :color="noteTextShadowColorForHome"
-          icon="bi-square-fill"
-          caption="Set color and opacity.">
-          <template v-slot:content>
-            <q-input filled
-              dense
-              hide-bottom-space
-              v-model="noteTextShadowColorForHome"
-              :rules="['anyColor']"
-              class="color-picker-input">
-              <template v-slot:append>
-                <q-icon name="colorize"
-                  class="cursor-pointer outline">
-                  <q-popup-proxy cover
-                    transition-show="scale"
-                    transition-hide="scale">
-                    <q-color v-model="noteTextShadowColorForHome" />
-                  </q-popup-proxy>
-                </q-icon>
+            <BaseItemForSettingsTabPanel :color="borderColorRight"
+              icon="bi-square-fill"
+              title="Border: Right">
+              <template v-slot:content>
+                <q-input filled
+                  dense
+                  hide-bottom-space
+                  v-model="borderColorRight"
+                  :rules="['anyColor']"
+                  class="color-picker-input ">
+                  <template v-slot:append>
+                    <q-icon name="colorize"
+                      class="cursor-pointer">
+                      <q-popup-proxy cover
+                        transition-show="scale"
+                        transition-hide="scale">
+                        <q-color v-model="borderColorRight" />
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </template>
-            </q-input>
-          </template>
-        </BaseItemForSettingsTabPanel>
-
-        <div class="row justify-between items-center q-pa-md">
-          <div class="col-10">
-            Border
+            </BaseItemForSettingsTabPanel>
           </div>
-          <BaseButtonExpandable class="col-1"
-            :isNoteExpanded="isShowingBorderOptions"
-            @expand="isShowingBorderOptions = !isShowingBorderOptions">
-          </BaseButtonExpandable>
-        </div>
-        <div v-if="isShowingBorderOptions">
-          <BaseItemForSettingsTabPanel :color="borderColorLeft"
-            icon="bi-square-fill"
-            title="Left Color">
-            <template v-slot:content>
-              <q-input filled
-                dense
-                hide-bottom-space
-                v-model="borderColorLeft"
-                :rules="['anyColor']"
-                class="color-picker-input ">
-                <template v-slot:append>
-                  <q-icon name="colorize"
-                    class="cursor-pointer">
-                    <q-popup-proxy cover
-                      transition-show="scale"
-                      transition-hide="scale">
-                      <q-color v-model="borderColorLeft" />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </template>
-          </BaseItemForSettingsTabPanel>
 
-          <BaseItemForSettingsTabPanel :color="borderColorRight"
-            icon="bi-square-fill"
-            title="Right Color">
-            <template v-slot:content>
-              <q-input filled
-                dense
-                hide-bottom-space
-                v-model="borderColorRight"
-                :rules="['anyColor']"
-                class="color-picker-input ">
-                <template v-slot:append>
-                  <q-icon name="colorize"
-                    class="cursor-pointer">
-                    <q-popup-proxy cover
-                      transition-show="scale"
-                      transition-hide="scale">
-                      <q-color v-model="borderColorRight" />
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </template>
-          </BaseItemForSettingsTabPanel>
-        </div>
-      </div>
+        </template>
+      </SettingsTabPanelItemFolder>
     </template>
   </BaseSettingsTabPanelGroup>
 </template>
@@ -206,12 +182,12 @@
 import ThePreviewForToday from './ThePreviewForToday.vue';
 import BaseSettingsTabPanelGroup from './BaseSettingsTabPanelGroup.vue';
 import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
-import BaseButtonExpandable from '../ui/BaseButtonExpandable.vue';
-
+import SettingsTabPanelItemFolder from "./SettingsTabPanelItemFolder.vue"
 
 export default {
   name: "TheSettingsPageForToday",
-  components: { BaseSettingsTabPanelGroup, ThePreviewForToday, BaseButtonExpandable, BaseItemForSettingsTabPanel },
+  emits: ["setting-changed"],
+  components: { BaseSettingsTabPanelGroup, ThePreviewForToday, BaseItemForSettingsTabPanel, SettingsTabPanelItemFolder },
   props: {
   },
   data() {
@@ -221,6 +197,11 @@ export default {
       isShowingSettingsForNotes: false,
       isShowingBorderOptions: false,
     };
+  },
+  methods: {
+    settingChanged(value) {
+      this.$emit("setting-changed", value);
+    },
   },
   computed: {
     layoutName() {
@@ -237,6 +218,7 @@ export default {
         return this.$store.state.layout.homeLayoutMode;
       },
       set(mode) {
+        this.settingChanged(true);
         let payload = { "page": "home", "mode": mode };
         this.$store.dispatch("layout/changeMode", payload);
       }
@@ -246,6 +228,7 @@ export default {
         return this.$store.getters['layout/getHomeBackgroundColor'];
       },
       set(value) {
+        this.settingChanged(true);
         if (this.isDarkModeActive) {
           this.$store.commit("layout/setHomeBackgroundColorDark", value);
         } else {
@@ -265,6 +248,7 @@ export default {
         }
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setNoteBackgroundColor", value);
       },
     },
@@ -273,6 +257,7 @@ export default {
         return this.$store.state.layout.noteTitleRowIsColored;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setNoteTitleRowIsColored", value);
       },
     },
@@ -281,6 +266,7 @@ export default {
         return this.$store.state.layout.borderColorLeft;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setBorderColorLeft", value);
       },
     },
@@ -289,6 +275,7 @@ export default {
         return this.$store.state.layout.borderColorRight;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setBorderColorRight", value);
       },
     },
@@ -297,23 +284,24 @@ export default {
         return this.$store.state.layout.noteTextShadowColorForHome;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setNoteTextShadowColorForHome", value);
       },
     },
-  },
-  styleForDiaryDayCounterPreview() {
-    return { "font-family": this.$store.state.layout.defaultFont };
-  },
-  styleForPreviewBaseCardDiary() {
-    return {
-      "font-size": "10.5px",
-      "font-family": this.$store.state.layout.defaultFont,
-      "margin-left": "0px",
-      "margin-right": "0px",
-      "margin-top": "0px"
+    styleForDiaryDayCounterPreview() {
+      return { "font-family": this.$store.state.layout.defaultFont };
+    },
+    styleForPreviewBaseCardDiary() {
+      return {
+        "font-size": "10.5px",
+        "font-family": this.$store.state.layout.defaultFont,
+        "margin-left": "0px",
+        "margin-right": "0px",
+        "margin-top": "0px"
 
-    };
-  },
+      };
+    },
+  }
 };
 </script>
 

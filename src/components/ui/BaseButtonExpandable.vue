@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     expand() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("expand");
     },
   },

@@ -80,6 +80,12 @@ export default {
       hasSettingChanged: false,
     };
   },
+  watch: {
+    settingsTab(value) {
+      console.log(value);
+      this.$store.commit("data/setPlusFabButtonOpened", false);
+    }
+  },
   methods: {
     discardChanges() {
       // reset changes to userTheme
@@ -91,6 +97,7 @@ export default {
       this.hasSettingChanged = false;
     },
     settingHasChanged(value) {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.hasSettingChanged = value;
     },
   },

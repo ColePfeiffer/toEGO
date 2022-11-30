@@ -12,7 +12,7 @@
           size="10px"
           label=""
           :style="$store.getters['layout/diarySectionButton']"
-          @click-button="hideEvents">
+          @click-button="hideNotes">
           <template v-slot:tooltip>
             <BaseTooltip text="hide notes"
               :delay="15"></BaseTooltip>
@@ -62,7 +62,7 @@ export default {
     BaseTooltip,
     DiaryBaseHeader
   },
-  emits: ["go-to-event-set-to-creation-mode", "hide-events", "show-events"],
+  emits: ["go-to-event-set-to-creation-mode", "hide-notes", "show-notes"],
   props: {
     diaryEntry: Object,
     splitterModel: {
@@ -110,27 +110,15 @@ export default {
     goToEventSetToCreationMode() {
       this.$emit("go-to-event-set-to-creation-mode");
     },
-    hideEvents() {
-      this.expandLess();
-      this.$emit("hide-events");
+    hideNotes() {
+      this.$emit("hide-notes");
+      this.$store.commit("diaryentries/setExpandedStatusOfEventsOnDiaryPage", false);
     },
     expandMore() {
-      this.$emit("show-events");
+      this.$emit("show-notes");
       this.$store.commit("diaryentries/setExpandedStatusOfEventsOnDiaryPage", true);
-      this.toggleExpansedStatusOfAllEvents(true);
-    },
-    expandLess() {
-      this.$store.commit("diaryentries/setExpandedStatusOfEventsOnDiaryPage", false);
-      this.toggleExpansedStatusOfAllEvents(false);
-    },
-    toggleExpansedStatusOfAllEvents(isExpanded) {
-      let payload = {
-        diaryEntry: this.diaryEntry,
-        isExpanded: isExpanded,
-      };
-      this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
+
     },
   },
-
 }
 </script>

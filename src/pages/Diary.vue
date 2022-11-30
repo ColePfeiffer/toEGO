@@ -45,8 +45,8 @@
           :diaryEntry="diaryEntry"
           :splitterModel="splitterModel"
           @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
-          @show-events="showEvents"
-          @hide-events="hideEvents" />
+          @show-notes="showNotes"
+          @hide-notes="hideNotes" />
         <BaseSplitter :splitterModel="splitterModel"
           :isSplitterDisabled="isSplitterDisabled"
           :isSplitterVisible="isSplitterVisible"
@@ -173,6 +173,8 @@ export default {
       changeData: {},
     };
   },
+
+
   watch: {
     pastedText(text) {
       if (this.$store.state.data.dialogTemplateViewerIsSetToDiaryMode === true && text != "") {
@@ -198,28 +200,31 @@ export default {
       },
     },
     // whenever date gets updated, it updates lastSelectedDate inside the store
-    date(newDate) {
-      this.$store.commit("data/updateLastSelectedDate", newDate);
-      // Case 1: Entry exists
-      console.log("note section in fullscreen", this.isNoteSectionSetToFullscreen)
-      if (this.isNoteSectionSetToFullscreen) {
-        this.isShowingExpandButton = true;
-      } else {
-        this.isShowingExpandButton = false;
-      }
-
-      if (!this.isDiaryEntryUndefined && this.diaryEntry.editor != "") {
-        this.editorHTMLContent = this.diaryEntry.editor;
-        // Case 2: No Diary Entry, but events exist.
-      } else if (!this.isDiaryEntryUndefined && this.diaryEntry.editor === "") {
-        this.editorHTMLContent =
-          "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
-        // Case 3: No events, no diary entry.
-      } else {
-        this.editorHTMLContent =
-          "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
-      }
-    },
+    date: {
+      immediate: true,
+      handler(newDate) {
+        this.$store.commit("data/updateLastSelectedDate", newDate);
+        // Case 1: Entry exists
+        console.log("note section in fullscreen", this.isNoteSectionSetToFullscreen)
+        if (this.isNoteSectionSetToFullscreen) {
+          this.isShowingExpandButton = true;
+        } else {
+          console.log("OKKK MACH")
+          this.isShowingExpandButton = false;
+        }
+        if (!this.isDiaryEntryUndefined && this.diaryEntry.editor != "") {
+          this.editorHTMLContent = this.diaryEntry.editor;
+          // Case 2: No Diary Entry, but events exist.
+        } else if (!this.isDiaryEntryUndefined && this.diaryEntry.editor === "") {
+          this.editorHTMLContent =
+            "<div style=''>There is no diary entry yet.&nbsp;&nbsp;</div><div style='text-align: right;'><span style='color: rgb(85, 85, 85); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>However... </span><span style='text-align: center;'>you added events!</span></div><div><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px; text-align: center;'>(=🝦 ༝ 🝦=)</span><br></div>";
+          // Case 3: No events, no diary entry.
+        } else {
+          this.editorHTMLContent =
+            "<div style='text-align: center;'>There is no diary entry for this day yet.&nbsp;</div><div style='text-align: center;'><span style='background-color: rgb(201, 204, 210); font-family: arial, sans-serif; font-size: 25px;'>( ﾉ･ｪ･ )ﾉ</span></div>";
+        }
+      },
+    }
   },
   computed: {
     isShowingExpandButtonAsComputed() {
@@ -287,9 +292,16 @@ export default {
       diff = diff * -1;
       return diff;
     },
+    notes() {
+      if (this.diaryEntry != undefined) {
+        return this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
+      } else {
+        return [];
+      }
+    },
     numberOfNotes() {
       if (!this.isDiaryEntryUndefined) {
-        let notesAsArray = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.diaryEntry.id);
+        let notesAsArray = this.notes;
         if (notesAsArray != undefined) {
           return notesAsArray.length;
         } else {
@@ -414,12 +426,24 @@ export default {
         this.changeData.editor = defaultTemplate;
       }
     },
-    hideEvents() {
+    hideNotes() {
+      let payload = {
+        diaryEntry: this.diaryEntry,
+        isExpanded: false,
+      };
+      this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.isNoteSectionSetToFullscreen = false;
       this.isShowingExpandButton = false;
       this.splitterModel = this.splitterHeightDefault;
     },
-    showEvents() {
+    showNotes() {
+      let payload = {
+        diaryEntry: this.diaryEntry,
+        isExpanded: true,
+      };
+      this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.isNoteSectionSetToFullscreen = true;
       this.isShowingExpandButton = true;
       this.splitterModel = 570;
@@ -447,7 +471,7 @@ export default {
             let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "diaryentries/getDiaryEntryByDate"
       ](note.date);
-
+ 
       this.$store.commit("diaryentries/updateCurrentNote", {
         eventData: note,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,
@@ -485,9 +509,15 @@ export default {
       this.resetChangeData();
     },
     subtractFromDate(days) {
+      if (this.diaryEntry != undefined) {
+        this.hideNotes();
+      }
       this.date = date.subtractFromDate(this.date, { days: days });
     },
     addToDate(days) {
+      if (this.diaryEntry != undefined) {
+        this.hideNotes();
+      }
       this.date = date.addToDate(this.date, { days: days });
     },
     formatDate(rawDate) {

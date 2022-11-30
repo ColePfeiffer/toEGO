@@ -41,14 +41,17 @@
         style="margin-top: 30px"
         v-if="step === 1">
         <div class="text-justify">
-          You can create, organize and insert templates from here. Templates can be used to save a couple of questions
+          You can create, organize and insert templates from here.
         </div>
-        <div class="q-mt-md">What are templates used for?
+        <div class="q-mt-md">
+          [This text needs to be adjusted. Don't mind me, I'm in construction.]
+          You can put questions here, goals, grounding techniques, formatting rules.
 
+          I added a few for you, so you get an idea. Feel free to delete them and create ones that work best for you.
 
-          Pick Template
-          Tag Menu Name
-          manage, favorite, paste, create
+          Favorites - Quicklist
+
+          Tag Symbol (Categories and Folders)
           <q-btn size="12px"
             padding="4px"
             round

@@ -5,6 +5,8 @@ export const getTheme = (state) => {
 
 export const getThemeByName = (state) => {
   return (nameOfTheme) => {
+    console.log(nameOfTheme);
+    console.log(state.userSettings, state.userSettings.userThemes);
     return state.userSettings.userThemes[nameOfTheme];
   };
 };

@@ -1,5 +1,5 @@
 <template>
-  <BasePage titleOfPage="Writing a note"
+  <BasePage titleOfPage="Note Creator"
     :mode="getEventMode"
     :backgroundColor="$store.getters['layout/getEventBackgroundColor']">
     <template v-slot:title-bar-icon>

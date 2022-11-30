@@ -12,9 +12,24 @@ export function registerUser(context, payload) {
   createUserWithEmailAndPassword(firebaseAuth, payload.email, payload.password)
     .then((response) => {
       // TODO: create userSettings For user...
-      // FIXME: wird nicht gecalled.
-      //dispatch("data/firebaseCreateUserSettings");
+      console.log("hello?????");
+      context.dispatch(
+        "data/firebaseCreateUserSettings",
+        {},
+        {
+          root: true,
+        }
+      );
+
+      context.dispatch(
+        "templates/firebaseInitiateTemplateLogic",
+        {},
+        {
+          root: true,
+        }
+      );
     })
+
     .catch((error) => {
       showErrorMessage(error.message);
     });
@@ -31,14 +46,35 @@ export function loginUser(context, payload) {
     });
 }
 
-export function logoutUser() {
+export function logoutUser(context) {
+  context.dispatch(
+    "diaryentries/firebaseResetExpandedOnAllNotes",
+    {},
+    {
+      root: true,
+    }
+  );
   firebaseAuth.signOut();
 }
 
 export function reset(context) {
-  context.commit("data/setUserSettingsDownloaded", false, { root: true });
+  console.log("im fired");
+  context.dispatch(
+    "data/resetUserSettings",
+    {},
+    {
+      root: true,
+    }
+  );
   context.dispatch(
     "diaryentries/resetDiaryEntriesAndNotes",
+    {},
+    {
+      root: true,
+    }
+  );
+  context.dispatch(
+    "templates/resetTemplateLogic",
     {},
     {
       root: true,

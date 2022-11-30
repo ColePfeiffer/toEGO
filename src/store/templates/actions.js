@@ -131,7 +131,7 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
   });
 }
 
-export function firebaseInitiate({ dispatch }) {
+export function firebaseInitiateTemplateLogic({ dispatch }) {
   dispatch("firebasInitiateTemplates");
   dispatch("firebasInitiateCategories");
   dispatch("firebasInitiateFolders");
@@ -480,4 +480,11 @@ export function firebaseRemoveChildFromParent({ dispatch }, payload) {
     // child is category
     dispatch("firebaseUpdateFolder", parentUpdated);
   }
+}
+
+export function resetTemplateLogic({ commit }) {
+  commit("setTemplatesDownloaded", false);
+  commit("setCategoriesDownloaded", false);
+  commit("setFoldersDownloaded", false);
+  commit("resetTemplatesCategoriesAndFolders");
 }

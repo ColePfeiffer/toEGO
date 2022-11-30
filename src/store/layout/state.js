@@ -31,12 +31,12 @@ export default function () {
       "https://64.media.tumblr.com/8b250bb0b90cbb3667071d88f3555c70/tumblr_inline_n9qgx3Si4l1qak244.png",
     ],
     // User Colors
-    secondary: "#dfd4f5",
-    accent: "#ffc107",
-    accent2: "#14157a",
+    secondary: "#7689b0",
+    accent: "#cdb1de",
+    accent2: "#060754",
     // Font Settings
     nonDefaultFont: "Inter",
-    defaultFont: "PressStart",
+    defaultFont: "PixeloidSans",
     fontsize: "12",
     // Page: Home
     homeLayoutMode: "retro",

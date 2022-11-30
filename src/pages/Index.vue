@@ -16,7 +16,7 @@
           icon="bi-plus-lg"
           @click-button="goToEventSetToCreationMode">
           <template v-slot:tooltip>
-            <BaseTooltip text="Add new event"
+            <BaseTooltip text="create note"
               :delay="15"></BaseTooltip>
           </template>
         </BaseButtonForTitleBar>
@@ -70,8 +70,24 @@ export default {
     BaseButtonForTitleBar,
     BaseTooltip
   },
+  watch: {
+    currentRouterPath(newPath) {
+      console.log("currentRouterPath", this.currentRouterPath);
+      if (this.getDiaryEntry != undefined) {
+        this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.getDiaryEntry.id).forEach(note => {
+          console.log("note: ", note);
+          if (note.expanded) {
+            console.log("is expanded");
+            let payload = { diaryEntryID: this.getDiaryEntry.id, noteID: note.id, toggle: false };
+            this.$store.commit("diaryentries/setExpanded", payload);
+          }
+        });
+      }
+    },
+  },
   methods: {
     toggleMessageVisibility() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$store.dispatch("data/firebaseToggleMessageVisibility");
     },
     goToEventSetToCreationMode() {
@@ -98,6 +114,9 @@ export default {
     },
   },
   computed: {
+    currentRouterPath() {
+      return this.$route.path;
+    },
     isMessageShown() {
       return this.$store.state.data.userSettings.isMessageShown;
     },

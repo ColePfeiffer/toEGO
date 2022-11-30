@@ -143,10 +143,12 @@ export default {
       this.$emit("reset-change-data");
     },
     openEntryInFullscreen() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("enter-fullscreen-mode", this.editor);
     },
     editDiaryEntry() {
       this.changeView("edit");
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("set-change-data", {
         id: this.diaryEntry.id,
         date: this.diaryEntry.date,

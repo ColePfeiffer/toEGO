@@ -10,7 +10,6 @@
         <div v-if="isShowingNavigationButton && isExpanded"
           class="col-1">
           <q-btn flat
-            color="secondary"
             padding="5px"
             size="10px"
             icon="bi-asterisk"
@@ -20,6 +19,7 @@
           </q-btn>
         </div>
         <BaseButtonExpandable class="col-1"
+          color="auto"
           :isNoteExpanded="isExpanded">
         </BaseButtonExpandable>
 
@@ -63,6 +63,7 @@ export default {
   },
   methods: {
     expandGroup() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("toggle-expand-state");
     },
     navigationButtonClicked() {

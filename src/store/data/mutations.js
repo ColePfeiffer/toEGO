@@ -5,6 +5,18 @@ import shared from "../../shared.js";
 import { date } from "quasar";
 import getters from "./getters";
 
+export const resetUserSettings = (state) => {
+  state.userSettings = {
+    isDarkModeActive: false,
+  };
+  console.log("new userSettings: ", state.userSettings);
+  // TODO: eventuell darkmode rein?
+};
+
+export const setPlusFabButtonOpened = (state, value) => {
+  state.isPlusFabButtonOpened = value;
+};
+
 export const setUserSettingsDownloaded = (state, value) => {
   state.userSettingsDownloaded = value;
 };

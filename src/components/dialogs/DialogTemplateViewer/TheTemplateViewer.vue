@@ -45,7 +45,6 @@
             square
             :style="styleForButtonTemplatePicker"
             color="transparent"
-            :text-color="this.$store.getters['layout/getTextColorOnSecondary']"
             label="Pick Template">
             <q-menu fit
               full-width
@@ -613,7 +612,9 @@ export default {
       let style = {};
       style["text-shadow"] = this.$store.getters['layout/getLowOpacityShadowForAccent2'];
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
+      style["color"] = this.$store.getters['layout/getTextColorOnSecondary'] + " !important";
       style["font-size"] = "12.5px";
+      console.log(style)
       return style;
     },
     styleForDeleteButton() {

@@ -307,6 +307,7 @@ import ThePreviewForDiary from "./ThePreviewForDiary.vue";
 
 export default {
   name: "TheSettingsPageForToday",
+  emits: ["setting-changed"],
   components: { ThePreviewForDiary, BaseSettingsTabPanelGroup, BaseButtonExpandable, BaseItemForSettingsTabPanel },
   props: {
   },
@@ -317,6 +318,11 @@ export default {
       isShowingSettingsForDiaryPage: false,
       isShowingSettingsForDiaryContent: false,
     };
+  },
+  methods: {
+    settingChanged(value) {
+      this.$emit("setting-changed", value);
+    },
   },
   computed: {
     cardBackgroundColorForPreview() {
@@ -359,6 +365,7 @@ export default {
         return this.$store.state.layout.diaryBorderColorAlternative;
       },
       set(color) {
+        this.settingChanged(true);
         this.$store.commit("layout/setDiaryBorderColorAlternative", color);
       }
     },
@@ -367,6 +374,7 @@ export default {
         return this.$store.state.layout.isDiaryCountingDays;
       },
       set(bool) {
+        this.settingChanged(true);
         this.$store.commit("layout/toggleIsDiaryCountingDays", bool);
       }
     },
@@ -375,6 +383,7 @@ export default {
         return this.$store.state.layout.isDiarySubtitleStyleSetToAlternative;
       },
       set(bool) {
+        this.settingChanged(true);
         this.$store.commit("layout/setDiarySubtitleStyleToAlternative", bool);
       }
     },
@@ -403,6 +412,7 @@ export default {
         return this.$store.state.layout.noteTitleRowIsColoredForDiary;
       },
       set(color) {
+        this.settingChanged(true);
         this.$store.commit("layout/setNoteTitleRowIsColoredForDiary", color);
       },
     },
@@ -411,6 +421,7 @@ export default {
         return this.$store.state.layout.diaryCardBackgroundColor;
       },
       set(color) {
+        this.settingChanged(true);
         this.$store.commit("layout/setDiaryCardBackgroundColor", color);
       },
     },
@@ -419,6 +430,7 @@ export default {
         return this.$store.state.layout.isDiaryInputStyleSetToTodaysNotes;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setDiaryInputStyleToTodaysNotes", value)
       },
     },
@@ -427,6 +439,7 @@ export default {
         return this.$store.state.layout.isDiaryTitlebarShowingDay;
       },
       set(bool) {
+        this.settingChanged(true);
         this.$store.commit("layout/toggleIsDiaryTitleBarShowingDay", bool);
       }
     },
@@ -435,6 +448,7 @@ export default {
         return this.$store.state.layout.diaryMode;
       },
       set(mode) {
+        this.settingChanged(true);
         let payload = { "page": "diary", "mode": mode };
         this.$store.dispatch("layout/changeMode", payload);
       }
@@ -444,6 +458,7 @@ export default {
         return this.$store.getters['layout/getDiaryBackgroundColor'];
       },
       set(value) {
+        this.settingChanged(true);
         if (this.isDarkModeActive) {
           this.$store.commit("layout/setDiaryBackgroundColorDark", value);
         } else {
@@ -456,6 +471,7 @@ export default {
         return this.$store.state.layout.borderColorLeftForDiary;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setBorderColorLeftForDiary", value);
       },
     },
@@ -464,6 +480,7 @@ export default {
         return this.$store.state.layout.borderColorRightForDiary;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setBorderColorRightForDiary", value);
       },
     },
@@ -472,6 +489,7 @@ export default {
         return this.$store.state.layout.diaryBorderColor;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setDiaryBorderColor", value);
       },
     },
@@ -480,6 +498,7 @@ export default {
         return this.$store.state.layout.noteTextShadowColorForDiary;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setNoteTextShadowColorForDiary", value);
       },
     },

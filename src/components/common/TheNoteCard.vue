@@ -199,6 +199,7 @@ export default {
       this.$emit("edit-note", this.currentNote);
     },
     expand() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("change-note-data", this.currentNote);
     },
   },

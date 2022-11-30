@@ -36,8 +36,6 @@
           :style="styleForDayInTitlebar"
           :label="dateForLabel">
           <slot name="calendar">
-
-
           </slot>
         </q-btn>
       </div>

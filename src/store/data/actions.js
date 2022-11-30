@@ -68,21 +68,10 @@ export function firebaseReadData({ commit, dispatch, state, getters }) {
   //let path = ref(firebaseDb, "userSettings/" + userId + "/userThemes");
 }
 
-// TODO: remove later
-export function firebaseCreateUserThemes({ state }) {
-  let userId = firebaseAuth.currentUser.uid;
-  let path = ref(firebaseDb, "userSettings/" + userId + "/userThemes");
-  set(path, state.defaultUserSettings.userThemes, (error) => {
-    if (error) {
-      showErrorMessage(error.message);
-    }
-  });
-}
-
 export function firebaseCreateUserSettings({ state }) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(firebaseDb, "userSettings/" + userId);
-  set(path, state.userSettings, (error) => {
+  set(path, state.defaultUserSettings, (error) => {
     if (error) {
       showErrorMessage(error.message);
     }
@@ -186,4 +175,9 @@ export function setHelpForTemplatesToCompleted() {
       //showErrorMessage(error.message)
     }
   });
+}
+
+export function resetUserSettings({ commit }) {
+  commit("setUserSettingsDownloaded", false);
+  commit("resetUserSettings");
 }

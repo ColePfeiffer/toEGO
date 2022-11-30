@@ -1,5 +1,5 @@
 <template>
-  <BaseSettingsTabPanelGroup title="Writing a note"
+  <BaseSettingsTabPanelGroup title="Note Creator"
     :isExpanded="isEventGroupExpanded"
     @toggle-expand-state="isEventGroupExpanded = !isEventGroupExpanded">
     <template v-slot:q-item-section-content>
@@ -105,6 +105,7 @@ import ThePreviewForNewNote from "./ThePreviewForNewNote.vue";
 
 export default {
   name: "TheSettingsPageForToday",
+  emits: ["setting-changed"],
   components: { ThePreviewForNewNote, BaseSettingsTabPanelGroup, BaseItemForSettingsTabPanel },
   props: {
   },
@@ -112,6 +113,11 @@ export default {
     return {
       isEventGroupExpanded: false,
     };
+  },
+  methods: {
+    settingChanged(value) {
+      this.$emit("setting-changed", value);
+    },
   },
   computed: {
     isDarkModeActive() {
@@ -129,6 +135,7 @@ export default {
         return this.$store.state.layout.isDiaryInputColoredSeparately;
       },
       set(value) {
+        this.settingChanged(true);
         this.$store.commit("layout/setInputColoredSeparately", value);
       },
     },
@@ -137,6 +144,7 @@ export default {
         return this.$store.state.layout.noteLayoutMode;
       },
       set(value) {
+        this.settingChanged(true);
         let payload = { "page": "event", "mode": value };
         this.$store.dispatch("layout/changeMode", payload)
       },
@@ -150,6 +158,7 @@ export default {
         }
       },
       set(value) {
+        this.settingChanged(true);
         if (this.$store.getters['data/isDarkModeActive']) {
           this.$store.commit("layout/setNotesContainerBackgroundColorDark", value);
         } else {
@@ -162,6 +171,7 @@ export default {
         return this.$store.state.layout.eventInputBackgroundColor;
       },
       set(color) {
+        this.settingChanged(true);
         let payload = { "type": "inputBackground", "color": color };
         this.$store.dispatch("layout/changeEventPageProperties", payload);
       }

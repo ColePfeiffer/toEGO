@@ -64,22 +64,40 @@
                 </template>
                 <q-fab-action @click="goToPageEvent"
                   icon="bi-plus-lg"
-                  style="padding-right: 33px"
-                  color="primary"
+                  color="secondary"
+                  label-class="bg-primary"
+                  external-label
+                  label-position="left"
                   label="create Note" />
                 <q-fab-action @click="openDialogViewDiaryTemplates"
                   icon="bi-journal-bookmark"
-                  color="primary"
-                  label="Diary Templates" />
-                <q-fab-action color="primary"
+                  color="secondary"
+                  label-class="bg-primary"
+                  external-label
+                  label-position="left"
+                  label="Templates for diary" />
+                <q-fab-action color="secondary"
                   @click="openDialogViewEventTemplates"
+                  label-class="bg-primary"
+                  external-label
+                  label-position="left"
                   icon="bi-sticky"
-                  label="Event Templates" />
+                  label="Templates for notes" />
                 <q-fab-action v-if="isHelpVisible"
                   @click="showHelp"
+                  label-class="bg-primary"
+                  external-label
+                  label-position="left"
                   icon="bi-question"
-                  color="primary"
-                  label="Help" />
+                  color="secondary"
+                  label="show Help" />
+                <q-fab-action @click="logout"
+                  label-class="bg-primary"
+                  external-label
+                  label-position="left"
+                  icon="bi-door-closed"
+                  color="secondary"
+                  label="logout" />
               </q-fab>
               <span class="navigation-button-label col-12 q-pb-md"></span>
             </div>
@@ -174,7 +192,6 @@ export default {
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      templatesFabButton: false,
       isHelpForNotesVisible: false,
       isHelpForDiaryVisible: false,
     };
@@ -191,6 +208,14 @@ export default {
     this.navButtonToggleModel = this.currentRouterPath.substring(1);
   },
   computed: {
+    templatesFabButton: {
+      get() {
+        return this.$store.state.data.isPlusFabButtonOpened;
+      },
+      set(value) {
+        this.$store.commit("data/setPlusFabButtonOpened", value);
+      }
+    },
     styleForLayout() {
       return this.$store.getters['layout/getStyleForLayout']
     },
@@ -319,6 +344,9 @@ export default {
   created() {
   },
   methods: {
+    logout() {
+      this.$store.dispatch("auth/logoutUser");
+    },
     finish() {
       switch (this.currentRouterPath) { //
         case "/home":
@@ -362,7 +390,7 @@ export default {
       this.$router.push("Event");
     },
     toggleFabButton() {
-      this.templatesFabButton = !this.templatesFabButton;
+      this.$store.commit("data/setPlusFabButtonOpened", !this.$store.state.data.isPlusFabButtonOpened);
     },
     clickNavigationItem() {
       if (this.navButtonToggleModel === 'loginRegister') {
@@ -374,7 +402,7 @@ export default {
         }
       }
       else if (this.navButtonToggleModel != 'templates') {
-        this.templatesFabButton = false;
+        this.$store.commit("data/setPlusFabButtonOpened", false);
         this.goToPage();
       } else {
         this.toggleFabButton();

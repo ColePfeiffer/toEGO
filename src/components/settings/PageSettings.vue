@@ -2,12 +2,12 @@
   <p class="q-pa-md text-justify"
     :style="styleForInfoBox">You can change the look of all main pages - <span style="font-style: italic">home</span>,
     <span style="font-style: italic">diary</span> and
-    <span style="font-style: italic">new event</span> - here. If you want to reset everything to default, just pick a
+    <span style="font-style: italic">note creator</span> - here. If you want to reset everything to default, just pick a
     theme via the design settings.
   </p>
-  <TheSettingsPageForToday />
-  <TheSettingsPageForDiary />
-  <TheSettingsPageForNewNote />
+  <TheSettingsPageForToday @setting-changed="settingChanged" />
+  <TheSettingsPageForDiary @setting-changed="settingChanged" />
+  <TheSettingsPageForNewNote @setting-changed="settingChanged" />
 </template>
 
 <script>
@@ -26,6 +26,11 @@ export default {
   data() {
     return {
     };
+  },
+  methods: {
+    settingChanged(value) {
+      this.$emit("setting-changed", value);
+    },
   },
   computed: {
     isDarkModeActive() {

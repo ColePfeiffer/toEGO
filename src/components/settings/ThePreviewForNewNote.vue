@@ -1,7 +1,7 @@
 <template>
     <BasePreview :layoutMode="layoutMode"
         :heightForContentMultiplier="0.2"
-        titleOfPage="Writing a note"
+        titleOfPage="Note Creator"
         :backgroundColor="backgroundColor">
         <template v-slot:content>
             <div class="row justify-center items-center text-center  q-px-lg">

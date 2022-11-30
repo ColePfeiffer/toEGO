@@ -245,6 +245,29 @@ export function firebaseUpdateNote({ getters, state, commit }, diaryEntryID) {
     }
   });
 }
+
+export function firebaseResetExpandedOnAllNotes({ state, getters }) {
+  let userId = firebaseAuth.currentUser.uid;
+  let noteContainersAsArray = Object.values(state.notes);
+  noteContainersAsArray.forEach((noteContainer) => {
+    let noteContainerAsArray = Object.values(noteContainer);
+    noteContainerAsArray.forEach((note) => {
+      if (note.expanded) {
+        let diaryEntryID = getters.getDiaryEntryIDByDate(note.date);
+        let noteRef = ref(
+          firebaseDb,
+          "notes/" + userId + "/" + diaryEntryID + "/" + note.id + "/expanded"
+        );
+        set(noteRef, false, (error) => {
+          if (error) {
+            showErrorMessage(error.message);
+          }
+        });
+      }
+    });
+  });
+}
+
 export function firebaseDeleteNote({ state, dispatch }) {
   let userId = firebaseAuth.currentUser.uid;
   let diaryEntryID = state.diaryEntryRef.id;

@@ -8,17 +8,15 @@
           :borderColorRight="borderColorRight">
           <template v-slot:contentInsideSection>
             Nothing here yet.
-            <span @click="goToEventSetToCreationMode">Add an event
-              <q-btn color="accent"
-                flat
+            <span @click="goToEventSetToCreationMode">Add a note
+              <q-btn flat
                 dense
                 icon="bi-plus"
                 @click="goToEventSetToCreationMode" />
             </span>
             <br />
-            or <span @click="createDiaryEntry">create an entry</span>.
-            <q-btn color="accent"
-              flat
+            or <span @click="createDiaryEntry">write about your day</span>.
+            <q-btn flat
               dense
               icon="bi-journal-plus"
               @click="createDiaryEntry" />
@@ -38,8 +36,29 @@
             :borderColorLeft="borderColorLeft"
             :borderColorRight="borderColorRight">
             <template v-slot:contentInsideSection>
-              <div v-html="editor">
+
+              <div class="row justify-between items-center">
+                <div class="col-2 q-mb-md"
+                  style="margin-top: -18px">
+                  <q-icon name="las la-grin-alt"
+                    color="secondary"
+                    size="22px"></q-icon>
+                </div>
+                <q-scroll-area class="col-10 q-mb-md text-right text-secondary"
+                  style="height: 40px">
+                  <div>
+                    #home @Benni
+                  </div>
+                </q-scroll-area>
               </div>
+
+
+              <div class="row justify-center items-center">
+                <div class="col-12"
+                  v-html="editor">
+                </div>
+              </div>
+
             </template>
           </BaseCard>
         </div>
@@ -77,6 +96,7 @@ export default {
   },
   methods: {
     createDiaryEntry() {
+      this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("create-diary-entry");
     },
     goToEventSetToCreationMode() {

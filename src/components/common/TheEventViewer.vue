@@ -11,8 +11,7 @@
           :backgroundColor="backgroundColor">
           <template v-slot:contentInsideSection>
             There is nothing here yet.
-            <q-btn color="accent"
-              flat
+            <q-btn flat
               dense
               icon="bi-plus"
               @click="goToNoteSetToCreationMode" />
@@ -26,8 +25,7 @@
         :borderColorRight="borderColorRight"
         :backgroundColor="backgroundColor">
         <template v-slot:contentInsideSection>
-          <q-btn color="accent"
-            flat
+          <q-btn flat
             dense
             icon="bi-plus"
             @click="goToNoteSetToCreationMode" />
