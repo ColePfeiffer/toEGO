@@ -1,8 +1,8 @@
 import mainLayout from "layouts/MainLayout.vue";
 import index from "pages/Index.vue";
 import Diary from "pages/Diary.vue";
-import Settings from "pages/Settings.vue";
-import Event from "pages/Event.vue";
+import Settings from "src/pages/Settings.vue";
+import Event from "src/pages/Note.vue";
 import LoginRegister from "pages/LoginRegister.vue";
 
 const routes = [

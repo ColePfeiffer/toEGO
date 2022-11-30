@@ -36,29 +36,11 @@
             :borderColorLeft="borderColorLeft"
             :borderColorRight="borderColorRight">
             <template v-slot:contentInsideSection>
-
-              <div class="row justify-between items-center">
-                <div class="col-2 q-mb-md"
-                  style="margin-top: -18px">
-                  <q-icon name="las la-grin-alt"
-                    color="secondary"
-                    size="22px"></q-icon>
-                </div>
-                <q-scroll-area class="col-10 q-mb-md text-right text-secondary"
-                  style="height: 40px">
-                  <div>
-                    #home @Benni
-                  </div>
-                </q-scroll-area>
-              </div>
-
-
               <div class="row justify-center items-center">
                 <div class="col-12"
                   v-html="editor">
                 </div>
               </div>
-
             </template>
           </BaseCard>
         </div>
