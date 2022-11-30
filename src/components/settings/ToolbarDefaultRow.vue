@@ -7,6 +7,55 @@
     </div>
     <div class="col">
       <div class="row justify-end">
+        <q-btn flat
+          class="col-auto"
+          no-wrap
+          dense
+          icon="bi-emoji-smile"
+          :style="styleForButton"
+          :ripple="false"
+          :label="labelForMood"
+          size="xs">
+          <q-menu dense
+            fit
+            style="width: 45px">
+            <q-list style="min-width: 100px"
+              class="row justify-center items-center">
+              <q-item clickable
+                class="col-12 fit"
+                v-close-popup
+                @click="selectMood()">
+                <q-icon name="las la-smile"
+                  size="22px" />
+              </q-item>
+              <q-item clickable
+                class="col-12"
+                v-close-popup
+                @click="selectMood()">
+                <q-icon name="las la-grin"
+                  size="22px" />
+              </q-item>
+              <q-item clickable
+                v-close-popup
+                class="col-12"
+                @click="selectMood()">
+                <q-icon name="las la-frown"
+                  size="22px" />
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+        <q-btn flat
+          class="col-auto"
+          no-wrap
+          dense
+          icon="bi-hash"
+          :style="styleForButton"
+          :ripple="false"
+          size="xs"
+          :label="labelForMood"
+          @click="setMood">
+        </q-btn>
         <q-btn v-if="type != 'TEMPLATE'"
           flat
           class="col-auto"
@@ -119,6 +168,9 @@ export default {
     }
   },
   methods: {
+    setMood() {
+
+    },
     showDialogTemplateViewer() {
       this.$emit("show-dialog-template-viewer");
     },
@@ -139,6 +191,13 @@ export default {
     }
   },
   computed: {
+    labelForMood() {
+      if (this.isInFullscreenMode) {
+        return "mood";
+      } else {
+        return "";
+      }
+    },
     labelForFullscreenButton() {
       if (this.isInFullscreenMode) {
         return "exit"
