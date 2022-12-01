@@ -2,8 +2,7 @@
   <p class="q-pa-md text-justify"
     :style="styleForInfoBox">You can change the look of all main pages - <span style="font-style: italic">home</span>,
     <span style="font-style: italic">diary</span> and
-    <span style="font-style: italic">note creator</span> - here. If you want to reset everything to default, just pick a
-    theme via the design settings.
+    <span style="font-style: italic">note creator</span> - here.
   </p>
   <TheSettingsPageForToday @setting-changed="settingChanged" />
   <TheSettingsPageForDiary @setting-changed="settingChanged" />

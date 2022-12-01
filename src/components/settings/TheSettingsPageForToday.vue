@@ -10,7 +10,7 @@
         :borderColorLeft="borderColorLeft"
         :borderColorRight="borderColorRight"
         :textShadowColor="noteTextShadowColorForHome" />
-      <SettingsTabPanelItemFolder :title="'Page Layout:' + layoutName">
+      <SettingsTabPanelItemFolder :title="'Page Layout: ' + layoutName">
         <template v-slot:content>
           <BaseItemForSettingsTabPanel title="">
             <template v-slot:content>

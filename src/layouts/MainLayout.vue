@@ -68,7 +68,7 @@
                   label-class="bg-primary"
                   external-label
                   label-position="left"
-                  label="create Note" />
+                  label="create note" />
                 <q-fab-action @click="openDialogViewDiaryTemplates"
                   icon="bi-journal-bookmark"
                   color="secondary"

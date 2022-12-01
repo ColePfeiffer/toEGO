@@ -427,11 +427,13 @@ export default {
       }
     },
     hideNotes() {
-      let payload = {
-        diaryEntry: this.diaryEntry,
-        isExpanded: false,
-      };
-      this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
+      if (this.diaryEntry != undefined) {
+        let payload = {
+          diaryEntry: this.diaryEntry,
+          isExpanded: false,
+        };
+        this.$store.dispatch("diaryentries/setExpandedStatusOfAllNotesForDiaryID", payload);
+      }
       this.$store.commit("data/setPlusFabButtonOpened", false);
       this.isNoteSectionSetToFullscreen = false;
       this.isShowingExpandButton = false;

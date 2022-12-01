@@ -104,7 +104,7 @@ import BaseItemForSettingsTabPanel from './BaseItemForSettingsTabPanel.vue';
 import ThePreviewForNewNote from "./ThePreviewForNewNote.vue";
 
 export default {
-  name: "TheSettingsPageForToday",
+  name: "TheSettingsPageForNewNote",
   emits: ["setting-changed"],
   components: { ThePreviewForNewNote, BaseSettingsTabPanelGroup, BaseItemForSettingsTabPanel },
   props: {

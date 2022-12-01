@@ -324,15 +324,18 @@ export function setExpandedStatusOfAllNotesForDiaryID(
   { commit, state },
   payload
 ) {
-  let test = Object.entries(state.notes[payload.diaryEntry.id]);
-  test.forEach((note) => {
-    let noteID = note[0];
-    let payloadForMutation = {
-      noteID: noteID,
-      diaryEntryID: payload.diaryEntry.id,
-      toggle: false,
-      expanded: payload.isExpanded,
-    };
-    commit("setExpanded", payloadForMutation);
-  });
+  let length = Object.keys(state.notes).length;
+  if (length != 0) {
+    let test = Object.entries(state.notes[payload.diaryEntry.id]);
+    test.forEach((note) => {
+      let noteID = note[0];
+      let payloadForMutation = {
+        noteID: noteID,
+        diaryEntryID: payload.diaryEntry.id,
+        toggle: false,
+        expanded: payload.isExpanded,
+      };
+      commit("setExpanded", payloadForMutation);
+    });
+  }
 }

@@ -74,14 +74,18 @@ export default {
     currentRouterPath(newPath) {
       console.log("currentRouterPath", this.currentRouterPath);
       if (this.getDiaryEntry != undefined) {
-        this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.getDiaryEntry.id).forEach(note => {
-          console.log("note: ", note);
-          if (note.expanded) {
-            console.log("is expanded");
-            let payload = { diaryEntryID: this.getDiaryEntry.id, noteID: note.id, toggle: false };
-            this.$store.commit("diaryentries/setExpanded", payload);
-          }
-        });
+        let notesAsArray = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.getDiaryEntry.id);
+        if (notesAsArray != undefined) {
+          notesAsArray.forEach(note => {
+            console.log("note: ", note);
+            if (note.expanded) {
+              console.log("is expanded");
+              let payload = { diaryEntryID: this.getDiaryEntry.id, noteID: note.id, toggle: false };
+              this.$store.commit("diaryentries/setExpanded", payload);
+            }
+          });
+        }
+
       }
     },
   },
