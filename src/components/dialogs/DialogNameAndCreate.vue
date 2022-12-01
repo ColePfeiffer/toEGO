@@ -2,8 +2,8 @@
   <BaseDialog v-model="isDialogVisible"
     :dialogTitle="dialogName"
     :icon="menuIcon"
-    :button1="{isShown: true, text: 'Discard'}"
-    :button2="{isShown: true, text: 'Create'}"
+    :button1="{ isShown: true, text: 'Discard' }"
+    :button2="{ isShown: true, text: 'Create' }"
     :isButton2Disabled="!isNameValid"
     @closeDialog="closeDialog"
     @save="create">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import BaseDialog from "../ui/baseDialog.vue";
+import BaseDialog from "./baseDialog.vue";
 
 export default {
   name: "DialogNameAndCreate",

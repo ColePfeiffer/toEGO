@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import BaseTooltip from "../ui/BaseTooltip.vue";
+import BaseTooltip from "../common/BaseTooltip.vue";
 import ButtonForDiarySection from "./Base/ButtonForDiarySection.vue";
 import DiaryBaseHeader from "./Base/DiaryBaseHeader.vue";
 

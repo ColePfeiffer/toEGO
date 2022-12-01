@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import BaseCard from "../ui/BaseCard.vue";
+import BaseCard from "../common/BaseCard.vue";
 
 export default {
   name: "TheDiaryViewer",

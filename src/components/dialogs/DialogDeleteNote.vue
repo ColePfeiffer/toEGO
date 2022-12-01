@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import baseDialog from "../ui/baseDialog.vue";
+import baseDialog from "./baseDialog.vue";
 
 export default {
   name: "DialogDeleteNote",

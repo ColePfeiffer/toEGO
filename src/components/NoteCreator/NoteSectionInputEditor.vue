@@ -20,7 +20,7 @@
 
 
 <script>
-import BaseEditor from '../ui/BaseEditor.vue';
+import BaseEditor from '../common/BaseEditor.vue';
 
 
 export default {

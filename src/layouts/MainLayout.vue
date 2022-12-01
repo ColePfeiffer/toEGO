@@ -166,11 +166,11 @@
 </template>
 
 <script>
-import DialogNameAndCreate from "../components/dialogs/DialogNameAndCreate.vue";
-import DialogTemplateViewer from "../components/dialogs/DialogTemplateViewer.vue";
-import BaseTooltip from "../components/ui/BaseTooltip.vue";
-import TheHelpStepperForHome from "../components/home/TheHelpStepperForHome.vue";
-import TheHelpStepperForDiary from "../components/diary/TheHelpStepperForDiary.vue";
+import DialogNameAndCreate from "../components/Dialogs/DialogNameAndCreate.vue";
+import DialogTemplateViewer from "../components/Dialogs/DialogTemplateViewer.vue";
+import BaseTooltip from "../components/common/BaseTooltip.vue";
+import TheHelpStepperForHome from "../components/Today/TheHelpStepperForHome.vue";
+import TheHelpStepperForDiary from "../components/Diary/TheHelpStepperForDiary.vue";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>

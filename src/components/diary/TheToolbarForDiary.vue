@@ -123,8 +123,8 @@
 </template>
 
 <script>
-import BaseButtonForTitleBar from '../ui/BaseButtonForTitleBar.vue';
-import BaseTooltip from '../ui/BaseTooltip.vue';
+import BaseButtonForTitleBar from '../common/BaseButtonForTitleBar.vue';
+import BaseTooltip from '../common/BaseTooltip.vue';
 
 
 export default {

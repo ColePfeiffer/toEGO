@@ -30,7 +30,7 @@
 <script>
 import DiaryBaseSection from "./Base/DiaryBaseSection.vue";
 import TheDiaryViewer from "./TheDiaryViewer.vue";
-import BaseEditor from "../ui/BaseEditor.vue";
+import BaseEditor from "../common/BaseEditor.vue";
 export default {
     name: "TheSectionForDiary",
     components: { DiaryBaseSection, TheDiaryViewer, BaseEditor },

@@ -1,9 +1,9 @@
 import mainLayout from "layouts/MainLayout.vue";
-import index from "pages/Index.vue";
-import Diary from "pages/Diary.vue";
-import Settings from "src/pages/Settings.vue";
-import Event from "src/pages/Note.vue";
-import LoginRegister from "pages/LoginRegister.vue";
+import index from "src/views/Today.vue";
+import Diary from "src/views/Diary.vue";
+import Settings from "src/views/Settings.vue";
+import Event from "src/views/Note.vue";
+import LoginRegister from "src/views/LoginRegister.vue";
 
 const routes = [
   {
@@ -40,7 +40,7 @@ const routes = [
   // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/Error404.vue"),
+    component: () => import("src/views/Error404.vue"),
   },
 ];
 

@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import BaseSection from "./BaseSection.vue";
-import BaseMenuForFolderManagement from "./BaseMenuForFolderManagement.vue";
+import BaseSection from "./Base/BaseSection.vue";
+import BaseMenuForFolderManagement from "./Base/BaseMenuForFolderManagement.vue";
 
 export default {
   name: "TheCategorySection",

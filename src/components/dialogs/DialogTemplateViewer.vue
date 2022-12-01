@@ -50,16 +50,16 @@
     <template v-slot:footer-buttons>
       <div>
         <div v-if="!isHelpVisible">
-          <BaseButtonForDialogFooter buttonText="
+          <BaseButtonFooter buttonText="
           Close"
             @click-button="closeDialog">
-          </BaseButtonForDialogFooter>
-          <BaseButtonForDialogFooter class="q-ml-sm"
+          </BaseButtonFooter>
+          <BaseButtonFooter class="q-ml-sm"
             v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
             style="margin-right:2px; max-width: 120px"
             buttonText="Paste"
             @click-button="pasteTemplateAndClose">
-          </BaseButtonForDialogFooter>
+          </BaseButtonFooter>
         </div>
       </div>
     </template>
@@ -68,10 +68,10 @@
 
 <script>
 import { useQuasar } from "quasar";
-import BaseDialog from "../ui/ImprovedBaseDialog.vue";
-import BaseButtonForDialogFooter from "../ui/BaseButtonForDialogFooter.vue";
-import BaseButtonForTitleBar from "../ui/BaseButtonForTitleBar.vue";
-import TheHelpStepperForTemplateViewer from "./TheHelpStepperForTemplateViewer.vue";
+import BaseDialog from "./ImprovedBaseDialog.vue";
+import BaseButtonFooter from "../common/BaseButtonFooter.vue";
+import BaseButtonForTitleBar from "../common/BaseButtonForTitleBar.vue";
+import TheHelpStepperForTemplateViewer from "./DialogTemplateViewer/TheHelpStepperForTemplateViewer.vue";
 import TheFolderManagement from "./DialogTemplateViewer/TheFolderManagement.vue";
 import TheTemplateViewer from "./DialogTemplateViewer/TheTemplateViewer.vue";
 
@@ -80,7 +80,7 @@ export default {
   emits: ["paste-template", "close-dialog"],
   components: {
     BaseDialog,
-    BaseButtonForDialogFooter,
+    BaseButtonFooter,
     TheFolderManagement,
     TheTemplateViewer,
     BaseButtonForTitleBar,

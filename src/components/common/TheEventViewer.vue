@@ -52,9 +52,9 @@
 </template>
 
 <script>
-import Card from "../ui/BaseCard.vue";
+import Card from "./BaseCard.vue";
 import Note from "./TheNoteCard.vue";
-import DialogDeleteNote from "../dialogs/DialogDeleteNote.vue";
+import DialogDeleteNote from "../Dialogs/DialogDeleteNote.vue";
 
 export default {
   name: "TheEventViewer",

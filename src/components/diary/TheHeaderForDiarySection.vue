@@ -64,7 +64,7 @@
 
 <script>
 import DiaryBaseHeader from "./Base/DiaryBaseHeader.vue";
-import BaseTooltip from "../ui/BaseTooltip.vue";
+import BaseTooltip from "../common/BaseTooltip.vue";
 import ButtonForDiarySection from "./Base/ButtonForDiarySection.vue";
 
 

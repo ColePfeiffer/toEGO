@@ -82,9 +82,9 @@
 
 <script>
 import DOMPurify from 'dompurify';
-import BaseButtonExpandable from "../ui/BaseButtonExpandable.vue";
+import BaseButtonExpandable from "./BaseButtonExpandable.vue";
 import { date } from "quasar";
-import BaseCard from "../ui/BaseCard.vue";
+import BaseCard from "./BaseCard.vue";
 
 export default {
   name: "TheNoteCard",

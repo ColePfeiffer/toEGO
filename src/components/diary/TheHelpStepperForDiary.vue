@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import BaseStepper from "../ui/BaseStepper.vue"
+import BaseStepper from "../common/BaseStepper.vue"
 export default {
     name: "TheHelpStepperForHome",
     emits: ["finish"],

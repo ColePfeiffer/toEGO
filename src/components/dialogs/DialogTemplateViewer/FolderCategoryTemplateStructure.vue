@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import FolderItem from './FolderItem.vue';
-import CategoryItem from './CategoryItem.vue';
-import TemplateItem from './TemplateItem.vue';
+import FolderItem from './ItemFolder.vue';
+import CategoryItem from './ItemCategory.vue';
+import TemplateItem from './ItemTemplate.vue';
 
 export default {
   name: "FolderCategoryTemplateStructure",
