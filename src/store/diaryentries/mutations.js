@@ -68,6 +68,7 @@ export const resetCurrentNote = (state) => {
 
 // sets expanded of a note; payload consists of diaryEntryID, noteID, expanded
 export const setExpanded = (state, payload) => {
+  console.log("setting expanded of note...");
   if (payload.toggle) {
     state.notes[payload.diaryEntryID][payload.noteID].expanded =
       !state.notes[payload.diaryEntryID][payload.noteID].expanded;
@@ -88,6 +89,7 @@ export const setExpandedStatusOfEventsOnDiaryPage = (state, isExpanded) => {
 };
 
 export const updateExpanded = (state, value) => {
+  console.log("hmm", value);
   state.currentNote.expanded = value;
 };
 

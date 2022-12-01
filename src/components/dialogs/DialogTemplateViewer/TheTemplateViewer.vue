@@ -95,7 +95,7 @@
                   dense
                   stack
                   icon="bi-tags"
-                  :style="styleForButton"
+                  :style="styleForTagButton"
                   :ripple="false"
                   :text-color="$store.getters['layout/getToolbarIconColor']">
                   <QuickMenuTemplates :currentTemplate="currentTemplate"
@@ -329,6 +329,7 @@ export default {
   props: {
     type: String,
     isPasteAllowed: Boolean,
+    isButtonForTagsHighlighted: Boolean,
   },
   data() {
     return {
@@ -614,7 +615,6 @@ export default {
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
       style["color"] = this.$store.getters['layout/getTextColorOnSecondary'] + " !important";
       style["font-size"] = "12.5px";
-      console.log(style)
       return style;
     },
     styleForDeleteButton() {
@@ -635,6 +635,37 @@ export default {
       } else {
         return this.styleForButton;
       }
+    },
+    styleForTagButton() {
+      if (this.isButtonForTagsHighlighted) {
+        return {
+          "font-family": this.$store.state.layout.nonDefaultFont,
+          "font-size": "9.5px",
+          "background-color": "#FFF01F",
+          "border-radius": "10px",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "60px",
+          "padding": "0px",
+          "margin-left": "10px",
+          "min-height": "20px",
+        }
+      } else {
+        return {
+          "font-family": this.$store.state.layout.nonDefaultFont,
+          "font-size": "9.5px",
+          "background-color": "transparent",
+          "border-style": "unset",
+          "box-shadow": "none",
+          "min-width": "20px",
+          "max-width": "60px",
+          "padding": "0px",
+          "margin-left": "10px",
+          "min-height": "20px",
+        }
+      }
+
     },
     styleForButton() {
       return {

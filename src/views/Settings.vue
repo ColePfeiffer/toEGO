@@ -82,7 +82,6 @@ export default {
   },
   watch: {
     settingsTab(value) {
-      console.log(value);
       this.$store.commit("data/setPlusFabButtonOpened", false);
     }
   },
@@ -106,7 +105,6 @@ export default {
       return this.$store.state.data.userTheme;
     },
     isDarkModeActive() {
-      console.log("isDarkModeActive? ", this.$store.state.data.userSettings.isDarkModeActive)
       return this.$store.state.data.userSettings.isDarkModeActive;
     },
     styleForScrollArea() {

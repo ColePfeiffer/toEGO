@@ -9,7 +9,6 @@ export const resetUserSettings = (state) => {
   state.userSettings = {
     isDarkModeActive: false,
   };
-  console.log("new userSettings: ", state.userSettings);
   // TODO: eventuell darkmode rein?
 };
 
@@ -34,12 +33,10 @@ export const overwriteLocalUserSetting = (state, payload) => {
 };
 
 export const resetCurrentThemeLocally = (state) => {
-  console.log("resetting current theme");
   state.userSettings["currentTheme"] = state.lastSelectedTheme;
 };
 
 export const setCurrentThemeLocally = (state, nameOfTheme) => {
-  console.log("setting current theme");
   state.lastSelectedTheme = state.userSettings["currentTheme"];
   state.userSettings["currentTheme"] = nameOfTheme;
 };

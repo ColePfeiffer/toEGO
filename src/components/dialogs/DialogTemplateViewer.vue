@@ -1,4 +1,6 @@
 <template>
+
+
   <BaseDialog v-model="isDialogVisible"
     dialogTitle="Template Viewer"
     icon="bi-file-earmark-font"
@@ -11,7 +13,7 @@
         :icon="iconForToggleButton"
         :button-text="labelForToggleButton"
         @click-button="toggleFolderManagement"
-        style="text-shadow: var(--q-info) 1px 1px 7px !important;"
+        :style="styleForButtonCategory"
         size="11px">
       </BaseButtonForTitleBar>
       <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
@@ -26,19 +28,19 @@
       </BaseButtonForTitleBar>
     </template>
     <template v-slot:content>
+      <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForTemplatesForTheFirstTime)"
+        style="font-family: PixeloidSans !important;"
+        :messages="messages"
+        background-color="black"
+        textColor="white"
+        :numberOfMessages="numberOfMessages"
+        @show-next="showNext"
+        @finish="finish"></BaseGhostHelper>
       <div>
         <!-- Section: Template Viewer -->
-        <!-- TODO: add help -->
-        <div v-if="isHelpVisible">
-          <div class="row justify-center items-center">
-            <div class="col-10">
-              <TheHelpStepperForTemplateViewer class="q-mt-none"
-                @finish="finish"></TheHelpStepperForTemplateViewer>
-            </div>
-          </div>
-        </div>
-        <TheTemplateViewer v-else-if="isShowingTemplateViewer"
+        <TheTemplateViewer v-if="isShowingTemplateViewer"
           ref="templateViewer"
+          :isButtonForTagsHighlighted="isButtonForTagsHighlighted"
           :type="type"
           :isPasteAllowed="isPasteAllowed"
           @paste-template="pasteTemplate"></TheTemplateViewer>
@@ -49,7 +51,7 @@
     </template>
     <template v-slot:footer-buttons>
       <div>
-        <div v-if="!isHelpVisible">
+        <div>
           <BaseButtonFooter buttonText="
           Close"
             @click-button="closeDialog">
@@ -71,9 +73,9 @@ import { useQuasar } from "quasar";
 import BaseDialog from "./ImprovedBaseDialog.vue";
 import BaseButtonFooter from "../common/BaseButtonFooter.vue";
 import BaseButtonForTitleBar from "../common/BaseButtonForTitleBar.vue";
-import TheHelpStepperForTemplateViewer from "./DialogTemplateViewer/TheHelpStepperForTemplateViewer.vue";
 import TheFolderManagement from "./DialogTemplateViewer/TheFolderManagement.vue";
 import TheTemplateViewer from "./DialogTemplateViewer/TheTemplateViewer.vue";
+import BaseGhostHelper from "src/components/Helper/BaseGhostHelper.vue";
 
 export default {
   name: "DialogTemplateViewer",
@@ -84,14 +86,16 @@ export default {
     TheFolderManagement,
     TheTemplateViewer,
     BaseButtonForTitleBar,
-    TheHelpStepperForTemplateViewer
+    BaseGhostHelper
   },
   props: { type: String },
   data() {
     return {
+      messages: [" "],
+      numberOfMessages: 5,
+      isCategoryButtonHighlighted: false,
+      isButtonForTagsHighlighted: false,
       isShowingTemplateViewer: true,
-      isHelpVisible: false,
-      isHelpShown: false,
       isPasteAllowed: true,
       /*
             // from management
@@ -119,6 +123,37 @@ export default {
     },
   },
   methods: {
+    finish() {
+      this.messages = [" "];
+      if (!this.$store.state.data.userSettings.hasFinishedHelpForTemplatesForTheFirstTime) {
+        this.$store.dispatch("data/setHelpForTemplatesToCompleted", true);
+      }
+    },
+    showNext(index) {
+
+      /*
+  Favorites - Quicklist Tag Symbol (Categories and Folders) 
+
+      */
+      if (index === 1) {
+        this.messages = [];
+        this.messages.push("Hello again. Here you can create, organize and utilize templates.");
+      } else if (index === 2) {
+        this.messages.push("I use them for storing questions I want to answer regurarly, for goals and grounding techniques or for formatting text.");
+      } else if (index === 3) {
+        this.isButtonForTagsHighlighted = true;
+        this.messages.push("You can sort templates! Click on the tag symbol. There you get to set categories and default-status. If setting a template to default, it will always show up when creating a new entry. When you mark a template as favorite, it will show up in your quicklist, so you can paste it faster.");
+      } else if (index === 4) {
+        this.isButtonForTagsHighlighted = false;
+        this.isCategoryButtonHighlighted = true;
+        this.messages.push("Clicking on the highlighted button will allow you to manage your categories and folders.");
+      } else if (index === 5) {
+        this.isCategoryButtonHighlighted = false;
+        this.messages.push("I added a few templates, categories and folders for you. Feel free to delete them and create ones that fit your needs.");
+      } else {
+        this.messages = [" "];
+      }
+    },
     toggleFolderManagement() {
       this.isShowingTemplateViewer = !this.isShowingTemplateViewer;
     },
@@ -130,10 +165,7 @@ export default {
     },
     // for baseDialog
     showHelp() {
-      this.isHelpVisible = !this.isHelpVisible;
-    },
-    finish() {
-      this.isHelpVisible = false;
+      this.$store.dispatch("data/setHelpForTemplatesToCompleted", false);
     },
     pasteTemplate() {
       this.$emit("paste-template", this.$refs.templateViewer.currentTemplate);
@@ -150,6 +182,18 @@ export default {
     },
   },
   computed: {
+    styleForButtonCategory() {
+      let style = {};
+      style["text-shadow"] = "var(--q-info) 1px 1px 7px !important";
+
+      if (this.isCategoryButtonHighlighted === true) {
+        style["background-color"] = "#FFF01F !important";
+        style["border-radius"] = "12px !important";
+      } else {
+        style["background-color"] = "transparent !important";
+      }
+      return style;
+    },
     isDialogVisible: {
       get() {
         let nameOfDialog = "template-viewer";

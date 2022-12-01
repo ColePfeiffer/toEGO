@@ -107,7 +107,6 @@ export default {
       }
     },
     getTextColor() {
-      console.log(this.$store.getters["layout/getTextColorForEvent"]["color"]);
       if (this.$store.getters["layout/getTextColorForEvent"]["color"] === "#000000" || 'black') {
         return "black";
       } else {

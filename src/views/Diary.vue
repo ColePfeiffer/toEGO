@@ -4,6 +4,7 @@
     :backgroundColor="$store.getters['layout/getDiaryBackgroundColor']">
     <template v-slot:titlebar>
       <TheToolbarForDiary :isDiaryTitlebarShowingDay="isDiaryTitlebarShowingDay"
+        :isNavigationHighlighted="isNavigationHighlighted"
         :viewingMode="viewingMode"
         :getNumberOfDaysAwayFromToday="getNumberOfDaysAwayFromToday"
         :dateForLabel="dateForLabel"
@@ -20,6 +21,7 @@
                   label="Close"
                   flat />
                 <q-btn label="today"
+                  v-close-popup
                   flat
                   @click="setDateToToday()" />
               </div>
@@ -34,6 +36,14 @@
     <template v-slot:content-without-scrollarea>
       <div class="diary-content"
         :style="styleForDiaryContent">
+
+        <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime)"
+          :messages="messages"
+          :numberOfMessages="numberOfMessages"
+          @show-next="showNext"
+          @finish="finish"></BaseGhostHelper>
+
+
         <!-- Only visible, if showing day. -->
         <TheDiaryDayCounter :day="daysFromNowOutput"
           :dateForSubtitle="dateForLabel"
@@ -141,6 +151,7 @@ import TheHeaderForDiarySection from "src/components/Diary/TheHeaderForDiarySect
 import BaseButtonFooter from "src/components/common/BaseButtonFooter.vue";
 import TheToolbarForDiary from "src/components/Diary/TheToolbarForDiary.vue";
 import TheDiaryDayCounter from "src/components/Diary/TheDiaryDayCounter.vue";
+import BaseGhostHelper from "src/components/Helper/BaseGhostHelper.vue";
 
 export default {
   name: "diary",
@@ -155,7 +166,8 @@ export default {
     TheHeaderForDiarySection,
     BaseButtonFooter,
     TheToolbarForDiary,
-    TheDiaryDayCounter
+    TheDiaryDayCounter,
+    BaseGhostHelper
   },
   data() {
     return {
@@ -171,6 +183,10 @@ export default {
       splitterHeightShowingNonExpandedNote: 160,
       editorHTMLContent: "",
       changeData: {},
+      messages: [" "],
+      numberOfMessages: 5,
+      isNavigationHighlighted: false,
+      isCalendarHighlighted: false,
     };
   },
 
@@ -205,11 +221,9 @@ export default {
       handler(newDate) {
         this.$store.commit("data/updateLastSelectedDate", newDate);
         // Case 1: Entry exists
-        console.log("note section in fullscreen", this.isNoteSectionSetToFullscreen)
         if (this.isNoteSectionSetToFullscreen) {
           this.isShowingExpandButton = true;
         } else {
-          console.log("OKKK MACH")
           this.isShowingExpandButton = false;
         }
         if (!this.isDiaryEntryUndefined && this.diaryEntry.editor != "") {
@@ -228,7 +242,6 @@ export default {
   },
   computed: {
     isShowingExpandButtonAsComputed() {
-      console.log("moipp", this.isShowingExpandButton);
       return this.isShowingExpandButton;
     },
     isDiaryEntryUndefined() {
@@ -347,6 +360,8 @@ export default {
         }
       }
     },
+
+
     styleHeaderDiary() {
       if (this.isDiaryModeSetToRetro) {
         return {
@@ -397,6 +412,33 @@ export default {
     },
   },
   methods: {
+    finish() {
+      this.messages = [" "];
+      if (!this.$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime) {
+        this.$store.dispatch("data/setHelpForDiaryToCompleted", true);
+      }
+    },
+    showNext(index) {
+      if (index === 1) {
+        this.messages = [];
+        this.messages.push("This is where you can look through your diary, where you get to plan and review.");
+      } else if (index === 2) {
+        this.messages.push("Notes you create during the day will show up here. At the end of the day you could read them again, and reflect.");
+      } else if (index === 3) {
+        this.isButtonCreateNoteHighlighted = true;
+        this.messages.push("Or you could answer a couple of questions from a template. Or write about anything you want.");
+      } else if (index === 4) {
+        this.messages.push("Navigate days by using these buttons. The dot brings you back to today. Click on the calendar symbol to pick a specific date.");
+        this.isNavigationHighlighted = true;
+      } else if (index === 5) {
+        this.isNavigationHighlighted = false;
+        this.messages.push("That's all for now. Goodbye.");
+        this.isCalendarHighlighted = true;
+      } else {
+        this.messages = [" "];
+        this.isCalendarHighlighted = false;
+      }
+    },
     discard() {
       this.changeViewMode('view');
       this.resetChangeData();

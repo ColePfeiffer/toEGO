@@ -133,16 +133,6 @@
                 ($store.state.data.dialogSettings.isVisible == true &&
                   $store.state.data.dialogSettings.isBackgroundVisible == true)
               ">
-              <div class="row justify-center items-center align-center">
-                <div class="col-12">
-                  <TheHelpStepperForHome
-                    v-if="((isHelpForNotesVisible || !$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime) && currentRouterPath === '/home')"
-                    @finish="finish"></TheHelpStepperForHome>
-                  <TheHelpStepperForDiary
-                    v-if="((isHelpForDiaryVisible || !$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime) && currentRouterPath === '/diary')"
-                    @finish="finish"></TheHelpStepperForDiary>
-                </div>
-              </div>
               <keep-alive>
                 <component :is="Component" />
               </keep-alive>
@@ -169,8 +159,6 @@
 import DialogNameAndCreate from "../components/Dialogs/DialogNameAndCreate.vue";
 import DialogTemplateViewer from "../components/Dialogs/DialogTemplateViewer.vue";
 import BaseTooltip from "../components/common/BaseTooltip.vue";
-import TheHelpStepperForHome from "../components/Today/TheHelpStepperForHome.vue";
-import TheHelpStepperForDiary from "../components/Diary/TheHelpStepperForDiary.vue";
 /*
 <q-drawer v-model="drawer" :width="200" :breakpoint="500">
       <q-scroll-area class="fit test"> </q-scroll-area>
@@ -192,7 +180,6 @@ export default {
       boxShadowStyle: {
         "box-shadow": "none",
       },
-      isHelpForNotesVisible: false,
       isHelpForDiaryVisible: false,
     };
   },
@@ -200,8 +187,6 @@ export default {
     DialogNameAndCreate,
     DialogTemplateViewer,
     BaseTooltip,
-    TheHelpStepperForHome,
-    TheHelpStepperForDiary
   },
   mounted() {
     // sets our v-models initital value to the path of the url we are starting the app from
@@ -337,9 +322,6 @@ export default {
         this.navButtonToggleModel = newPath.substring(1);
       }
     },
-    nameOfCurrentDialog(nameOfCurrentDialog) {
-      console.log("current dialog name changed to ", nameOfCurrentDialog);
-    },
   },
   created() {
   },
@@ -347,39 +329,13 @@ export default {
     logout() {
       this.$store.dispatch("auth/logoutUser");
     },
-    finish() {
-      switch (this.currentRouterPath) { //
-        case "/home":
-          this.isHelpForNotesVisible = false;
-          if (!this.$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime) {
-            this.$store.dispatch("data/setHelpForHomeToCompleted");
-          }
-          break;
-        case "/diary":
-          this.isHelpForDiaryVisible = false;
-          if (!this.$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime) {
-            this.$store.dispatch("data/setHelpForDiaryToCompleted");
-          }
-          break;
-        case "/Event":
-          break;
-        default:
-          break;
-      }
-
-    },
     showHelp() {
       switch (this.currentRouterPath) { //
         case "/home":
-          this.isHelpForNotesVisible = !this.isHelpForNotesVisible;
-          console.log("show help for notes");
+          this.$store.dispatch("data/setHelpForHomeToCompleted", false);
           break;
         case "/diary":
-          this.isHelpForDiaryVisible = !this.isHelpForDiaryVisible;
-          console.log("show help for diary");
-          break;
-        case "/Event":
-          console.log("show help for events");
+          this.$store.dispatch("data/setHelpForDiaryToCompleted", false);
           break;
         default:
           break;

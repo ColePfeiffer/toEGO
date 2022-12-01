@@ -67,6 +67,7 @@ export function checkIfDiaryEntryIsEmpty(
 }
 
 export function saveChangesToEditedNote({ state, getters, dispatch }) {
+  console.log("saving changes to firebase", state.currentNote);
   let diaryEntryID = getters.getDiaryEntryByDate(state.currentNote.date).id;
   dispatch("firebaseUpdateNote", diaryEntryID);
 }
@@ -217,6 +218,7 @@ export function firebaseCreateNote(
   );
   let updatedDate = getters.convertDateToUnix(state.currentNote.date);
   commit("updateDate", updatedDate);
+  //commit("updateExpanded", false);
   set(noteRef, state.currentNote, (error) => {
     if (error) {
       showErrorMessage(error.message);
@@ -325,7 +327,7 @@ export function setExpandedStatusOfAllNotesForDiaryID(
   payload
 ) {
   let length = Object.keys(state.notes).length;
-  if (length != 0) {
+  if (length != 0 && state.notes[payload.diaryEntry.id] != undefined) {
     let test = Object.entries(state.notes[payload.diaryEntry.id]);
     test.forEach((note) => {
       let noteID = note[0];

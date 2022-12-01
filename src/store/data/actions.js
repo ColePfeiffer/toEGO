@@ -138,39 +138,40 @@ export function firebaseToggleMessageVisibility({ state }) {
   });
 }
 
-export function setHelpForHomeToCompleted() {
+export function setHelpForHomeToCompleted({}, bool) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(
     firebaseDb,
     "userSettings/" + userId + "/hasFinishedHelpForHomeForTheFirstTime"
   );
-  set(path, true, (error) => {
+  set(path, bool, (error) => {
     if (error) {
       //showErrorMessage(error.message)
     }
   });
 }
 
-export function setHelpForDiaryToCompleted() {
+export function setHelpForDiaryToCompleted({}, bool) {
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(
     firebaseDb,
     "userSettings/" + userId + "/hasFinishedHelpForDiaryForTheFirstTime"
   );
-  set(path, true, (error) => {
+  set(path, bool, (error) => {
     if (error) {
       //showErrorMessage(error.message)
     }
   });
 }
 
-export function setHelpForTemplatesToCompleted() {
+export function setHelpForTemplatesToCompleted({}, bool) {
+  console.log("PUSHING");
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(
     firebaseDb,
     "userSettings/" + userId + "/hasFinishedHelpForTemplatesForTheFirstTime"
   );
-  set(path, true, (error) => {
+  set(path, bool, (error) => {
     if (error) {
       //showErrorMessage(error.message)
     }

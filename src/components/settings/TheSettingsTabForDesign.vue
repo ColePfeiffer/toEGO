@@ -337,7 +337,6 @@ export default {
     },
     backgroundImage(imageURL) {
       this.setHasSettingChanged(true);
-      console.log(imageURL);
       if (imageURL != 'custom') {
         this.$store.commit("layout/changeBackgroundImage", imageURL);
       }

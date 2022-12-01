@@ -121,7 +121,6 @@ export function applyLayoutSettingsLocally({ commit }, currentTheme) {
 export function saveLayoutChangesInFirebase({ dispatch, rootState }) {
   let nameOfTheme = rootState.data.userSettings.currentTheme;
   let currentTheme = rootState.data.userSettings.userThemes[nameOfTheme];
-  console.log("currenttheme", currentTheme);
   dispatch("data/firebaseSetCurrentTheme", currentTheme, { root: true });
   dispatch("data/firebaseUpdateUserTheme", currentTheme, { root: true });
 }

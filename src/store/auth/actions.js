@@ -11,8 +11,6 @@ export function registerUser(context, payload) {
   Loading.show();
   createUserWithEmailAndPassword(firebaseAuth, payload.email, payload.password)
     .then((response) => {
-      // TODO: create userSettings For user...
-      console.log("hello?????");
       context.dispatch(
         "data/firebaseCreateUserSettings",
         {},
@@ -38,9 +36,7 @@ export function registerUser(context, payload) {
 export function loginUser(context, payload) {
   Loading.show();
   signInWithEmailAndPassword(firebaseAuth, payload.email, payload.password)
-    .then((response) => {
-      console.log("login response: ", response);
-    })
+    .then((response) => {})
     .catch((error) => {
       showErrorMessage(error.message);
     });
@@ -58,7 +54,6 @@ export function logoutUser(context) {
 }
 
 export function reset(context) {
-  console.log("im fired");
   context.dispatch(
     "data/resetUserSettings",
     {},

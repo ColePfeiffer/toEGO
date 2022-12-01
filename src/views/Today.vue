@@ -14,6 +14,7 @@
       <div class="row justify-between items-center q-pr-sm">
         <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
           icon="bi-plus-lg"
+          :style="styleForButtonCreateNote"
           @click-button="goToEventSetToCreationMode">
           <template v-slot:tooltip>
             <BaseTooltip text="create note"
@@ -21,6 +22,7 @@
           </template>
         </BaseButtonForTitleBar>
         <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
+          :style="styleForButtonMessageToMyself"
           :icon="getLetterIcon"
           @click-button="toggleMessageVisibility">
           <template v-slot:tooltip>
@@ -45,6 +47,12 @@
           @goToEventSetToCreationMode="goToEventSetToCreationMode"
           @edit-note="goToEventSetToEditingMode"
           class="q-px-md q-pt-md "></TheEventViewer>
+
+        <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime)"
+          :messages="messages"
+          :numberOfMessages="numberOfMessages"
+          @show-next="showNext"
+          @finish="finish"></BaseGhostHelper>
       </div>
     </template>
   </BasePage>
@@ -57,10 +65,15 @@ import TheEventViewer from "src/components/common/TheEventViewer.vue";
 import BasePage from "src/components/common/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/common/BaseButtonForTitleBar.vue";
 import BaseTooltip from "src/components/common/BaseTooltip.vue";
+import BaseGhostHelper from "src/components/Helper/BaseGhostHelper.vue";
 
 export default {
   data() {
     return {
+      messages: [" "],
+      numberOfMessages: 5,
+      isButtonMessageToMyselfHighlighted: false,
+      isButtonCreateNoteHighlighted: false,
     };
   },
   components: {
@@ -68,18 +81,16 @@ export default {
     TheEventViewer,
     BasePage,
     BaseButtonForTitleBar,
-    BaseTooltip
+    BaseTooltip,
+    BaseGhostHelper
   },
   watch: {
     currentRouterPath(newPath) {
-      console.log("currentRouterPath", this.currentRouterPath);
       if (this.getDiaryEntry != undefined) {
         let notesAsArray = this.$store.getters['diaryentries/getNotesAsRevertedArrayByDiaryEntryID'](this.getDiaryEntry.id);
         if (notesAsArray != undefined) {
           notesAsArray.forEach(note => {
-            console.log("note: ", note);
             if (note.expanded) {
-              console.log("is expanded");
               let payload = { diaryEntryID: this.getDiaryEntry.id, noteID: note.id, toggle: false };
               this.$store.commit("diaryentries/setExpanded", payload);
             }
@@ -90,6 +101,32 @@ export default {
     },
   },
   methods: {
+    finish() {
+      this.messages = [" "];
+      if (!this.$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime) {
+        this.$store.dispatch("data/setHelpForHomeToCompleted", true);
+      }
+    },
+    showNext(index) {
+      if (index === 1) {
+        this.messages = [];
+        this.messages.push("Hi there! This diary app will help you with introspection. I will tell you how.");
+      } else if (index === 2) {
+        this.messages.push("Notes are used to keep track of your experiences, your thoughts, your emotions, worries, ideas and goals.");
+      } else if (index === 3) {
+        this.isButtonCreateNoteHighlighted = true;
+        this.messages.push("Create a note by clicking the highlighted button.");
+      } else if (index === 4) {
+        this.isButtonCreateNoteHighlighted = false;
+        this.isButtonMessageToMyselfHighlighted = true;
+        this.messages.push("Have you spotted MAIL? There you can leave messages for yourself. I'm using it for writing down a goal or an important task. Other times I will write a positive reminder for myself.");
+      } else if (index === 5) {
+        this.isButtonMessageToMyselfHighlighted = false;
+        this.messages.push("P.S. You can change the look of the app in Options! If you want to see this again, click on the plus below and select 'show help'.");
+      } else {
+        this.messages = [" "];
+      }
+    },
     toggleMessageVisibility() {
       this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$store.dispatch("data/firebaseToggleMessageVisibility");
@@ -102,22 +139,29 @@ export default {
       this.$store.commit("diaryentries/updateCurrentNoteForEditing", note);
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");
-      /* OLD
-     let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
-        "diaryentries/getDiaryEntryByDate"
-      ](note.date);
-
-      this.$store.commit("diaryentries/updateCurrentNote", {
-        note: note,
-        diaryEntry: diaryEntryRefWhereEventIsStoredAt,
-      });
-
-      this.$store.commit("data/setModeForNewEvent", "EDIT");
-      this.$router.push("Event");
-      */
     },
   },
   computed: {
+    styleForButtonMessageToMyself() {
+      if (this.isButtonMessageToMyselfHighlighted === true) {
+        return {
+          "background-color": "var(--q-accent) !important",
+          "border-radius": "9px !important"
+        };
+      } else {
+        return { 'background-color': "transparent !important" }
+      }
+    },
+    styleForButtonCreateNote() {
+      if (this.isButtonCreateNoteHighlighted === true) {
+        return {
+          "background-color": "var(--q-accent) !important",
+          "border-radius": "9px !important"
+        };
+      } else {
+        return { 'background-color': "transparent !important" }
+      }
+    },
     currentRouterPath() {
       return this.$route.path;
     },

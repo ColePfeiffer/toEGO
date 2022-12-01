@@ -74,6 +74,7 @@ export default {
   },
   // gets called anytime this component is set to active
   activated() {
+    this.$store.commit("diaryentries/updateExpanded", false);
     // if mode is set to editing mode, we fetch the updated eventData
     if (!this.$store.state.data.newEventIsInCreationMode) {
       this.setNote();
@@ -109,7 +110,6 @@ export default {
       this.editor = value;
     },
     setNote() {
-      console.log("setting note", this.$store.state.diaryentries.currentNote);
       this.editor = this.$store.state.diaryentries.currentNote.editor;
       this.title = this.$store.state.diaryentries.currentNote.title;
       this.mood = this.$store.state.diaryentries.currentNote.mood;
@@ -121,6 +121,7 @@ export default {
     updateNote() {
       this.$store.commit("diaryentries/updateEditor", this.editor);
       this.$store.commit("diaryentries/updateTitle", this.title);
+      this.$store.commit("diaryentries/updateExpanded", false);
       this.$store.commit("diaryentries/updateMood", this.mood);
     },
     leavePage() {

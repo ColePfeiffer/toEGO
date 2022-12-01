@@ -1,9 +1,7 @@
 import { setCssVar } from "quasar";
 
 //TODO:
-export const setDefaultSettings = (state, fontsize) => {
-  console.log("resetting everything, whoop!!!");
-};
+export const setDefaultSettings = (state, fontsize) => {};
 
 export const setFontsize = (state, fontsize) => {
   state.fontsize = fontsize;

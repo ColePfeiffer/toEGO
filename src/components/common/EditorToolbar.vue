@@ -104,7 +104,7 @@
 
 <script>
 export default {
-  name: "ToolbarDefaultRow",
+  name: "EditorToolbar",
   emits: ["save", "show-dialog-template-viewer", "show-dialog-template-creator", "paste-template-from-quicklist", "toggle-toolbar", "toggle-fullscreen"],
   props: {
     isShowingFullToolbar: Boolean,
@@ -264,6 +264,7 @@ export default {
       }
     },
     isDarkModeActive() {
+      console.log("mehemem", this.$store.getters["data/isDarkModeActive"]);
       return this.$store.state.data.userSettings.isDarkModeActive;
     },
     styleForTitle() {

@@ -117,9 +117,9 @@ export default {
       this.$emit("hide-message");
     },
     createNewNote() {
-      this.$store.commit("data/updateEditor", this.editableMessageToMyself);
-      this.$store.commit("data/updateTitle", "Message to Myself");
-      this.$store.commit("data/updateMood", "bi-envelope");
+      this.$store.commit("diaryentries/updateEditor", this.editableMessageToMyself);
+      this.$store.commit("diaryentries/updateTitle", "Message to Myself");
+      this.$store.commit("diaryentries/updateMood", "bi-envelope");
       this.$store.dispatch("diaryentries/addNote", new Date());
       this.$store.commit("diaryentries/resetCurrentNote");
     },

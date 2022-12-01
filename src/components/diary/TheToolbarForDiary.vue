@@ -6,6 +6,7 @@
       <div class="col-1 text-left">
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow "
+          :style="styleForNavigation"
           icon="bi-chevron-left"
           size="12px"
           @click-button="subtractFromDate(1)">
@@ -19,6 +20,7 @@
         <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday < 0"
           class="q-pl-xs q-mr-xs no-box-shadow col-1"
           icon="bi-dot"
+          :style="styleForNavigation"
           size="12px"
           @click-button="setDateToToday()">
           <template v-slot:tooltip>
@@ -56,6 +58,7 @@
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="q-pl-none q-mr-xs no-box-shadow"
           icon="bi-chevron-right"
+          :style="styleForNavigation"
           size="12px"
           @click-button="addToDate(1)">
           <template v-slot:tooltip>
@@ -103,17 +106,20 @@
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow q-mr-xs"
           icon="bi-chevron-left"
+          :style="styleForNavigation"
           size="12px"
           @click-button="subtractFromDate(1)"></BaseButtonForTitleBar>
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow q-mr-xs"
           icon="bi-dot"
+          :style="styleForNavigation"
           size="12px"
           @click-button="setDateToToday()"></BaseButtonForTitleBar>
 
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow q-mr-xs"
           icon="bi-chevron-right"
+          :style="styleForNavigation"
           size="12px"
           @click-button="addToDate(1)"></BaseButtonForTitleBar>
 
@@ -136,6 +142,10 @@ export default {
     viewingMode: String,
     getNumberOfDaysAwayFromToday: Number,
     dateForLabel: String,
+    isNavigationHighlighted: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -153,6 +163,16 @@ export default {
     }
   },
   computed: {
+    styleForNavigation() {
+      if (this.isNavigationHighlighted === true) {
+        return {
+          "background-color": "var(--q-accent) !important",
+          "border-radius": "12px !important"
+        };
+      } else {
+        return { 'background-color': "transparent !important" }
+      }
+    },
     styleForDayInTitlebar() {
       let style = {};
       style["font-size"] = "1.15em";
