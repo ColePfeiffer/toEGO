@@ -1,6 +1,6 @@
 <template>
     <!-- whole thing -->
-    <q-dialog class="baseDialog"
+    <q-dialog class="baseDialog full-height"
         persistent>
         <!-- row -->
         <div style="box-shadow: none"
@@ -42,11 +42,20 @@
                     <!-- Content -->
                     <div class="col-12"
                         :style="styleForContent">
-                        <slot name="content"></slot>
+                        <BaseScrollArea :style="getStyleForScrollArea"
+                            :positionToTheRight="1">
+                            <template v-slot:content>
+                                <slot name="content">
+                                </slot>
+                            </template>
+
+                        </BaseScrollArea>
+
 
 
                         <!-- Footer Slot | Option to hide buttons -->
                         <div class="col-12">
+                            <!--     position: absolute; bottom: 12%; right: 12%; -->
                             <div class="row justify-end items-center no-wrap">
                                 <div class="col-auto"
                                     :style="styleForFooterButtons">
@@ -77,9 +86,10 @@
 <script>
 import BaseButtonFooter from '../common/BaseButtonFooter.vue';
 import BaseButtonForTitleBar from '../common/BaseButtonForTitleBar.vue';
+import BaseScrollArea from "../common/BaseScrollArea.vue";
 export default {
     name: "ImprovedBaseDialog",
-    components: { BaseButtonFooter, BaseButtonForTitleBar },
+    components: { BaseButtonFooter, BaseButtonForTitleBar, BaseScrollArea },
     emits: ["closeDialog", "save", "showHelp"],
     props: {
         dialogTitle: String,
@@ -115,10 +125,16 @@ export default {
         },
     },
     computed: {
+        getStyleForScrollArea() {
+            let style = {};
+            style["height"] = this.$store.state.layout.height * 0.69 + "px";
+            style["margin-top"] = "0px";
+            style["margin-bottom"] = "0px";
+            return style;
+        },
         styleForDialog() {
             let style = {};
             style["width"] = this.$store.state.layout.width * 0.90 + "px";
-            style["height"] = this.$store.state.layout.height * 0.75 + "px";
             style["box-shadow"] = "none";
             return style;
         },

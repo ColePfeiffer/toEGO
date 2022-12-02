@@ -1,72 +1,72 @@
 <template>
-
-
-  <BaseDialog v-model="isDialogVisible"
-    dialogTitle="Template Viewer"
-    icon="bi-file-earmark-font"
-    :button1="{ isShown: true, text: 'Close' }"
-    :button2="{ isShown: true, text: 'Paste' }"
-    :hasHelpOption="true"
-    :isButton2Disabled="this.lengthOfTemplates > 0">
-    <template v-slot:title-bar-controls>
-      <BaseButtonForTitleBar class="q-mr-xs text-accent"
-        :icon="iconForToggleButton"
-        :button-text="labelForToggleButton"
-        @click-button="toggleFolderManagement"
-        :style="styleForButtonCategory"
-        size="11px">
-      </BaseButtonForTitleBar>
-      <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
-        icon="bi-question"
-        size="10px"
-        @click-button="showHelp">
-      </BaseButtonForTitleBar>
-      <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
-        icon="bi-x"
-        size="10px"
-        @click-button="closeDialog">
-      </BaseButtonForTitleBar>
-    </template>
-    <template v-slot:content>
-      <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForTemplatesForTheFirstTime)"
-        style="font-family: PixeloidSans !important;"
-        :messages="messages"
-        background-color="black"
-        textColor="white"
-        :numberOfMessages="numberOfMessages"
-        @show-next="showNext"
-        @show-last="showLast"
-        @finish="finish"></BaseGhostHelper>
-      <div>
-        <!-- Section: Template Viewer -->
-        <TheTemplateViewer v-if="isShowingTemplateViewer"
-          ref="templateViewer"
-          :isButtonForTagsHighlighted="isButtonForTagsHighlighted"
-          :type="type"
-          :isPasteAllowed="isPasteAllowed"
-          @paste-template="pasteTemplate"></TheTemplateViewer>
-        <TheFolderManagement :type="type"
-          v-else></TheFolderManagement>
-        <br />
-      </div>
-    </template>
-    <template v-slot:footer-buttons>
-      <div>
+  <div>
+    <BaseDialog v-model="isDialogVisible"
+      dialogTitle="Template Viewer"
+      icon="bi-file-earmark-font"
+      :button1="{ isShown: true, text: 'Close' }"
+      :button2="{ isShown: true, text: 'Paste' }"
+      :hasHelpOption="true"
+      :isButton2Disabled="this.lengthOfTemplates > 0">
+      <template v-slot:title-bar-controls>
+        <BaseButtonForTitleBar class="q-mr-xs text-accent"
+          :icon="iconForToggleButton"
+          :button-text="labelForToggleButton"
+          @click-button="toggleFolderManagement"
+          :style="styleForButtonCategory"
+          size="11px">
+        </BaseButtonForTitleBar>
+        <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+          icon="bi-question"
+          size="10px"
+          @click-button="showHelp">
+        </BaseButtonForTitleBar>
+        <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
+          icon="bi-x"
+          size="10px"
+          @click-button="closeDialog">
+        </BaseButtonForTitleBar>
+      </template>
+      <template v-slot:content>
+        <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForTemplatesForTheFirstTime)"
+          style="font-family: PixeloidSans !important; z-index: 99999"
+          :messages="messages"
+          background-color="black"
+          textColor="white"
+          :isBackgroundColored="true"
+          :numberOfMessages="numberOfMessages"
+          @show-next="showNext"
+          @show-last="showLast"
+          @finish="finish"></BaseGhostHelper>
         <div>
-          <BaseButtonFooter buttonText="
-          Close"
-            @click-button="closeDialog">
-          </BaseButtonFooter>
-          <BaseButtonFooter class="q-ml-sm"
-            v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
-            style="margin-right:2px; max-width: 120px"
-            buttonText="Paste"
-            @click-button="pasteTemplateAndClose">
-          </BaseButtonFooter>
+          <!-- Section: Template Viewer -->
+          <TheTemplateViewer v-if="isShowingTemplateViewer"
+            ref="templateViewer"
+            :isButtonForTagsHighlighted="isButtonForTagsHighlighted"
+            :type="type"
+            :isPasteAllowed="isPasteAllowed"
+            @paste-template="pasteTemplate"></TheTemplateViewer>
+          <TheFolderManagement :type="type"
+            v-else></TheFolderManagement>
         </div>
-      </div>
-    </template>
-  </BaseDialog>
+      </template>
+      <template v-slot:footer-buttons>
+        <div>
+          <div>
+            <BaseButtonFooter buttonText="
+          Close"
+              @click-button="closeDialog">
+            </BaseButtonFooter>
+            <BaseButtonFooter class="q-ml-sm"
+              v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
+              style="margin-right:2px; max-width: 120px"
+              buttonText="Paste"
+              @click-button="pasteTemplateAndClose">
+            </BaseButtonFooter>
+          </div>
+        </div>
+      </template>
+    </BaseDialog>
+  </div>
 </template>
 
 <script>

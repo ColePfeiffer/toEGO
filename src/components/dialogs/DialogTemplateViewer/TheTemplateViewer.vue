@@ -585,7 +585,7 @@ export default {
     },
     // Styles
     heightForScrollAreaForTemplateText() {
-      return { "height": this.$store.state.layout.height * 0.33 + "px" }
+      return { "height": this.$store.state.layout.height * 0.39 + "px" }
     },
     isDarkModeActive() {
       return this.$store.state.data.userSettings.isDarkModeActive;

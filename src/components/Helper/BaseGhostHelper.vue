@@ -1,14 +1,6 @@
 <template>
     <div class="q-px-md q-pb-md"
-        style="position: absolute;
-  left: 0;
-  right: 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  bottom: 2px;
-  font-family: PixeloidSans;
-  font-size: 12px;
-  margin: 0 auto; max-width: 400px; z-index: 100">
+        :style="getStyleForContainer">
         <q-chat-message :bg-color="backgroundColor"
             :text-color="textColor"
             s
@@ -22,13 +14,14 @@
             <template v-slot:stamp
                 v-if="ghostIsTyping"><q-spinner-dots size="2em" /></template>
         </q-chat-message>
-        <div style="font-weight:600; text-shadow: 2px 2px 1px var(--q-info);"
+        <div style="font-weight:600; text-shadow: 2px 2px 1px var(--q-info)"
             class="text-white q-ml-xs text-left">
             Friendly Ghost
         </div>
         <div class="row justify-end items-center"
             style="font-family: PixeloidSans; font-size: 11.5px">
             <q-btn v-if="(messageIndex > 1)"
+                style="text-shadow: var(--q-secondary) 2px 2px 2px; font-weight: 600"
                 class="col-3"
                 @click="goBack"
                 flat
@@ -63,6 +56,10 @@ export default {
         textColor: {
             default: "black",
             type: String
+        },
+        isBackgroundColored: {
+            default: false,
+            type: Boolean,
         }
     },
     data() {
@@ -95,6 +92,26 @@ export default {
         getMessages() {
             return this.messages;
         },
+        getStyleForContainer() {
+            let style = {};
+            style["position"] = "absolute";
+            style["left"] = "0";
+            style["right"] = "0";
+            style["padding-left"] = "10px";
+            style["padding-right"] = "10px";
+            style["bottom"] = "2px";
+            style["font-family"] = "PixeloidSans";
+            style["font-size"] = "12px";
+            if (this.isBackgroundColored) {
+                style["background"] = "#f5f5f5c7";
+            } else {
+                style["background"] = "none";
+            }
+            style["margin"] = "0 auto";
+            style["max-width"] = "400px";
+            style["z-index"] = "99999";
+            return style;
+        }
     }
 };
 </script>

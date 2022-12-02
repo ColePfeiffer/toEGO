@@ -50,7 +50,7 @@ export default {
     },
     styleForFolderManagerContainer() {
       let style = {};
-      style['max-height'] = this.$store.state.layout.height * 0.75 + "px";
+      style['height'] = this.$store.state.layout.height * 0.65 + "px";
       style["padding-bottom"] = "12px";
       style['font-family'] = this.$store.state.layout.nonDefaultFont;
       if (this.$store.getters["data/isDarkModeActive"]) {
