@@ -1,6 +1,14 @@
 <template>
-    <div class="q-px-md q-pb-md absolute-bottom"
-        style="max-width: 400px; z-index: 100">
+    <div class="q-px-md q-pb-md"
+        style="position: absolute;
+  left: 0;
+  right: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  bottom: 2px;
+  font-family: PixeloidSans;
+  font-size: 12px;
+  margin: 0 auto; max-width: 400px; z-index: 100">
         <q-chat-message :bg-color="backgroundColor"
             :text-color="textColor"
             s
@@ -18,13 +26,19 @@
             class="text-white q-ml-xs text-left">
             Friendly Ghost
         </div>
-        <div class="row justify-end items-center">
-            <q-btn v-if="(messageIndex != numberOfMessages)"
+        <div class="row justify-end items-center"
+            style="font-family: PixeloidSans; font-size: 11.5px">
+            <q-btn v-if="(messageIndex > 1)"
                 class="col-3"
+                @click="goBack"
+                flat
+                label="Back" />
+            <q-btn v-if="(messageIndex != numberOfMessages)"
+                class="col-3 q-ml-sm"
                 @click="showNextMessage"
                 color="primary"
                 label="Next" />
-            <q-btn class="col-3"
+            <q-btn class="col-3 q-ml-sm"
                 v-else
                 @click="finish"
                 color="primary"
@@ -38,7 +52,7 @@
 <script>
 export default {
     name: "BaseGhostHelper",
-    emits: ['finish', "show-next"],
+    emits: ['finish', "show-next", "show-last"],
     props: {
         numberOfMessages: Number,
         messages: Array,
@@ -71,27 +85,16 @@ export default {
         reset() {
             this.messageIndex = 0;
             this.ghostIsTyping = true;
+        },
+        goBack() {
+            this.messageIndex = this.messageIndex - 1;
+            this.$emit("show-last");
         }
     },
     computed: {
         getMessages() {
             return this.messages;
         },
-        getStyle() {
-            let style = {
-                "min-width": "83px",
-                "max-width": "83px",
-                "min-height": "23px",
-                "max-height": "25px",
-                "box-shadow": "none",
-                "font-size": "11px",
-                "background-color": "var(--q-secondary)"
-            };
-            style["font-family"] = this.$store.state.layout.nonDefaultFont;
-
-            style["color"] = this.$store.getters['layout/getTextColorOnSecondary'];
-            return style;
-        }
     }
 };
 </script>

@@ -1,61 +1,66 @@
 
 
 <template>
-  <BasePage titleOfPage="Today's notes"
-    :mode="getLayoutModeForHome"
-    :backgroundColor="$store.getters['layout/getHomeBackgroundColor']">
-    <template v-slot:title-bar-icon>
-      <div style="padding: 4px">
-        <q-icon name="bi-eye"
-          size="19px" />
-      </div>
-    </template>
-    <template v-slot:title-bar-controls>
-      <div class="row justify-between items-center q-pr-sm">
-        <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
-          icon="bi-plus-lg"
-          :style="styleForButtonCreateNote"
-          @click-button="goToEventSetToCreationMode">
-          <template v-slot:tooltip>
-            <BaseTooltip text="create note"
-              :delay="15"></BaseTooltip>
-          </template>
-        </BaseButtonForTitleBar>
-        <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
-          :style="styleForButtonMessageToMyself"
-          :icon="getLetterIcon"
-          @click-button="toggleMessageVisibility">
-          <template v-slot:tooltip>
-            <BaseTooltip text="Message to myself"
-              :delay="15"></BaseTooltip>
-          </template>
-        </BaseButtonForTitleBar>
-      </div>
-    </template>
-    <template v-slot:content>
-      <div>
-        <MessageToMyself v-if="isMessageShown"
-          class="q-px-md "
-          @hide-message="toggleMessageVisibility"></MessageToMyself>
-        <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
-          :borderColorLeft="borderColorLeft"
-          :borderColorRight="borderColorRight"
-          :textShadowColor="textShadowColor"
-          :diaryEntry="getDiaryEntry"
-          :marginBottom="22"
-          :backgroundColor="noteBackgroundColor"
-          @goToEventSetToCreationMode="goToEventSetToCreationMode"
-          @edit-note="goToEventSetToEditingMode"
-          class="q-px-md q-pt-md "></TheEventViewer>
+  <div>
+    <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime)"
+      :messages="messages"
+      :numberOfMessages="numberOfMessages"
+      @show-next="showNext"
+      @show-last="showLast"
+      @finish="finish"></BaseGhostHelper>
+    <BasePage titleOfPage="Today's notes"
+      :mode="getLayoutModeForHome"
+      :backgroundColor="$store.getters['layout/getHomeBackgroundColor']">
+      <template v-slot:title-bar-icon>
+        <div style="padding: 4px">
+          <q-icon name="bi-eye"
+            size="19px" />
+        </div>
+      </template>
+      <template v-slot:title-bar-controls>
+        <div class="row justify-between items-center q-pr-sm">
+          <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
+            icon="bi-plus-lg"
+            :style="styleForButtonCreateNote"
+            @click-button="goToEventSetToCreationMode">
+            <template v-slot:tooltip>
+              <BaseTooltip text="create note"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
+          <BaseButtonForTitleBar class="q-ml-xs no-box-shadow "
+            :style="styleForButtonMessageToMyself"
+            :icon="getLetterIcon"
+            @click-button="toggleMessageVisibility">
+            <template v-slot:tooltip>
+              <BaseTooltip text="Message to myself"
+                :delay="15"></BaseTooltip>
+            </template>
+          </BaseButtonForTitleBar>
+        </div>
+      </template>
+      <template v-slot:content>
+        <div>
+          <MessageToMyself v-if="isMessageShown"
+            class="q-px-md "
+            @hide-message="toggleMessageVisibility"></MessageToMyself>
+          <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
+            :borderColorLeft="borderColorLeft"
+            :borderColorRight="borderColorRight"
+            :textShadowColor="textShadowColor"
+            :diaryEntry="getDiaryEntry"
+            :marginBottom="22"
+            :backgroundColor="noteBackgroundColor"
+            @goToEventSetToCreationMode="goToEventSetToCreationMode"
+            @edit-note="goToEventSetToEditingMode"
+            class="q-px-md q-pt-md "></TheEventViewer>
 
-        <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForHomeForTheFirstTime)"
-          :messages="messages"
-          :numberOfMessages="numberOfMessages"
-          @show-next="showNext"
-          @finish="finish"></BaseGhostHelper>
-      </div>
-    </template>
-  </BasePage>
+        </div>
+      </template>
+    </BasePage>
+  </div>
+
+
 </template>
 
 
@@ -119,12 +124,25 @@ export default {
       } else if (index === 4) {
         this.isButtonCreateNoteHighlighted = false;
         this.isButtonMessageToMyselfHighlighted = true;
-        this.messages.push("Have you spotted MAIL? There you can leave messages for yourself. I'm using it for writing down a goal or an important task. Other times I will write a positive reminder for myself.");
+        this.messages.push("Have you spotted the little envelope? There you can leave messages for yourself. I'm using it for writing down a goal or an important task. Other times I will write a positive reminder for myself.");
       } else if (index === 5) {
         this.isButtonMessageToMyselfHighlighted = false;
         this.messages.push("P.S. You can change the look of the app in Options! If you want to see this again, click on the plus below and select 'show help'.");
       } else {
         this.messages = [" "];
+      }
+    },
+    showLast() {
+      this.messages.pop();
+      if (this.messages.length === 3) {
+        this.isButtonCreateNoteHighlighted = true;
+        this.isButtonMessageToMyselfHighlighted = false;
+      } else if (this.messages.length === 4) {
+        this.isButtonCreateNoteHighlighted = false;
+        this.isButtonMessageToMyselfHighlighted = true;
+      } else {
+        this.isButtonMessageToMyselfHighlighted = false;
+        this.isButtonCreateNoteHighlighted = false;
       }
     },
     toggleMessageVisibility() {

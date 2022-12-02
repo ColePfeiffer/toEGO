@@ -430,8 +430,6 @@ export default {
       });
     },
     saveTemplate() {
-      console.log(this.editor);
-      // TODO: fullscreen
       if (this.isCreatingNewTemplate) {
         this.$store.commit("templates/setEditorText", this.editor);
         let payload = { name: this.name, type: this.type };

@@ -34,16 +34,14 @@
     </template>
 
     <template v-slot:content-without-scrollarea>
+      <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime)"
+        :messages="messages"
+        :numberOfMessages="numberOfMessages"
+        @show-next="showNext"
+        @show-last="showLast"
+        @finish="finish"></BaseGhostHelper>
       <div class="diary-content"
         :style="styleForDiaryContent">
-
-        <BaseGhostHelper v-if="(!$store.state.data.userSettings.hasFinishedHelpForDiaryForTheFirstTime)"
-          :messages="messages"
-          :numberOfMessages="numberOfMessages"
-          @show-next="showNext"
-          @finish="finish"></BaseGhostHelper>
-
-
         <!-- Only visible, if showing day. -->
         <TheDiaryDayCounter :day="daysFromNowOutput"
           :dateForSubtitle="dateForLabel"
@@ -418,6 +416,14 @@ export default {
         this.$store.dispatch("data/setHelpForDiaryToCompleted", true);
       }
     },
+    showLast() {
+      this.messages.pop();
+      if (this.messages.length === 4) {
+        this.isNavigationHighlighted = true;
+      } else {
+        this.isNavigationHighlighted = false;
+      }
+    },
     showNext(index) {
       if (index === 1) {
         this.messages = [];
@@ -425,7 +431,6 @@ export default {
       } else if (index === 2) {
         this.messages.push("Notes you create during the day will show up here. At the end of the day you could read them again, and reflect.");
       } else if (index === 3) {
-        this.isButtonCreateNoteHighlighted = true;
         this.messages.push("Or you could answer a couple of questions from a template. Or write about anything you want.");
       } else if (index === 4) {
         this.messages.push("Navigate days by using these buttons. The dot brings you back to today. Click on the calendar symbol to pick a specific date.");
@@ -433,10 +438,8 @@ export default {
       } else if (index === 5) {
         this.isNavigationHighlighted = false;
         this.messages.push("That's all for now. Goodbye.");
-        this.isCalendarHighlighted = true;
       } else {
         this.messages = [" "];
-        this.isCalendarHighlighted = false;
       }
     },
     discard() {

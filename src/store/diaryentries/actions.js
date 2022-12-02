@@ -67,7 +67,6 @@ export function checkIfDiaryEntryIsEmpty(
 }
 
 export function saveChangesToEditedNote({ state, getters, dispatch }) {
-  console.log("saving changes to firebase", state.currentNote);
   let diaryEntryID = getters.getDiaryEntryByDate(state.currentNote.date).id;
   dispatch("firebaseUpdateNote", diaryEntryID);
 }

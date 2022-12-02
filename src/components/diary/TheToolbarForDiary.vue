@@ -43,10 +43,12 @@
       </div>
       <!-- go forward button -->
       <div class="col-1 text-right">
-        <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday > 0"
+        <BaseButtonForTitleBar
+          v-if="viewingMode === 'view' && (getNumberOfDaysAwayFromToday > 0 | isNavigationHighlighted)"
           class="q-pl-none q-mr-xs no-box-shadow"
           icon="bi-dot"
           size="12px"
+          :style="styleForNavigation"
           @click-button="setDateToToday()">
           <template v-slot:tooltip>
             <BaseTooltip text="Go to today"

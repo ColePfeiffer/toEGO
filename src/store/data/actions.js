@@ -79,7 +79,6 @@ export function firebaseCreateUserSettings({ state }) {
 }
 
 export function firebaseSetCurrentTheme({}, currentTheme) {
-  console.log("setting current Theme in Firebase for ", currentTheme.name);
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(firebaseDb, "userSettings/" + userId + "/currentTheme");
   set(path, currentTheme.name, (error) => {
@@ -90,10 +89,8 @@ export function firebaseSetCurrentTheme({}, currentTheme) {
 }
 
 export function firebaseUpdateUserTheme({ rootGetters }, currentTheme) {
-  console.log("setting usertheme in userThemes", currentTheme.name);
   let updatedSettingsForTheme = rootGetters["layout/getAllLayoutSettings"];
   updatedSettingsForTheme.name = currentTheme.name;
-  console.log("updatedSettingsForTheme", updatedSettingsForTheme);
   //let updatedTheme = Object.assign({}, currentTheme);
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(
@@ -165,7 +162,6 @@ export function setHelpForDiaryToCompleted({}, bool) {
 }
 
 export function setHelpForTemplatesToCompleted({}, bool) {
-  console.log("PUSHING");
   let userId = firebaseAuth.currentUser.uid;
   let path = ref(
     firebaseDb,

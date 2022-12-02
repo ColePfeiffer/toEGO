@@ -1,7 +1,6 @@
 import { Dialog } from "quasar";
 import { uid } from "quasar";
 import state from "./state";
-import shared from "../../shared.js";
 import { date } from "quasar";
 import getters from "./getters";
 

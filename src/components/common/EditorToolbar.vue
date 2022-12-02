@@ -264,7 +264,6 @@ export default {
       }
     },
     isDarkModeActive() {
-      console.log("mehemem", this.$store.getters["data/isDarkModeActive"]);
       return this.$store.state.data.userSettings.isDarkModeActive;
     },
     styleForTitle() {

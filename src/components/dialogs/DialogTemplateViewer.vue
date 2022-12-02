@@ -35,6 +35,7 @@
         textColor="white"
         :numberOfMessages="numberOfMessages"
         @show-next="showNext"
+        @show-last="showLast"
         @finish="finish"></BaseGhostHelper>
       <div>
         <!-- Section: Template Viewer -->
@@ -123,6 +124,19 @@ export default {
     },
   },
   methods: {
+    showLast() {
+      this.messages.pop();
+      if (this.messages.length === 3) {
+        this.isButtonForTagsHighlighted = true;
+        this.isCategoryButtonHighlighted = false;
+      } else if (this.messages.length === 4) {
+        this.isButtonForTagsHighlighted = false;
+        this.isCategoryButtonHighlighted = true;
+      } else {
+        this.isCategoryButtonHighlighted = false;
+        this.isButtonForTagsHighlighted = false;
+      }
+    },
     finish() {
       this.messages = [" "];
       if (!this.$store.state.data.userSettings.hasFinishedHelpForTemplatesForTheFirstTime) {
@@ -130,11 +144,6 @@ export default {
       }
     },
     showNext(index) {
-
-      /*
-  Favorites - Quicklist Tag Symbol (Categories and Folders) 
-
-      */
       if (index === 1) {
         this.messages = [];
         this.messages.push("Hello again. Here you can create, organize and utilize templates.");
