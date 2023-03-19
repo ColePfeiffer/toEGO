@@ -38,7 +38,6 @@ export default {
         "background-color": "var(--q-secondary)"
       };
       style["font-family"] = this.$store.state.layout.nonDefaultFont;
-
       style["color"] = this.$store.getters['layout/getTextColorOnSecondary'];
       return style;
     }

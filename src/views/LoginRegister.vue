@@ -207,7 +207,7 @@ export default {
         payload
       );
     },
-    goToEventSetToEditingMode() {
+    goToNoteSetToEditingMode() {
       this.$router.push("Event");
     },
   },
@@ -261,6 +261,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

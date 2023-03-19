@@ -22,7 +22,7 @@
           <BaseButtonForTitleBar class="q-ml-xs q-mr-xs no-box-shadow "
             icon="bi-plus-lg"
             :style="styleForButtonCreateNote"
-            @click-button="goToEventSetToCreationMode">
+            @click-button="goToNoteSetToCreationMode">
             <template v-slot:tooltip>
               <BaseTooltip text="create note"
                 :delay="15"></BaseTooltip>
@@ -51,8 +51,8 @@
             :diaryEntry="getDiaryEntry"
             :marginBottom="22"
             :backgroundColor="noteBackgroundColor"
-            @goToEventSetToCreationMode="goToEventSetToCreationMode"
-            @edit-note="goToEventSetToEditingMode"
+            @goToNoteSetToCreationMode="goToNoteSetToCreationMode"
+            @edit-note="goToNoteSetToEditingMode"
             class="q-px-md q-pt-md "></TheNoteViewer>
 
         </div>
@@ -147,11 +147,11 @@ export default {
       this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$store.dispatch("data/firebaseToggleMessageVisibility");
     },
-    goToEventSetToCreationMode() {
+    goToNoteSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },
-    goToEventSetToEditingMode(note) {
+    goToNoteSetToEditingMode(note) {
       this.$store.commit("diaryentries/updateCurrentNoteForEditing", note);
       this.$store.commit("data/setModeForNewEvent", "EDIT");
       this.$router.push("Event");

@@ -8,7 +8,7 @@
         :textShadowColor="textShadowColor"
         :diaryEntry="diaryEntry"
         :isShowingExpandButton="isShowingExpandButton"
-        @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+        @go-to-note-set-to-creation-mode="goToNoteSetToCreationMode"
         @edit-note="editNote"
         :showMessageIfThereAreNoEvents="false">
       </TheNoteViewer>
@@ -22,7 +22,7 @@ import DiaryBaseSection from "./Base/DiaryBaseSection.vue";
 export default {
   name: "TheSectionForNotes",
   components: { TheNoteViewer, DiaryBaseSection },
-  emits: ["go-to-event-set-to-creation-mode", "edit-note"],
+  emits: ["go-to-note-set-to-creation-mode", "edit-note"],
   props: {
     diaryEntry: Object,
     backgroundColor: {
@@ -65,8 +65,8 @@ export default {
     }
   },
   methods: {
-    goToEventSetToCreationMode() {
-      this.$emit("go-to-event-set-to-creation-mode");
+    goToNoteSetToCreationMode() {
+      this.$emit("go-to-note-set-to-creation-mode");
     },
     editNote(note) {
       this.$emit("edit-note", note);

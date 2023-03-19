@@ -8,11 +8,11 @@
           :borderColorRight="borderColorRight">
           <template v-slot:contentInsideSection>
             Nothing here yet.
-            <span @click="goToEventSetToCreationMode">Add a note
+            <span @click="goToNoteSetToCreationMode">Add a note
               <q-btn flat
                 dense
                 icon="bi-plus"
-                @click="goToEventSetToCreationMode" />
+                @click="goToNoteSetToCreationMode" />
             </span>
             <br />
             or <span @click="createDiaryEntry">write about your day</span>.
@@ -60,7 +60,7 @@ export default {
   components: {
     BaseCard,
   },
-  emits: ["create-diary-entry", "go-to-event-set-to-creation-mode"],
+  emits: ["create-diary-entry", "go-to-note-set-to-creation-mode"],
   props: {
     diaryEntry: Object,
     viewingMode: String,
@@ -81,8 +81,8 @@ export default {
       this.$store.commit("data/setPlusFabButtonOpened", false);
       this.$emit("create-diary-entry");
     },
-    goToEventSetToCreationMode() {
-      this.$emit("go-to-event-set-to-creation-mode");
+    goToNoteSetToCreationMode() {
+      this.$emit("go-to-note-set-to-creation-mode");
     },
 
   },

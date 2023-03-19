@@ -51,7 +51,7 @@
           :style="styleHeaderNotes"
           :diaryEntry="diaryEntry"
           :splitterModel="splitterModel"
-          @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+          @go-to-note-set-to-creation-mode="goToNoteSetToCreationMode"
           @show-notes="showNotes"
           @hide-notes="hideNotes" />
         <BaseSplitter :splitterModel="splitterModel"
@@ -63,7 +63,7 @@
               :backgroundColor="cardBackgroundColor"
               :diaryEntry="diaryEntry"
               :isShowingExpandButton="isShowingExpandButtonAsComputed"
-              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+              @go-to-note-set-to-creation-mode="goToNoteSetToCreationMode"
               @edit-note="goAndEditNote" />
           </template>
           <template v-slot:splitter-content-separator>
@@ -89,7 +89,7 @@
               :isCreatingNewDiaryEntry="isCreatingNewDiaryEntry"
               @save-editor="saveChangesToEntry"
               @set-change-data-editor="setChangeDataEditor"
-              @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
+              @go-to-note-set-to-creation-mode="goToNoteSetToCreationMode"
               @create-diary-entry="createDiaryEntry">
             </TheSectionForDiary>
 
@@ -505,7 +505,7 @@ export default {
     exitFullscreen() {
       this.isDiaryEntryShownInFullscreen = false;
     },
-    goToEventSetToCreationMode() {
+    goToNoteSetToCreationMode() {
       this.$store.commit("data/setModeForNewEvent", "CREATE");
       this.$router.push("Event");
     },

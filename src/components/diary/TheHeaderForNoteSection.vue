@@ -39,7 +39,7 @@
           class="q-mr-xs"
           label=""
           :style="$store.getters['layout/diarySectionButton']"
-          @click-button="goToEventSetToCreationMode">
+          @click-button="goToNoteSetToCreationMode">
           <template v-slot:tooltip>
             <BaseTooltip text="create note"
               :delay="15"></BaseTooltip>
@@ -62,7 +62,7 @@ export default {
     BaseTooltip,
     DiaryBaseHeader
   },
-  emits: ["go-to-event-set-to-creation-mode", "hide-notes", "show-notes"],
+  emits: ["go-to-note-set-to-creation-mode", "hide-notes", "show-notes"],
   props: {
     diaryEntry: Object,
     splitterModel: {
@@ -107,8 +107,8 @@ export default {
     },
   },
   methods: {
-    goToEventSetToCreationMode() {
-      this.$emit("go-to-event-set-to-creation-mode");
+    goToNoteSetToCreationMode() {
+      this.$emit("go-to-note-set-to-creation-mode");
     },
     hideNotes() {
       this.$emit("hide-notes");

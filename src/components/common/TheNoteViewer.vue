@@ -58,7 +58,7 @@ import DialogDeleteNote from "../Dialogs/DialogDeleteNote.vue";
 
 export default {
   name: "TheNoteViewer",
-  emits: ["go-to-event-set-to-creation-mode", "edit-note"],
+  emits: ["go-to-note-set-to-creation-mode", "edit-note"],
   components: {
     Note,
     DialogDeleteNote,
@@ -137,7 +137,7 @@ export default {
       this.closeDialog();
     },
     goToNoteSetToCreationMode() {
-      this.$emit("go-to-event-set-to-creation-mode");
+      this.$emit("go-to-note-set-to-creation-mode");
     },
     editNote(note) {
       this.$emit("edit-note", note);
