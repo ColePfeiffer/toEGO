@@ -98,14 +98,14 @@
                   :style="styleForTagButton"
                   :ripple="false"
                   :text-color="$store.getters['layout/getToolbarIconColor']">
-                  <QuickMenuTemplates :currentTemplate="currentTemplate"
+                  <QuickMenuForTemplates :currentTemplate="currentTemplate"
                     :folders="folders"
                     :categories="categories"
                     :type="type"
                     :quicklist="favorites"
                     :templates="templates"
                     @set-favorite="setFavorite">
-                  </QuickMenuTemplates>
+                  </QuickMenuForTemplates>
                 </q-btn>
                 <div class="column">
                   <span class="text-h6 fit"
@@ -318,14 +318,14 @@
 </template>
 
 <script>
-import QuickMenuTemplates from 'src/components/Dialogs/DialogTemplateViewer/QuickMenuTemplates.vue';
+import QuickMenuForTemplates from 'src/components/Dialogs/DialogTemplateViewer/QuickMenuForTemplates.vue';
 import FolderCategoryTemplateStructure from './FolderCategoryTemplateStructure.vue';
 import BaseEditor from 'src/components/common/BaseEditor.vue';
 
 export default {
   name: "TheTemplateViewer",
   emits: ["paste-template"],
-  components: { QuickMenuTemplates, FolderCategoryTemplateStructure, BaseEditor },
+  components: { QuickMenuForTemplates, FolderCategoryTemplateStructure, BaseEditor },
   props: {
     type: String,
     isPasteAllowed: Boolean,

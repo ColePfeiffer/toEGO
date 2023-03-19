@@ -37,12 +37,12 @@
       </div>
     </template>
     <template v-slot:footer>
-      <BaseButtonFooter buttonText="Discard"
+      <BaseButtonForFooter buttonText="Discard"
         @click-button="leavePage">
-      </BaseButtonFooter>
-      <BaseButtonFooter :buttonText="textForRightButton"
+      </BaseButtonForFooter>
+      <BaseButtonForFooter :buttonText="textForRightButton"
         @click-button="saveChanges">
-      </BaseButtonFooter>
+      </BaseButtonForFooter>
     </template>
   </BasePage>
 </template>
@@ -51,7 +51,7 @@
 import { date } from "quasar";
 import BasePage from "src/components/common/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/common/BaseButtonForTitleBar.vue";
-import BaseButtonFooter from "src/components/common/BaseButtonFooter.vue";
+import BaseButtonForFooter from "src/components/common/BaseButtonForFooter.vue";
 import NoteSectionHowAreYouFeeling from "src/components/NoteCreator/NoteSectionHowAreYouFeeling.vue";
 import NoteSectionInputTitle from "src/components/NoteCreator/NoteSectionInputTitle.vue";
 import NoteSectionInputEditor from "src/components/NoteCreator/NoteSectionInputEditor.vue";
@@ -60,7 +60,7 @@ export default {
   components: {
     BasePage,
     BaseButtonForTitleBar,
-    BaseButtonFooter,
+    BaseButtonForFooter,
     NoteSectionHowAreYouFeeling,
     NoteSectionInputTitle,
     NoteSectionInputEditor
@@ -211,6 +211,4 @@ export default {
 }
 </style>
 
-<style scoped>
-
-</style>
+<style scoped></style>

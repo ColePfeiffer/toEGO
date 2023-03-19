@@ -114,7 +114,7 @@ import { useQuasar } from "quasar";
 import FolderCategoryTemplateStructure from "./FolderCategoryTemplateStructure.vue";
 
 export default {
-  name: "TheCategoryOrTagQuickMenu",
+  name: "QuickMenuForTemplates",
   emits: ["set-favorite"],
   props: {
     currentTemplate: Object,
@@ -244,6 +244,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

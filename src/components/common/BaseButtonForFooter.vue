@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "BaseButtonFooter",
+  name: "BaseButtonForFooter",
   emits: ['click-button'],
   props: {
     buttonText: String,

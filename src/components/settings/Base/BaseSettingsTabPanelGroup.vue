@@ -18,10 +18,10 @@
             </BaseTooltip>
           </q-btn>
         </div>
-        <BaseButtonExpandable class="col-1"
+        <ButtonExpandable class="col-1"
           color="auto"
           :isNoteExpanded="isExpanded">
-        </BaseButtonExpandable>
+        </ButtonExpandable>
 
 
       </div>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import BaseButtonExpandable from '../../common/BaseButtonExpandable.vue';
+import ButtonExpandable from '../../common/ButtonExpandable.vue';
 import BaseTooltip from "../../common/BaseTooltip.vue";
 
 export default {
@@ -104,7 +104,7 @@ export default {
       return style;
     }
   },
-  components: { BaseButtonExpandable, BaseTooltip }
+  components: { ButtonExpandable, BaseTooltip }
 };
 </script>
 

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <BaseItemClickable v-if="!isShowingTemplates"
+    <ItemClickable v-if="!isShowingTemplates"
       :item="template"
       :parent="parent"
       icon="bi-file-earmark-font"
       :currentTemplate="currentTemplate"
-      @click-item="clickTemplate"></BaseItemClickable>
+      @click-item="clickTemplate"></ItemClickable>
     <BaseItem v-else
       :item="template"
       icon="bi-file-earmark-font"
@@ -18,16 +18,15 @@
       </template>
     </BaseItem>
   </div>
-
 </template>
 
 <script>
-import BaseItemClickable from 'src/components/common/BaseItemClickable.vue';
-import BaseItem from 'src/components/common/baseItem.vue';
+import ItemClickable from 'src/components/common/ItemClickable.vue';
+import BaseItem from 'src/components/common/BaseItem.vue';
 export default {
   name: "TemplateItem",
   emits: ["click-template"],
-  components: { BaseItemClickable, BaseItem },
+  components: { ItemClickable, BaseItem },
   props: {
     isShowingTemplates: Boolean,
     template: Object,

@@ -1,5 +1,5 @@
 <template>
-  <baseDialog v-model="isDialogVisible"
+  <BaseDialog v-model="isDialogVisible"
     dialogTitle="Deleting Note"
     :icon="menuIcon"
     :button1="{ isShown: true, text: 'No' }"
@@ -16,17 +16,17 @@
         </q-card-section>
       </q-card>
     </template>
-  </baseDialog>
+  </BaseDialog>
 </template>
 
 <script>
-import baseDialog from "./baseDialog.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 export default {
   name: "DialogDeleteNote",
   emits: ["delete-note", "close-dialog"],
   components: {
-    baseDialog,
+    BaseDialog,
   },
   data() {
     return {

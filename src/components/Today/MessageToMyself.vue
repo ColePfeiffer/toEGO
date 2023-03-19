@@ -61,16 +61,16 @@
           <div v-if="isInEditMode"
             class="col-12 q-pt-md q-ml-sm">
             <div class="row justify-end items-center no-wrap">
-              <BaseButtonFooter class="q-mr-sm"
+              <BaseButtonForFooter class="q-mr-sm"
                 style="max-height: 31px"
                 buttonText="Save"
                 @click-button="saveChanges">
-              </BaseButtonFooter>
-              <BaseButtonFooter class="col-6 q-mr-sm"
+              </BaseButtonForFooter>
+              <BaseButtonForFooter class="col-6 q-mr-sm"
                 style="max-width: 120px"
                 buttonText="Save as note"
                 @click-button="saveChangesAndCreateNote">
-              </BaseButtonFooter>
+              </BaseButtonForFooter>
             </div>
           </div>
         </div>
@@ -81,12 +81,12 @@
 
 <script>
 import BaseCardWithTape from '../common/BaseCardWithTape.vue';
-import BaseButtonFooter from '../common/BaseButtonFooter.vue';
+import BaseButtonForFooter from '../common/BaseButtonForFooter.vue';
 
 export default {
   name: "MessageToMyself",
   emits: ["hide-message"],
-  components: { BaseCardWithTape, BaseButtonFooter },
+  components: { BaseCardWithTape, BaseButtonForFooter },
   data() {
     return {
       isInEditMode: false,

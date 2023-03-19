@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import EditorToolbar from '../common/EditorToolbar.vue';
+import EditorToolbar from './EditorToolbar.vue';
 
 export default {
-  name: "baseEditor",
+  name: "BaseEditor",
   components: { EditorToolbar },
   emits: [
     "show-dialog-template-creator",

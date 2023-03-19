@@ -25,7 +25,7 @@
 
 <script>
 import { updateRadioButtonIsBeyondControl } from 'src/store/data/mutations';
-import BaseItem from './baseItem.vue';
+import BaseItem from './BaseItem.vue';
 export default {
   name: "BaseItemExpandable",
   emits: ["click-item"],

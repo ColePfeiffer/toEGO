@@ -52,16 +52,16 @@
       <template v-slot:footer-buttons>
         <div>
           <div>
-            <BaseButtonFooter buttonText="
-          Close"
+            <BaseButtonForFooter buttonText="
+                Close"
               @click-button="closeDialog">
-            </BaseButtonFooter>
-            <BaseButtonFooter class="q-ml-sm"
+            </BaseButtonForFooter>
+            <BaseButtonForFooter class="q-ml-sm"
               v-if="isShowingTemplateViewer && isPasteAllowed && lengthOfTemplates > 0"
               style="margin-right:2px; max-width: 120px"
               buttonText="Paste"
               @click-button="pasteTemplateAndClose">
-            </BaseButtonFooter>
+            </BaseButtonForFooter>
           </div>
         </div>
       </template>
@@ -72,7 +72,7 @@
 <script>
 import { useQuasar } from "quasar";
 import BaseDialog from "./ImprovedBaseDialog.vue";
-import BaseButtonFooter from "../common/BaseButtonFooter.vue";
+import BaseButtonForFooter from "../common/BaseButtonForFooter.vue";
 import BaseButtonForTitleBar from "../common/BaseButtonForTitleBar.vue";
 import TheFolderManagement from "./DialogTemplateViewer/TheFolderManagement.vue";
 import TheTemplateViewer from "./DialogTemplateViewer/TheTemplateViewer.vue";
@@ -83,7 +83,7 @@ export default {
   emits: ["paste-template", "close-dialog"],
   components: {
     BaseDialog,
-    BaseButtonFooter,
+    BaseButtonForFooter,
     TheFolderManagement,
     TheTemplateViewer,
     BaseButtonForTitleBar,

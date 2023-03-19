@@ -4,7 +4,7 @@
     <template v-slot:itemsToDisplay>
       <div v-for="folder in folders"
         :key="folder.id">
-        <BaseMenuForFolderManagement childAsText="Templates: "
+        <MenuForFolderManagement childAsText="Templates: "
           :item="folder"
           childIcon="bi-tags"
           :childList="categories"
@@ -13,15 +13,15 @@
           style="padding-bottom: 0px"
           @rename-item="renameFolder"
           @delete-item="deleteFolder">
-        </BaseMenuForFolderManagement>
+        </MenuForFolderManagement>
       </div>
     </template>
   </BaseSection>
 </template>
 
 <script>
-import BaseSection from "./Base/BaseSection.vue";
-import BaseMenuForFolderManagement from "./Base/BaseMenuForFolderManagement.vue";
+import BaseSection from "./BaseSection.vue";
+import MenuForFolderManagement from "./MenuForFolderManagement.vue";
 
 export default {
   name: "TheFolderSection",
@@ -31,7 +31,7 @@ export default {
   },
   components: {
     BaseSection,
-    BaseMenuForFolderManagement,
+    MenuForFolderManagement,
   },
   data() {
     return {

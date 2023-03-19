@@ -15,16 +15,16 @@
             </div>
             <div class="col-10 text-left q-pl-md">
               <q-item-label :style="styleForTitleRow">{{
-                  currentNote.title
+                currentNote.title
               }}</q-item-label>
             </div>
             <div class="col-1 text-right ">
-              <BaseButtonExpandable v-if="isShowingExpandButton"
+              <ButtonExpandable v-if="isShowingExpandButton"
                 color="secondary"
                 style="font-size: 11px"
                 dense
                 :isNoteExpanded="currentNote.expanded"
-                @expand="expand"></BaseButtonExpandable>
+                @expand="expand"></ButtonExpandable>
               <div v-else></div>
             </div>
           </div>
@@ -82,14 +82,14 @@
 
 <script>
 import DOMPurify from 'dompurify';
-import BaseButtonExpandable from "./BaseButtonExpandable.vue";
+import ButtonExpandable from "./ButtonExpandable.vue";
 import { date } from "quasar";
 import BaseCard from "./BaseCard.vue";
 
 export default {
   name: "TheNoteCard",
   components: {
-    BaseButtonExpandable,
+    ButtonExpandable,
     BaseCard
   },
   props: {

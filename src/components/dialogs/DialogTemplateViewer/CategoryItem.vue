@@ -27,27 +27,26 @@
       </BaseMenu>
     </div>
     <div v-else>
-      <BaseItemClickable :item="category"
+      <ItemClickable :item="category"
         :currentTemplate="currentTemplate"
         icon="bi-tags"
-        @click-item="clickCategory"></BaseItemClickable>
+        @click-item="clickCategory"></ItemClickable>
     </div>
 
 
   </div>
-
 </template>
 
 <script>
-import BaseItemClickable from 'src/components/common/BaseItemClickable.vue';
+import ItemClickable from 'src/components/common/ItemClickable.vue';
 import BaseItemExpandable from 'src/components/common/BaseItemExpandable.vue';
-import BaseMenu from './Base/BaseMenu.vue';
-import TemplateItem from './ItemTemplate.vue';
+import BaseMenu from './BaseMenu.vue';
+import TemplateItem from './TemplateItem.vue';
 
 export default {
-  name: "ItemCategory",
+  name: "CategoryItem",
   emits: ["click-category", "click-template"],
-  components: { BaseItemClickable, BaseItemExpandable, BaseMenu, TemplateItem },
+  components: { ItemClickable, BaseItemExpandable, BaseMenu, TemplateItem },
   props: {
     isShowingTemplates: {
       type: Boolean,

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import BaseDialog from "./baseDialog.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 export default {
   name: "DialogNameAndCreate",

@@ -47,8 +47,7 @@
           :dateForSubtitle="dateForLabel"
           :diaryMode="diaryMode"></TheDiaryDayCounter>
         <!-- Header for Note Section -->
-        <TheHeaderForNoteSection
-          v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && !isDiaryEntryUndefined"
+        <TheHeaderForNoteSection v-if="viewingMode != 'edit' && !isDiaryEntryShownInFullscreen && !isDiaryEntryUndefined"
           :style="styleHeaderNotes"
           :diaryEntry="diaryEntry"
           :splitterModel="splitterModel"
@@ -122,16 +121,16 @@
     </template>
 
     <template v-slot:footer>
-      <BaseButtonFooter v-if="viewingMode === 'edit'"
+      <BaseButtonForFooter v-if="viewingMode === 'edit'"
         buttonText="Discard"
         style="font-size: 11px; border-radius: 0px; max-height: 25px; margin-right: 5px"
         @click-button="discard">
-      </BaseButtonFooter>
-      <BaseButtonFooter v-if="viewingMode === 'edit'"
+      </BaseButtonForFooter>
+      <BaseButtonForFooter v-if="viewingMode === 'edit'"
         style="font-size: 11px; border-radius: 0px; max-height: 25px;"
         buttonText="Save"
         @click-button="saveChangesToEntry">
-      </BaseButtonFooter>
+      </BaseButtonForFooter>
     </template>
   </BasePage>
 </template>
@@ -146,7 +145,7 @@ import BaseCard from "src/components/common/BaseCard.vue";
 import ButtonForDiarySection from "src/components/Diary/Base/ButtonForDiarySection.vue";
 import TheHeaderForNoteSection from "src/components/Diary/TheHeaderForNoteSection.vue";
 import TheHeaderForDiarySection from "src/components/Diary/TheHeaderForDiarySection.vue";
-import BaseButtonFooter from "src/components/common/BaseButtonFooter.vue";
+import BaseButtonForFooter from "src/components/common/BaseButtonForFooter.vue";
 import TheToolbarForDiary from "src/components/Diary/TheToolbarForDiary.vue";
 import TheDiaryDayCounter from "src/components/Diary/TheDiaryDayCounter.vue";
 import BaseGhostHelper from "src/components/Helper/BaseGhostHelper.vue";
@@ -162,7 +161,7 @@ export default {
     ButtonForDiarySection,
     TheHeaderForNoteSection,
     TheHeaderForDiarySection,
-    BaseButtonFooter,
+    BaseButtonForFooter,
     TheToolbarForDiary,
     TheDiaryDayCounter,
     BaseGhostHelper
@@ -518,7 +517,7 @@ export default {
             let diaryEntryRefWhereEventIsStoredAt = this.$store.getters[
         "diaryentries/getDiaryEntryByDate"
       ](note.date);
- 
+
       this.$store.commit("diaryentries/updateCurrentNote", {
         eventData: note,
         diaryEntryRef: diaryEntryRefWhereEventIsStoredAt,

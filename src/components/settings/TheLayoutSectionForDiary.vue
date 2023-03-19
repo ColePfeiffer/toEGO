@@ -219,10 +219,10 @@
               <div class="col-10">
                 Border
               </div>
-              <BaseButtonExpandable class="col-1"
+              <ButtonExpandable class="col-1"
                 :isNoteExpanded="isShowingBorderOptionsForDiary"
                 @expand="isShowingBorderOptionsForDiary = !isShowingBorderOptionsForDiary">
-              </BaseButtonExpandable>
+              </ButtonExpandable>
             </div>
             <div v-if="isShowingBorderOptionsForDiary">
               <BaseSettingsTabPanelItem :color="borderColorLeftForDiary"
@@ -289,13 +289,13 @@
 import BaseSettingsTabPanelGroup from './Base/BaseSettingsTabPanelGroup.vue';
 import BaseSettingsTabPanelSubGroup from "./Base/BaseSettingsTabPanelSubGroup";
 import BaseSettingsTabPanelItem from './Base/BaseSettingsTabPanelItem.vue';
-import BaseButtonExpandable from '../common/BaseButtonExpandable.vue';
+import ButtonExpandable from '../common/ButtonExpandable.vue';
 import ThePreviewForDiary from "./Preview/ThePreviewForDiary.vue";
 
 export default {
   name: "TheSettingsLayoutSectionForDiary",
   emits: ["setting-changed"],
-  components: { ThePreviewForDiary, BaseSettingsTabPanelGroup, BaseButtonExpandable, BaseSettingsTabPanelItem, BaseSettingsTabPanelSubGroup },
+  components: { ThePreviewForDiary, BaseSettingsTabPanelGroup, ButtonExpandable, BaseSettingsTabPanelItem, BaseSettingsTabPanelSubGroup },
   props: {
   },
   data() {

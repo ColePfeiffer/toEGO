@@ -50,16 +50,16 @@
 
     </template>
     <template v-slot:footer>
-      <BaseButtonFooter v-if="hasSettingChanged"
+      <BaseButtonForFooter v-if="hasSettingChanged"
         buttonText="Discard"
         style="border-radius: 0px"
         @click-button="discardChanges">
-      </BaseButtonFooter>
-      <BaseButtonFooter v-if="hasSettingChanged"
+      </BaseButtonForFooter>
+      <BaseButtonForFooter v-if="hasSettingChanged"
         buttonText="Save"
         style="border-radius: 0px"
         @click-button="saveChangesToFirebase">
-      </BaseButtonFooter>
+      </BaseButtonForFooter>
     </template>
   </BasePage>
 </template>
@@ -70,10 +70,10 @@ import BaseScrollArea from "src/components/common/BaseScrollArea.vue";
 import PageSettings from "src/components/Settings/TheSettingsTabForViewLayout.vue";
 import DesignSettings from "../components/Settings/TheSettingsTabForDesign.vue";
 import AccountSettings from "../components/Settings/TheSettingsTabForAccount.vue";
-import BaseButtonFooter from "../components/common/BaseButtonFooter.vue";
+import BaseButtonForFooter from "../components/common/BaseButtonForFooter.vue";
 
 export default {
-  components: { BasePage, PageSettings, DesignSettings, AccountSettings, BaseScrollArea, BaseButtonFooter },
+  components: { BasePage, PageSettings, DesignSettings, AccountSettings, BaseScrollArea, BaseButtonForFooter },
   data() {
     return {
       settingsTab: 'view',
@@ -137,6 +137,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

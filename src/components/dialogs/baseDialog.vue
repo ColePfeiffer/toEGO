@@ -53,17 +53,17 @@
             <div class="col-1 q-pa-sm q-my-md">
               <div class="row justify-end items-center no-wrap">
                 <slot name="footer-buttons">
-                  <BaseButtonFooter v-if="button1.isShown"
+                  <BaseButtonForFooter v-if="button1.isShown"
                     class="q-mr-sm"
                     :buttonText="button1.text"
                     @click-button="closeDialog">
-                  </BaseButtonFooter>
-                  <BaseButtonFooter v-if="button2.isShown"
+                  </BaseButtonForFooter>
+                  <BaseButtonForFooter v-if="button2.isShown"
                     class="q-mr-sm"
                     :buttonText="button2.text"
                     :disabled="isButton2Disabled"
                     @click-button="saveChanges">
-                  </BaseButtonFooter>
+                  </BaseButtonForFooter>
                 </slot>
               </div>
             </div>
@@ -77,11 +77,11 @@
 </template>
 
 <script>
-import BaseButtonFooter from '../common/BaseButtonFooter.vue';
+import BaseButtonForFooter from '../common/BaseButtonForFooter.vue';
 import BaseButtonForTitleBar from '../common/BaseButtonForTitleBar.vue';
 export default {
-  name: "baseDialog",
-  components: { BaseButtonFooter, BaseButtonForTitleBar },
+  name: "BaseDialog",
+  components: { BaseButtonForFooter, BaseButtonForTitleBar },
   emits: ["closeDialog", "save", "showHelp"],
   props: {
     dialogTitle: String,

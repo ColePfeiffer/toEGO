@@ -12,14 +12,13 @@
           :icon="getIcon"></q-btn>
       </q-item-section>
     </template>
-    >
   </BaseItem>
 </template>
 
 <script>
-import BaseItem from './baseItem.vue';
+import BaseItem from './BaseItem.vue';
 export default {
-  name: "BaseItemClickable",
+  name: "ItemClickable",
   emits: ["click-item"],
   components: { BaseItem },
   props: {

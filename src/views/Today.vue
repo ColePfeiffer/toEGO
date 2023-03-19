@@ -44,7 +44,7 @@
           <MessageToMyself v-if="isMessageShown"
             class="q-px-md "
             @hide-message="toggleMessageVisibility"></MessageToMyself>
-          <TheEventViewer :isNoteTitleColorful="isNoteTitleColorful"
+          <TheNoteViewer :isNoteTitleColorful="isNoteTitleColorful"
             :borderColorLeft="borderColorLeft"
             :borderColorRight="borderColorRight"
             :textShadowColor="textShadowColor"
@@ -53,20 +53,18 @@
             :backgroundColor="noteBackgroundColor"
             @goToEventSetToCreationMode="goToEventSetToCreationMode"
             @edit-note="goToEventSetToEditingMode"
-            class="q-px-md q-pt-md "></TheEventViewer>
+            class="q-px-md q-pt-md "></TheNoteViewer>
 
         </div>
       </template>
     </BasePage>
   </div>
-
-
 </template>
 
 
 <script>
 import MessageToMyself from "src/components/Today/MessageToMyself.vue";
-import TheEventViewer from "src/components/common/TheEventViewer.vue";
+import TheNoteViewer from "src/components/common/TheNoteViewer.vue";
 import BasePage from "src/components/common/BasePage.vue";
 import BaseButtonForTitleBar from "src/components/common/BaseButtonForTitleBar.vue";
 import BaseTooltip from "src/components/common/BaseTooltip.vue";
@@ -83,7 +81,7 @@ export default {
   },
   components: {
     MessageToMyself,
-    TheEventViewer,
+    TheNoteViewer,
     BasePage,
     BaseButtonForTitleBar,
     BaseTooltip,

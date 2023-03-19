@@ -122,10 +122,10 @@
         <!-- TODO add items  ...-->
         <div v-for="child in childList"
           :key="child.id">
-          <BaseItemForFolderManagement :item="child"
+          <ItemForFolderManagement :item="child"
             :icon="childIcon"
             :parent="item">
-          </BaseItemForFolderManagement>
+          </ItemForFolderManagement>
         </div>
       </q-list>
     </q-menu>
@@ -164,10 +164,10 @@
 </template>
 
 <script>
-import BaseItemForFolderManagement from "./BaseItemForFolderManagement.vue";
+import ItemForFolderManagement from "./ItemForFolderManagement.vue";
 
 export default {
-  name: "BaseMenuForFolderManagement",
+  name: "MenuForFolderManagement",
   props: {
     item: Object,
     childAsText: String,
@@ -176,7 +176,7 @@ export default {
     childList: Array,
   },
   emits: ["delete-item", "rename-item"],
-  components: { BaseItemForFolderManagement },
+  components: { ItemForFolderManagement },
   data() {
     return {
       isDeleting: false,

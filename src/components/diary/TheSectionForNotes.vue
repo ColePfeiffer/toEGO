@@ -1,7 +1,7 @@
 <template>
   <DiaryBaseSection>
     <template v-slot:content>
-      <TheEventViewer :isNoteTitleColorful="noteTitleRowIsColoredForDiary"
+      <TheNoteViewer :isNoteTitleColorful="noteTitleRowIsColoredForDiary"
         :borderColorLeft="borderColorLeftForDiary"
         :borderColorRight="borderColorRightForDiary"
         :backgroundColor="backgroundColor"
@@ -11,17 +11,17 @@
         @go-to-event-set-to-creation-mode="goToEventSetToCreationMode"
         @edit-note="editNote"
         :showMessageIfThereAreNoEvents="false">
-      </TheEventViewer>
+      </TheNoteViewer>
     </template>
   </DiaryBaseSection>
 </template>
 
 <script>
-import TheEventViewer from "../common/TheEventViewer.vue";
+import TheNoteViewer from "../common/TheNoteViewer.vue";
 import DiaryBaseSection from "./Base/DiaryBaseSection.vue";
 export default {
   name: "TheSectionForNotes",
-  components: { TheEventViewer, DiaryBaseSection },
+  components: { TheNoteViewer, DiaryBaseSection },
   emits: ["go-to-event-set-to-creation-mode", "edit-note"],
   props: {
     diaryEntry: Object,

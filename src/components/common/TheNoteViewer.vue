@@ -57,7 +57,7 @@ import Note from "./TheNoteCard.vue";
 import DialogDeleteNote from "../Dialogs/DialogDeleteNote.vue";
 
 export default {
-  name: "TheEventViewer",
+  name: "TheNoteViewer",
   emits: ["go-to-event-set-to-creation-mode", "edit-note"],
   components: {
     Note,
