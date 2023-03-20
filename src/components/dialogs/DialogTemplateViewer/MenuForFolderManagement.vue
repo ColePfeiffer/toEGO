@@ -11,23 +11,13 @@
       v-model="qMenuModel">
       <q-list>
         <!-- Header Item with name and buttons to rename and delete -->
-        <q-item v-if="!isRenaming">
-          <!-- Button: Close Dropdown Menu -->
-          <q-item-section avatar>
-            <q-btn size="10px"
-              dense
-              flat
-              color="secondary"
-              class="q-pl-sm"
-              icon="bi-chevron-left"
-              @click="hideMenu">
-            </q-btn>
-          </q-item-section>
+        <q-item v-if="!isRenaming"
+          class="q-px-sm q-mx-none">
           <!-- Name and Buttons -->
           <q-item-section>
-            <div class="row justify-center items-center">
+            <div class="row justify-center items-center q-pl-md ">
               <!-- Name -->
-              <div class="col-8 name">
+              <div class="col-6 name text-center">
                 {{ item.name }}
               </div>
               <!-- Button: Edit-->
@@ -74,6 +64,16 @@
                 size="10.5px"
                 :ripple="false"
                 @click="deleteItem">
+              </q-btn>
+              <q-btn size="10px"
+                dense
+                round
+                flat
+                color="secondary"
+                :ripple="false"
+                class="col-2"
+                icon="bi-chevron-up"
+                @click="hideMenu">
               </q-btn>
             </div>
           </q-item-section>
@@ -154,7 +154,7 @@
             color="secondary"
             size="10.5px"
             :ripple="false"
-            @click="showQMenu">
+            @click.stop="showQMenu">
           </q-btn>
         </div>
       </div>
