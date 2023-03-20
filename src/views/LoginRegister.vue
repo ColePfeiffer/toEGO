@@ -5,7 +5,7 @@
       <q-chat-message bg-color="secondary"
         text-color="white"
         sent
-        :text="['Welcome to TOEgo [v.1.0]!', 'If you don\'t have an account yet, please click on register and create one.',]">
+        :text="['Welcome to TOEgo [v.1.1]!', 'If you don\'t have an account yet, please click on register and create one.',]">
         <template v-slot:avatar>
           <q-avatar square
             class="q-mr-sm q-mt-sm q-pt-sm">

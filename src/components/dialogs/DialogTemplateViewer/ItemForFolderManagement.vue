@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     isClicked() {
-      console.log("lol?")
       this.$emit("is-clicked");
     }
   },
