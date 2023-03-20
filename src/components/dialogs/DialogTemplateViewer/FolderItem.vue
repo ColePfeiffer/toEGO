@@ -15,7 +15,6 @@
       @changed-menu-state="changedMenuState">
       <template v-slot:itemsInsideList>
         <!-- Templates inside Category -->
-        <!-- TODO: -->
         <!-- TODO: ADD PROPS -->
         <CategoryItem v-for="category in $store.getters['templates/getFolderContent'](
           folder,
@@ -45,7 +44,6 @@ export default {
   emits: ["click-folder", "click-category", "click-template"],
   components: { BaseItemExpandable, BaseMenu, CategoryItem },
   props: {
-    // TODO: I only need one of these probably
     isShowingTemplates: Boolean,
     folder: Object,
     categories: Array,

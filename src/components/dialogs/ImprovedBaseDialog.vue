@@ -29,16 +29,13 @@
                   icon="bi-question"
                   size="10px"
                   @click-button="showHelp"></BaseButtonForTitleBar>
-
                 <BaseButtonForTitleBar class="no-box-shadow q-mr-xs"
                   icon="bi-x"
                   size="10px"
                   @click-button="closeDialog"></BaseButtonForTitleBar>
               </slot>
-
             </div>
           </div>
-
           <!-- Content -->
           <div class="col-12"
             :style="styleForContent">
@@ -48,11 +45,7 @@
                 <slot name="content">
                 </slot>
               </template>
-
             </BaseScrollArea>
-
-
-
             <!-- Footer Slot | Option to hide buttons -->
             <div class="col-12">
               <!--     position: absolute; bottom: 12%; right: 12%; -->
@@ -73,7 +66,6 @@
                     </BaseButtonForFooter>
                   </slot>
                 </div>
-
               </div>
             </div>
           </div>

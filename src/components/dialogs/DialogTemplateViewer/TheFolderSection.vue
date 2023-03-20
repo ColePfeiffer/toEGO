@@ -1,5 +1,6 @@
 <template>
-  <BaseSection @create-new-item="createFolder">
+  <BaseSection :scrollAreaHeight="scrollAreaHeight"
+    @create-new-item="createFolder">
     <template v-slot:headername>Folders</template>
     <template v-slot:itemsToDisplay>
       <div v-for="folder in folders"
@@ -42,6 +43,9 @@ export default {
     categories() {
       return this.$store.getters["templates/getCategoriesByType"](this.type);
     },
+    scrollAreaHeight() {
+      return this.$store.state.layout.height * 0.20;
+    }
   },
   methods: {
     createFolder(name) {

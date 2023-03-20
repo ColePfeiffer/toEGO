@@ -1,5 +1,6 @@
 <template>
-  <BaseSection @create-new-item="createCategory">
+  <BaseSection :scrollAreaHeight="scrollAreaHeight"
+    @create-new-item="createCategory">
     <template v-slot:headername>Categories</template>
     <template v-slot:itemsToDisplay>
       <div v-for="category in categories"
@@ -51,6 +52,9 @@ export default {
     templates() {
       return this.$store.getters["templates/getTemplatesByType"](this.type);
     },
+    scrollAreaHeight() {
+      return this.$store.state.layout.height * 0.30;
+    }
   },
   methods: {
     createCategory(name) {

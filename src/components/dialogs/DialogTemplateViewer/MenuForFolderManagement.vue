@@ -119,7 +119,6 @@
         </q-item>
         <q-separator></q-separator>
         <!-- Folder or Category Items -->
-        <!-- TODO add items  ...-->
         <div v-for="child in childList"
           :key="child.id">
           <ItemForFolderManagement :item="child"

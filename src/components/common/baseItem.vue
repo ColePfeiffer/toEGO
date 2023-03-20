@@ -16,11 +16,7 @@
     <q-item-section>
       {{ itemName }}
     </q-item-section>
-    <!-- Button to add child to parent or to remove it -->
-    <!-- TODO: check if this works 100%? -->
-    <slot name="buttonSection">
-
-    </slot>
+    <slot name="buttonSection"></slot>
   </q-item>
 </template>
 
@@ -45,10 +41,10 @@ export default {
   computed: {
     // shortens item-name
     itemName() {
-      if (this.item.name.length > 15) {
-        return this.item.name.substring(0, 15) + "...";
+      if (this.item.name.length > 15) { // if item name is longer than 15 characters
+        return this.item.name.substring(0, 15) + "..."; // shorten item name and add ellipsis
       } else {
-        return this.item.name;
+        return this.item.name; // return full item name
       }
     },
 

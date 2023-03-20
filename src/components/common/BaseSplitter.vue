@@ -1,33 +1,36 @@
 <template>
-  <q-splitter v-model="calculatedSplitterModel"
-    :limits="[1, Infinity]"
-    unit="px"
-    :disable="isSplitterDisabled"
-    horizontal
-    color="transparent"
-    :style="styleForSplitter"
-    :separator-style="styleForSplitterSeparator">
-    <template v-slot:before>
-      <slot name="splitter-content-before">
-      </slot>
-    </template>
-    <!-- Q-Seperator, including Header for Diary Section -->
-    <template v-slot:separator>
-      <div v-if="isSplitterVisible"
-        :style="styleForBorderSeparator"></div>
-      <q-avatar v-if="isSplitterVisible"
-        flat
-        class="grab-button"
-        text-color="white"
-        size="40px"
-        icon="bi-grip-horizontal" />
-      <slot name="splitter-content-separator">
-      </slot>
-    </template>
-    <template v-slot:after>
-      <slot name="splitter-content-after"></slot>
-    </template>
-  </q-splitter>
+  <!-- Using a div wrapper to avoid q-splitter warning -->
+  <div>
+    <q-splitter v-model="calculatedSplitterModel"
+      :limits="[1, Infinity]"
+      unit="px"
+      :disable="isSplitterDisabled"
+      horizontal
+      color="transparent"
+      :style="styleForSplitter"
+      :separator-style="styleForSplitterSeparator">
+      <template v-slot:before>
+        <slot name="splitter-content-before">
+        </slot>
+      </template>
+      <!-- Q-Seperator, including Header for Diary Section -->
+      <template v-slot:separator>
+        <div v-if="isSplitterVisible"
+          :style="styleForBorderSeparator"></div>
+        <q-avatar v-if="isSplitterVisible"
+          flat
+          class="grab-button"
+          text-color="white"
+          size="40px"
+          icon="bi-grip-horizontal" />
+        <slot name="splitter-content-separator">
+        </slot>
+      </template>
+      <template v-slot:after>
+        <slot name="splitter-content-after"></slot>
+      </template>
+    </q-splitter>
+  </div>
 </template>
 
 <script>

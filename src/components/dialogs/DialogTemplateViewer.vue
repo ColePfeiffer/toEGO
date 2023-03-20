@@ -53,7 +53,7 @@
         <div>
           <div>
             <BaseButtonForFooter buttonText="
-                Close"
+                  Close"
               @click-button="closeDialog">
             </BaseButtonForFooter>
             <BaseButtonForFooter class="q-ml-sm"
@@ -98,14 +98,6 @@ export default {
       isButtonForTagsHighlighted: false,
       isShowingTemplateViewer: true,
       isPasteAllowed: true,
-      /*
-            // from management
-            isCreatingNewCategory: false,
-            isCreatingNewFolder: false,
-            newCategoryName: "",
-            newFolderName: "",
-              isCreatingNewTemplate: false,
-             */
     };
   },
   watch: {

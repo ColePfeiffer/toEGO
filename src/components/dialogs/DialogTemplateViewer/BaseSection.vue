@@ -74,7 +74,7 @@
   <q-resize-observer @resize="onResize" />
 
   <!-- Content -->
-  <q-scroll-area style="height: 134px">
+  <q-scroll-area :style="scrollAreaStyle">
     <div :style="styleForContent">
       <slot name="itemsToDisplay"></slot>
     </div>
@@ -86,6 +86,12 @@
 export default {
   name: "BaseSection",
   emits: ["create-new-item"],
+  props: {
+    scrollAreaHeight: {
+      type: Number,
+      default: 134,
+    },
+  },
   components: {
   },
   data() {
@@ -105,6 +111,9 @@ export default {
       } else {
         return { 'color': 'black' };
       }
+    },
+    scrollAreaStyle() {
+      return { 'height': this.scrollAreaHeight + 'px' };
     }
   },
   methods: {

@@ -1,8 +1,10 @@
 <template>
   <!-- Titlebar-Option: 1 -->
+  <!-- Show this titlebar if the "isDiaryTitlebarShowingDay" prop is true -->
   <div class="fit"
     v-if="isDiaryTitlebarShowingDay">
     <div class="row justify-center items-center text-center no-wrap  full-width title-bar-height q-py-none">
+      <!-- Go back button -->
       <div class="col-1 text-left">
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow "
@@ -16,6 +18,7 @@
           </template>
         </BaseButtonForTitleBar>
       </div>
+      <!-- Go to today button -->
       <div class="col-1 text-left">
         <BaseButtonForTitleBar v-if="viewingMode === 'view' && getNumberOfDaysAwayFromToday < 0"
           class="q-pl-xs q-mr-xs no-box-shadow col-1"
@@ -31,6 +34,7 @@
       </div>
       <!-- today, yesterday, x days ago, x days ahead... -->
       <div class="col-8 text-white">
+        <!-- Button with the date text -->
         <q-btn class="date-picker-button text-white"
           no-wrap
           flat
@@ -41,7 +45,7 @@
           </slot>
         </q-btn>
       </div>
-      <!-- go forward button -->
+      <!-- Go to today button -->
       <div class="col-1 text-right">
         <BaseButtonForTitleBar
           v-if="viewingMode === 'view' && (getNumberOfDaysAwayFromToday > 0 | isNavigationHighlighted)"
@@ -56,6 +60,7 @@
           </template>
         </BaseButtonForTitleBar>
       </div>
+      <!-- Go forward button -->
       <div class="col-1 text-right">
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="q-pl-none q-mr-xs no-box-shadow"
@@ -72,17 +77,16 @@
     </div>
   </div>
   <!-- Titlebar-Option: 2 -->
+  <!-- Show this titlebar if the "isDiaryTitlebarShowingDay" prop is false -->
   <div class="row justify-between items-center full-width"
     v-else>
     <div class="title-bar-text">
       <div class="q-pr-lg row justify-between items-center no-wrap">
-
         <div style="padding: 4px">
           <q-icon name="bi-journal"
             :style="styleForTitlebar"
             size="19px" />
         </div>
-
         <div class="q-pl-sm"
           :style="styleForTitlebar">
           Diary
@@ -96,15 +100,13 @@
           :ripple="false"
           size="12px"
           unelevated
-          color="
-            transparent">
+          color="transparent">
           <q-popup-proxy transition-show="scale"
             transition-hide="scale">
             <slot name="calendar">
             </slot>
           </q-popup-proxy>
         </q-btn>
-
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow q-mr-xs"
           icon="bi-chevron-left"
@@ -117,14 +119,12 @@
           :style="styleForNavigation"
           size="12px"
           @click-button="setDateToToday()"></BaseButtonForTitleBar>
-
         <BaseButtonForTitleBar v-if="viewingMode === 'view'"
           class="no-box-shadow q-mr-xs"
           icon="bi-chevron-right"
           :style="styleForNavigation"
           size="12px"
           @click-button="addToDate(1)"></BaseButtonForTitleBar>
-
       </div>
     </div>
   </div>

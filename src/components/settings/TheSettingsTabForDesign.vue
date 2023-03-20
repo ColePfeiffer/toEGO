@@ -117,7 +117,7 @@
           <template v-slot:content>
             <q-input v-model="customBackgroundImage"
               type="url"
-              hint="E.g.: https://someSite.myImage.png"
+              hint="E.g.: https://img.com/image.png"
               filled
               bottom-slots>
               <template v-slot:before>

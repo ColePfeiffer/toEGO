@@ -49,7 +49,8 @@
             <q-menu fit
               full-width
               class="no-border-radius "
-              v-model="qMenuModel">
+              v-model="qMenuModel"
+              style="max-width: 100%;">
               <q-list>
                 <FolderCategoryTemplateStructure :isShowingTemplates="true"
                   categoryMode="EXPAND"
@@ -699,7 +700,6 @@ export default {
         return "white";
       }
     },
-
   }
 };
 </script>

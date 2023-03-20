@@ -5,9 +5,9 @@
       :style="$store.getters['layout/getStyleForTitleBar'](mode)">
       <slot name="titlebar">
         <div class="title-bar-text"
-          :style="getMargin">
+          :style="marginStyle">
           <div class="q-pr-lg row justify-between items-center no-wrap"
-            :style="getPadding">
+            :style="paddingStyle">
             <slot name="title-bar-icon"
               class="q-pl-xl"></slot>
             <slot name="title">
@@ -18,30 +18,25 @@
           </div>
         </div>
         <div class="title-bar-controls"
-          :style="getMargin">
+          :style="marginStyle">
           <slot name="title-bar-controls"></slot>
         </div>
       </slot>
     </div>
-
-
     <!-- Content -->
     <div class="col-md-11 col-12 q-mt-sm shadow-2"
       :style="$store.getters['layout/getStyleForBasePage']({ 'mode': mode, 'backgroundColor': backgroundColor, 'isUsingBackgroundColorAsDefaultColor': isUsingBackgroundColorAsDefaultColor })">
-
       <q-resize-observer v-if="isResizing"
         @resize="onResize" />
       <slot name="content-without-scrollarea">
-        <BaseScrollArea :style="getStyleForScrollArea"
+        <BaseScrollArea :style="scrollAreaStyle"
           :positionToTheRight="1">
           <template v-slot:content>
             <slot name="content"></slot>
           </template>
         </BaseScrollArea>
       </slot>
-
     </div>
-
     <!-- Footer / Buttons -->
     <div class="col-md-11 col-12 q-mt-md">
       <div class="row justify-end items-center no-wrap">
@@ -78,9 +73,7 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     onResize(size) {
@@ -92,7 +85,7 @@ export default {
     },
   },
   computed: {
-    getStyleForScrollArea() {
+    scrollAreaStyle() {
       let style = {};
       style["height"] = this.$store.state.layout.height * this.heightForContentMultiplier + "px";
       if (this.mode === 'retro') {
@@ -104,7 +97,7 @@ export default {
       }
       return style;
     },
-    getMargin() {
+    marginStyle() {
       let style = {};
       if (this.mode === 'retro') {
         style["margin-top"] = "4px";
@@ -113,7 +106,7 @@ export default {
       }
       return style;
     },
-    getPadding() {
+    paddingStyle() {
       if (this.mode === 'retro') {
         return {
           "padding-left": "7px",
@@ -128,7 +121,6 @@ export default {
         }
       }
     }
-
   }
 };
 </script>

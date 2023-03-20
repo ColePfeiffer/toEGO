@@ -2,7 +2,6 @@
   <div class="q-py-sm q-px-xs">
     <DialogDeleteNote @delete-note="deleteNote"
       @close-dialog="closeDialog"></DialogDeleteNote>
-
     <!-- Case 1: There is no diaryentry for the selected day. -->
     <div v-if="diaryEntry === undefined">
       <div v-if="showMessageIfThereAreNoNotes">

@@ -32,11 +32,9 @@ export default {
       type: Object,
       default: null,
     },
-
-
   },
   created() {
-    // FIXME: maybe use different thingie instead of created, dunno if right choice???
+    // Sets the currentParent and currentChild data properties based on the parent and item props
     if (this.parent === null) {
       this.currentParent = this.item;
       this.currentChild = this.currentTemplate;
@@ -57,6 +55,7 @@ export default {
         parent: this.currentParent,
         child: this.currentChild,
       };
+      // Check if the currentChild is already in the currentParent's storedIDs array
       if (this.isItemInParent) {
         this.removeChildFromParent(payload);
       }
@@ -65,14 +64,17 @@ export default {
       }
     },
     addChildToParent(payload) {
+      // Dispatches a Vuex action to add the child to the parent in Firebase
       this.$store.dispatch("templates/firebaseAddChildToParent", payload);
     },
     removeChildFromParent(payload) {
+      // Dispatches a Vuex action to remove the child from the parent in Firebase
       this.$store.dispatch("templates/firebaseRemoveChildFromParent", payload);
     },
   },
   computed: {
     isItemInParent() {
+      // Checks if the currentChild's ID is in the currentParent's storedIDs array
       if (this.currentParent.storedIDs != undefined) {
         if (this.currentParent.storedIDs.includes(this.currentChild.id)) {
           return true;
@@ -81,7 +83,7 @@ export default {
       return false;
     },
     textColorStyle() {
-      // sets the text color
+      // Set the text color based on whether the item is in the parent or not
       if (this.isItemInParent) {
         if (this.$store.getters["data/isDarkModeActive"]) {
           return { color: "white" };
@@ -92,7 +94,7 @@ export default {
         return { color: "#d3d3d3 " };
       }
     },
-
+    // Set the icon based on whether the item is in the parent or not
     getIcon() {
       if (this.isItemInParent) {
         return "bi-dash";

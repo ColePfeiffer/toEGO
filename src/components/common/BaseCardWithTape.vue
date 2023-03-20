@@ -1,10 +1,10 @@
 <template>
-  <q-card class="q-px-sm q-pb-none q-mt-lg "
-    :style="$store.getters['layout/getStyleForTransparentCard']">
+  <q-card class="q-px-sm q-pb-none q-mt-lg"
+    :style="cardStyle">
     <q-card-section class="cardSection">
       <slot name="content">
         <p class="cursor-pointer q-pa-xs q-mb-none text-center"
-          :style="$store.getters['layout/getStyleForText']">
+          :style="textStyle">
           {{ text }}
         </p>
       </slot>
@@ -28,13 +28,15 @@ export default {
     }
   },
   computed: {
+    cardStyle() {
+      return this.$store.getters["layout/getStyleForTransparentCard"];
+    },
+    textStyle() {
+      return this.$store.getters["layout/getStyleForText"];
+    },
     getStyleForTape() {
       return { 'background': this.tapeColor + '59' }
     }
-  },
-  data() {
-    return {
-    };
   },
 };
 </script>

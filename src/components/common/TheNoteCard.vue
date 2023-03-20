@@ -30,9 +30,7 @@
           </div>
         </q-item-section>
       </q-item>
-
       <q-separator />
-
       <!-- Text, Buttons -->
       <div class="fit"
         :style="styleForNoteContent">
@@ -211,7 +209,6 @@ export default {
 .card-time {
   font-size: 12.5px;
 }
-
 
 .card-time {
   color: var(--q-secondary);
