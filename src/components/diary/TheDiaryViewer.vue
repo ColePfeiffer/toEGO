@@ -32,7 +32,7 @@
         <div v-else>
           <BaseCard :style="heightForCardWithDiaryText"
             :backgroundColor="backgroundColor"
-            :isTextSetToCentered="false"
+            :isTextCentered="false"
             :borderColorLeft="borderColorLeft"
             :borderColorRight="borderColorRight">
             <template v-slot:contentInsideSection>

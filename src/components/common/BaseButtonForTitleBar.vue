@@ -27,10 +27,5 @@ export default {
 };
 </script>
 
-<style scoped src="98.css">
+<style scoped src="98.css"></style>
 
-</style>
-
-<style scoped>
-
-</style>

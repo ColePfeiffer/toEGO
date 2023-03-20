@@ -1,5 +1,5 @@
 <template>
-  <BaseCard :isTextSetToCentered="false"
+  <BaseCard :isTextCentered="false"
     :borderColorLeft="borderColorLeft"
     :borderColorRight="borderColorRight"
     :backgroundColor="backgroundColor">

@@ -1,10 +1,9 @@
 <template>
   <q-card class="shadow-3"
-    :style="getStyleForCard">
+    :style="cardStyle">
     <slot name="content">
-      <q-card-section :class="{ 'text-center': isTextCentered, 'text-left': isTextLeft }">
-        <slot name="contentInsideSection">
-        </slot>
+      <q-card-section :class="{ 'text-center': isTextCentered, 'text-left': !isTextCentered }">
+        <slot name="contentInsideSection"></slot>
       </q-card-section>
     </slot>
   </q-card>
@@ -14,7 +13,7 @@
 export default {
   name: "BaseCard",
   props: {
-    isTextSetToCentered: {
+    isTextCentered: {
       type: Boolean,
       default: true,
     },
@@ -32,50 +31,30 @@ export default {
     },
   },
   computed: {
+    // gibt entweder borderColorLeft zurück, wenn ein Wert vorhanden ist, oder andernfalls borderColorLeft aus dem Vuex Store
     calculatedBorderColorLeft() {
-      if (this.borderColorLeft != '') {
-        return this.borderColorLeft;
-      } else {
-        return this.$store.state.layout.borderColorLeft;
-      }
+      return this.borderColorLeft || this.$store.state.layout.borderColorLeft;
     },
     calculatedBorderColorRight() {
-      if (this.borderColorRight != '') {
-        return this.borderColorRight;
-      } else {
-        return this.$store.state.layout.borderColorRight;
-      }
+      return this.borderColorRight || this.$store.state.layout.borderColorRight;
     },
-    getStyleForCard() {
+    cardStyle() {
       let style = {};
       let fontColor = this.$store.getters["layout/getColorBasedOnBackgroundColor"](this.backgroundColor);
-      //style["border-radius"] = "0px";
       style["border-style"] = "solid";
       style["font-size"] = this.$store.state.layout.fontsize + "px";
-
-
       if (this.$store.getters["data/isDarkModeActive"]) {
         style["background-color"] = this.$store.state.layout.blacksmoke;
         style["color"] = "white";
-        style["border"] = "2px solid";
-        style["border-image-slice"] = "1";
-        style["border-width"] = "1px";
-
-        style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
-        /* amazing border
-        style["border-width"] = "20px";
-        style["border-image"] =
-          "repeating-radial-gradient(circle at 10px,turquoise, pink 2px, greenyellow 4px, pink 2px) 1";
-        */
       } else {
-        style["border"] = "2px solid";
-        style["border-image-slice"] = "1";
-        style["border-width"] = "1px";
-        style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
         style["background-color"] = this.backgroundColor;
         style["color"] = fontColor;
-        //style["color"] = "black";
       }
+
+      style["border"] = "2px solid";
+      style["border-image-slice"] = "1";
+      style["border-width"] = "1px";
+      style["border-image-source"] = "linear-gradient(to left, " + this.calculatedBorderColorRight + ", " + this.calculatedBorderColorLeft + ")";
 
       if (fontColor === 'white') {
         style["text-shadow"] = "2px 2px 3px #39373c";
@@ -85,20 +64,6 @@ export default {
 
       return style;
     },
-    isTextCentered() {
-      if (this.isTextSetToCentered) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    isTextLeft() {
-      if (!this.isTextSetToCentered) {
-        return true;
-      } else {
-        return false;
-      }
-    }
   },
 };
 </script>
