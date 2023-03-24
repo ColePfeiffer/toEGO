@@ -115,16 +115,21 @@ module.exports = function (/* ctx */) {
 
     // https://v1.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      /*
+      There are two Workbox operating modes: GenerateSW (default) and InjectManifest. The first one generates
+      a service worker automatically, based on quasar.config.js > pwa > workboxOptions (if any), while the
+      second mode allows you to write your own service worker file.
+      */
+      //workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
+      workboxOptions: { skipWaiting: true, clientsClaim: true }, // only for GenerateSW
       manifest: {
-        name: `toego`,
-        short_name: `toego`,
-        description: `A Quasar Framework app`,
+        name: `toEGO`,
+        short_name: `toEGO`,
+        description: `A customizable diary app designed for introspective writing, featuring prompts, templates and a cozy ghost!`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
-        theme_color: "#027be3",
+        theme_color: "#DFD4F5",
         icons: [
           {
             src: "icons/icon-128x128.png",
